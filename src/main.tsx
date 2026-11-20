@@ -18,4 +18,5 @@ createRoot(document.getElementById('root')!).render(
 // test hook: expose the store for screenshot / e2e scripts
 import { useAtlas, live } from './state/store'
 ;(window as unknown as { __live: unknown }).__live = live
+;(window as unknown as { __atlas_set: unknown }).__atlas_set = (p: object) => useAtlas.getState().set(p)
 ;(window as unknown as { __atlas: unknown }).__atlas = new Proxy({}, { get: (_, k) => (useAtlas.getState() as never)[k] })

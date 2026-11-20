@@ -11,7 +11,13 @@ import { Spring, SPRINGS } from './spring'
 export const TIERS = 7
 
 export const cellRuntime = {
-  fabPos: 44,
+  /** fab timeline position (fractional step index), critically damped so scrubbing has weight but never overshoots into the next step */
+  fab: new Spring(44, { omega: 9, zeta: 1 }),
+  get fabPos() {
+    return this.fab.value
+  },
+  /** playback clock */
+  play: { t: 0, from: 0 },
   /** section plane offset (λ), spring-driven */
   plane: new Spring(-4, SPRINGS.part),
   /** 0..1 near half parted */
@@ -49,3 +55,5 @@ export const overlay = {
   /** bumps when the label set changes (not positions) */
   version: 0,
 }
+
+if (typeof window !== 'undefined') (window as unknown as { __cellRuntime: unknown }).__cellRuntime = cellRuntime

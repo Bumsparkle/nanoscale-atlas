@@ -96,6 +96,27 @@ export default function CellLayer() {
     const st = useAtlas.getState()
     const reduced = st.reducedMotion
 
+    // fab timeline: playback eases through each step and dwells briefly on it
+    if (st.view === 'fab') {
+      if (st.playing) {
+        const SEG = 1.75
+        const MOVE = 1.3
+        rt.play.t += dt
+        const seg = Math.floor(rt.play.t / SEG)
+        const local = rt.play.t - seg * SEG
+        const e = Math.min(1, local / MOVE)
+        const eased = e < 0.5 ? 2 * e * e : 1 - Math.pow(-2 * e + 2, 2) / 2
+        const target = rt.play.from + seg + eased
+        if (target >= process.length - 1) {
+          rt.fab.target = process.length - 1
+          st.set({ playing: false, step: process.length - 1 })
+        } else rt.fab.target = target
+      }
+      rt.fab.step(dt, reduced)
+      const k = Math.round(rt.fab.value)
+      if (Math.abs(rt.fab.value - k) < 0.02 && k !== st.step) st.set({ step: k })
+    }
+
     // x-ray: fade wiring and field oxide over buried objects
     xray.current.target = st.focus && BURIED.has(st.focus) ? 1 : st.hover && BURIED.has(st.hover) && st.view === 'explore' ? 0.45 : 0
     matUniforms.xray.value = xray.current.step(dt, reduced)
@@ -138,7 +159,7 @@ export default function CellLayer() {
     }
 
     // rebuild geometry only when shape-defining inputs change
-    const s = st.view === 'fab' ? rt.fabPos : process.length - 1
+    const s = st.view === 'fab' ? rt.fab.value : process.length - 1
     const clip = st.view === 'section' ? { axis: sec.axis, offset: rt.sectionOffset } : null
     const gap = st.view === 'section' ? rt.gap : 0
     const explode = rt.explode
@@ -162,7 +183,7 @@ export default function CellLayer() {
       rt.plane.snap(SNAP_TARGETS[st0.section.locked].offset)
       rt.gapS.snap(1)
     } else rt.plane.snap(st0.section.offset)
-    if (st0.view === 'fab') rt.fabPos = st0.step
+    rt.fab.snap(st0.view === 'fab' ? st0.step : process.length - 1)
 
     /** look at the far half's cut face, slightly oblique, like a drawing on a bench */
     const faceCut = (id: keyof typeof SNAP_TARGETS) => {
@@ -203,6 +224,14 @@ export default function CellLayer() {
         if (s.view === 'masks') masksCamera()
         else if (p.view === 'masks' || p.view === 'section') rig.goHome()
         if (p.view === 'masks') for (const t of rt.tiers) t.target = 0
+        if (s.view === 'fab') {
+          rt.fab.snap(s.step)
+          rig.setHome({ target: [0, -0.5, 0] })
+          rig.goHome()
+        } else if (p.view === 'fab') {
+          rt.fab.snap(process.length - 1)
+          rig.setHome({ target: [0, -2, 0] })
+        }
       }
     })
     const f = st0.focus

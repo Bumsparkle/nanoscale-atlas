@@ -33,3 +33,4 @@ routes.push({
     await page.waitForTimeout(1600)
   },
 })
+routes.push({ name: 'M5-fab-07', path: '/cmos/inverter?view=fab&step=7', wait: 3500 })

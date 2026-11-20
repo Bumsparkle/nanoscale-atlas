@@ -8,7 +8,7 @@ const base = process.argv[2] ?? 'http://localhost:5173'
 const name = process.argv[3] ?? 'tour'
 mkdirSync('docs/recordings', { recursive: true })
 mkdirSync(`shots/${name}`, { recursive: true })
-const browser = await chromium.launch({ args: ['--enable-unsafe-webgpu'] })
+const browser = await chromium.launch({ args: ['--enable-unsafe-webgpu', '--enable-features=Vulkan,WebGPU', '--use-angle=metal', '--ignore-gpu-blocklist'] })
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, recordVideo: { dir: 'docs/recordings/tmp', size: { width: 1280, height: 800 } } })
 const page = await ctx.newPage()
 let n = 0

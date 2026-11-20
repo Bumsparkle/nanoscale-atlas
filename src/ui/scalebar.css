@@ -92,3 +92,15 @@
     display: none;
   }
 }
+
+html[data-view='fab'] .scalebar {
+  bottom: 120px;
+}
+html[data-view='fab'] .exaggeration {
+  bottom: 200px;
+}
+@media (max-width: 720px) {
+  html[data-view='fab'] .scalebar {
+    bottom: auto;
+  }
+}

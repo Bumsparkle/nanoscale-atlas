@@ -113,3 +113,27 @@ Verification
 - Screenshots of each lock, a free cut and the exploded masks were reviewed. Fixed after review: the near half occluded the cut face, the masks view framing, the substrate callout anchor, and n-well vs substrate contrast.
 
 Screenshots: `docs/screenshots/m4/`.
+
+### M5 · Fab timeline — done
+
+Shipped
+- Timeline scrubber (`ui/Timeline.tsx`):
+  - one named tick per recipe step (45), grouped by phase (wafer, n-well, gate, n+, p+, contacts, metal);
+  - play/pause, drag to scrub, keys ← → space Home End;
+  - hover a tick for the step name.
+- Step card naming the slide, tool, chemistry, a one-line demonstrator note and any beyond-the-lecture detail with its source.
+- Playback eases through each step and dwells briefly on it. The position is a critically damped spring, so scrubbing has weight and never overshoots into a neighbouring step.
+- Per-step effects (`scene/FabEffects.tsx`):
+  - **Implant:** an ion beam (As blue, B warm). Each ion's stop point comes from the model before the step: ions stop on oxide, resist or poly and penetrate exposed silicon to the implant range. This shows self-alignment directly.
+  - **Exposure:** the reticle (chrome on glass) hovers over the wafer, and light passes only through its clear areas (clear- or dark-field per step).
+  - **Furnace:** a 900–1200 °C glow on oxidation and CVD.
+  - **Wet bench:** a liquid film for HF, piranha and develop.
+  - **Deposition:** CVD and sputter atoms arriving from above.
+  - **Lithography:** spin, expose and develop turn the whole frame yellow-light amber.
+- Hum per tool while playing (synthesised, only when sound is on). Deep link `?view=fab&step=N`.
+
+Verification
+- Fractional continuity and monotonicity unit tests (from M2) cover every step, forward and backward.
+- `scripts/fabsheet.mjs` screenshots all 45 steps into a contact sheet (`docs/screenshots/m5/fab-sheet.png`), which was reviewed against slides 29–45. The sequence matches.
+- Fixed after review: the wet-bench sheen read as a checkerboard, and the dark-field exposures blew out to glare.
+- The sheet first came out black: `fabsheet.mjs` and `tour.mjs` launched Chromium without the GPU flags `shots.mjs` uses. Fixed.

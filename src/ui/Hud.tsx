@@ -7,6 +7,7 @@ import { Panel } from './Panel'
 import { HoverLabel, SceneOutline } from './Inspect'
 import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
 import { ViewBar } from './ViewBar'
+import { Timeline } from './Timeline'
 import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
 
@@ -90,6 +91,7 @@ export function Hud() {
       <LabelOverlay />
       <SectionLegend />
       <ViewBar />
+      <Timeline />
       <HoverLabel />
       <Panel />
     </>
