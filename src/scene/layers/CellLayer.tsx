@@ -19,6 +19,19 @@ import { CELL_CENTRE } from '../cellGeometry'
 import { sound } from '../../ui/sound'
 import { FabEffects } from '../FabEffects'
 
+/**
+ * Inverter conducting path for input A (slides 16–17): A = 1 turns the
+ * nMOS on and connects Y to GND; A = 0 turns the pMOS on and connects Y to
+ * VDD. The poly (input A) glows amber when A = 1.
+ */
+function logicLit(a: 0 | 1): Map<string, 'on' | 'hi'> {
+  const m = new Map<string, 'on' | 'hi'>()
+  const path = a ? ['metal-gnd', 'nmos-source', 'nmos-drain', 'metal-y', 'contact'] : ['metal-vdd', 'pmos-source', 'pmos-drain', 'metal-y', 'contact']
+  for (const id of path) m.set(id, 'on')
+  if (a) m.set('poly-gate', 'hi')
+  return m
+}
+
 /** objects that sit under the field oxide and the metal */
 const BURIED = new Set(['substrate', 'nwell', 'nmos-source', 'nmos-drain', 'pmos-source', 'pmos-drain', 'substrate-tap', 'well-tap', 'poly-gate', 'gate-oxide', 'contact'])
 
@@ -118,7 +131,7 @@ export default function CellLayer() {
     }
 
     // x-ray: fade wiring and field oxide over buried objects
-    xray.current.target = st.focus && BURIED.has(st.focus) ? 1 : st.hover && BURIED.has(st.hover) && st.view === 'explore' ? 0.45 : 0
+    xray.current.target = st.view === 'logic' ? 0.55 : st.focus && BURIED.has(st.focus) ? 1 : st.hover && BURIED.has(st.hover) && st.view === 'explore' ? 0.45 : 0
     matUniforms.xray.value = xray.current.step(dt, reduced)
     matUniforms.foxFade.value = st.view === 'masks' ? Math.min(1, Math.max(...rt.explode) * 1.5) : 0
     matUniforms.nearFade.value = Math.min(1, Math.max(0, rt.gap))
@@ -163,11 +176,12 @@ export default function CellLayer() {
     const clip = st.view === 'section' ? { axis: sec.axis, offset: rt.sectionOffset } : null
     const gap = st.view === 'section' ? rt.gap : 0
     const explode = rt.explode
-    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}`
+    const lit = st.view === 'logic' ? logicLit(st.inputs.a) : undefined
+    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? 'L' + st.inputs.a : ''}`
     if (key !== geoKey.current) {
       geoKey.current = key
       const res = mesh(process.at(s), MESH_OPTS)
-      const view: CellView = { clip, gap, explode }
+      const view: CellView = { clip, gap, explode, lit }
       model.update(res, resolveComponents(res), view)
       rt.res = res
       rt.model = model
@@ -221,6 +235,11 @@ export default function CellLayer() {
         else if (!s.section.locked && p.section.locked && !rt.dragging) rig.goHome()
       }
       if (s.view !== p.view) {
+        if (s.view === 'logic') {
+          rig.target.setTarget([-3, -2, 0])
+          rig.polar.target = 0.62
+          rig.dist.target = 120
+        }
         if (s.view === 'masks') masksCamera()
         else if (p.view === 'masks' || p.view === 'section') rig.goHome()
         if (p.view === 'masks') for (const t of rt.tiers) t.target = 0
@@ -236,6 +255,11 @@ export default function CellLayer() {
     })
     const f = st0.focus
     if (f) setTimeout(() => (focusOn(f), refreshSelection()), 50)
+    if (st0.view === 'logic') setTimeout(() => {
+      rig.target.setTarget([-3, -2, 0])
+      rig.polar.target = 0.62
+      rig.dist.target = 120
+    }, 60)
     if (st0.view === 'section' && st0.section.locked) setTimeout(() => faceCut(st0.section.locked!), 60)
     if (st0.view === 'masks') setTimeout(masksCamera, 60)
     rig.setHome({ target: [0, -2, 0] })

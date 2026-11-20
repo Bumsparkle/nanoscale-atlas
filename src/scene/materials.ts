@@ -1,7 +1,7 @@
 import * as THREE from 'three/webgpu'
 import {
   attribute, clamp, color, cos, dot, float, mix, mx_worley_noise_float, normalWorld, positionWorld,
-  cameraPosition, sqrt, step, fract, vec3, uniform, smoothstep, abs, max,
+  cameraPosition, sqrt, step, fract, vec3, uniform, smoothstep, abs, max, sin, time,
 } from 'three/tsl'
 
 /**
@@ -159,7 +159,30 @@ function ghostOf(base: THREE.Material): THREE.Material {
   return m
 }
 
-export function materialFor(key: string, near = false): THREE.Material {
+/** logic view: conducting path glows (--on), a logic-1 node glows amber */
+function litOf(base: THREE.Material, kind: 'on' | 'hi'): THREE.Material {
+  const m = base.clone() as THREE.MeshStandardNodeMaterial
+  const b = base as THREE.MeshStandardNodeMaterial
+  for (const k of ['colorNode', 'roughnessNode', 'metalnessNode', 'opacityNode'] as const) (m as N)[k] = (b as N)[k]
+  const pulse = sin(time.mul(3.2)).mul(0.25).add(0.75)
+  const glow = color(kind === 'on' ? '#9fd3a2' : '#f0b43c').mul(pulse).mul(kind === 'on' ? 0.55 : 0.45)
+  m.emissiveNode = ((b as N).emissiveNode ?? vec3(0)).add(glow.mul(float(1).sub(cap())))
+  if (b.transparent) {
+    m.transparent = true
+    m.opacityNode = max((b as N).opacityNode ?? float(1), float(0.55))
+  }
+  return m
+}
+
+export function materialFor(key: string, near = false, lit: 'on' | 'hi' | null = null): THREE.Material {
+  if (lit) {
+    let l = cache.get(lit + ':' + key)
+    if (!l) {
+      l = litOf(materialFor(key), lit)
+      cache.set(lit + ':' + key, l)
+    }
+    return l
+  }
   if (near) {
     let g = cache.get('near:' + key)
     if (!g) {

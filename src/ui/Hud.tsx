@@ -9,6 +9,8 @@ import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
 import { ViewBar } from './ViewBar'
 import { Timeline } from './Timeline'
 import { LayerControls } from './LayerControls'
+import { LogicBench } from './LogicBench'
+import '../ui/layercontrols.css'
 import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
 
@@ -94,6 +96,7 @@ export function Hud() {
       <ViewBar />
       <Timeline />
       <LayerControls />
+      <LogicBench />
       <HoverLabel />
       <Panel />
     </>

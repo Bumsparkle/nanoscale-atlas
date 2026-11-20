@@ -18,6 +18,8 @@ export interface CellView {
   explode: number[]
   /** hide translucent films (field oxide) to see the devices */
   xray?: boolean
+  /** logic view: content ids to light, as conducting path ('on') or logic-1 node ('hi') */
+  lit?: Map<string, 'on' | 'hi'>
 }
 
 /** vertical explode order: the six masks of slide 28, bottom to top */
@@ -66,7 +68,8 @@ export class CellModel {
         if (view.xray && (comp.key === 'fox' || comp.key === 'ox') && h.tag !== 'far') continue
         const geo = boxesGeometry(comp.boxes, h.clip)
         if (!geo) continue
-        const mesh = new THREE.Mesh(geo, materialFor(comp.key, h.tag === 'near'))
+        const lit = view.lit?.get(names.get(comp.id) ?? '') ?? null
+        const mesh = new THREE.Mesh(geo, materialFor(comp.key, h.tag === 'near', lit))
         const tier = EXPLODE_TIER[comp.key] ?? 0
         mesh.position.set(h.shift[0], h.shift[1] + tier * (view.explode[tier] ?? 0) * TIER_SPACING, h.shift[2])
         mesh.renderOrder = renderOrderFor(comp.key)

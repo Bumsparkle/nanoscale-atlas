@@ -174,3 +174,31 @@ Verification
 - Fixed after review: an instanced-bond buffer overflow (WebGPU validation error), a die texture over the GPU size limit, a washed-out die, the transistor cut face dominated by metal, carriers hidden behind the cut face, oxide labels off-screen.
 
 Screenshots: `docs/screenshots/m6/`.
+
+### M7 · Device physics — done
+
+Shipped
+- **Device model** (`chapters/cmos/device.ts`): the slide 14 switch rule (nMOS ON at g = 1, pMOS at g = 0), switch-level networks (series/parallel), and the INV/NAND/NOR gates of slides 15–23 as data.
+- **Logic view on the cell.** Toggle A and the conducting path lights on the 3D model:
+  - A = 1: GND rail, nMOS source/drain, contacts and Y glow green, and the poly (input A) glows amber;
+  - A = 0: VDD rail, pMOS source/drain and Y glow.
+
+  The schematic and truth table in the bench update together.
+- **Logic bench** with five tabs:
+  - Inverter (slides 15–17);
+  - Switches (slide 14);
+  - NAND (four-state walk-through, citing slides 19–22 per row);
+  - NOR (slide 23);
+  - p-n junction (slides 6–9): bias and Na/Nd sliders drive depletion width (NaWp = NdWn), fixed ions, a triangular field, and band bending with split Fermi levels.
+
+  Each tab cites its slide.
+- **Transistor layer (M6):** the gate-voltage slider inverts the channel, with electrons or holes flowing (slides 12–13).
+- **Lattice layer (M6):** P and B dopants (slide 5).
+
+Verification
+- `device.test.ts`: every truth-table row of slides 15–23. NAND and NOR are checked exhaustively; no input combination floats or fights.
+- Junction: NaWp = NdWn holds; forward bias narrows W and lowers the barrier, reverse bias does the opposite.
+- 61 tests pass.
+- Screenshots reviewed (A = 0/1, NAND A=1 B=0 against slide 21, junction forward bias against slide 9b). Fixed after review: schematic labels collided with open switches, and Y was clipped.
+
+Cut: NAND/NOR are schematic-only (no 3D layout), as logged in DECISIONS.md.

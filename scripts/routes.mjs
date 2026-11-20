@@ -38,3 +38,7 @@ routes.push({ name: 'M6-nmos-on', path: '/cmos/inverter/nmos?vg=1.00', wait: 350
 routes.push({ name: 'M6-pmos-on', path: '/cmos/inverter/pmos', wait: 3500 })
 routes.push({ name: 'M6-lattice-P', path: '/cmos/inverter/nmos/gate-oxide/lattice', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'P · group V' }).click(); await p.waitForTimeout(2500) } })
 routes.push({ name: 'M6-lattice-poly', path: '/cmos/inverter/nmos/gate-oxide/lattice', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'poly', exact: true }).click(); await p.waitForTimeout(2500) } })
+routes.push({ name: 'M7-logic-a0', path: '/cmos/inverter?view=logic', wait: 3500 })
+routes.push({ name: 'M7-logic-a1', path: '/cmos/inverter?view=logic&a=1', wait: 3500 })
+routes.push({ name: 'M7-nand-10', path: '/cmos/inverter?view=logic&a=1', wait: 2500, action: async (p) => { await p.getByRole('tab', { name: 'NAND' }).click(); await p.waitForTimeout(500) } })
+routes.push({ name: 'M7-junction-fwd', path: '/cmos/inverter?view=logic', wait: 2500, action: async (p) => { await p.getByRole('tab', { name: 'p-n junction' }).click(); await p.locator('input[type=range]').first().fill('0.4'); await p.waitForTimeout(500) } })
