@@ -1,0 +1,86 @@
+/*
+ * Nanoscale Atlas design tokens.
+ * Dark, neutral instrument panel; colour comes from the materials and from
+ * the field itself: yellow-light lithography amber, SEM greyscale, the slide
+ * 25 legend, thin-film oxide interference.
+ */
+:root {
+  color-scheme: dark;
+
+  /* surfaces: warm-neutral blacks, like anodised instrument fascia */
+  --bg-0: #0b0c0d;
+  --bg-1: #111314;
+  --bg-2: #171a1b;
+  --bg-3: #1f2324;
+  --line: #2b3032;
+  --line-strong: #3a4043;
+
+  /* text */
+  --ink-0: #eceeec;
+  --ink-1: #b9bfbd;
+  --ink-2: #858c8a;
+  --ink-3: #5b6260;
+
+  /* the yellow-light bay: the one UI accent */
+  --amber: #f0b43c;
+  --amber-dim: #8a6a2a;
+  --amber-glow: rgba(240, 180, 60, 0.16);
+
+  /* signal colours for logic states (not decoration) */
+  --hi: #f0b43c;      /* logic 1 / VDD: same amber */
+  --lo: #7f8b92;      /* logic 0 / GND: SEM grey */
+  --on: #9fd3a2;      /* conducting path */
+  --warn: #e4785a;
+
+  /* slide 25 legend, used for every cut face and 2D section */
+  --leg-sio2: #ececec;
+  --leg-nplus: #b4b4b4;
+  --leg-pplus: #6a6a6a;
+  --leg-poly: #d9d9d9;
+  --leg-metal: #dfe2ff;
+  --leg-metal-edge: #2b36d9;
+  --leg-nwell: #e3e3e3;
+  --leg-psub: #fafafa;
+
+  /* physical material swatches (3D) */
+  --mat-si: #5a6672;
+  --mat-poly: #8d6f55;
+  --mat-al: #c9ced2;
+  --mat-resist: #d7932b;
+
+  /* type */
+  --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --t-11: 11px;
+  --t-12: 12px;
+  --t-13: 13px;
+  --t-15: 15px;
+  --t-18: 18px;
+  --t-24: 24px;
+  --t-34: 34px;
+  --t-56: 56px;
+
+  /* space (4px base) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 72px;
+
+  --radius: 3px;
+  --hair: 1px solid var(--line);
+
+  /* motion: springs are in JS; these are for CSS-only state changes */
+  --ease-out: cubic-bezier(0.2, 0.9, 0.25, 1.05);
+  --ease-settle: cubic-bezier(0.3, 1.35, 0.4, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease-out: linear;
+    --ease-settle: linear;
+  }
+}

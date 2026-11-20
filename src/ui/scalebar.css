@@ -1,0 +1,94 @@
+.scalebar {
+  position: fixed;
+  left: var(--s-5);
+  bottom: var(--s-5);
+  width: 260px;
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  color: var(--ink-1);
+  pointer-events: none;
+  z-index: 5;
+}
+.scalebar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  height: 18px;
+}
+.scalebar-bar {
+  position: relative;
+  height: 6px;
+  border: 1px solid var(--ink-0);
+  border-top: 0;
+  min-width: 20px;
+}
+.scalebar-bar i {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  width: 50%;
+  left: 0;
+  border-right: 1px solid var(--ink-1);
+}
+.scalebar-bar i + i {
+  left: 50%;
+  border: 0;
+  background: var(--ink-0);
+  height: 2px;
+}
+.scalebar-label {
+  color: var(--ink-0);
+  font-size: var(--t-13);
+  font-variant-numeric: tabular-nums;
+}
+.scalebar-ladder {
+  position: relative;
+  margin-top: var(--s-3);
+  height: 22px;
+  border-top: 1px solid var(--line-strong);
+}
+.scalebar-ladder span {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  color: var(--ink-3);
+  font-size: 10px;
+}
+.scalebar-ladder span::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -5px;
+  height: 4px;
+  border-left: 1px solid var(--line-strong);
+}
+.scalebar-needle {
+  position: absolute;
+  top: -6px;
+  width: 1px;
+  height: 11px;
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber);
+}
+.scalebar-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-3);
+  color: var(--ink-2);
+  font-size: 10px;
+}
+.scalebar-note {
+  color: var(--ink-3);
+  text-align: right;
+}
+@media (max-width: 720px) {
+  .scalebar {
+    left: var(--s-4);
+    bottom: auto;
+    top: 62px;
+    width: 200px;
+  }
+  .scalebar-meta {
+    display: none;
+  }
+}

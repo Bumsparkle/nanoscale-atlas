@@ -1,0 +1,128 @@
+.style-page {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: var(--bg-0);
+  padding: var(--s-8) max(var(--s-5), calc(50vw - 520px));
+  z-index: 50;
+}
+.style-page header {
+  margin-bottom: var(--s-7);
+}
+.style-page h1 {
+  font-size: var(--t-56);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: var(--s-2) 0 var(--s-4);
+}
+.style-page .lede {
+  max-width: 60ch;
+  color: var(--ink-1);
+  font-size: var(--t-18);
+}
+.style-page section {
+  border-top: var(--hair);
+  padding: var(--s-5) 0 var(--s-6);
+}
+.style-page h2 {
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  font-weight: 400;
+  margin: 0 0 var(--s-4);
+}
+.style-page .note {
+  color: var(--ink-1);
+  max-width: 70ch;
+}
+.type-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding: var(--s-2) 0;
+}
+.type-row code {
+  color: var(--ink-3);
+  font-size: var(--t-11);
+}
+.sw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--s-4);
+}
+.sw-grid.wide {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+.sw {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--t-12);
+  color: var(--ink-2);
+}
+.sw code {
+  color: var(--ink-1);
+  font-size: var(--t-11);
+}
+.sw-chip {
+  height: 56px;
+  border: var(--hair);
+  border-radius: var(--radius);
+}
+.sw-chip.thinfilm {
+  /* sampled from the oxide shader's 0–600 nm response at normal incidence */
+  background: linear-gradient(
+    90deg,
+    #a8a39b 0%,
+    #b48a58 8%,
+    #7a4a8a 17%,
+    #3e5fb8 25%,
+    #6fa7c8 33%,
+    #c8c27a 45%,
+    #c0786d 55%,
+    #6e4f9f 62%,
+    #4c87b0 70%,
+    #7bb98a 80%,
+    #c6b45f 90%,
+    #b87068 100%
+  );
+}
+.legend-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.leg {
+  width: 120px;
+  height: 64px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: flex-end;
+  padding: 6px 8px;
+  font-size: var(--t-12);
+  color: #111;
+}
+.leg.hatched {
+  border-color: var(--leg-metal-edge);
+  background-image: repeating-linear-gradient(-45deg, transparent 0 4px, rgba(43, 54, 217, 0.5) 4px 5px) !important;
+  background-color: var(--leg-metal) !important;
+}
+.marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .style-page h1 {
+    font-size: var(--t-34);
+  }
+  .type-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
