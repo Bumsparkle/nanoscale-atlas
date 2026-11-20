@@ -86,3 +86,7 @@
     display: none;
   }
 }
+.callout-right {
+  border-left: 1px solid var(--amber);
+  color: var(--ink-1);
+}

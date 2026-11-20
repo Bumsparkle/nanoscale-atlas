@@ -45,6 +45,7 @@ function layout(labels: ScreenLabel[], W: number): Placed[] {
     }
   }
   for (const l of vis.filter((l) => l.group === 'side')) out.push({ l, x: l.x - widthOf(l) - 14, y: l.y - 10, w: widthOf(l) })
+  for (const l of vis.filter((l) => l.group === 'right')) out.push({ l, x: Math.min(l.x + 14, W - widthOf(l) - 12), y: l.y - 10, w: widthOf(l) })
   return out
 }
 
@@ -80,6 +81,7 @@ export function LabelOverlay() {
         const ay = p.l.y
         let pts: string
         if (p.l.group === 'side') pts = `${p.x + p.w + 2},${p.y + 10} ${ax},${ay}`
+        else if (p.l.group === 'right') pts = `${p.x - 2},${p.y + 10} ${ax},${ay}`
         else {
           const lx = Math.min(Math.max(ax, p.x + 6), p.x + p.w - 6)
           const ly = p.l.group === 'top' ? p.y + 22 : p.y - 2

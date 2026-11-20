@@ -34,27 +34,27 @@ export const LAYERS: LayerDef[] = [
   },
   {
     id: 'die', path: ['die'], crumb: 'die', title: 'Die',
-    metresPerUnit: 1e-5, minDist: 6, maxDist: 900, restDist: 520, restPolar: 0.7, restAzimuth: 0.25,
+    metresPerUnit: 1e-5, minDist: 6, maxDist: 1100, restDist: 760, restPolar: 0.78, restAzimuth: 0.25,
     near: 0.05, far: 5000, scaleNote: '4 mm die, illustrative',
   },
   {
     id: 'cell', path: ['inverter'], crumb: 'inverter cell', title: 'CMOS inverter cell',
-    metresPerUnit: 0.3e-6, minDist: 8, maxDist: 190, restDist: 112, restPolar: 0.9, restAzimuth: -0.5,
+    metresPerUnit: 0.3e-6, minDist: 24, maxDist: 190, restDist: 112, restPolar: 0.9, restAzimuth: -0.5,
     near: 0.1, far: 1000, scaleNote: 'λ = 0.3 µm (slide 46)',
   },
   {
     id: 'transistor', path: ['inverter', 'nmos'], crumb: 'nMOS', title: 'nMOS transistor',
-    metresPerUnit: 0.3e-6, minDist: 3, maxDist: 60, restDist: 26, restPolar: 1.05, restAzimuth: -0.55,
+    metresPerUnit: 0.3e-6, minDist: 6, maxDist: 70, restDist: 30, restPolar: 1.22, restAzimuth: -0.32,
     near: 0.05, far: 500, scaleNote: 'L = 2λ = 0.6 µm (slides 46, 48)',
   },
   {
     id: 'oxide', path: ['inverter', 'nmos', 'gate-oxide'], crumb: 'gate oxide', title: 'Gate oxide',
-    metresPerUnit: 1e-10, minDist: 8, maxDist: 160, restDist: 62, restPolar: 1.32, restAzimuth: -0.3,
+    metresPerUnit: 1e-10, minDist: 14, maxDist: 220, restDist: 118, restPolar: 1.3, restAzimuth: -0.35,
     near: 0.1, far: 1000, scaleNote: '< 20 Å, 6–7 atomic layers (slide 37)',
   },
   {
     id: 'lattice', path: ['inverter', 'nmos', 'gate-oxide', 'lattice'], crumb: 'Si lattice', title: 'Silicon lattice',
-    metresPerUnit: 1e-10, minDist: 6, maxDist: 60, restDist: 22, restPolar: 1.1, restAzimuth: 0.6,
+    metresPerUnit: 1e-10, minDist: 10, maxDist: 90, restDist: 44, restPolar: 1.1, restAzimuth: 0.6,
     near: 0.05, far: 500, scaleNote: 'a = 5.43 Å · beyond the lecture',
   },
 ]

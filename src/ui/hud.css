@@ -160,3 +160,20 @@
     left: var(--s-4);
   }
 }
+
+/* keep instrument text legible over busy scenes (atoms) */
+.topbar::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -24px 0;
+  background: linear-gradient(rgba(11, 12, 13, 0.82), rgba(11, 12, 13, 0));
+  pointer-events: none;
+  z-index: -1;
+}
+.scalebar::before {
+  content: '';
+  position: absolute;
+  inset: -16px -24px -24px -24px;
+  background: radial-gradient(ellipse at 20% 70%, rgba(11, 12, 13, 0.85), rgba(11, 12, 13, 0) 70%);
+  z-index: -1;
+}

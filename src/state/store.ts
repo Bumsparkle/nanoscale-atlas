@@ -29,6 +29,7 @@ export interface AtlasState {
   inputs: { a: 0 | 1; b: 0 | 1 }
   /** gate voltage for the transistor layer, as a fraction of VDD */
   vg: number
+  lattice: { structure: 'crystal' | 'poly' | 'amorphous'; dopant: 'none' | 'P' | 'B' }
   sound: boolean
   reducedMotion: boolean
   explode: number
@@ -58,6 +59,7 @@ export const useAtlas = create<AtlasState>((set) => ({
   playing: false,
   inputs: { a: 0, b: 0 },
   vg: 0,
+  lattice: { structure: 'crystal', dopant: 'none' },
   sound: false,
   reducedMotion: !!prefersReduced,
   explode: 0,

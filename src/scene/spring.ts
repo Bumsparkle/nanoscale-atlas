@@ -86,3 +86,40 @@ export const smoothstep = (a: number, b: number, v: number) => {
   const t = clamp((v - a) / (b - a), 0, 1)
   return t * t * (3 - 2 * t)
 }
+
+/**
+ * A spring integrated in log space: equal times cover equal ratios, so a
+ * camera dolly from 7000 to 100 units reads as a steady zoom on the log
+ * scale bar instead of a lurch. Same API as Spring (linear units).
+ */
+export class LogSpring {
+  private s: Spring
+  constructor(v: number, cfg: SpringConfig) {
+    this.s = new Spring(Math.log(v), cfg)
+  }
+  get value() {
+    return Math.exp(this.s.value)
+  }
+  get target() {
+    return Math.exp(this.s.target)
+  }
+  set target(v: number) {
+    this.s.target = Math.log(Math.max(v, 1e-9))
+  }
+  get cfg() {
+    return this.s.cfg
+  }
+  set cfg(c: SpringConfig) {
+    this.s.cfg = c
+  }
+  step(dt: number, reduced = false) {
+    this.s.step(dt, reduced)
+    return this.value
+  }
+  snap(v: number) {
+    this.s.snap(Math.log(Math.max(v, 1e-9)))
+  }
+  get settled() {
+    return this.s.settled
+  }
+}

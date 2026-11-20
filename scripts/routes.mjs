@@ -34,3 +34,7 @@ routes.push({
   },
 })
 routes.push({ name: 'M5-fab-07', path: '/cmos/inverter?view=fab&step=7', wait: 3500 })
+routes.push({ name: 'M6-nmos-on', path: '/cmos/inverter/nmos?vg=1.00', wait: 3500 })
+routes.push({ name: 'M6-pmos-on', path: '/cmos/inverter/pmos', wait: 3500 })
+routes.push({ name: 'M6-lattice-P', path: '/cmos/inverter/nmos/gate-oxide/lattice', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'P · group V' }).click(); await p.waitForTimeout(2500) } })
+routes.push({ name: 'M6-lattice-poly', path: '/cmos/inverter/nmos/gate-oxide/lattice', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'poly', exact: true }).click(); await p.waitForTimeout(2500) } })

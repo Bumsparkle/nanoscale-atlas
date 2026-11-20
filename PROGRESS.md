@@ -137,3 +137,40 @@ Verification
 - `scripts/fabsheet.mjs` screenshots all 45 steps into a contact sheet (`docs/screenshots/m5/fab-sheet.png`), which was reviewed against slides 29–45. The sequence matches.
 - Fixed after review: the wet-bench sheen read as a checkerboard, and the dark-field exposures blew out to glare.
 - The sheet first came out black: `fabsheet.mjs` and `tour.mjs` launched Chromium without the GPU flags `shots.mjs` uses. Fixed.
+
+### M6 · Zoom layers — done
+
+Shipped (each layer is its own scene in its own unit, lazy-loaded)
+- **Wafer** (1 unit = 1 mm):
+  - 300 mm polished wafer with a die grid and diffraction sheen, on a vacuum chuck under yellow-bay amber light;
+  - orientation notch; the inverter's die is marked.
+- **Die** (1 unit = 10 µm):
+  - illustrative 4 mm floorplan with pad ring and blocks;
+  - near the target, standard-cell rows drawn from the inverter's own six masks;
+  - a pulsing beacon and callout locate the inverter.
+- **Cell** (λ): from M3–M5.
+- **Transistor** (λ):
+  - the generated cell cropped to the nMOS or pMOS and cut along the slide 27 line;
+  - a gate-voltage slider inverts the channel and carriers stream source → drain (electrons for nMOS, holes for pMOS);
+  - depletion region under the gate; S/D/G/B terminal callouts (slide 11).
+- **Gate oxide** (Å): single-crystal Si, < 20 Å amorphous SiO₂ (continuous random network, 6–7 layers), polysilicon grains in three orientations; thickness gauge.
+- **Lattice** (Å):
+  - diamond cubic (a = 5.43 Å) with one atom's four bonds highlighted (slide 4);
+  - morphs between single crystal, poly (a grain boundary breaks bonds) and amorphous (dangling bonds) (slide 3);
+  - P donor with a wandering free electron, or B acceptor with a wandering hole (slide 5).
+- **Transitions:**
+  - The dive aims for a view slightly wider than the next layer's rest pose.
+  - The next layer enters at exactly the metres-per-pixel it left at; the far plane follows the camera.
+  - The camera distance spring is integrated in log space, so zoom is perceptually uniform.
+  - A 170 ms luminance dip masks the swap. Esc or zooming out goes up; breadcrumbs jump anywhere.
+- 12 more content files (one per object). An integrity test checks hand-built layer nodes ↔ content both ways.
+
+Verification
+- `node scripts/tour.mjs <url> zoom` wheels from wafer to lattice and Escapes back to the wafer, sampling the scale.
+- Scale continuity:
+  - Before the fix, layer handoffs jumped by up to 1.14 decades (transistor → oxide).
+  - After it, no handoff shows a jump. The only fast changes are deliberate inward dollies during a dive, all monotone, under the veil.
+- Deep links (`/cmos/inverter/nmos?vg=1.00`, `/cmos/inverter/pmos`, `…/gate-oxide/lattice`) restore each view on a fresh load (screenshots).
+- Fixed after review: an instanced-bond buffer overflow (WebGPU validation error), a die texture over the GPU size limit, a washed-out die, the transistor cut face dominated by metal, carriers hidden behind the cut face, oxide labels off-screen.
+
+Screenshots: `docs/screenshots/m6/`.

@@ -1,6 +1,6 @@
 import * as THREE from 'three/webgpu'
 import { LAYER_BY_ID, type LayerDef } from '../chapters/cmos/layers'
-import { clamp, Spring, Spring3, SPRINGS } from './spring'
+import { clamp, LogSpring, Spring, Spring3, SPRINGS } from './spring'
 
 /**
  * Spring orbit camera. App state sets goals (layer rest pose, focused
@@ -19,7 +19,7 @@ class CameraRig {
   target = new Spring3([0, 0, 0], SPRINGS.camera)
   polar = new Spring(1, SPRINGS.camera)
   azimuth = new Spring(0, SPRINGS.camera)
-  dist = new Spring(50, SPRINGS.camera)
+  dist = new LogSpring(50, SPRINGS.camera)
   layer: LayerDef = LAYER_BY_ID.cell
   handlers: DiveHandlers = {}
   reduced = false
@@ -112,8 +112,8 @@ class CameraRig {
     const d = this.dist.step(dt, this.reduced)
     cam.position.set(tx + d * Math.sin(p) * Math.sin(a), ty + d * Math.cos(p), tz + d * Math.sin(p) * Math.cos(a))
     cam.lookAt(tx, ty, tz)
-    cam.near = this.layer.near
-    cam.far = this.layer.far
+    cam.near = Math.max(this.layer.near, d * 0.002)
+    cam.far = Math.max(this.layer.far, d * 6)
     cam.updateProjectionMatrix()
   }
 

@@ -1,0 +1,86 @@
+.lc {
+  position: fixed;
+  right: var(--s-4);
+  bottom: var(--s-5);
+  width: min(330px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  background: rgba(14, 16, 17, 0.92);
+  border: var(--hair);
+  z-index: 11;
+}
+.lc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.seg {
+  display: flex;
+  padding: 2px;
+  border: var(--hair);
+  border-radius: 4px;
+  align-self: flex-start;
+}
+.seg button {
+  padding: 4px 10px;
+  font-size: var(--t-12);
+  color: var(--ink-1);
+  border-radius: 2px;
+}
+.seg button[aria-pressed='true'] {
+  background: var(--amber);
+  color: var(--bg-0);
+}
+.lc-state {
+  font-family: var(--mono);
+  font-size: var(--t-13);
+  padding: 2px 8px;
+  border: 1px solid var(--line-strong);
+}
+.lc-state.on {
+  color: var(--on);
+  border-color: var(--on);
+}
+.lc-state.off {
+  color: var(--lo);
+}
+.lc-slider {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px var(--s-3);
+  align-items: center;
+}
+.lc-slider .eyebrow {
+  grid-column: 1 / -1;
+}
+.lc-slider input {
+  accent-color: var(--amber);
+}
+.lc-slider .mono {
+  font-size: var(--t-13);
+  font-variant-numeric: tabular-nums;
+}
+.lc-quick {
+  display: flex;
+  gap: var(--s-2);
+}
+.lc-note {
+  margin: 0;
+  font-size: var(--t-13);
+  color: var(--ink-0);
+}
+.lc-fine {
+  margin: 0;
+  font-size: 10px;
+  color: var(--ink-2);
+}
+@media (max-width: 720px) {
+  .lc {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}

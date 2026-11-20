@@ -208,7 +208,7 @@ export default function CellLayer() {
     }
     const focusOn = (id: string) => {
       const b = model.boundsFor(id)
-      if (b) rig.focusBox(b, camera.fov, size.width / size.height, { padding: 1.6, minDist: 34 })
+      if (b) rig.focusBox(b, camera.fov, size.width / size.height, { padding: 1.6, minDist: 30 })
     }
     const unsub = useAtlas.subscribe((s, p) => {
       if (s.hover !== p.hover || s.focus !== p.focus) refreshSelection()

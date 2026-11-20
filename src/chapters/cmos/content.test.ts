@@ -3,6 +3,7 @@ import { mesh } from '../../sim/mesher'
 import { MESH_OPTS } from './display'
 import { CONTENT, resolveComponents } from './content'
 import { inverterProcess, STEPS } from './recipe'
+import { LAYER_NODES } from './nodes'
 
 /**
  * Build-time integrity: every clickable mesh has a content file, and every
@@ -45,6 +46,14 @@ describe('content ↔ mesh integrity', () => {
       expect(c.slides.length).toBeGreaterThan(0)
       if (c.fabStep) expect(stepIds.has(c.fabStep), `${c.id} → ${c.fabStep}`).toBe(true)
       for (const b of c.beyond) expect(b.source.length).toBeGreaterThan(3)
+    }
+  })
+
+  it('every hand-built layer node has content, and every content node exists', () => {
+    for (const [layer, nodes] of Object.entries(LAYER_NODES)) {
+      const withNode = CONTENT.filter((c) => c.layer === layer && c.node)
+      for (const n of nodes) expect(withNode.some((c) => c.node === n), `${layer}/${n} has no content`).toBe(true)
+      for (const c of withNode) expect((nodes as readonly string[]).includes(c.node!), `${c.id} → missing node ${c.node}`).toBe(true)
     }
   })
 

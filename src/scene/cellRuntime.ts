@@ -47,7 +47,7 @@ export interface ScreenLabel {
   sub?: string
   x: number
   y: number
-  group: 'top' | 'bottom' | 'side'
+  group: 'top' | 'bottom' | 'side' | 'right'
   visible: boolean
 }
 export const overlay = {

@@ -72,8 +72,14 @@ export const transition = {
 
     if (!reduced) {
       if (opts.via) rig.target.setTarget(opts.via)
-      rig.dist.target = down ? from.minDist * 0.3 : from.maxDist * 2.4
-      await wait(380)
+      // aim for the scale at which the next layer looks slightly wider (down)
+      // or narrower (up) than its rest pose, so it keeps moving the same way
+      const tan = Math.tan((fovDeg * Math.PI) / 360)
+      const restMpp = ((2 * next.restDist * tan) / heightPx) * next.metresPerUnit * (down ? 1.6 : 1 / 1.6)
+      const aim = (restMpp * heightPx) / from.metresPerUnit / (2 * tan)
+      rig.dist.cfg = { omega: 11, zeta: 1 }
+      rig.dist.target = down ? Math.min(aim, rig.dist.value * 0.7) : Math.max(aim, rig.dist.value * 1.4)
+      await wait(420)
       await tweenVeil(1, 170)
     } else {
       await tweenVeil(1, 120)
@@ -82,8 +88,9 @@ export const transition = {
     const visible = 2 * rig.dist.value * Math.tan((fovDeg * Math.PI) / 360)
     const mpp = (visible / heightPx) * from.metresPerUnit
     let dist = (mpp * heightPx) / next.metresPerUnit / (2 * Math.tan((fovDeg * Math.PI) / 360))
-    // keep the entry inside a sane range for the new scene
-    dist = Math.min(Math.max(dist, next.minDist * 0.4), next.maxDist * 3)
+    // enter at exactly the scale we left (the far plane follows the camera),
+    // so the scale bar never jumps; the camera then springs to the rest pose
+    dist = Math.min(Math.max(dist, next.minDist * 0.05), next.maxDist * 200)
     pending = { layer: to, entry: { dist: reduced ? next.restDist : dist } }
 
     useAtlas.getState().set({
@@ -95,6 +102,7 @@ export const transition = {
       playing: false,
     })
     await wait(60)
+    rig.dist.cfg = { omega: 7.5, zeta: 0.92 }
     rig.locked = false
     await tweenVeil(0, reduced ? 120 : 260)
     busy = false
