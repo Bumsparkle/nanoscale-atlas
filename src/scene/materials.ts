@@ -14,7 +14,7 @@ import {
 
 export const LEGEND: Record<string, string> = {
   'si:p': '#f2f2f2',
-  'si:nwell': '#d9d9d9',
+  'si:nwell': '#c6c6c6',
   'si:n+': '#acacac',
   'si:p+': '#646464',
   poly: '#cfcfcf',
@@ -39,6 +39,10 @@ export const matUniforms = {
   time: uniform(0),
   /** 0..1: fade metal and field oxide so buried objects show */
   xray: uniform(0),
+  /** 0..1: field oxide only (masks view) */
+  foxFade: uniform(0),
+  /** 0..1: the parted near half of a section turns into a ghost */
+  nearFade: uniform(0),
 }
 
 const cap = () => attribute('cap', 'float')
@@ -95,7 +99,7 @@ function oxide(key: string) {
   const phys = mix(vec3(0.03, 0.035, 0.04), sheen, 0.55)
   withCap(m, key, phys as never, true)
   const base = float(key === 'gox' ? 0.75 : 0.16).add(fres.mul(0.45))
-  const faded = key === 'fox' ? base.mul(float(1).sub(matUniforms.xray.mul(0.75))) : base
+  const faded = key === 'fox' ? base.mul(float(1).sub(max(matUniforms.xray, matUniforms.foxFade).mul(0.8))) : base
   m.opacityNode = mix(faded, float(1), cap())
   m.roughnessNode = mix(float(0.08), float(1), cap())
   m.side = THREE.FrontSide
@@ -143,7 +147,27 @@ function resist(key: string) {
 
 const cache = new Map<string, THREE.Material>()
 
-export function materialFor(key: string): THREE.Material {
+/** the near half of a parted section: same look, fading to a ghost */
+function ghostOf(base: THREE.Material): THREE.Material {
+  const m = base.clone() as THREE.MeshStandardNodeMaterial
+  const b = base as THREE.MeshStandardNodeMaterial
+  for (const k of ['colorNode', 'emissiveNode', 'roughnessNode', 'metalnessNode'] as const) (m as N)[k] = (b as N)[k]
+  const op: N = (b as N).opacityNode ?? float(1)
+  m.opacityNode = op.mul(float(1).sub(matUniforms.nearFade.mul(0.93)))
+  m.transparent = true
+  m.depthWrite = false
+  return m
+}
+
+export function materialFor(key: string, near = false): THREE.Material {
+  if (near) {
+    let g = cache.get('near:' + key)
+    if (!g) {
+      g = ghostOf(materialFor(key))
+      cache.set('near:' + key, g)
+    }
+    return g
+  }
   let m = cache.get(key)
   if (m) return m
   if (key.startsWith('si:')) m = silicon(key)

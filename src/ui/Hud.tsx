@@ -6,6 +6,8 @@ import { ScaleBar } from './ScaleBar'
 import { Panel } from './Panel'
 import { HoverLabel, SceneOutline } from './Inspect'
 import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
+import { ViewBar } from './ViewBar'
+import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
 
 export function Breadcrumbs() {
@@ -85,6 +87,9 @@ export function Hud() {
       <SceneOutline />
       <ScaleBar />
       <ExaggerationNote />
+      <LabelOverlay />
+      <SectionLegend />
+      <ViewBar />
       <HoverLabel />
       <Panel />
     </>

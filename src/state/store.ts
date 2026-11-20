@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import type { Device, LayerId } from '../chapters/cmos/layers'
 
 export type Page = 'home' | 'atlas' | 'style' | 'debug'
-export type View = 'explore' | 'section' | 'fab' | 'logic'
+export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic'
 export type CutTarget = 'slide27' | 'ngate' | 'pgate'
 export type CutAxis = 'x' | 'y'
 

@@ -1,0 +1,88 @@
+.label-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+}
+.label-overlay svg {
+  position: absolute;
+  inset: 0;
+}
+.label-overlay polyline {
+  stroke: rgba(236, 238, 236, 0.55);
+  stroke-width: 1;
+}
+.label-overlay circle {
+  fill: var(--ink-0);
+}
+.label-overlay g {
+  transition: opacity 0.25s;
+}
+.callout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 6px 3px;
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--ink-0);
+  background: rgba(11, 12, 13, 0.82);
+  border-left: 1px solid var(--ink-2);
+  transition: opacity 0.25s;
+}
+.callout-sub {
+  color: var(--amber);
+  font-size: 10px;
+}
+.callout-side {
+  text-align: right;
+  border-left: 0;
+  border-right: 1px solid var(--amber);
+  color: var(--ink-1);
+}
+
+.legend {
+  position: fixed;
+  right: var(--s-5);
+  bottom: 84px;
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  background: rgba(14, 16, 17, 0.9);
+  border: var(--hair);
+  z-index: 9;
+}
+.legend ul {
+  list-style: none;
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: var(--t-12);
+  color: var(--ink-1);
+}
+.legend li {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+}
+.legend i {
+  width: 22px;
+  height: 11px;
+  border: 1px solid #444;
+}
+.legend i.hatched {
+  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, rgba(60, 60, 60, 0.6) 3px 4px) !important;
+}
+.legend i.hatched.metal {
+  border-color: var(--leg-metal-edge);
+  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, rgba(43, 54, 217, 0.65) 3px 4px) !important;
+}
+@media (max-width: 720px) {
+  .legend {
+    display: none;
+  }
+}

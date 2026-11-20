@@ -91,3 +91,25 @@ Verification
 
 Open issue: in headless Chromium, Playwright's video capture breaks WebGPU canvas compositing (black canvas, smeared DOM). Plain screenshots under WebGPU are fine. Recordings therefore use the WebGL 2 path (`GL=1`).
 Screenshots: `docs/screenshots/m3/`.
+
+### M4 · The locking section plane — done
+
+Shipped
+- **Section view.** Drag across the cell and the plane sweeps in the direction you drag (x or y), following the pointer on a damped spring. The cut faces are rendered continuously, because box clipping produces exact caps every frame.
+- **Magnetic snap** to three targets: the slide 27 line, the nMOS gate axis and the pMOS gate axis.
+  - Capture radius 1.6λ, release 3.0λ (hysteresis). Snap spring ω = 26, ζ = 0.48 gives one visible overshoot.
+  - A synthesised detent click plays on capture.
+  - The near half slides 10λ along the normal and fades to a ghost. The camera turns to face the far half's cut face.
+- **Locked labels.**
+  - Engineering-drawing callouts in collision-free rows, with leader lines.
+  - Each region is named with the slide 25 legend plus its role: source, drain, GND, Y, VDD, A, substrate tap, well tap.
+  - The slide 25 legend panel. Cut faces use the legend greys, with oxide and metal hatched like the slides.
+- **Masks view.** Pulling up separates the cell into its six mask tiers (plus substrate), labelled with the slide 28 mask names. On release they spring back into registration one by one, top tier first, each with its own click. The field oxide clears while separated.
+- Chips and keys: `1`/`2`/`3` lock the targets, arrow keys nudge the plane by 1λ, `r` rotates it, `e`/`s`/`m`/`f`/`l` switch views. Deep links: `?view=section&cut=slide27|ngate|pgate`, or `cut=<λ>&axis=x|y`.
+
+Verification
+- Unit tests: capture of all three targets, no capture outside the radius or on the wrong axis, hysteresis, label content for the slide 27 and gate cuts. 52 tests in total.
+- Frame rate (`scripts/fps.mjs`, headless Chromium, WebGPU on this machine): 60 fps idle, 58.9 fps while sweeping the plane, with geometry rebuilt every frame. The machine is an Apple M-series Mac (see `sysctl` in the log); a real M1 Air was not available, so this is the closest measurement.
+- Screenshots of each lock, a free cut and the exploded masks were reviewed. Fixed after review: the near half occluded the cut face, the masks view framing, the substrate callout anchor, and n-well vs substrate contrast.
+
+Screenshots: `docs/screenshots/m4/`.

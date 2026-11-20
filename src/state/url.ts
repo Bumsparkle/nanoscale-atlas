@@ -13,7 +13,7 @@ type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' 
   cutAxis: 'x' | 'y'
 }
 
-const VIEWS: View[] = ['explore', 'section', 'fab', 'logic']
+const VIEWS: View[] = ['explore', 'section', 'masks', 'fab', 'logic']
 
 export function parseUrl(loc: { pathname: string; search: string }): Partial<UrlState> {
   const segs = loc.pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean)
