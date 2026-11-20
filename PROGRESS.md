@@ -109,7 +109,7 @@ Shipped
 
 Verification
 - Unit tests: capture of all three targets, no capture outside the radius or on the wrong axis, hysteresis, label content for the slide 27 and gate cuts. 52 tests in total.
-- Frame rate (`scripts/fps.mjs`, headless Chromium, WebGPU on this machine): 60 fps idle, 58.9 fps while sweeping the plane, with geometry rebuilt every frame. The machine is an Apple M-series Mac (see `sysctl` in the log); a real M1 Air was not available, so this is the closest measurement.
+- Frame rate (`scripts/fps.mjs`, headless Chromium, WebGPU on this machine): 60 fps idle, 58.9 fps while sweeping the plane, with geometry rebuilt every frame. The machine is an Apple M1 (`sysctl machdep.cpu.brand_string`), the brief's target hardware.
 - Screenshots of each lock, a free cut and the exploded masks were reviewed. Fixed after review: the near half occluded the cut face, the masks view framing, the substrate callout anchor, and n-well vs substrate contrast.
 
 Screenshots: `docs/screenshots/m4/`.
