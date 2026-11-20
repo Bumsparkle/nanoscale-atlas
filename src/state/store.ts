@@ -34,6 +34,8 @@ export interface AtlasState {
   reducedMotion: boolean
   explode: number
   renderer: { backend: 'webgpu' | 'webgl2' | 'pending' | 'failed'; detail?: string }
+  /** real loading milestones, used by the gowning sequence */
+  boot: { shell: boolean; gpu: boolean; frame: boolean; layers: number }
   set: (p: Partial<AtlasState>) => void
   setSection: (p: Partial<SectionState>) => void
 }
@@ -64,6 +66,7 @@ export const useAtlas = create<AtlasState>((set) => ({
   reducedMotion: !!prefersReduced,
   explode: 0,
   renderer: { backend: 'pending' },
+  boot: { shell: false, gpu: false, frame: false, layers: 0 },
   set: (p) => set(p),
   setSection: (p) => set((s) => ({ section: { ...s.section, ...p } })),
 }))

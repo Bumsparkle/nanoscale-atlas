@@ -104,3 +104,15 @@ html[data-view='fab'] .exaggeration {
     bottom: auto;
   }
 }
+
+@media (max-width: 720px) {
+  .scalebar {
+    top: 72px;
+    left: auto;
+    right: var(--s-4);
+    width: 150px;
+  }
+  .scalebar-ladder {
+    display: none;
+  }
+}

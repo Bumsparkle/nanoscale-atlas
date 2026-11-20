@@ -177,3 +177,39 @@
   background: radial-gradient(ellipse at 20% 70%, rgba(11, 12, 13, 0.85), rgba(11, 12, 13, 0) 70%);
   z-index: -1;
 }
+
+@media (max-width: 720px) {
+  .exaggeration {
+    top: 100px;
+    left: auto;
+    right: var(--s-4);
+  }
+  .outline-nav {
+    left: var(--s-4);
+    top: 76px;
+  }
+}
+
+.layer-hint {
+  position: fixed;
+  left: 50%;
+  bottom: var(--s-5);
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: var(--t-11);
+  color: var(--ink-2);
+  z-index: 6;
+  white-space: nowrap;
+  pointer-events: none;
+}
+html[data-layer='transistor'] .layer-hint,
+html[data-layer='lattice'] .layer-hint {
+  left: var(--s-5);
+  transform: none;
+  bottom: 128px;
+}
+@media (max-width: 720px) {
+  .layer-hint {
+    display: none;
+  }
+}

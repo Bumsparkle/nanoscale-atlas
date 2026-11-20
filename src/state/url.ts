@@ -22,7 +22,7 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
 
   if (segs[0] === 'style') return { page: 'style' }
   if (segs[0] === 'debug') return { page: 'debug' }
-  if (segs.length === 0) return { page: 'home' }
+  if (segs.length === 0) return { page: 'home', layer: 'wafer' }
   if (segs[0] !== 'cmos') return { page: 'home' }
 
   out.page = 'atlas'
@@ -54,7 +54,7 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
 }
 
 export function buildUrl(s: AtlasState): string {
-  if (s.page === 'home') return '/'
+  if (s.page === 'home') return '/' + (BOOT.forceWebGL ? '?gl=webgl' : '')
   if (s.page === 'style') return '/style'
   if (s.page === 'debug') return '/debug' + (BOOT.forceWebGL ? '?gl=webgl' : '')
   const layer = LAYERS.find((l) => l.id === s.layer)!

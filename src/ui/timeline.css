@@ -189,7 +189,7 @@
   .timeline {
     left: 0;
     right: 0;
-    bottom: 64px;
+    bottom: 96px;
     border-left: 0;
     border-right: 0;
   }
@@ -198,7 +198,7 @@
   }
   .stepcard {
     top: auto;
-    bottom: 140px;
+    bottom: 170px;
     left: 0;
     right: 0;
     width: 100%;

@@ -85,9 +85,9 @@ export const transition = {
       await tweenVeil(1, 120)
     }
 
-    const visible = 2 * rig.dist.value * Math.tan((fovDeg * Math.PI) / 360)
+    const visible = 2 * rig.dist.value * rig.aspectBoost * Math.tan((fovDeg * Math.PI) / 360)
     const mpp = (visible / heightPx) * from.metresPerUnit
-    let dist = (mpp * heightPx) / next.metresPerUnit / (2 * Math.tan((fovDeg * Math.PI) / 360))
+    let dist = (mpp * heightPx) / next.metresPerUnit / (2 * Math.tan((fovDeg * Math.PI) / 360)) / rig.aspectBoost
     // enter at exactly the scale we left (the far plane follows the camera),
     // so the scale bar never jumps; the camera then springs to the rest pose
     dist = Math.min(Math.max(dist, next.minDist * 0.05), next.maxDist * 200)

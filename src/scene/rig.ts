@@ -33,6 +33,11 @@ class CameraRig {
   /** freeze user input (during scripted transitions) */
   locked = false
   polarLimits: [number, number] = [0.08, 1.5]
+  /** portrait screens need more distance to fit the same width */
+  aspectBoost = 1
+  setAspect(aspect: number) {
+    this.aspectBoost = aspect < 1.2 ? Math.min(2.6, 1.25 / aspect) : 1
+  }
 
   setLayer(layer: LayerDef, entry?: { dist?: number; target?: [number, number, number] }) {
     this.layer = layer
@@ -109,7 +114,7 @@ class CameraRig {
     const [tx, ty, tz] = this.target.step(dt, this.reduced)
     const p = this.polar.step(dt, this.reduced)
     const a = this.azimuth.step(dt, this.reduced)
-    const d = this.dist.step(dt, this.reduced)
+    const d = this.dist.step(dt, this.reduced) * this.aspectBoost
     cam.position.set(tx + d * Math.sin(p) * Math.sin(a), ty + d * Math.cos(p), tz + d * Math.sin(p) * Math.cos(a))
     cam.lookAt(tx, ty, tz)
     cam.near = Math.max(this.layer.near, d * 0.002)
@@ -118,7 +123,7 @@ class CameraRig {
   }
 
   metresPerPixel(cam: THREE.PerspectiveCamera, heightPx: number) {
-    const visible = 2 * this.dist.value * Math.tan((cam.fov * Math.PI) / 360)
+    const visible = 2 * this.dist.value * this.aspectBoost * Math.tan((cam.fov * Math.PI) / 360)
     return (visible / heightPx) * this.layer.metresPerUnit
   }
 

@@ -202,3 +202,99 @@ Verification
 - Screenshots reviewed (A = 0/1, NAND A=1 B=0 against slide 21, junction forward bias against slide 9b). Fixed after review: schematic labels collided with open switches, and Y was clipped.
 
 Cut: NAND/NOR are schematic-only (no 3D layout), as logged in DECISIONS.md.
+
+### M8 · Polish and ship — done
+
+Shipped
+- **"Enter the cleanroom" home.** Brushed-steel bay doors with yellow-light windows and door plates, and one call to action.
+  - Gowning sequence (suit → gloves → air shower), each step gated by a real loading milestone: 3D shell chunk loaded → GPU renderer initialised → first frames drawn and all six layer chunks fetched.
+  - Skippable from the first frame (button or `Esc`); returning visitors (localStorage) go straight in.
+  - The doors part on a heavy spring onto the amber-lit wafer, which has been rendering behind them all along.
+- **Sound** (off by default): synthesised detent clicks on snaps and mask re-registration, a per-tool hum during fab playback, air on dives.
+- **Reduced motion:** `prefers-reduced-motion` respected, plus a manual "motion" toggle. Springs settle instantly, dives become a cut with a short dip, CSS motion is disabled.
+- **Keyboard:**
+  - every object is reachable via the "parts" outline (focus highlights it in 3D, Enter inspects);
+  - views, snaps, timeline and `Esc` all have keys;
+  - visible amber focus rings.
+- **Screen readers:** the outline doubles as a text description of each scene, and panels, the step card and the bench are `aria-live`.
+- **Mobile:**
+  - bottom-sheet panels and a compact header;
+  - a camera distance boost for portrait aspect, applied consistently so the scale bar stays correct;
+  - touch orbit and pinch zoom; the timeline and bench are stacked above the view bar.
+- **Performance:** the three.js shell loads on idle after the door paints. Adaptive DPR drops resolution, never content.
+- **Open Graph image** (`public/og.png`, the slide 27 section), meta tags, `robots.txt`, and a README with "How to add a chapter".
+- **Layer hints:** one line per layer saying what to do next.
+
+Measurements
+- Lighthouse, production build:
+  - mobile (simulated slow 4G, 4× CPU): Performance 84, Accessibility 100, Best Practices 100, SEO 100. FCP 2.3 s, LCP 2.5 s, TBT 430 ms, CLS 0. Before the deferred shell it was 57, with FCP 3.7 s.
+  - desktop: Performance 98, FCP 0.7 s, TTI 1.0 s.
+- Bundle: entry 75 KB gz; the 3D shell + three.js is 481 KB gz (lazy); each layer is 1–6 KB gz.
+- 60 fps idle and 59 fps while dragging the section on this Apple M1 (WebGPU).
+- Mobile frame rate was not measured on a real phone (see open issues).
+
+## Fact-check pass (every panel and step against the PDF)
+
+Walked all 30 content files and 45 recipe steps against the slides. Mismatches found and fixed:
+1. **`die-site`:** "dies are separated by scribe lines and sawn apart" was stated without a slide. Moved to beyond the lecture, with a source.
+2. **`wafer-notch`:** how it is made, and the alignment claim, were not on any slide. Rewritten so the panel only cites slides 3 and 27–28; the rest moved to beyond the lecture (SEMI M1).
+3. **`bond-pads`:** the overcoat opening and wire bonding were stated as fact. Moved to beyond the lecture.
+4. **`cell-rows`:** the reason for row mirroring was given as fact; it is now only in beyond the lecture.
+5. **`inverter-instance`:** the λ dimensions are ours, not the slides'. Now flagged, pointing to `masks.ts` and the rules test.
+6. **Gate oxide step:** slide 37 says "deposit"; the step's tool is an oxidation furnace. The step now quotes the slide and notes the difference as beyond the lecture.
+7. **`nwell`:** the isolation statement (reverse-biased well junction) is not on the slides. Moved to beyond the lecture (Weste & Harris) in M3.
+
+Flagged in DECISIONS.md and kept:
+- Slide 48 swaps the words length/width; the build uses W/L = 4λ/2λ.
+- The arsenic n-well (slide 35) is kept, with the note that phosphorus is more common.
+
+No numeric fact contradicts the slides: < 20 Å / 6–7 layers, 900–1200 °C, λ = 0.3 µm, f = 2λ, the rules, the truth tables, the VDD history, the dopant groups.
+
+## Final self-review against BRIEF.md
+
+| Brief section | Status | Notes |
+|---|---|---|
+| **Vision:** semantic zoom, click to inspect, locking section | ✅ | All three, on one persistent canvas. Six layers, scale-matched dives, log scale bar mm → µm → nm → Å. |
+| Layout + recipe as source of truth | ✅ | The cell, every fab snapshot, every cut and the die's cell rows all come from `masks.ts` + `recipe.ts`. |
+| **Tech:** three r187, WebGPURenderer + TSL, R3F v9, no v10 | ✅ | WebGL 2 fallback verified (`?gl=webgl`). TSL post (outline, litho grade, veil) via `RenderPipeline`. |
+| drei only for agnostic helpers | ✅ (none) | Not needed (DECISIONS.md). |
+| GSAP | ⚠️ installed, unused | Every motion is a spring by design; GSAP is pinned but not imported, so it adds nothing to the bundle. Remove or use for choreography later. |
+| zod content, Zustand, URL navigation | ✅ | |
+| Blender hero props (wafer, packaged die) | ❌ cut | The wafer and die are procedural (canvas textures + TSL). There is no packaged die. |
+| Vitest; Playwright screenshots | ✅ | 61 tests; scripted screenshot, tour and contact-sheet harnesses. Not wired as CI visual-regression *assertions* (screens are reviewed by eye). |
+| Escape hatch to vanilla three | ✅ by design | The scene core is imperative; React is the shell. |
+| **Experience: entry** (door, gowning timed to real progress, skippable, returning skip, doors part onto the wafer) | ✅ | |
+| Scale layers, shared-element dive, breadcrumbs, Esc / scroll-out | ✅ | The transistor → oxide dive crosses ~2 decades under a 170 ms dip. |
+| Locking section plane (damped drag, 3 snaps, overshoot, click, halves part, labels only when locked, legend, hatched oxide) | ✅ | The near half fades to a ghost so the cut stays readable (DECISIONS-worthy deviation, see M4). |
+| Pull up to explode six masks, spring back one by one with clicks | ✅ | Lives in its own "Masks" view so it doesn't fight the section drag. |
+| Click to inspect: hover outline, glide, panel (right / bottom sheet), four parts + slide | ✅ | |
+| Fab timeline: named ticks, play/pause, amber litho light, implant ion rain | ✅ | Plus reticle exposure, furnace, wet-bench and CVD/sputter effects. |
+| Look and feel: dark instrument panel, physical materials, thin-film oxide, grainy poly, Plex type, sound off by default | ✅ | |
+| **Chapter 1 table**, row by row | ✅ | Silicon structures morph · lattice + 4 bonds · dopants · p-n junction bias explorable · nMOS/pMOS gate slider · switch model · inverter lit on schematic + 3D · NAND/NOR (schematic only) · cross-section + taps · mask set · fab sequence · layout rules in code + tests. **Gap:** the λ-grid overlay with per-edge rule hover in the UI is not built; `checkRules()` already returns per-edge measurements ready for it. |
+| **Architecture:** column model, pure ops, memoised snapshots, greedy mesher, slicer, vertical exaggeration shown | ✅ | Isotropic etch flag cut (DECISIONS.md). Content files are TS modules, not MDX (DECISIONS.md). |
+| State and routing deep links | ✅ | Layer, device, view, cut, step, focus, inputs, VG. Free orbit never writes the URL. Lattice structure/dopant and bench tab are not in the URL. |
+| **Build plan:** 8 milestones, each committed, PROGRESS entries, screenshots | ✅ | No preview deploys (no credentials). |
+| **Quality bar:** 60 fps M1 | ✅ | Measured on an M1. |
+| 30 fps mid-range phone | ❓ | Not measured on a device; adaptive DPR is in place. |
+| < 3 s first view, < 1 MB gz before lazy chunks | ✅ | 75 KB gz entry; desktop FCP 0.7 s. |
+| Physically honest; exaggeration labelled | ✅ | "vertical ×1 · gate oxide ×50" always shown on the cell and transistor. |
+| Every panel cites a slide; beyond-lecture facts sourced | ✅ | Enforced by schema + test. |
+| Keyboard, focus, reduced motion, text outline | ✅ | |
+| Deep links | ✅ | |
+| **Anti-slop:** no purple-blue gradients, glassmorphism, decorative particles, stock env maps, gradient headline; spring motion; demonstrator copy | ✅ | Particles exist only where they are physics (ions, carriers, deposition). The environment is built in code. One CSS ease remains on hover nudges. |
+| **How to verify:** unit tests, screenshots reviewed, fact-check, fresh-eyes review | ⚠️ | Done except the independent fresh-eyes review, which needs someone who didn't build it. |
+
+## Open issues
+- **Recording:** Playwright video capture breaks headless WebGPU compositing, so recordings use the WebGL 2 path. Plain screenshots under WebGPU are fine.
+- **Poly grains** read as "camouflage" at some distances; worth tuning against a real SEM reference.
+- **NAND/NOR highlighting:** the 3D cell lights only the inverter path. The NAND/NOR tabs say so but still share the view.
+- **Lighthouse:** the `valid-source-maps` and `bf-cache` audits fail on mobile (not scored categories).
+
+## What I'd do next
+1. A λ-grid layout view with hover-to-see-rule on every edge (data already in `checkRules()`).
+2. An independent fresh-eyes review against BRIEF.md, and on-device phone fps checks.
+3. A preview deploy (Vercel/Netlify, SPA fallback to `index.html`) once credentials exist.
+4. Playwright visual-regression assertions with tolerances, in CI.
+5. A Blender hero wafer and a packaged die with KTX2 textures, replacing the procedural wafer.
+6. NAND/NOR as real mask sets so they get 3D cells and their own fab replay: the chapter-2 path, exercising "new masks, new recipe".
+7. Put lattice structure/dopant and the bench tab in the URL.

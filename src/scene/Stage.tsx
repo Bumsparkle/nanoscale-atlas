@@ -30,11 +30,13 @@ function RigDriver() {
   }, [reduced])
 
   useFrame((_, dt) => {
+    if (!useAtlas.getState().boot.frame && frames.current.n > 8) useAtlas.setState((s) => ({ boot: { ...s.boot, frame: true } }))
     // keep the focused object centred in the space left of the inspect panel
     const st = useAtlas.getState()
     const panelOpen = !!st.focus && size.width > 720
     film.current.target = panelOpen ? (35 * 210) / size.width : 0
     camera.filmOffset = film.current.step(dt, st.reducedMotion)
+    rig.setAspect(size.width / size.height)
     rig.update(dt, camera)
     transition.setViewport(size.height, camera.fov)
     live.metresPerPixel = rig.metresPerPixel(camera, size.height)
@@ -154,6 +156,7 @@ export function Stage() {
         }
         const isGPU = (renderer.backend as { isWebGPUBackend?: boolean }).isWebGPUBackend === true
         setRenderer(isGPU ? 'webgpu' : 'webgl2', isGPU ? 'WebGPU backend' : 'WebGL 2 fallback backend')
+        useAtlas.setState((s) => ({ boot: { ...s.boot, gpu: true } }))
         renderer.toneMapping = THREE.AgXToneMapping
         renderer.toneMappingExposure = 1.0
         renderer.shadowMap.enabled = false

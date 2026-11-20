@@ -42,3 +42,6 @@ routes.push({ name: 'M7-logic-a0', path: '/cmos/inverter?view=logic', wait: 3500
 routes.push({ name: 'M7-logic-a1', path: '/cmos/inverter?view=logic&a=1', wait: 3500 })
 routes.push({ name: 'M7-nand-10', path: '/cmos/inverter?view=logic&a=1', wait: 2500, action: async (p) => { await p.getByRole('tab', { name: 'NAND' }).click(); await p.waitForTimeout(500) } })
 routes.push({ name: 'M7-junction-fwd', path: '/cmos/inverter?view=logic', wait: 2500, action: async (p) => { await p.getByRole('tab', { name: 'p-n junction' }).click(); await p.locator('input[type=range]').first().fill('0.4'); await p.waitForTimeout(500) } })
+routes.push({ name: 'M8-gowning', path: '/', wait: 1500, action: async (p) => { await p.evaluate(() => localStorage.clear()); await p.getByRole('button', { name: 'Enter the cleanroom' }).click(); await p.waitForTimeout(1500) } })
+routes.push({ name: 'M8-opening', path: '/', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'Enter the cleanroom' }).click(); await p.waitForTimeout(400); await p.keyboard.press('Escape'); await p.waitForTimeout(450) } })
+routes.push({ name: 'M8-entered', path: '/', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'Enter the cleanroom' }).click(); await p.waitForTimeout(400); await p.keyboard.press('Escape'); await p.waitForTimeout(3000) } })

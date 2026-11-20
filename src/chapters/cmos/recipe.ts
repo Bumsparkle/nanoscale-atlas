@@ -93,7 +93,9 @@ export const STEPS: Step[] = [
   {
     id: 'gate-ox', title: 'Thin gate oxide', slide: 37, group: 'gate', kind: 'oxidise',
     tool: 'Oxidation furnace', chemistry: 'SiO₂, < 20 Å (6–7 atomic layers)',
-    note: 'A very thin, very clean oxide: the dielectric of the MOS capacitor.', op: oxidise('gox', T.gox),
+    note: 'Deposit a very thin layer of gate oxide: the insulator of the MOS capacitor.',
+    beyond: 'Slide 37 says "deposit"; gate oxide is normally grown thermally in a furnace (Plummer, Deal & Griffin, ch. 6).',
+    op: oxidise('gox', T.gox),
   },
   {
     id: 'gate-poly', title: 'Deposit polysilicon', slide: 37, group: 'gate', kind: 'deposit',

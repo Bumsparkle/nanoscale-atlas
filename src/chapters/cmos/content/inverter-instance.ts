@@ -6,5 +6,6 @@ export default defineContent({
   what: 'One CMOS inverter (slide 15): 62λ × 28λ including its rails. At λ = 0.3 µm (slide 46) that is 18.6 µm × 8.4 µm.',
   made: 'Six masks (slide 27) and the fabrication sequence of slides 29–45.',
   does: 'Y = NOT A. Zoom in to see it built.',
+  beyond: [{ text: 'The λ dimensions of this layout were drawn for the Atlas to satisfy the slide 47 rules; slide 27 itself is not dimensioned.', source: 'src/chapters/cmos/masks.ts, rules.test.ts' }],
   dive: { layer: 'cell' },
 })

@@ -39,6 +39,9 @@ export function LayerStack() {
 
   useEffect(() => {
     scene.background = new THREE.Color(0x0b0c0d)
+    // warm every layer chunk in the background so no dive ever waits on the network
+    const ids: LayerId[] = ['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice']
+    ids.forEach((id) => prefetchLayers([id]).then(() => useAtlas.setState((s) => ({ boot: { ...s.boot, layers: s.boot.layers + 1 } }))))
   }, [scene])
 
   useEffect(() => {
