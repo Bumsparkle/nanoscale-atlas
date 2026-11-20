@@ -10,7 +10,7 @@ import { CONTACT, GRID, METAL, NPLUS, NWELL, POLY, PPLUS } from './masks'
  * "beyond the lecture" (Plummer, Deal & Griffin, Silicon VLSI Technology, ch. 2).
  */
 export const T = {
-  substrate: 3000, // simulated depth; a real 300 mm wafer is 775 µm thick
+  substrate: 2400, // simulated depth; a real 300 mm wafer is 775 µm thick
   maskOx: 200,
   resist: 800,
   nwell: 1500,

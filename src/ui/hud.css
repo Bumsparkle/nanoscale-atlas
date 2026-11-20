@@ -142,3 +142,21 @@
   flex-wrap: wrap;
   gap: 4px;
 }
+
+.exaggeration {
+  position: fixed;
+  left: var(--s-5);
+  bottom: 104px;
+  margin: 0;
+  font-size: 10px;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+  z-index: 5;
+}
+@media (max-width: 720px) {
+  .exaggeration {
+    bottom: auto;
+    top: 128px;
+    left: var(--s-4);
+  }
+}

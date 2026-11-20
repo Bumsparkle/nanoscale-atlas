@@ -39,7 +39,7 @@ export const LAYERS: LayerDef[] = [
   },
   {
     id: 'cell', path: ['inverter'], crumb: 'inverter cell', title: 'CMOS inverter cell',
-    metresPerUnit: 0.3e-6, minDist: 8, maxDist: 160, restDist: 78, restPolar: 0.92, restAzimuth: -0.42,
+    metresPerUnit: 0.3e-6, minDist: 8, maxDist: 190, restDist: 112, restPolar: 0.9, restAzimuth: -0.5,
     near: 0.1, far: 1000, scaleNote: 'λ = 0.3 µm (slide 46)',
   },
   {

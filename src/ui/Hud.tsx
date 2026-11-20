@@ -3,6 +3,9 @@ import { LAYERS, layerIndex } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
 import { transition } from '../scene/transition'
 import { ScaleBar } from './ScaleBar'
+import { Panel } from './Panel'
+import { HoverLabel, SceneOutline } from './Inspect'
+import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
 import './hud.css'
 
 export function Breadcrumbs() {
@@ -68,12 +71,22 @@ export function useGlobalKeys() {
   }, [])
 }
 
+function ExaggerationNote() {
+  const layer = useAtlas((s) => s.layer)
+  if (layer !== 'cell' && layer !== 'transistor') return null
+  return <p className="exaggeration mono">{EXAGGERATION_NOTE}</p>
+}
+
 export function Hud() {
   useGlobalKeys()
   return (
     <>
       <TopBar />
+      <SceneOutline />
       <ScaleBar />
+      <ExaggerationNote />
+      <HoverLabel />
+      <Panel />
     </>
   )
 }

@@ -58,7 +58,7 @@ class CameraRig {
   }
 
   /** glide to fit a bounding box */
-  focusBox(box: THREE.Box3, fov: number, aspect: number, opts: { padding?: number; polar?: number } = {}) {
+  focusBox(box: THREE.Box3, fov: number, aspect: number, opts: { padding?: number; polar?: number; minDist?: number } = {}) {
     const c = box.getCenter(new THREE.Vector3())
     const size = box.getSize(new THREE.Vector3())
     const radius = Math.max(0.5, size.length() / 2)
@@ -66,7 +66,7 @@ class CameraRig {
     const hfov = 2 * Math.atan(Math.tan(vfov / 2) * aspect)
     const fit = radius / Math.sin(Math.min(vfov, hfov) / 2)
     this.target.setTarget([c.x, c.y, c.z])
-    this.dist.target = clamp(fit * (opts.padding ?? 1.1), this.layer.minDist * 1.05, this.layer.maxDist)
+    this.dist.target = clamp(fit * (opts.padding ?? 1.1), Math.max(this.layer.minDist * 1.05, opts.minDist ?? 0), this.layer.maxDist)
     if (opts.polar != null) this.polar.target = opts.polar
   }
 

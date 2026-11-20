@@ -1,0 +1,210 @@
+.panel {
+  --open: 0;
+  position: fixed;
+  top: 64px;
+  right: var(--s-4);
+  bottom: var(--s-4);
+  width: min(400px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  background: rgba(14, 16, 17, 0.94);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  z-index: 15;
+  transform: translateX(calc((1 - var(--open)) * 108%));
+  opacity: clamp(0, calc(var(--open) * 2), 1);
+  pointer-events: auto;
+}
+.panel-head {
+  position: relative;
+  padding: var(--s-4) var(--s-5) var(--s-3);
+  border-bottom: var(--hair);
+}
+.panel-head h2 {
+  margin: 2px 0 0;
+  font-size: var(--t-24);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  padding-right: 48px;
+}
+.panel-close {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+}
+.panel-body {
+  overflow-y: auto;
+  padding: var(--s-2) var(--s-5) var(--s-5);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.panel section {
+  padding: var(--s-3) 0;
+  border-bottom: 1px dashed var(--line);
+}
+.panel h3 {
+  margin: 0 0 4px;
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+.panel p {
+  margin: 0;
+  color: var(--ink-0);
+  font-size: var(--t-15);
+  line-height: 1.55;
+}
+.panel-link {
+  margin-top: var(--s-2);
+  color: var(--amber);
+  font-size: var(--t-13);
+  text-align: left;
+}
+.panel-link .mono {
+  color: var(--ink-2);
+  font-size: var(--t-11);
+  margin-right: 4px;
+}
+.panel-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.panel-beyond ul {
+  margin: 0;
+  padding-left: 1.1em;
+  color: var(--ink-1);
+  font-size: var(--t-13);
+}
+.panel-beyond li + li {
+  margin-top: 6px;
+}
+.panel-beyond .beyond {
+  display: inline-block;
+  margin-top: 2px;
+  white-space: normal;
+}
+.panel-foot {
+  padding-top: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.panel-slides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.panel-dive {
+  align-self: flex-start;
+  margin-top: var(--s-2);
+  padding: 6px 10px;
+  border: 1px solid var(--amber-dim);
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: var(--t-12);
+  border-radius: var(--radius);
+}
+.panel-dive:hover {
+  background: var(--amber-glow);
+}
+
+@media (max-width: 720px) {
+  .panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 58vh;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    transform: translateY(calc((1 - var(--open)) * 105%));
+  }
+  .panel-head h2 {
+    font-size: var(--t-18);
+  }
+}
+
+/* hover label that follows the pointer */
+.hover-label {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 12;
+  padding: 5px 9px 6px;
+  background: rgba(11, 12, 13, 0.92);
+  border: var(--hair);
+  border-left: 2px solid var(--amber);
+  font-size: var(--t-13);
+  white-space: nowrap;
+  max-width: 340px;
+}
+.hover-label strong {
+  display: block;
+  font-weight: 500;
+}
+.hover-label span {
+  display: block;
+  color: var(--ink-2);
+  font-size: var(--t-12);
+}
+
+/* text outline of the scene, for keyboards and screen readers */
+.outline-nav {
+  position: fixed;
+  left: var(--s-5);
+  top: 64px;
+  z-index: 14;
+}
+.outline-nav .outline-toggle {
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  color: var(--ink-2);
+  border: var(--hair);
+  border-radius: var(--radius);
+  padding: 3px 8px;
+  background: rgba(17, 19, 20, 0.7);
+}
+.outline-nav .outline-toggle:hover,
+.outline-nav .outline-toggle[aria-expanded='true'] {
+  color: var(--ink-0);
+}
+.outline-nav ul {
+  list-style: none;
+  margin: var(--s-2) 0 0;
+  padding: var(--s-2) 0;
+  background: rgba(14, 16, 17, 0.94);
+  border: var(--hair);
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+  min-width: 230px;
+}
+.outline-nav li button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 4px var(--s-4);
+  font-size: var(--t-13);
+  color: var(--ink-1);
+}
+.outline-nav li button:hover,
+.outline-nav li button:focus-visible,
+.outline-nav li button[aria-current='true'] {
+  color: var(--ink-0);
+  background: var(--bg-3);
+}
+.outline-nav li button[aria-current='true'] {
+  box-shadow: inset 2px 0 0 var(--amber);
+}
+.outline-nav .count {
+  font-family: var(--mono);
+  color: var(--ink-3);
+  font-size: var(--t-11);
+  margin-left: 6px;
+}

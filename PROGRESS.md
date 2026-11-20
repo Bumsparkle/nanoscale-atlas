@@ -62,3 +62,32 @@ Tests: 42 passing, covering
 
 Cut: isotropic etch flag (see DECISIONS.md).
 Found while testing: the gate oxide is a single object under the whole poly U (logged in DECISIONS.md).
+
+### M3 · Hero scene: the inverter cell — done
+
+Shipped
+- The cell is generated live from masks + recipe: mesher components → one mesh each (`scene/CellModel.ts`), with coplanar internal faces cancelled so transparent oxide shows no banding (`scene/cellGeometry.ts`).
+- TSL materials (`scene/materials.ts`):
+  - silicon tinted by doping (n cool, p warm);
+  - oxide transparent, with two-beam thin-film interference driven by the real thickness and view angle;
+  - poly grains from a Worley F2–F1 field;
+  - bright aluminium;
+  - amber resist that pales with exposure dose;
+  - cut faces switch to the slide 25 legend, with oxide and metal hatched.
+- Lab environment built in code (ceiling softbox + strip fixtures, PMREM), not a stock HDRI. λ drafting grid underneath.
+- Click-to-inspect:
+  - hover outline + label;
+  - click glides the camera (spring) to fit the object and opens the right-hand panel (bottom sheet on mobile);
+  - the projection shifts so the object sits clear of the panel;
+  - buried objects fade the metal and field oxide (x-ray).
+- 18 content files (one per object, zod-validated), each with the four parts + slide chips + beyond-the-lecture notes with sources + a link to the fab step that makes it.
+- Integrity test: every mesh component at every one of the 45 fab steps resolves to a content file, and every content file matches a mesh.
+- "parts" outline: keyboard-reachable list of every object (focus = highlight, Enter = inspect), doubling as the screen-reader text outline.
+
+Verification
+- 47 tests pass.
+- Scripted tour (`node scripts/tour.mjs <url> cell`) records `docs/recordings/cell.webm` (local only, 24 MB, gitignored) and saves stills to `shots/cell/`; the stills were reviewed.
+- The tour exposed three bugs, all fixed: focus flew the camera inside the metal, buried parts were hidden by the wiring, and the hover label went stale when hovering from the parts list.
+
+Open issue: in headless Chromium, Playwright's video capture breaks WebGPU canvas compositing (black canvas, smeared DOM). Plain screenshots under WebGPU are fine. Recordings therefore use the WebGL 2 path (`GL=1`).
+Screenshots: `docs/screenshots/m3/`.

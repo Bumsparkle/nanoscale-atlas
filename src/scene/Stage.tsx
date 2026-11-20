@@ -3,6 +3,8 @@ import { Canvas, extend, useFrame, useThree, type ThreeToJSXElements } from '@re
 import { Suspense, useEffect, useRef } from 'react'
 import { live, useAtlas } from '../state/store'
 import { rig } from './rig'
+import { Spring, SPRINGS } from './spring'
+import { transition } from './transition'
 import { LayerStack } from './LayerStack'
 import { Pipeline } from './Pipeline'
 import { LAYER_BY_ID } from '../chapters/cmos/layers'
@@ -22,12 +24,19 @@ function RigDriver() {
   const setDpr = useThree((s) => s.setDpr)
   const reduced = useAtlas((s) => s.reducedMotion)
   const frames = useRef({ t: 0, n: 0, slow: 0 })
+  const film = useRef(new Spring(0, SPRINGS.camera))
   useEffect(() => {
     rig.reduced = reduced
   }, [reduced])
 
   useFrame((_, dt) => {
+    // keep the focused object centred in the space left of the inspect panel
+    const st = useAtlas.getState()
+    const panelOpen = !!st.focus && size.width > 720
+    film.current.target = panelOpen ? (35 * 210) / size.width : 0
+    camera.filmOffset = film.current.step(dt, st.reducedMotion)
     rig.update(dt, camera)
+    transition.setViewport(size.height, camera.fov)
     live.metresPerPixel = rig.metresPerPixel(camera, size.height)
     // fps + adaptive resolution: reduce quality, never content
     const f = frames.current
@@ -150,7 +159,8 @@ export function Stage() {
         renderer.shadowMap.enabled = false
         return renderer as never
       }}
-      onCreated={() => {
+      onCreated={(state) => {
+        ;(window as unknown as { __three: unknown }).__three = state
         rig.setLayer(LAYER_BY_ID[useAtlas.getState().layer])
       }}
     >

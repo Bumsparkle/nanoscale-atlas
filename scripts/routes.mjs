@@ -11,3 +11,13 @@ const routes = [
   { name: 'L6-lattice', path: '/cmos/inverter/nmos/gate-oxide/lattice' },
 ]
 export default routes
+// interaction shots
+routes.push({
+  name: 'L3-cell-focus-poly', path: '/cmos/inverter?focus=poly-gate', wait: 3500,
+})
+routes.push({
+  name: 'L3-cell-hover', path: '/cmos/inverter', wait: 3000,
+  action: async (page) => { await page.mouse.move(700, 470); await page.waitForTimeout(600) },
+})
+routes.push({ name: 'L3-cell-focus-y', path: '/cmos/inverter?focus=metal-y', wait: 3500 })
+routes.push({ name: 'L3-cell-focus-nsrc', path: '/cmos/inverter?focus=nmos-source', wait: 3500 })
