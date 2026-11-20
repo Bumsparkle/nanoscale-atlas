@@ -39,3 +39,26 @@ Shipped
 Cut / deferred: layers are placeholders until M3/M6.
 Deploy: skipped (no deploy credentials on this machine).
 Screenshots: `docs/screenshots/m1/`.
+
+### M2 · Process simulator — done
+
+Shipped (`src/sim`, `src/chapters/cmos`, pure TypeScript, no UI)
+- Column-stack model on a 62 × 28 grid at 1λ (`sim/types.ts`, `sim/model.ts`).
+- Pure ops with fractional progress: `oxidise`, `deposit` (conformal or planar; planar Al marks contact plugs), `spinResist`, `expose` (clear- or dark-field), `develop`, `etch` (anisotropic, selective), `implant` (blocked by anything on the Si, which gives self-alignment), `strip` (`sim/ops.ts`).
+- `Process` memoises a snapshot per step; `at(s)` evaluates fractional positions for the scrubber (`sim/recipe.ts`).
+- The six masks of slides 27–28 on a λ grid (`chapters/cmos/masks.ts`); a 45-step recipe covering slides 29–45, each step with slide, tool, chemistry and any beyond-the-lecture note plus its source (`chapters/cmos/recipe.ts`).
+- Greedy mesher → boxes → connected components (the clickable objects) (`sim/mesher.ts`); axis-aligned slicer, region grouping, surface sequence (`sim/slicer.ts`).
+- Slide 47 rules transcribed from the image, plus a checker producing per-edge measurements for the later hover overlay (`chapters/cmos/rules.ts`).
+
+Tests: 42 passing, covering
+- the cross-section after every slide 29–45 at 16 points on the slide 27 line;
+- the surface doping sequence along the slide 27 line (13 regions);
+- the MOS stack along the nMOS gate;
+- component counts (6 contacts, 3 metal nets, 1 poly node, 3 n+, 3 p+);
+- fractional continuity (start and end of every step match the snapshots within 1 %; monotonic progress);
+- layout passes every slide 47 rule;
+- op purity, selectivity, blocking, planarisation;
+- re-mesh budget (< 8 ms per fractional frame).
+
+Cut: isotropic etch flag (see DECISIONS.md).
+Found while testing: the gate oxide is a single object under the whole poly U (logged in DECISIONS.md).
