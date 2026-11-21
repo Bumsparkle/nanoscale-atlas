@@ -1,0 +1,1469 @@
+{
+ "source": "ELEC0031 Topic 4, Cleaning and Cleanrooms (21 slides; the deck's title page carries the code NANOGC04). Facts are paraphrased from the slides; slide = PDF page. Where a slide is wrong the fact teaches the correct statement and records the slide wording in \"corrects\".",
+ "topic": "topic4",
+ "slides": [
+  {
+   "slide": 1,
+   "title": "Title",
+   "area": "intro"
+  },
+  {
+   "slide": 2,
+   "title": "Clean factories",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 3,
+   "title": "A state-of-the-art cleanroom",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 4,
+   "title": "LCN cleanroom",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 5,
+   "title": "EEE cleanroom and MBE",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 6,
+   "title": "Running a cleanroom",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 7,
+   "title": "Cleanroom classes",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 8,
+   "title": "Personal cleanliness",
+   "area": "cleanroom"
+  },
+  {
+   "slide": 9,
+   "title": "Wafer cleaning",
+   "area": "cleaning"
+  },
+  {
+   "slide": 10,
+   "title": "Cleaning strategies",
+   "area": "cleaning"
+  },
+  {
+   "slide": 11,
+   "title": "The RCA clean",
+   "area": "cleaning"
+  },
+  {
+   "slide": 12,
+   "title": "Gettering",
+   "area": "gettering"
+  },
+  {
+   "slide": 13,
+   "title": "PSG and the gettering wafer",
+   "area": "gettering"
+  },
+  {
+   "slide": 14,
+   "title": "Intrinsic gettering",
+   "area": "gettering"
+  },
+  {
+   "slide": 15,
+   "title": "Particles and yield",
+   "area": "yield"
+  },
+  {
+   "slide": 16,
+   "title": "Negative binomial yield",
+   "area": "yield"
+  },
+  {
+   "slide": 17,
+   "title": "Yield vs chip area",
+   "area": "yield"
+  },
+  {
+   "slide": 18,
+   "title": "Modelling wafer cleaning",
+   "area": "cleaning"
+  },
+  {
+   "slide": 19,
+   "title": "Oxidation potentials",
+   "area": "cleaning"
+  },
+  {
+   "slide": 20,
+   "title": "Modelling gettering",
+   "area": "gettering"
+  },
+  {
+   "slide": 21,
+   "title": "Summary",
+   "area": "summary"
+  }
+ ],
+ "unreadable": [
+  {
+   "slide": 13,
+   "what": "The diffusivity graph's individual line values are only roughly legible; it is taught as an ordering (interstitial metals ≫ dopants ≫ Si), not as numbers."
+  },
+  {
+   "slide": 14,
+   "what": "The temperature-cycle sketch has no exact values; the three plateaus are read off its axis as ~1100, ~700 and ~1000 °C."
+  },
+  {
+   "slide": 17,
+   "what": "The ITRS chip-size lines (1997, 2006, 2012) are read from the axis only approximately (≈3, 8 and 16 cm²)."
+  }
+ ],
+ "links": [
+  {
+   "slide": 10,
+   "facts": [
+    "s34-piranha"
+   ],
+   "note": "Chapter 1 strips resist with piranha after each etch."
+  },
+  {
+   "slide": 11,
+   "facts": [
+    "s33-hf",
+    "s33-danger"
+   ],
+   "note": "HF, and why it is dangerous, are taught in Chapter 1."
+  }
+ ],
+ "noFacts": [
+  {
+   "slide": 3,
+   "why": "Photographs of a cleanroom corridor and gowning area, with only the caption \"State of the art clean room\"."
+  },
+  {
+   "slide": 5,
+   "why": "Photograph of the UCL EEE cleanroom MBE system; MBE itself is taught from Topic 3 slide 26."
+  }
+ ],
+ "facts": [
+  {
+   "id": "t4-s01-topic",
+   "source": {
+    "topic": "topic4",
+    "slide": 1
+   },
+   "statement": "ELEC0031 Topic 4 is \"Cleaning and Cleanrooms\".",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s02-level1",
+   "source": {
+    "topic": "topic4",
+    "slide": 2
+   },
+   "statement": "Level 1 of contamination reduction is the clean factory.",
+   "kind": "definition",
+   "area": "cleanroom",
+   "key": false,
+   "objects": [
+    "process-bay"
+   ]
+  },
+  {
+   "id": "t4-s02-def",
+   "source": {
+    "topic": "topic4",
+    "slide": 2
+   },
+   "statement": "A cleanroom is an environment with a low level of environmental pollutants.",
+   "kind": "definition",
+   "area": "cleanroom",
+   "key": false,
+   "objects": [
+    "process-bay"
+   ]
+  },
+  {
+   "id": "t4-s02-air",
+   "source": {
+    "topic": "topic4",
+    "slide": 2
+   },
+   "statement": "In a cleanroom, air control is the most important thing.",
+   "kind": "cause-effect",
+   "area": "cleanroom",
+   "key": false,
+   "objects": [
+    "hepa-filter"
+   ]
+  },
+  {
+   "id": "t4-s02-uses",
+   "source": {
+    "topic": "topic4",
+    "slide": 2
+   },
+   "statement": "Cleanrooms are typically used in manufacturing or scientific research.",
+   "kind": "definition",
+   "area": "cleanroom",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s02-spec",
+   "source": {
+    "topic": "topic4",
+    "slide": 2
+   },
+   "statement": "A cleanroom is specified by the number of particles per volume of air at a specified particle size.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s02-diagram",
+   "source": {
+    "topic": "topic4",
+    "slide": 2
+   },
+   "statement": "Air path in the fab diagram: make-up air handler (MAH) → mixing plenum → recirculating air handlers (RAH) → HEPA filters → down through the process bays → out through the floor → up the service chase back to the RAH.",
+   "kind": "diagram",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "hepa-filter",
+    "rah",
+    "raised-floor",
+    "service-chase"
+   ]
+  },
+  {
+   "id": "t4-s04-yellow",
+   "source": {
+    "topic": "topic4",
+    "slide": 4
+   },
+   "statement": "The lithography areas of a cleanroom (as in the LCN photos) are lit with yellow light.",
+   "kind": "diagram",
+   "area": "cleanroom",
+   "key": false,
+   "objects": [
+    "process-bay"
+   ]
+  },
+  {
+   "id": "t4-s06-recirc",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "Room air is continuously recirculated through HEPA filters to maintain the class.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "hepa-filter",
+    "rah"
+   ]
+  },
+  {
+   "id": "t4-s06-ceiling",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "The HEPA filters are in the ceiling, and the fans that recirculate the air are above the filters.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "hepa-filter",
+    "rah"
+   ]
+  },
+  {
+   "id": "t4-s06-plant",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "All mechanical support should be in the plant room, outside the clean area.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "service-chase"
+   ]
+  },
+  {
+   "id": "t4-s06-clothing",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "Cleanroom clothing is required to maintain the classification.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s06-sources",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "Books and gloves can be sources of contamination.",
+   "kind": "cause-effect",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "contam-book",
+    "contam-gloves"
+   ]
+  },
+  {
+   "id": "t4-s06-chemicals",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "Electronic-grade chemicals and gases and DI water are used in the cleanroom.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s06-hepa",
+   "source": {
+    "topic": "topic4",
+    "slide": 6
+   },
+   "statement": "HEPA stands for high-efficiency particulate air.",
+   "kind": "definition",
+   "area": "cleanroom",
+   "key": false,
+   "objects": [
+    "hepa-filter"
+   ]
+  },
+  {
+   "id": "t4-s07-class",
+   "source": {
+    "topic": "topic4",
+    "slide": 7
+   },
+   "statement": "Class X: each cubic foot of air holds fewer than X particles larger than 0.5 µm.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "process-bay"
+   ]
+  },
+  {
+   "id": "t4-s07-graph",
+   "source": {
+    "topic": "topic4",
+    "slide": 7
+   },
+   "statement": "The class chart (log–log): the allowed count falls steeply with particle size; each line (classes 1, 10, 100, 1000, 10 000, 100 000) passes through its class number at 0.5 µm.",
+   "kind": "diagram",
+   "area": "cleanroom",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s07-behaviour",
+   "source": {
+    "topic": "topic4",
+    "slide": 7
+   },
+   "statement": "Small particles stay in the air a long time and coagulate; large particles precipitate quickly.",
+   "kind": "cause-effect",
+   "area": "cleanroom",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s07-deposit",
+   "source": {
+    "topic": "topic4",
+    "slide": 7
+   },
+   "statement": "Particles deposit on surfaces by Brownian motion (small particles) and gravitational sedimentation (larger ones).",
+   "kind": "cause-effect",
+   "area": "cleanroom",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s07-methods",
+   "source": {
+    "topic": "topic4",
+    "slide": 7
+   },
+   "statement": "The factory environment is kept clean by HEPA filters and recirculation for the air, \"bunny suits\" for workers, filtration of chemicals and gases, and manufacturing protocols.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "hepa-filter",
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s08-wash",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Pre-entry: wash face and hands, with lots of water.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s08-mouth",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Pre-entry: rinse the mouth or drink water, especially after eating, and do not smoke before entering.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s08-shoes",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Pre-entry: avoid muddy shoes.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s08-gloves-first",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Pre-entry: put gloves on before suiting up in the bunny suit.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "contam-gloves"
+   ]
+  },
+  {
+   "id": "t4-s08-suit",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Entry: wear the provided suit, including mask and overshoes, without dragging it on the floor.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s08-vinyl",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Entry: put vinyl gloves over the latex gloves.",
+   "kind": "process-step",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "contam-gloves"
+   ]
+  },
+  {
+   "id": "t4-s08-face",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Inside: avoid touching your face with gloved hands or tweezers.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s08-cough",
+   "source": {
+    "topic": "topic4",
+    "slide": 8
+   },
+   "statement": "Inside: no spitting, coughing or blowing your nose (use the service area); to sneeze, use the service area and face the floor.",
+   "kind": "rule",
+   "area": "cleanroom",
+   "key": true,
+   "objects": [
+    "operator"
+   ]
+  },
+  {
+   "id": "t4-s09-tiers",
+   "source": {
+    "topic": "topic4",
+    "slide": 9
+   },
+   "statement": "Modern IC factories control unwanted impurities with three tiers: 1 clean factories, 2 wafer cleaning, 3 gettering.",
+   "kind": "definition",
+   "area": "cleaning",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s09-level2",
+   "source": {
+    "topic": "topic4",
+    "slide": 9
+   },
+   "statement": "Level 2 of contamination reduction is wafer cleaning.",
+   "kind": "definition",
+   "area": "cleaning",
+   "key": false,
+   "objects": [
+    "wet-bench"
+   ]
+  },
+  {
+   "id": "t4-s09-contaminants",
+   "source": {
+    "topic": "topic4",
+    "slide": 9
+   },
+   "statement": "Contaminants may be particles, organic films (photoresist), heavy metals or alkali ions.",
+   "kind": "definition",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "bench-wafer"
+   ]
+  },
+  {
+   "id": "t4-s09-table",
+   "source": {
+    "topic": "topic4",
+    "slide": 9
+   },
+   "statement": "In the roadmap table, as the node shrinks from 250 nm (1998) to 18 nm (2018) the critical defect size falls from 125 nm to 45 nm and allowed starting-wafer particles from < 0.35 to < 0.05 cm⁻², while bulk Fe stays at about 10¹⁰ cm⁻³.",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s09-figure",
+   "source": {
+    "topic": "topic4",
+    "slide": 9
+   },
+   "statement": "The figure places particles on the surface, Fe and Au on the SiO₂, Na and Cu on the photoresist, and N, P dopants in the silicon beside the interconnect metal.",
+   "kind": "diagram",
+   "area": "cleaning",
+   "key": false,
+   "objects": [
+    "bench-wafer"
+   ]
+  },
+  {
+   "id": "t4-s10-front",
+   "source": {
+    "topic": "topic4",
+    "slide": 10
+   },
+   "statement": "Front-end cleaning: resist strip (H₂SO₄ + H₂O₂, or oxygen plasma) if necessary, then the RCA clean before the next process step; a good clean matters before high-temperature steps.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "wet-bench"
+   ]
+  },
+  {
+   "id": "t4-s10-back",
+   "source": {
+    "topic": "topic4",
+    "slide": 10
+   },
+   "statement": "Back-end cleaning: resist strip by oxygen plasma or organic strippers, which do not attack metals, then a post-metal clean; it is low temperature and less critical.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s10-sc1",
+   "source": {
+    "topic": "topic4",
+    "slide": 10
+   },
+   "statement": "SC1 is 5 H₂O : 1 H₂O₂ : 1 NH₄OH; it oxidises organic films, oxidises the Si and complexes metals.",
+   "kind": "rule",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-sc1"
+   ]
+  },
+  {
+   "id": "t4-s10-nh4oh",
+   "source": {
+    "topic": "topic4",
+    "slide": 10
+   },
+   "statement": "Keeping the NH₄OH content small reduces etching of the Si.",
+   "kind": "cause-effect",
+   "area": "cleaning",
+   "key": false,
+   "objects": [
+    "tank-sc1"
+   ]
+  },
+  {
+   "id": "t4-s10-sc2",
+   "source": {
+    "topic": "topic4",
+    "slide": 10
+   },
+   "statement": "SC2 is 6 H₂O : 1 H₂O₂ : 1 HCl; it removes alkali ions and cations such as Al³⁺, Fe³⁺ and Mg²⁺ that are insoluble in NH₄OH (SC1).",
+   "kind": "rule",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-sc2"
+   ],
+   "corrects": "The slide writes \"Mg³⁺\": magnesium forms Mg²⁺."
+  },
+  {
+   "id": "t4-s10-sonic",
+   "source": {
+    "topic": "topic4",
+    "slide": 10
+   },
+   "statement": "Particles are removed with ultrasonic agitation (20–50 kHz) and now megasonic agitation (around 1 MHz).",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "wet-bench"
+   ],
+   "corrects": "The slide reads \"ultrasonic and now megasonic cleaning … (20–50 kHz)\": 20–50 kHz is the ultrasonic range; megasonic cleaning runs near 1 MHz (beyond the lecture: Kern, Handbook of Semiconductor Wafer Cleaning Technology)."
+  },
+  {
+   "id": "t4-s11-piranha",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "Piranha, H₂SO₄/H₂O₂ 1:1 to 4:1, at 120–150 °C for 10 min, strips organics, especially photoresist.",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-piranha"
+   ]
+  },
+  {
+   "id": "t4-s11-hf",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "HF/H₂O 1:10 to 1:50, at room temperature for 1 min, strips the chemical oxide with all its contaminants and leaves an H-passivated (or F) surface.",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-hf"
+   ]
+  },
+  {
+   "id": "t4-s11-rinse",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "A DI water rinse at room temperature follows the HF, SC-1 and SC-2 steps.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-rinse"
+   ]
+  },
+  {
+   "id": "t4-s11-sc1",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "SC-1, NH₄OH/H₂O₂/H₂O 1:1:5 to 0.05:1:5, at 80–90 °C for 10 min, strips organics, metals and particles; a small NH₄OH fraction reduces surface roughness.",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-sc1"
+   ]
+  },
+  {
+   "id": "t4-s11-sc2",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "SC-2, HCl/H₂O₂/H₂O 1:1:6, at 80–90 °C for 10 min, strips the alkali ions and metals not removed by SC-1.",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-sc2"
+   ]
+  },
+  {
+   "id": "t4-s11-order",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "The sequence: piranha → HF dip → DI rinse → SC-1 → DI rinse → SC-2 → DI rinse; a final HF dip can be added to remove the oxide.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "wet-bench"
+   ]
+  },
+  {
+   "id": "t4-s11-standard",
+   "source": {
+    "topic": "topic4",
+    "slide": 11
+   },
+   "statement": "The RCA clean is the standard process for removing organics, heavy metals and alkali ions.",
+   "kind": "definition",
+   "area": "cleaning",
+   "key": false,
+   "objects": [
+    "wet-bench"
+   ]
+  },
+  {
+   "id": "t4-s12-level3",
+   "source": {
+    "topic": "topic4",
+    "slide": 12
+   },
+   "statement": "Level 3 of contamination reduction is gettering: removing metal ions and alkali ions from the device active regions.",
+   "kind": "definition",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "device-layer"
+   ]
+  },
+  {
+   "id": "t4-s12-alkali",
+   "source": {
+    "topic": "topic4",
+    "slide": 12
+   },
+   "statement": "Alkali ions are gettered by dielectric layers on the top side (PSG or barrier Si₃N₄ layers).",
+   "kind": "rule",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "psg-layer"
+   ]
+  },
+  {
+   "id": "t4-s12-metal",
+   "source": {
+    "topic": "topic4",
+    "slide": 12
+   },
+   "statement": "Metal ions are gettered by traps on the wafer backside or in the wafer bulk.",
+   "kind": "rule",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "backside-region",
+    "ig-region"
+   ]
+  },
+  {
+   "id": "t4-s12-names",
+   "source": {
+    "topic": "topic4",
+    "slide": 12
+   },
+   "statement": "Backside gettering is extrinsic gettering; bulk gettering is intrinsic gettering.",
+   "kind": "definition",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "backside-region",
+    "ig-region"
+   ]
+  },
+  {
+   "id": "t4-s12-table",
+   "source": {
+    "topic": "topic4",
+    "slide": 12
+   },
+   "statement": "The periodic table: alkali ions are group I (Li, Na, K, Rb, Cs); deep-level impurities are the transition metals (e.g. Fe, Ni, Cu, Au); group III are shallow acceptors, group IV elemental semiconductors and group V shallow donors.",
+   "kind": "diagram",
+   "area": "gettering",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s13-psg",
+   "source": {
+    "topic": "topic4",
+    "slide": 13
+   },
+   "statement": "PSG (phosphosilicate glass) getters the alkali ions Na⁺ and K⁺, and metals.",
+   "kind": "definition",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "psg-layer"
+   ]
+  },
+  {
+   "id": "t4-s13-psg-bad",
+   "source": {
+    "topic": "topic4",
+    "slide": 13
+   },
+   "statement": "PSG has negative effects: its dipoles affect electric fields, and it absorbs water, which corrodes Al.",
+   "kind": "cause-effect",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "psg-layer"
+   ]
+  },
+  {
+   "id": "t4-s13-zones",
+   "source": {
+    "topic": "topic4",
+    "slide": 13
+   },
+   "statement": "Wafer cross-section: devices in the near-surface region, a 10–20 µm denuded zone (or epi layer), a 500+ µm intrinsic gettering region, and the backside gettering region.",
+   "kind": "number",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "denuded-zone",
+    "ig-region",
+    "backside-region"
+   ]
+  },
+  {
+   "id": "t4-s13-relies",
+   "source": {
+    "topic": "topic4",
+    "slide": 13
+   },
+   "statement": "Heavy-metal gettering relies on metals diffusing very rapidly in silicon and segregating to \"trap\" sites.",
+   "kind": "cause-effect",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "metal-atom"
+   ]
+  },
+  {
+   "id": "t4-s13-graph",
+   "source": {
+    "topic": "topic4",
+    "slide": 13
+   },
+   "statement": "The diffusivity graph: interstitial metals (Cu, Au, Fe, Cr, Pt, Ti) diffuse many orders of magnitude faster than the dopants (B, P, As) and Si itself; Cu is the fastest.",
+   "kind": "diagram",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "metal-atom"
+   ]
+  },
+  {
+   "id": "t4-s14-traps",
+   "source": {
+    "topic": "topic4",
+    "slide": 14
+   },
+   "statement": "Trap sites are created by SiO₂ precipitates (intrinsic gettering) or by backside damage (extrinsic gettering).",
+   "kind": "rule",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "oxide-precipitate",
+    "backside-region"
+   ]
+  },
+  {
+   "id": "t4-s14-cz",
+   "source": {
+    "topic": "topic4",
+    "slide": 14
+   },
+   "statement": "Intrinsic gettering uses CZ silicon: SiO₂ precipitates are formed in the wafer bulk by temperature cycling at the start of the process.",
+   "kind": "process-step",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "ig-region",
+    "oxide-precipitate"
+   ]
+  },
+  {
+   "id": "t4-s14-cycle",
+   "source": {
+    "topic": "topic4",
+    "slide": 14
+   },
+   "statement": "The temperature cycle: outdiffusion at high temperature (~1100 °C), nucleation at low temperature (~700 °C), then precipitation (~1000 °C).",
+   "kind": "process-step",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "denuded-zone",
+    "oxide-precipitate"
+   ]
+  },
+  {
+   "id": "t4-s14-precipitate",
+   "source": {
+    "topic": "topic4",
+    "slide": 14
+   },
+   "statement": "Around a growing SiO₂ precipitate interstitial oxygen diffuses in (its concentration dips near the precipitate), interstitials are emitted, vacancies absorbed, and stacking faults can form.",
+   "kind": "diagram",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "oxide-precipitate"
+   ]
+  },
+  {
+   "id": "t4-s15-loss",
+   "source": {
+    "topic": "topic4",
+    "slide": 15
+   },
+   "statement": "Particles of feature size cause about 75 % of the yield loss in modern VLSI fabs.",
+   "kind": "number",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "killer-particle"
+   ]
+  },
+  {
+   "id": "t4-s15-models",
+   "source": {
+    "topic": "topic4",
+    "slide": 15
+   },
+   "statement": "Yield models use the measured defect density N(dp) and particle size dp.",
+   "kind": "definition",
+   "area": "yield",
+   "key": false,
+   "objects": [
+    "killer-particle"
+   ]
+  },
+  {
+   "id": "t4-s15-size",
+   "source": {
+    "topic": "topic4",
+    "slide": 15
+   },
+   "statement": "Particles of about 0.1–0.3 µm are the most troublesome: larger ones precipitate easily and smaller ones coagulate into larger particles.",
+   "kind": "number",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "killer-particle"
+   ]
+  },
+  {
+   "id": "t4-s15-distribution",
+   "source": {
+    "topic": "topic4",
+    "slide": 15
+   },
+   "statement": "In the figure the empirical number of particles falls as N(dp) = k·dp⁻³ over 10 nm–10 µm, while the probability that a particle causes yield loss rises to 1 for larger particles.",
+   "kind": "diagram",
+   "area": "yield",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s15-poisson",
+   "source": {
+    "topic": "topic4",
+    "slide": 15
+   },
+   "statement": "In the simplest case yield follows Poisson statistics: Y = exp(−Ac·D0), with Ac the critical area and D0 the defect density.",
+   "kind": "rule",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "die-grid"
+   ]
+  },
+  {
+   "id": "t4-s15-assume",
+   "source": {
+    "topic": "topic4",
+    "slide": 15
+   },
+   "statement": "The Poisson model assumes independent, randomly distributed defects and often underpredicts yields.",
+   "kind": "cause-effect",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "die-grid"
+   ]
+  },
+  {
+   "id": "t4-s16-nb",
+   "source": {
+    "topic": "topic4",
+    "slide": 16
+   },
+   "statement": "Negative binomial statistics remove those assumptions and are more accurate: Y = 1/(1 + Ac·D0/C)^C.",
+   "kind": "rule",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "die-grid"
+   ]
+  },
+  {
+   "id": "t4-s16-c",
+   "source": {
+    "topic": "topic4",
+    "slide": 16
+   },
+   "statement": "C measures the spatial distribution of defects: the clustering factor.",
+   "kind": "definition",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "die-grid"
+   ]
+  },
+  {
+   "id": "t4-s16-depend",
+   "source": {
+    "topic": "topic4",
+    "slide": 16
+   },
+   "statement": "Yields depend on the defect density D0 and the chip area Ac (excluding the usual low-yield areas at the wafer perimeter).",
+   "kind": "cause-effect",
+   "area": "yield",
+   "key": false,
+   "objects": [
+    "die-grid"
+   ]
+  },
+  {
+   "id": "t4-s16-graph",
+   "source": {
+    "topic": "topic4",
+    "slide": 16
+   },
+   "statement": "For D0 = 1 cm⁻² the graph shows Poisson falling fastest (about 10⁻⁴ by 9 cm²), negative binomial with C = 10 in between (10⁻³ at 10 cm²) and C = 2 highest (about 0.03 at 10 cm²).",
+   "kind": "diagram",
+   "area": "yield",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s16-cluster",
+   "source": {
+    "topic": "topic4",
+    "slide": 16
+   },
+   "statement": "Clustered defects pile onto a few dies and leave others clean, so negative binomial (less random, clustered) yields are higher than Poisson's, which predicts too-low yields.",
+   "kind": "cause-effect",
+   "area": "yield",
+   "key": true,
+   "objects": [
+    "die-grid",
+    "killer-particle"
+   ]
+  },
+  {
+   "id": "t4-s17-graph",
+   "source": {
+    "topic": "topic4",
+    "slide": 17
+   },
+   "statement": "With C = 2, yield against chip area for D0 = 0.01, 0.1 and 1 cm⁻²; the ITRS chip sizes for 1997, 2006 and 2012 grow towards ≈16 cm² (≈40 × 40 mm²).",
+   "kind": "diagram",
+   "area": "yield",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s17-small",
+   "source": {
+    "topic": "topic4",
+    "slide": 17
+   },
+   "statement": "Defect densities must become extremely small to keep the high yields needed for economic IC manufacturing as chips grow.",
+   "kind": "cause-effect",
+   "area": "yield",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s17-each",
+   "source": {
+    "topic": "topic4",
+    "slide": 17
+   },
+   "statement": "Monitor defects: overall yield depends on each step in the manufacturing cycle.",
+   "kind": "cause-effect",
+   "area": "yield",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s18-remove",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Cleaning removes particles, organics (photoresist) and metals from wafer surfaces.",
+   "kind": "definition",
+   "area": "cleaning",
+   "key": false,
+   "objects": [
+    "bench-wafer"
+   ]
+  },
+  {
+   "id": "t4-s18-particles",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Particles are largely removed by ultrasonic agitation during cleaning.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "wet-bench"
+   ]
+  },
+  {
+   "id": "t4-s18-organics",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Organics such as photoresist are removed in an O₂ plasma or in H₂SO₄/H₂O₂ solutions.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-piranha"
+   ]
+  },
+  {
+   "id": "t4-s18-rca",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "The RCA clean removes metals and any remaining organics.",
+   "kind": "process-step",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "wet-bench"
+   ]
+  },
+  {
+   "id": "t4-s18-eq5",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Silicon oxidation in water: Si + 2H₂O ⇌ SiO₂ + 4H⁺ + 4e⁻ (5).",
+   "kind": "rule",
+   "area": "cleaning",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s18-eq6",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Metal oxidation: M ⇌ M^z+ + ze⁻ (6).",
+   "kind": "rule",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "metal-atom"
+   ]
+  },
+  {
+   "id": "t4-s18-dominate",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "In a water solution with a Si wafer and metal atoms and ions, the stronger reaction dominates.",
+   "kind": "cause-effect",
+   "area": "cleaning",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s18-plate",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Generally (6) is driven to the left and (5) to the right, so SiO₂ forms and the metal plates out on the wafer.",
+   "kind": "cause-effect",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "bench-wafer"
+   ]
+  },
+  {
+   "id": "t4-s18-good",
+   "source": {
+    "topic": "topic4",
+    "slide": 18
+   },
+   "statement": "Good cleaning solutions drive (6) to the right: M^z+ is soluble and desorbs from the wafer surface.",
+   "kind": "cause-effect",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "bench-wafer"
+   ]
+  },
+  {
+   "id": "t4-s19-table",
+   "source": {
+    "topic": "topic4",
+    "slide": 19
+   },
+   "statement": "Standard oxidation potentials (V): Mn²⁺/Mn 1.05, SiO₂/Si 0.84, Cr³⁺/Cr 0.71, Ni²⁺/Ni 0.25, Fe³⁺/Fe 0.17, H₂SO₄/H₂SO₃ −0.20, Cu²⁺/Cu −0.34, O₂/H₂O −1.23, Au³⁺/Au −1.42, H₂O₂/H₂O −1.77, O₃/O₂ −2.07.",
+   "kind": "number",
+   "area": "cleaning",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s19-strongest",
+   "source": {
+    "topic": "topic4",
+    "slide": 19
+   },
+   "statement": "The strongest oxidants are at the bottom of the table (H₂O₂ and O₃): their reactions go to the left, grabbing electrons and forcing (6) to the right.",
+   "kind": "cause-effect",
+   "area": "cleaning",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s19-rca",
+   "source": {
+    "topic": "topic4",
+    "slide": 19
+   },
+   "statement": "Fundamentally the RCA clean works by using H₂O₂ as a strong oxidant.",
+   "kind": "cause-effect",
+   "area": "cleaning",
+   "key": true,
+   "objects": [
+    "tank-sc1",
+    "tank-sc2"
+   ]
+  },
+  {
+   "id": "t4-s19-o2",
+   "source": {
+    "topic": "topic4",
+    "slide": 19
+   },
+   "statement": "The O₂/H₂O couple is 2H₂O ⇌ O₂ + 4H⁺ + 4e⁻.",
+   "kind": "rule",
+   "area": "cleaning",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide's table writes \"2H₂O ⇌ O₂ + 4H⁺ + 2e⁻\", which does not balance charge: four electrons are released."
+  },
+  {
+   "id": "t4-s20-steps",
+   "source": {
+    "topic": "topic4",
+    "slide": 20
+   },
+   "statement": "Gettering has three steps: 1 making the metal atoms mobile, 2 their migration to trapping sites, 3 trapping.",
+   "kind": "process-step",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "metal-atom"
+   ]
+  },
+  {
+   "id": "t4-s20-kickout",
+   "source": {
+    "topic": "topic4",
+    "slide": 20
+   },
+   "statement": "Step 1 usually kicks the substitutional atom out into an interstitial site, e.g. Au_s + I ⇌ Au_i.",
+   "kind": "rule",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "metal-atom"
+   ]
+  },
+  {
+   "id": "t4-s20-fast",
+   "source": {
+    "topic": "topic4",
+    "slide": 20
+   },
+   "statement": "Step 2 happens easily once the metal is interstitial, because most metals diffuse rapidly in that form.",
+   "kind": "cause-effect",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "metal-atom"
+   ]
+  },
+  {
+   "id": "t4-s20-trap",
+   "source": {
+    "topic": "topic4",
+    "slide": 20
+   },
+   "statement": "Step 3 happens because heavy metals segregate to damaged regions or N⁺ regions, or pair with effective getters such as P (AuP pairs).",
+   "kind": "cause-effect",
+   "area": "gettering",
+   "key": false,
+   "objects": [
+    "backside-region"
+   ]
+  },
+  {
+   "id": "t4-s20-ig",
+   "source": {
+    "topic": "topic4",
+    "slide": 20
+   },
+   "statement": "In intrinsic gettering the metal atoms segregate to dislocations around the SiO₂ precipitates.",
+   "kind": "cause-effect",
+   "area": "gettering",
+   "key": true,
+   "objects": [
+    "oxide-precipitate"
+   ]
+  },
+  {
+   "id": "t4-s21-three",
+   "source": {
+    "topic": "topic4",
+    "slide": 21
+   },
+   "statement": "A three-tiered approach minimises contamination in wafer processing: particle control, wafer cleaning and gettering are the \"nuts and bolts\" of chip manufacturing.",
+   "kind": "definition",
+   "area": "summary",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s21-economic",
+   "source": {
+    "topic": "topic4",
+    "slide": 21
+   },
+   "statement": "The economic success of chip makers (their chip yields) depends on careful attention to these issues.",
+   "kind": "cause-effect",
+   "area": "summary",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t4-s21-levels",
+   "source": {
+    "topic": "topic4",
+    "slide": 21
+   },
+   "statement": "Level 1: clean factories through air filtration and highly purified chemicals and gases. Level 2: wafer cleaning, using basic chemistry to remove unwanted elements. Level 3: gettering metal atoms into regions far from the active devices.",
+   "kind": "rule",
+   "area": "summary",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t4-s21-bottom",
+   "source": {
+    "topic": "topic4",
+    "slide": 21
+   },
+   "statement": "The bottom line is chip yield: bad die are made alongside good die, so higher yield means better profitability.",
+   "kind": "cause-effect",
+   "area": "summary",
+   "key": false,
+   "objects": [
+    "die-grid"
+   ]
+  }
+ ]
+}

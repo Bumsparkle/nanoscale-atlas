@@ -10,11 +10,19 @@ import { SourceRefSchema, TOPIC_IDS } from '../sources'
  */
 
 export const FACT_KINDS = ['definition', 'process-step', 'number', 'cause-effect', 'diagram', 'rule'] as const
-export const TOPICS = ['intro', 'materials', 'junction', 'devices', 'logic', 'structure', 'fabrication', 'layout', 'summary'] as const
+export const TOPICS = [
+  'intro', 'materials', 'junction', 'devices', 'logic', 'structure', 'fabrication', 'layout',
+  // Topic 3
+  'crystal', 'bands', 'growth', 'defects', 'process',
+  // Topic 4
+  'cleanroom', 'cleaning', 'gettering', 'yield',
+  'summary',
+] as const
 export type Topic = (typeof TOPICS)[number]
 
 export const FactSchema = z.object({
-  id: z.string().regex(/^s\d\d-[a-z0-9-]+$/),
+  /** s07-… for Topic 2; t3-s07-… and t4-s07-… for the later decks */
+  id: z.string().regex(/^(t[34]-)?s\d\d-[a-z0-9-]+$/),
   source: SourceRefSchema,
   statement: z.string().min(8),
   kind: z.enum(FACT_KINDS),
@@ -24,14 +32,20 @@ export const FactSchema = z.object({
   key: z.boolean(),
   /** content ids of the model objects this fact is about (mastery overlay) */
   objects: z.array(z.string()).default([]),
+  /** the slide is wrong here: what it says (the statement teaches the correct fact) */
+  corrects: z.string().optional(),
 })
 export type Fact = z.infer<typeof FactSchema>
 
 export const FactFileSchema = z.object({
   source: z.string(),
   topic: z.enum(TOPIC_IDS),
-  slides: z.array(z.object({ slide: z.number().int(), title: z.string(), area: z.enum(TOPICS) })).length(49),
+  slides: z.array(z.object({ slide: z.number().int(), title: z.string(), area: z.enum(TOPICS) })),
   unreadable: z.array(z.object({ slide: z.number().int(), what: z.string() })),
+  /** slides whose content an earlier deck already covers: the facts are linked, not duplicated */
+  links: z.array(z.object({ slide: z.number().int(), facts: z.array(z.string()).min(1), note: z.string() })).default([]),
+  /** slides with nothing examinable (photographs) */
+  noFacts: z.array(z.object({ slide: z.number().int(), why: z.string() })).default([]),
   facts: z.array(FactSchema),
 })
 

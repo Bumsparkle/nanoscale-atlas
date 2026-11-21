@@ -1,0 +1,2145 @@
+{
+ "source": "ELEC0031 Topic 3, Silicon Growth and Fabrication (32 slides). Facts are paraphrased from the slides; slide = PDF page. Where a slide is wrong the fact teaches the correct statement and records the slide wording in \"corrects\".",
+ "topic": "topic3",
+ "slides": [
+  {
+   "slide": 1,
+   "title": "Title",
+   "area": "intro"
+  },
+  {
+   "slide": 2,
+   "title": "Aims",
+   "area": "intro"
+  },
+  {
+   "slide": 3,
+   "title": "Synopsis",
+   "area": "intro"
+  },
+  {
+   "slide": 4,
+   "title": "Crystal structure",
+   "area": "crystal"
+  },
+  {
+   "slide": 5,
+   "title": "Single-crystal silicon",
+   "area": "crystal"
+  },
+  {
+   "slide": 6,
+   "title": "Miller indices",
+   "area": "crystal"
+  },
+  {
+   "slide": 7,
+   "title": "Atoms and energy levels",
+   "area": "bands"
+  },
+  {
+   "slide": 8,
+   "title": "Solids and energy levels",
+   "area": "bands"
+  },
+  {
+   "slide": 9,
+   "title": "Bands vs spacing",
+   "area": "bands"
+  },
+  {
+   "slide": 10,
+   "title": "Semiconductor, insulator, conductor",
+   "area": "bands"
+  },
+  {
+   "slide": 11,
+   "title": "Intrinsic and extrinsic",
+   "area": "bands"
+  },
+  {
+   "slide": 12,
+   "title": "Dopants in silicon",
+   "area": "materials"
+  },
+  {
+   "slide": 13,
+   "title": "PN junction",
+   "area": "junction"
+  },
+  {
+   "slide": 14,
+   "title": "Diode symbol and I–V",
+   "area": "junction"
+  },
+  {
+   "slide": 15,
+   "title": "Ultra-pure silicon",
+   "area": "growth"
+  },
+  {
+   "slide": 16,
+   "title": "Czochralski growth",
+   "area": "growth"
+  },
+  {
+   "slide": 17,
+   "title": "Segregation coefficient",
+   "area": "growth"
+  },
+  {
+   "slide": 18,
+   "title": "Deriving Cs",
+   "area": "growth"
+  },
+  {
+   "slide": 19,
+   "title": "Doping along the ingot",
+   "area": "growth"
+  },
+  {
+   "slide": 20,
+   "title": "Float zone",
+   "area": "growth"
+  },
+  {
+   "slide": 21,
+   "title": "Defects in silicon",
+   "area": "defects"
+  },
+  {
+   "slide": 22,
+   "title": "Point-defect model",
+   "area": "defects"
+  },
+  {
+   "slide": 23,
+   "title": "Ingot to wafers",
+   "area": "growth"
+  },
+  {
+   "slide": 24,
+   "title": "Process flow",
+   "area": "process"
+  },
+  {
+   "slide": 25,
+   "title": "Epitaxy: CVD",
+   "area": "process"
+  },
+  {
+   "slide": 26,
+   "title": "Epitaxy: MBE",
+   "area": "process"
+  },
+  {
+   "slide": 27,
+   "title": "Thermal oxidation",
+   "area": "process"
+  },
+  {
+   "slide": 28,
+   "title": "Photolithography",
+   "area": "process"
+  },
+  {
+   "slide": 29,
+   "title": "Etching",
+   "area": "process"
+  },
+  {
+   "slide": 30,
+   "title": "Diffusion doping",
+   "area": "process"
+  },
+  {
+   "slide": 31,
+   "title": "Ion implantation",
+   "area": "process"
+  },
+  {
+   "slide": 32,
+   "title": "Metallization",
+   "area": "process"
+  }
+ ],
+ "unreadable": [
+  {
+   "slide": 14,
+   "what": "The I–V sketch labels reverse currents of −50 µA (Ge) and −20 µA (Si). These are illustrative figure values (real small-signal Si diodes leak nA or less), so they are not taught; the knee voltages are."
+  },
+  {
+   "slide": 16,
+   "what": "The four process photos carry tiny captions (\"Seed Down\", \"Seed Pulling\", \"Shoulder\"); they are legible only enlarged and are used as a sequence, not quoted."
+  },
+  {
+   "slide": 17,
+   "what": "The k0 table is a scanned image; Te (2.0×10⁻⁴), Li (1.0×10⁻²), Cu (4.0×10⁻⁴) and Au (2.5×10⁻⁵) are read but not taught, since none is a dopant used in the course."
+  }
+ ],
+ "links": [
+  {
+   "slide": 5,
+   "facts": [
+    "s04-group-iv",
+    "s04-four-bonds"
+   ],
+   "note": "Group IV and the four bonds are taught in Chapter 1 (lattice layer)."
+  },
+  {
+   "slide": 12,
+   "facts": [
+    "s05-semiconductor",
+    "s05-pure",
+    "s05-dopants",
+    "s05-group-v",
+    "s05-group-iii"
+   ],
+   "note": "n- and p-type doping are taught in Chapter 1; Topic 3 adds donors/acceptors, majority/minority carriers and the 8 orders of magnitude."
+  },
+  {
+   "slide": 13,
+   "facts": [
+    "s07-n-region",
+    "s07-p-region",
+    "s07-diffusion",
+    "s07-depleted",
+    "s07-depletion",
+    "s07-field",
+    "s07-diagram"
+   ],
+   "note": "The same PN-junction slide as Topic 2 slide 7."
+  },
+  {
+   "slide": 14,
+   "facts": [
+    "s06-diode",
+    "s06-one-way",
+    "s06-iv"
+   ],
+   "note": "Diode behaviour is taught in Chapter 1; Topic 3 adds the symbol, knee voltages and breakdown."
+  },
+  {
+   "slide": 25,
+   "facts": [
+    "s37-cvd"
+   ],
+   "note": "CVD from silane is the poly-gate step of Chapter 1."
+  },
+  {
+   "slide": 27,
+   "facts": [
+    "s30-grow",
+    "s30-temp"
+   ],
+   "note": "Growing oxide at 900–1200 °C is the first fab step of Chapter 1."
+  },
+  {
+   "slide": 28,
+   "facts": [
+    "s31-resist",
+    "s31-soften",
+    "s32-expose",
+    "s32-strip"
+   ],
+   "note": "The Chapter 1 flow uses a positive resist."
+  },
+  {
+   "slide": 29,
+   "facts": [
+    "s33-hf",
+    "s33-only"
+   ],
+   "note": "HF etching of the oxide window is taught in Chapter 1."
+  },
+  {
+   "slide": 30,
+   "facts": [
+    "s35-methods",
+    "s35-diffusion"
+   ],
+   "note": "Diffusion as one of the two n-well methods."
+  },
+  {
+   "slide": 31,
+   "facts": [
+    "s35-implant",
+    "s35-block",
+    "s41-history"
+   ],
+   "note": "Implantation and its blocking by oxide are taught in Chapter 1."
+  },
+  {
+   "slide": 32,
+   "facts": [
+    "s45-sputter"
+   ],
+   "note": "Chapter 1 sputters its aluminium; Topic 3 adds thermal evaporation."
+  }
+ ],
+ "noFacts": [],
+ "facts": [
+  {
+   "id": "t3-s01-topic",
+   "source": {
+    "topic": "topic3",
+    "slide": 1
+   },
+   "statement": "ELEC0031 Topic 3 is \"Silicon Growth and Fabrication\".",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s02-aims",
+   "source": {
+    "topic": "topic3",
+    "slide": 2
+   },
+   "statement": "The aims: the science and technology of silicon and device fabrication, the basic properties of silicon, and the fundamental steps of the fabrication process flow.",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s03-synopsis",
+   "source": {
+    "topic": "topic3",
+    "slide": 3
+   },
+   "statement": "The topic covers crystal structures; semiconductors, metals, insulators and doping; Czochralski and float-zone crystal growth; defects and point-defect modelling; and the chip fabrication process flow.",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s04-unit-cell",
+   "source": {
+    "topic": "topic3",
+    "slide": 4
+   },
+   "statement": "A crystal is characterised by a unit cell of dimension a (the distance between corner atoms) that repeats in x, y and z to fill all space.",
+   "kind": "definition",
+   "area": "crystal",
+   "key": false,
+   "objects": [
+    "fcc-a"
+   ]
+  },
+  {
+   "id": "t3-s04-basic",
+   "source": {
+    "topic": "topic3",
+    "slide": 4
+   },
+   "statement": "The three basic cubic structures: simple cubic (atoms at the corners only), body-centred cubic, BCC (plus one atom at the cube centre) and face-centred cubic, FCC (plus one atom at the centre of each face).",
+   "kind": "diagram",
+   "area": "crystal",
+   "key": true,
+   "objects": [
+    "fcc-a"
+   ]
+  },
+  {
+   "id": "t3-s05-diamond",
+   "source": {
+    "topic": "topic3",
+    "slide": 5
+   },
+   "statement": "Silicon has the diamond crystal structure: two merged FCC cells offset from each other by a/4 in x, y and z.",
+   "kind": "definition",
+   "area": "crystal",
+   "key": true,
+   "objects": [
+    "fcc-a",
+    "fcc-b",
+    "lattice-cell"
+   ]
+  },
+  {
+   "id": "t3-s05-tetra",
+   "source": {
+    "topic": "topic3",
+    "slide": 5
+   },
+   "statement": "In the diamond-structure drawing every atom is bonded to four neighbours at the corners of a tetrahedron; the atoms of the second FCC cell sit inside the cube.",
+   "kind": "diagram",
+   "area": "crystal",
+   "key": false,
+   "objects": [
+    "fcc-b"
+   ]
+  },
+  {
+   "id": "t3-s05-bond",
+   "source": {
+    "topic": "topic3",
+    "slide": 5
+   },
+   "statement": "In silicon the nearest-neighbour (bond) distance is √3·a/4 ≈ 0.235 nm for a = 0.543 nm.",
+   "kind": "number",
+   "area": "crystal",
+   "key": true,
+   "objects": [
+    "lattice-cell"
+   ],
+   "corrects": "The slide's ball-and-stick drawing labels a bond \"0,15 nm\": that is the C–C bond of diamond (carbon), not silicon."
+  },
+  {
+   "id": "t3-s05-compounds",
+   "source": {
+    "topic": "topic3",
+    "slide": 5
+   },
+   "statement": "Compound semiconductors share this kind of structure: binary (GaAs, AlP, AlAs, GaP, InSb, InP, InAs), ternary (AlGaAs, GaAsP) and quaternary (GaAlAsP).",
+   "kind": "definition",
+   "area": "crystal",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s05-table",
+   "source": {
+    "topic": "topic3",
+    "slide": 5
+   },
+   "statement": "The periodic-table extract: B, Al, Ga, In, Tl in group IIIA; C, Si, Ge, Sn, Pb in group IVA; N, P, As, Sb, Bi in group VA.",
+   "kind": "diagram",
+   "area": "crystal",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s06-miller",
+   "source": {
+    "topic": "topic3",
+    "slide": 6
+   },
+   "statement": "Miller indices (hkl) of a plane are the reciprocals of its intercepts with the x, y and z axes (in units of a), cleared to the smallest whole numbers.",
+   "kind": "rule",
+   "area": "crystal",
+   "key": true,
+   "objects": [
+    "miller-plane"
+   ]
+  },
+  {
+   "id": "t3-s06-notation",
+   "source": {
+    "topic": "topic3",
+    "slide": 6
+   },
+   "statement": "Round brackets (hkl) name a plane; square brackets [hkl] name a direction.",
+   "kind": "definition",
+   "area": "crystal",
+   "key": false,
+   "objects": [
+    "miller-plane"
+   ]
+  },
+  {
+   "id": "t3-s06-direction",
+   "source": {
+    "topic": "topic3",
+    "slide": 6
+   },
+   "statement": "A direction [hkl] is the vector with h, k and l units along x, y and z; in a cubic crystal [100] is perpendicular to the (100) plane.",
+   "kind": "rule",
+   "area": "crystal",
+   "key": true,
+   "objects": [
+    "miller-plane"
+   ]
+  },
+  {
+   "id": "t3-s06-density",
+   "source": {
+    "topic": "topic3",
+    "slide": 6
+   },
+   "statement": "Different planes have different atom densities: (111) is denser than (100).",
+   "kind": "rule",
+   "area": "crystal",
+   "key": true,
+   "objects": [
+    "miller-plane"
+   ]
+  },
+  {
+   "id": "t3-s06-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 6
+   },
+   "statement": "In the figures (100) is a cube face cutting x at a, (110) cuts x and y at a and runs parallel to z, and (111) is the triangle cutting all three axes at a.",
+   "kind": "diagram",
+   "area": "crystal",
+   "key": false,
+   "objects": [
+    "miller-plane"
+   ]
+  },
+  {
+   "id": "t3-s07-orbitals",
+   "source": {
+    "topic": "topic3",
+    "slide": 7
+   },
+   "statement": "Electrons around an isolated atom occupy s, p, d and f orbitals, each with a characteristic shape.",
+   "kind": "definition",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s07-levels",
+   "source": {
+    "topic": "topic3",
+    "slide": 7
+   },
+   "statement": "An isolated atom has discrete energy levels, rising from 1s to 2s, 2p to 3s, 3p, 3d.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s07-cloud",
+   "source": {
+    "topic": "topic3",
+    "slide": 7
+   },
+   "statement": "The electron cloud is the region around a nucleus where an electron will probably be: the \"fuzzy\" orbit of an atomic electron.",
+   "kind": "definition",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s08-solid",
+   "source": {
+    "topic": "topic3",
+    "slide": 8
+   },
+   "statement": "A solid is a collection of interacting atoms: the interaction turns each atomic level into a huge number of different levels.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s08-pauli",
+   "source": {
+    "topic": "topic3",
+    "slide": 8
+   },
+   "statement": "Pauli exclusion principle: no two electrons can occupy the same quantum state, which is why the shared levels must split.",
+   "kind": "rule",
+   "area": "bands",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide says \"no 2 electrons can have the same energy\"; the principle forbids the same quantum state (two electrons of opposite spin share each level)."
+  },
+  {
+   "id": "t3-s08-bands",
+   "source": {
+    "topic": "topic3",
+    "slide": 8
+   },
+   "statement": "The discrete levels of isolated atoms split to form bands of energy states.",
+   "kind": "definition",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s08-unique",
+   "source": {
+    "topic": "topic3",
+    "slide": 8
+   },
+   "statement": "Each different set of atoms produces a unique set of bands.",
+   "kind": "definition",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s08-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 8
+   },
+   "statement": "In the figure, as the spacing d shrinks the atom levels fan out into an occupied band (top Ev) and an unoccupied band (bottom Ec) separated by the gap Eg.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s09-far",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "At very large interatomic spacing (r = d) the atoms do not interact: the levels stay atomic.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s09-c",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "At r = c the 3s and 3p electrons of neighbouring Si atoms start to interact and their energies start changing.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s09-bc",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "Between c and b each 3s or 3p level becomes a large number of closely packed levels.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s09-b",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "At r = b the gap between the 3s and 3p bands disappears: the 8N levels are continuously distributed.",
+   "kind": "number",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s09-a",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "At the actual crystal spacing r = a, 4N filled levels are separated from 4N empty levels by the forbidden gap.",
+   "kind": "number",
+   "area": "bands",
+   "key": true,
+   "objects": [
+    "lattice-cell"
+   ]
+  },
+  {
+   "id": "t3-s09-names",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "The lower, completely filled band is the valence band; the upper, empty band is the conduction band; the separation between them is the forbidden gap.",
+   "kind": "definition",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s09-inner",
+   "source": {
+    "topic": "topic3",
+    "slide": 9
+   },
+   "statement": "In the figure the inner levels 1s², 2s² and 2p⁶ stay sharp at the crystal spacing: only the outer 3s² 3p² levels form the bands.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s10-insulator",
+   "source": {
+    "topic": "topic3",
+    "slide": 10
+   },
+   "statement": "Insulators have totally filled and totally empty bands, which allow no current (like liquid in a totally full or totally empty bottle), separated by a large gap.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s10-metal",
+   "source": {
+    "topic": "topic3",
+    "slide": 10
+   },
+   "statement": "In a metal the conduction band is only partly filled (half filled, or overlapping the valence band), so electrons can move.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s10-semi",
+   "source": {
+    "topic": "topic3",
+    "slide": 10
+   },
+   "statement": "Semiconductors have a smaller band gap than insulators and can be doped.",
+   "kind": "cause-effect",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s10-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 10
+   },
+   "statement": "The figure: in a conductor the conduction and valence bands overlap; a semiconductor has a small gap; an insulator a large gap.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s11-intrinsic",
+   "source": {
+    "topic": "topic3",
+    "slide": 11
+   },
+   "statement": "An intrinsic semiconductor (undoped, or i-type) is a pure semiconductor with no significant dopant present.",
+   "kind": "definition",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s11-extrinsic",
+   "source": {
+    "topic": "topic3",
+    "slide": 11
+   },
+   "statement": "An extrinsic semiconductor has been doped; its dominant carrier concentration makes it n-type or p-type.",
+   "kind": "definition",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s11-eg",
+   "source": {
+    "topic": "topic3",
+    "slide": 11
+   },
+   "statement": "The band gap is Eg = Ec − Ev.",
+   "kind": "rule",
+   "area": "bands",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s11-thermal",
+   "source": {
+    "topic": "topic3",
+    "slide": 11
+   },
+   "statement": "In the intrinsic diagram, electrons excited across the gap leave holes behind; the electron and hole distributions sit within about 2kBT of the band edges.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s11-field",
+   "source": {
+    "topic": "topic3",
+    "slide": 11
+   },
+   "statement": "Under an electric field, conduction-band electrons and valence-band holes drift in opposite directions.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s11-donor",
+   "source": {
+    "topic": "topic3",
+    "slide": 11
+   },
+   "statement": "In n-type material a donor level ED sits just below Ec, and the conduction-band electron population is far larger than the valence-band hole population.",
+   "kind": "diagram",
+   "area": "bands",
+   "key": false,
+   "objects": [
+    "lattice-dopant"
+   ]
+  },
+  {
+   "id": "t3-s12-dopants",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "Doping is the deliberate, carefully predetermined introduction of specially chosen impurities.",
+   "kind": "definition",
+   "area": "materials",
+   "key": false,
+   "objects": [
+    "lattice-dopant"
+   ]
+  },
+  {
+   "id": "t3-s12-orders",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "Doping can increase the conductivity of a semiconductor by up to 8 orders of magnitude.",
+   "kind": "number",
+   "area": "materials",
+   "key": true,
+   "objects": [
+    "lattice-dopant"
+   ]
+  },
+  {
+   "id": "t3-s12-donors",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "Group V atoms (P, As, Sb) are donors: easily ionised in Si, they provide extra conduction electrons, the majority carriers of n-type material.",
+   "kind": "definition",
+   "area": "materials",
+   "key": true,
+   "objects": [
+    "lattice-dopant"
+   ],
+   "corrects": "The slide lists \"Group V atoms (B, P and As)\": boron is in group III and is an acceptor."
+  },
+  {
+   "id": "t3-s12-acceptors",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "Group III atoms (B, Al, Ga, In) are acceptors: easily ionised in Si, they provide extra holes, the majority carriers of p-type material.",
+   "kind": "definition",
+   "area": "materials",
+   "key": true,
+   "objects": [
+    "lattice-dopant"
+   ]
+  },
+  {
+   "id": "t3-s12-minority",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "Any holes in n-type material, or electrons in p-type material, are minority carriers.",
+   "kind": "definition",
+   "area": "materials",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s12-p-b",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "Phosphorus is mainly used for n-type silicon processing; boron for p-type.",
+   "kind": "number",
+   "area": "materials",
+   "key": true,
+   "objects": [
+    "lattice-dopant"
+   ]
+  },
+  {
+   "id": "t3-s12-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 12
+   },
+   "statement": "In the bond diagrams an As atom gives the n-type lattice an extra electron, and a Ga atom leaves the p-type lattice with a missing electron: a hole.",
+   "kind": "diagram",
+   "area": "materials",
+   "key": false,
+   "objects": [
+    "lattice-dopant"
+   ]
+  },
+  {
+   "id": "t3-s13-nd",
+   "source": {
+    "topic": "topic3",
+    "slide": 13
+   },
+   "statement": "Near the junction the n side is depleted of electrons, exposing positive donor ions of concentration Nd; the p side exposes negative acceptor ions of concentration Na.",
+   "kind": "cause-effect",
+   "area": "junction",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide says the n side exposes \"positive donor ions of concentration Na\"; donor concentration is Nd."
+  },
+  {
+   "id": "t3-s13-metallurgical",
+   "source": {
+    "topic": "topic3",
+    "slide": 13
+   },
+   "statement": "In the figure M marks the metallurgical junction; the space-charge region extends Wp into the p side and Wn into the n side, with the field E0 pointing from n to p.",
+   "kind": "diagram",
+   "area": "junction",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s14-symbol",
+   "source": {
+    "topic": "topic3",
+    "slide": 14
+   },
+   "statement": "In the diode symbol the anode (A, +) is the p side and the cathode (K, −) the n side; conventional current flows from anode to cathode.",
+   "kind": "diagram",
+   "area": "junction",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s14-knee",
+   "source": {
+    "topic": "topic3",
+    "slide": 14
+   },
+   "statement": "Forward current rises sharply above the \"knee\": about 0.7 V for silicon, 0.3 V for germanium.",
+   "kind": "number",
+   "area": "junction",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s14-reverse",
+   "source": {
+    "topic": "topic3",
+    "slide": 14
+   },
+   "statement": "In reverse bias only a small leakage current flows until the reverse breakdown voltage, where Zener or avalanche breakdown makes the current rise steeply.",
+   "kind": "cause-effect",
+   "area": "junction",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s14-everywhere",
+   "source": {
+    "topic": "topic3",
+    "slide": 14
+   },
+   "statement": "A p-n junction is present in almost every semiconductor device.",
+   "kind": "definition",
+   "area": "junction",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s15-mgs",
+   "source": {
+    "topic": "topic3",
+    "slide": 15
+   },
+   "statement": "Step 1: metallurgical-grade silicon (MGS) is made by heating silica with carbon; overall SiO₂ + 2C → Si + 2CO.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "mg-silicon",
+    "quartz-sand"
+   ],
+   "corrects": "The slide writes C + SiO₂ → Si(l) + CO₂(g): balanced, but at arc-furnace temperatures the carbon leaves as CO."
+  },
+  {
+   "id": "t3-s15-tcs",
+   "source": {
+    "topic": "topic3",
+    "slide": 15
+   },
+   "statement": "Step 2: MG silicon is purified by reacting it with HCl into the silicon-bearing gas trichlorosilane: Si + 3HCl → SiHCl₃ + H₂ + heat.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "mg-silicon"
+   ]
+  },
+  {
+   "id": "t3-s15-siemens",
+   "source": {
+    "topic": "topic3",
+    "slide": 15
+   },
+   "statement": "Step 3, the Siemens process: SiHCl₃ and hydrogen react to deposit pure polycrystalline silicon: 2SiHCl₃ + 2H₂ → 2Si + 6HCl.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "siemens-rod"
+   ]
+  },
+  {
+   "id": "t3-s15-two",
+   "source": {
+    "topic": "topic3",
+    "slide": 15
+   },
+   "statement": "Single-crystal silicon is grown from the polysilicon by two methods: Czochralski and float zone.",
+   "kind": "definition",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "cz-ingot",
+    "fz-crystal"
+   ]
+  },
+  {
+   "id": "t3-s16-raw",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "The raw Si for crystal growth is purified from SiO₂ (sand) by refining, fractional distillation and CVD.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "quartz-sand"
+   ]
+  },
+  {
+   "id": "t3-s16-purity",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "The polysilicon contains < 1 ppb impurities, except oxygen (~10¹⁸ cm⁻³) and carbon (~10¹⁶ cm⁻³).",
+   "kind": "number",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "poly-charge"
+   ]
+  },
+  {
+   "id": "t3-s16-melt",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "The polysilicon is melted and held close to 1415 °C, silicon's melting point, and a single-crystal seed starts the growth.",
+   "kind": "number",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-melt",
+    "cz-seed"
+   ]
+  },
+  {
+   "id": "t3-s16-params",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "Pull rate, melt temperature and rotation rate are the important control parameters of Czochralski growth.",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-ingot",
+    "cz-seed"
+   ]
+  },
+  {
+   "id": "t3-s16-all",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "Essentially all silicon wafers used for ICs today come from Czochralski-grown crystals.",
+   "kind": "definition",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-ingot"
+   ]
+  },
+  {
+   "id": "t3-s16-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "The puller cutaway: crystal puller and rotation mechanism, seed, single-crystal silicon, molten polysilicon in a quartz crucible, carbon heating element, heat shield and water jacket.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "cz-crucible",
+    "cz-heater",
+    "cz-jacket",
+    "cz-melt"
+   ]
+  },
+  {
+   "id": "t3-s16-sequence",
+   "source": {
+    "topic": "topic3",
+    "slide": 16
+   },
+   "statement": "The photos: polysilicon chunks in the crucible; the seed is dipped into the melt (seed down), pulled into a thin neck (seed pulling), then widened into the shoulder.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "cz-seed"
+   ]
+  },
+  {
+   "id": "t3-s17-dopant",
+   "source": {
+    "topic": "topic3",
+    "slide": 17
+   },
+   "statement": "A known amount of dopant is added to the melt to obtain the desired doping; boron and phosphorus are the most common p- and n-type dopants.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-melt"
+   ]
+  },
+  {
+   "id": "t3-s17-k0",
+   "source": {
+    "topic": "topic3",
+    "slide": 17
+   },
+   "statement": "The equilibrium segregation coefficient is k0 = Cs/CL: the dopant concentration in the solid over that in the liquid.",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-ingot"
+   ]
+  },
+  {
+   "id": "t3-s17-table",
+   "source": {
+    "topic": "topic3",
+    "slide": 17
+   },
+   "statement": "Segregation coefficients in Si: B 0.8, P 0.35, As 0.3, Sb 0.023, Ga 0.008, Al 0.002, In 4×10⁻⁴, C 0.07, and O 1.25.",
+   "kind": "number",
+   "area": "growth",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s17-less",
+   "source": {
+    "topic": "topic3",
+    "slide": 17
+   },
+   "statement": "Most k0 < 1, so dopants prefer to stay in the liquid: as the crystal is pulled the melt gets richer in dopant and Cs increases.",
+   "kind": "cause-effect",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-ingot",
+    "cz-melt"
+   ]
+  },
+  {
+   "id": "t3-s17-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 17
+   },
+   "statement": "In the puller schematic the seed holder turns one way (CCW) and the crucible the other (CW); argon flows in; RF coils heat a graphite susceptor holding the fused-silica crucible.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "cz-crucible",
+    "cz-seed"
+   ]
+  },
+  {
+   "id": "t3-s18-defs",
+   "source": {
+    "topic": "topic3",
+    "slide": 18
+   },
+   "statement": "M0 is the initial melt weight, C0 the initial melt doping (dopant weight per gram of melt), S the dopant left in the melt and M the weight of crystal grown.",
+   "kind": "definition",
+   "area": "growth",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s18-ds",
+   "source": {
+    "topic": "topic3",
+    "slide": 18
+   },
+   "statement": "Growing dM of crystal removes −dS = Cs·dM of dopant from the melt.",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s18-cl",
+   "source": {
+    "topic": "topic3",
+    "slide": 18
+   },
+   "statement": "The melt concentration is CL = S/(M0 − M).",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-melt"
+   ]
+  },
+  {
+   "id": "t3-s18-eq3",
+   "source": {
+    "topic": "topic3",
+    "slide": 18
+   },
+   "statement": "With Cs = k0·CL these combine to dS/S = −k0·dM/(M0 − M).",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s19-scheil",
+   "source": {
+    "topic": "topic3",
+    "slide": 19
+   },
+   "statement": "Integrating from C0M0 gives Cs = k0·C0·(1 − M/M0)^(k0 − 1).",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-ingot"
+   ]
+  },
+  {
+   "id": "t3-s19-start",
+   "source": {
+    "topic": "topic3",
+    "slide": 19
+   },
+   "statement": "The first crystal to freeze (M = 0) has Cs = k0·C0.",
+   "kind": "rule",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-seed"
+   ],
+   "corrects": "The slide says the composition starts \"at K0M0\"; it starts at k0·C0."
+  },
+  {
+   "id": "t3-s19-trend",
+   "source": {
+    "topic": "topic3",
+    "slide": 19
+   },
+   "statement": "Cs increases continually along the ingot when k0 < 1 and decreases continually when k0 > 1.",
+   "kind": "cause-effect",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "cz-ingot"
+   ]
+  },
+  {
+   "id": "t3-s19-uniform",
+   "source": {
+    "topic": "topic3",
+    "slide": 19
+   },
+   "statement": "The doping is most uniform for k0 close to 1, e.g. boron with k0 = 0.8.",
+   "kind": "cause-effect",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "cz-ingot"
+   ]
+  },
+  {
+   "id": "t3-s19-graph",
+   "source": {
+    "topic": "topic3",
+    "slide": 19
+   },
+   "statement": "The graph of Cs/C0 against fraction solidified: boron starts at 0.8 and stays near 1; P and As start near 0.3 and climb steeply at the end; Sb starts near 0.02.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s20-fz",
+   "source": {
+    "topic": "topic3",
+    "slide": 20
+   },
+   "statement": "The float-zone process is an alternative growth process that can be used for refining or for single-crystal growth.",
+   "kind": "definition",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "fz-zone"
+   ]
+  },
+  {
+   "id": "t3-s20-refine",
+   "source": {
+    "topic": "topic3",
+    "slide": 20
+   },
+   "statement": "In float zone, dopants and other impurities tend to stay in the liquid, so the moving zone refines the rod, especially with multiple passes.",
+   "kind": "cause-effect",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "fz-zone"
+   ]
+  },
+  {
+   "id": "t3-s20-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 20
+   },
+   "statement": "Float zone: a polycrystalline rod held in chucks; a travelling RF coil melts a molten zone; single-crystal material grows above a seed below; inert gas flows through.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "fz-coil",
+    "fz-rod",
+    "fz-crystal"
+   ]
+  },
+  {
+   "id": "t3-s21-types",
+   "source": {
+    "topic": "topic3",
+    "slide": 21
+   },
+   "statement": "Crystal defects: vacancy (V), interstitial (I), dislocation, stacking fault (an extra plane of atoms) and precipitate.",
+   "kind": "definition",
+   "area": "defects",
+   "key": true,
+   "objects": [
+    "vacancy",
+    "interstitial"
+   ]
+  },
+  {
+   "id": "t3-s21-bad",
+   "source": {
+    "topic": "topic3",
+    "slide": 21
+   },
+   "statement": "Defects can exist in the crystal or be created by processing steps; in general they are detrimental to device processing.",
+   "kind": "cause-effect",
+   "area": "defects",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s21-point",
+   "source": {
+    "topic": "topic3",
+    "slide": 21
+   },
+   "statement": "Point defects (vacancies and interstitials) play a fundamental role in many process technologies.",
+   "kind": "cause-effect",
+   "area": "defects",
+   "key": false,
+   "objects": [
+    "vacancy",
+    "interstitial"
+   ]
+  },
+  {
+   "id": "t3-s21-impurity",
+   "source": {
+    "topic": "topic3",
+    "slide": 21
+   },
+   "statement": "An interstitial impurity is a foreign atom between lattice sites; in a compound lattice a missing ion is a cation or an anion vacancy.",
+   "kind": "diagram",
+   "area": "defects",
+   "key": false,
+   "objects": [
+    "interstitial"
+   ]
+  },
+  {
+   "id": "t3-s22-free",
+   "source": {
+    "topic": "topic3",
+    "slide": 22
+   },
+   "statement": "The free energy of the crystal is minimised when a finite concentration of point defects exists.",
+   "kind": "cause-effect",
+   "area": "defects",
+   "key": false,
+   "objects": [
+    "vacancy"
+   ]
+  },
+  {
+   "id": "t3-s22-unequal",
+   "source": {
+    "topic": "topic3",
+    "slide": 22
+   },
+   "statement": "In general CI0* ≠ CV0*, and both are strong functions of temperature.",
+   "kind": "cause-effect",
+   "area": "defects",
+   "key": false,
+   "objects": [
+    "vacancy",
+    "interstitial"
+   ]
+  },
+  {
+   "id": "t3-s22-kinetics",
+   "source": {
+    "topic": "topic3",
+    "slide": 22
+   },
+   "statement": "Kinetics, rather than thermodynamics, may determine the defect concentration in a wafer.",
+   "kind": "cause-effect",
+   "area": "defects",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s22-ci",
+   "source": {
+    "topic": "topic3",
+    "slide": 22
+   },
+   "statement": "Equilibrium interstitials: CI0* ≈ 1×10²⁷ exp(−3.8 eV/kT) cm⁻³.",
+   "kind": "rule",
+   "area": "defects",
+   "key": true,
+   "objects": [
+    "interstitial"
+   ]
+  },
+  {
+   "id": "t3-s22-cv",
+   "source": {
+    "topic": "topic3",
+    "slide": 22
+   },
+   "statement": "Equilibrium vacancies: CV0* ≈ 9×10²³ exp(−2.6 eV/kT) cm⁻³.",
+   "kind": "rule",
+   "area": "defects",
+   "key": true,
+   "objects": [
+    "vacancy"
+   ]
+  },
+  {
+   "id": "t3-s22-values",
+   "source": {
+    "topic": "topic3",
+    "slide": 22
+   },
+   "statement": "These give CI0* and CV0* ≈ 0 at room temperature and 10¹²–10¹⁴ cm⁻³ at 1000 °C, too small to measure.",
+   "kind": "number",
+   "area": "defects",
+   "key": true,
+   "objects": [
+    "vacancy",
+    "interstitial"
+   ]
+  },
+  {
+   "id": "t3-s23-grind",
+   "source": {
+    "topic": "topic3",
+    "slide": 23
+   },
+   "statement": "From ingot to wafers: the ingot is prepared for grinding, ground to diameter, then a flat is ground along it to mark the crystal orientation.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "ingot-ground"
+   ]
+  },
+  {
+   "id": "t3-s23-saw",
+   "source": {
+    "topic": "topic3",
+    "slide": 23
+   },
+   "statement": "An internal-diameter wafer saw slices the ingot into wafers.",
+   "kind": "process-step",
+   "area": "growth",
+   "key": true,
+   "objects": [
+    "id-saw"
+   ]
+  },
+  {
+   "id": "t3-s23-notch",
+   "source": {
+    "topic": "topic3",
+    "slide": 23
+   },
+   "statement": "The finished wafer has a notch and a scribed identification number.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "wafer-id"
+   ]
+  },
+  {
+   "id": "t3-s23-batch",
+   "source": {
+    "topic": "topic3",
+    "slide": 23
+   },
+   "statement": "Sliced wafers are loaded into a carrier for batch processing in a chemical bath.",
+   "kind": "diagram",
+   "area": "growth",
+   "key": false,
+   "objects": [
+    "wafer-cassette"
+   ]
+  },
+  {
+   "id": "t3-s24-flow",
+   "source": {
+    "topic": "topic3",
+    "slide": 24
+   },
+   "statement": "The wafer-fab flow: silicon wafer manufacture → epitaxial growth → oxidation → photolithography → etching, then diffusion or implantation, metallization, or packaging.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s24-loop",
+   "source": {
+    "topic": "topic3",
+    "slide": 24
+   },
+   "statement": "Oxidation, lithography and etching repeat for every layer: after diffusion/implantation the flow returns to epitaxy or oxidation, and after metallization to oxidation, until the chip is packaged.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s24-epiready",
+   "source": {
+    "topic": "topic3",
+    "slide": 24
+   },
+   "statement": "Wafers arrive from the wafer manufacturer \"epi-ready\".",
+   "kind": "definition",
+   "area": "process",
+   "key": false,
+   "objects": [
+    "wafer-slice"
+   ]
+  },
+  {
+   "id": "t3-s25-cvd",
+   "source": {
+    "topic": "topic3",
+    "slide": 25
+   },
+   "statement": "Epitaxial Si is grown by CVD at a high temperature, 950–1150 °C, for perfect crystallinity.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s25-precursor",
+   "source": {
+    "topic": "topic3",
+    "slide": 25
+   },
+   "statement": "In CVD epitaxy, gas precursors (typically SiH₄) carry Si to the hot substrate and decompose on contact; the Si remains and the residual gases are pumped away.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s25-use",
+   "source": {
+    "topic": "topic3",
+    "slide": 25
+   },
+   "statement": "Epitaxy is used for lightly doped layers on more heavily doped substrates.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s25-conditions",
+   "source": {
+    "topic": "topic3",
+    "slide": 25
+   },
+   "statement": "CVD epitaxy operates below the Si melting point and needs an ultraclean surface, with in-situ cleaning.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s25-steps",
+   "source": {
+    "topic": "topic3",
+    "slide": 25
+   },
+   "statement": "The CVD diagram: transport to the surface, adsorption of the film precursor, surface diffusion and reactions, nucleation and island growth, step growth, and desorption of volatile products.",
+   "kind": "diagram",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s26-mbe",
+   "source": {
+    "topic": "topic3",
+    "slide": 26
+   },
+   "statement": "Molecular beam epitaxy (MBE) is an ultra-high-vacuum system with a background pressure of 10⁻¹¹ Torr.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s26-rheed",
+   "source": {
+    "topic": "topic3",
+    "slide": 26
+   },
+   "statement": "RHEED gives in-situ monitoring of MBE growth.",
+   "kind": "definition",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s26-rate",
+   "source": {
+    "topic": "topic3",
+    "slide": 26
+   },
+   "statement": "The MBE growth rate is about 1000 nm per hour.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s26-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 26
+   },
+   "statement": "The MBE chamber: effusion cells aimed at the substrate, a RHEED gun, a mass spectrometer, an LN₂ cryopanel and the vacuum pump; new growth continues the substrate's crystal.",
+   "kind": "diagram",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s27-reactions",
+   "source": {
+    "topic": "topic3",
+    "slide": 27
+   },
+   "statement": "Thermal oxidation: Si + O₂ → SiO₂ (dry) and Si + 2H₂O → SiO₂ + 2H₂ (wet).",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s27-interface",
+   "source": {
+    "topic": "topic3",
+    "slide": 27
+   },
+   "statement": "O₂ or H₂O diffuses through the existing SiO₂ and reacts with Si at the interface to form more SiO₂.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "mask-oxide"
+   ]
+  },
+  {
+   "id": "t3-s27-consume",
+   "source": {
+    "topic": "topic3",
+    "slide": 27
+   },
+   "statement": "Forming 1 µm of SiO₂ consumes 0.44 µm of the Si substrate.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "mask-oxide"
+   ]
+  },
+  {
+   "id": "t3-s27-dry",
+   "source": {
+    "topic": "topic3",
+    "slide": 27
+   },
+   "statement": "Dry oxidation (O₂) grows thin oxides, such as the gate oxide.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "gate-oxide"
+   ]
+  },
+  {
+   "id": "t3-s27-wet",
+   "source": {
+    "topic": "topic3",
+    "slide": 27
+   },
+   "statement": "Wet oxidation (water) grows thick oxides.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "field-oxide"
+   ]
+  },
+  {
+   "id": "t3-s27-slows",
+   "source": {
+    "topic": "topic3",
+    "slide": 27
+   },
+   "statement": "Oxide growth slows as the oxide thickens (Deal–Grove model): thickness ∝ t at first, then ∝ √t.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s28-resist",
+   "source": {
+    "topic": "topic3",
+    "slide": 28
+   },
+   "statement": "Photoresists are polymer resins containing a photoactive (light-sensitive) compound and an alkaline-soluble resin.",
+   "kind": "definition",
+   "area": "process",
+   "key": false,
+   "objects": [
+    "photoresist"
+   ]
+  },
+  {
+   "id": "t3-s28-uv",
+   "source": {
+    "topic": "topic3",
+    "slide": 28
+   },
+   "statement": "Sensitivity to radiation (ultraviolet light) is the key property of materials used to image IC features.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": false,
+   "objects": [
+    "photoresist"
+   ]
+  },
+  {
+   "id": "t3-s28-negative",
+   "source": {
+    "topic": "topic3",
+    "slide": 28
+   },
+   "statement": "Negative resists are hardened by the exposure light.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "photoresist"
+   ]
+  },
+  {
+   "id": "t3-s28-positive",
+   "source": {
+    "topic": "topic3",
+    "slide": 28
+   },
+   "statement": "Positive resists are softened by the exposure light.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "photoresist"
+   ]
+  },
+  {
+   "id": "t3-s28-develop",
+   "source": {
+    "topic": "topic3",
+    "slide": 28
+   },
+   "statement": "Developing dissolves the soluble resist: the exposed areas of a positive resist, or the unexposed areas of a negative resist.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "photoresist"
+   ],
+   "corrects": "The slide says exposure \"selectively polymerizes\" the resist and develop \"dissolves the unpolymerized resist\": true of negative resists only. In positive resists the light breaks down the photoactive compound and the exposed resist dissolves."
+  },
+  {
+   "id": "t3-s28-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 28
+   },
+   "statement": "Through the same mask, positive resist leaves a copy of the opaque pattern (an SiO₂ island after etching) and negative resist leaves its inverse (a window in the SiO₂).",
+   "kind": "diagram",
+   "area": "process",
+   "key": true,
+   "objects": [
+    "photoresist"
+   ]
+  },
+  {
+   "id": "t3-s29-selectivity",
+   "source": {
+    "topic": "topic3",
+    "slide": 29
+   },
+   "statement": "Etches need high selectivity: HF solution attacks SiO₂ but not Si.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": false,
+   "objects": [
+    "mask-oxide"
+   ]
+  },
+  {
+   "id": "t3-s29-isotropic",
+   "source": {
+    "topic": "topic3",
+    "slide": 29
+   },
+   "statement": "Isotropic (mainly chemical, wet) etching removes material sideways at about the same rate as downwards, undercutting the mask.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s29-size",
+   "source": {
+    "topic": "topic3",
+    "slide": 29
+   },
+   "statement": "Undercut is insignificant for large features but becomes a serious problem when the feature size approaches the etch depth.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s29-anisotropic",
+   "source": {
+    "topic": "topic3",
+    "slide": 29
+   },
+   "statement": "Anisotropic (mainly physical, e.g. sputtering) etching gives better pattern transfer and is used in all modern etch processes.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s29-dry",
+   "source": {
+    "topic": "topic3",
+    "slide": 29
+   },
+   "statement": "Anisotropic etching needs dry etching with plasmas, e.g. reactive ion etching (RIE), instead of liquid acids.",
+   "kind": "definition",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s29-diagram",
+   "source": {
+    "topic": "topic3",
+    "slide": 29
+   },
+   "statement": "The etch figure: (a) a wide line with a curved undercut, (b) a narrow line almost cut through, (c) a line with vertical walls.",
+   "kind": "diagram",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s30-predep",
+   "source": {
+    "topic": "topic3",
+    "slide": 30
+   },
+   "statement": "Predeposition introduces the dopant: 2B₂O₃ + 3Si → 3SiO₂ + 4B, or 2P₂O₅ + 5Si → 5SiO₂ + 4P.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s30-furnace",
+   "source": {
+    "topic": "topic3",
+    "slide": 30
+   },
+   "statement": "Predeposition takes place in a quartz tube inside heating coils, with an inert carrier gas and the dopant flowing over the wafers.",
+   "kind": "diagram",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s30-drive",
+   "source": {
+    "topic": "topic3",
+    "slide": 30
+   },
+   "statement": "Drive-in spreads out the doping profile.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s30-temp",
+   "source": {
+    "topic": "topic3",
+    "slide": 30
+   },
+   "statement": "Diffusion doping runs at 950–1200 °C.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s30-arrhenius",
+   "source": {
+    "topic": "topic3",
+    "slide": 30
+   },
+   "statement": "D = D0·exp(−Q/kT), where D is the diffusion constant, Q the activation energy and T the temperature in K.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s30-profile",
+   "source": {
+    "topic": "topic3",
+    "slide": 30
+   },
+   "statement": "Through an oxide window the dopant spreads down and sideways under the oxide edge; the 10²¹, 10¹⁹ and 10¹⁶ cm⁻³ contours lie progressively deeper and wider.",
+   "kind": "diagram",
+   "area": "process",
+   "key": false,
+   "objects": [
+    "mask-oxide"
+   ]
+  },
+  {
+   "id": "t3-s31-implant",
+   "source": {
+    "topic": "topic3",
+    "slide": 31
+   },
+   "statement": "Ion implantation: ions from an ion source are accelerated by a high voltage into a beam aimed at the Si wafer.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s31-energy",
+   "source": {
+    "topic": "topic3",
+    "slide": 31
+   },
+   "statement": "Ion energies range from about 1 keV to 200 keV.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s31-room",
+   "source": {
+    "topic": "topic3",
+    "slide": 31
+   },
+   "statement": "The wafer is at room temperature during implantation.",
+   "kind": "number",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s31-anneal",
+   "source": {
+    "topic": "topic3",
+    "slide": 31
+   },
+   "statement": "After implantation a 900–1000 °C anneal is needed to activate the dopants and restore the Si crystallinity.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s31-control",
+   "source": {
+    "topic": "topic3",
+    "slide": 31
+   },
+   "statement": "Implantation precisely controls the amount of dopant introduced and its depth below the surface.",
+   "kind": "cause-effect",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s31-essential",
+   "source": {
+    "topic": "topic3",
+    "slide": 31
+   },
+   "statement": "Ion implanters are essential to modern IC manufacturing.",
+   "kind": "definition",
+   "area": "process",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t3-s32-metallization",
+   "source": {
+    "topic": "topic3",
+    "slide": 32
+   },
+   "statement": "Metallization connects the fabricated devices together to perform circuit functions.",
+   "kind": "definition",
+   "area": "process",
+   "key": false,
+   "objects": [
+    "metal-y"
+   ]
+  },
+  {
+   "id": "t3-s32-evaporation",
+   "source": {
+    "topic": "topic3",
+    "slide": 32
+   },
+   "statement": "Thermal evaporation: a solid such as a pure metal is heated until it vaporises, then recondenses on a cooler substrate as a thin film.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s32-filament",
+   "source": {
+    "topic": "topic3",
+    "slide": 32
+   },
+   "statement": "The heating is done by passing a large current through a resistive filament container shaped as a basket, boat or crucible.",
+   "kind": "process-step",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s32-choice",
+   "source": {
+    "topic": "topic3",
+    "slide": 32
+   },
+   "statement": "The filament material is chosen for the evaporation temperature and for its inertness to alloying or reaction with the evaporant.",
+   "kind": "rule",
+   "area": "process",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t3-s32-vacuum",
+   "source": {
+    "topic": "topic3",
+    "slide": 32
+   },
+   "statement": "In the evaporator the hot source sits inside a vacuum chamber with the substrates held above it, facing the metal vapour.",
+   "kind": "diagram",
+   "area": "process",
+   "key": false,
+   "objects": []
+  }
+ ]
+}

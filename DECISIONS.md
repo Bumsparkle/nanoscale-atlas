@@ -229,3 +229,37 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
   - Generated with `tauri signer generate`, with a random password.
   - The private key and password live only in `~/.tauri/` (mode 600) and in the repository's Actions secrets `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`. They are never committed.
   - The public key is in `tauri.conf.json`.
+
+## Topics 3 and 4: fact inventories (2026-11-21)
+
+- **Two new inventories**, in the Topic 2 format: `content/topic3/facts.json` (Topic 3, *Silicon Growth and Fabrication*, 32 slides) and `content/topic4/facts.json` (Topic 4, *Cleaning and Cleanrooms*, 21 slides). Ids carry the deck: `t3-s17-k0`, `t4-s11-sc1`. Sources stay `{topic, slide}` (`T3(n)`, `T4(n)`), so the Source button reads "Topic 3 · slide 17".
+- **Counts.** Topic 3: 142 facts, 81 key. Topic 4: 96 facts, 63 key. Every slide has a fact, a link to a Topic 2 fact, or a stated reason it has none (`src/learn/facts.test.ts`).
+- **Overlap with Topic 2 is linked, not duplicated.** Topic 3 repeats parts of Topic 2 (dopants, the PN-junction slide, oxidation, lithography, HF etching, diffusion and implantation). Each inventory has a `links` list naming the Topic 2 facts a slide repeats (e.g. Topic 3 slide 13 → `s07-depletion`, `s07-field`, …). Only what is new becomes a Topic 3 fact: donors/acceptors and majority/minority carriers, the knee voltages, dry vs wet oxidation and the 0.44 consumption, positive vs negative resist, isotropic vs anisotropic etch, predeposition and drive-in, the implant anneal, thermal evaporation. The tests check every link points at a real Topic 2 fact.
+- **Slides with nothing examinable:** Topic 4 slides 3 and 5 are photographs (a cleanroom corridor; the EEE MBE system). They are listed in `noFacts`. Slide 4 (LCN photos) gives one fact: lithography bays are lit with yellow light.
+- **Partly unreadable or deliberately not taught** (listed in each file's `unreadable`): Topic 3 slide 14's reverse currents (−50 µA Ge, −20 µA Si) are illustrative figure values, not real leakages, so only the knee voltages are taught; slide 16's photo captions; slide 17's k0 values for Te, Li, Cu and Au (read, not taught). Topic 4 slide 13's diffusivity lines are taught as an ordering, not numbers; slide 14's cycle temperatures and slide 17's chip sizes are read off the axes as approximate.
+- **Fewer key facts than kinds would suggest.** Numbers, process steps and rules are always key (tested). Definitions, cause→effect statements and diagram readings are key only when they are central to the topic (e.g. the diamond structure, the three resist/etch distinctions, clustering), so "key facts at least twice" stays meaningful.
+
+### Slide errors corrected (each fact has a `corrects` field with the slide's wording)
+
+| Deck · slide | The slide says | The Atlas teaches |
+|---|---|---|
+| T3 · 5 | Ball-and-stick drawing labels the bond "0,15 nm" | That is the C–C bond of diamond; Si's bond length is √3a/4 ≈ 0.235 nm |
+| T3 · 8 | "No 2 electrons can have the same energy (Pauli)" | No two electrons can occupy the same quantum state (two of opposite spin share a level) |
+| T3 · 12 | "Group V atoms (B, P and As) called donors" | Donors are group V (P, As, Sb); boron is group III, an acceptor |
+| T3 · 13 | n side exposes "positive donor ions of concentration Na" | Donor concentration is Nd (acceptors are Na) |
+| T3 · 15 | Step 1: C + SiO₂ → Si + CO₂ | Overall SiO₂ + 2C → Si + 2CO: at arc-furnace temperatures the carbon leaves as CO |
+| T3 · 19 | "the composition initially at K0M0" | The first crystal has Cs = k0·C0 |
+| T3 · 28 | Expose "selectively polymerizes"; develop "dissolves the unpolymerized resist" | True only of negative resist. Developing removes whatever is soluble: exposed positive resist, unexposed negative resist |
+| T4 · 10 | SC2 removes "Mg³⁺" | Magnesium forms Mg²⁺ |
+| T4 · 10 | "Ultrasonic and now megasonic cleaning … (20–50 kHz)" | 20–50 kHz is ultrasonic; megasonic runs near 1 MHz (Kern, *Handbook of Semiconductor Wafer Cleaning Technology*) |
+| T4 · 19 | O₂/H₂O: 2H₂O ⇌ O₂ + 4H⁺ + 2e⁻ | Four electrons: 2H₂O ⇌ O₂ + 4H⁺ + 4e⁻ |
+
+`facts.test.ts` asserts the correct versions and that no statement repeats a corrected error.
+
+### Read as the lecture gives it (not errors)
+
+- **T3 slide 16, "close to 1415 °C".** Silicon melts at 1414 °C; the slide's round figure is kept, with the melting point named.
+- **T3 slide 10, "metal conduction band is half filled".** True for alkali metals; the figure shows overlapping bands instead. The fact states both ("half filled, or overlapping").
+- **T4 slide 19 potentials.** Some values differ from modern standard tables by up to ~0.2 V (Fe³⁺/Fe 0.17, Mn²⁺/Mn 1.05). The ordering, which is what the slide argues from, is the same, so the lecture's numbers are taught.
+- **Cleanroom classes.** Slide 2 says particles per cubic metre, slide 7 per cubic foot ≥ 0.5 µm. Both are used: the class number is the US FED-STD-209 per-ft³ count (slide 7).
+- **Slide images.** `npm run slides` now renders every deck found in `docs/` (gitignored) into `private/slides/<topic>/` (gitignored) and packs `private/slides-all.tar.gz`. To show Topic 3 and 4 slides on the deployed site, that archive replaces the Topic 2 one in the private release.

@@ -555,3 +555,11 @@ Checked after publishing:
 - it has no slide or PDF paths.
 
 The in-app update offer can only be seen once a v0.2.1 or later exists.
+
+### Topics 3 and 4 · Step 1: fact inventories — done (2026-11-21)
+
+- `content/topic3/facts.json`: 142 facts (81 key) over 32 slides; 7 slide errors corrected; 11 slides linked to the Topic 2 facts they repeat.
+- `content/topic4/facts.json`: 96 facts (63 key) over 21 slides; 3 slide errors corrected; slides 3 and 5 are photographs with nothing examinable.
+- Every slide was read in full, including the images (Topic 4's periodic table on slide 12 and the redox table on slide 19, the k0 table, the yield graphs). The corrections and the partly unreadable figures are listed in DECISIONS.md.
+- The schema now accepts `t3-`/`t4-` ids, a `corrects` field, `links` and `noFacts`. `src/learn/facts.test.ts` checks slide coverage, ids, key rules, links and that no corrected error is taught.
+- `npm run slides` renders all three decks into the gitignored `private/slides/`.
