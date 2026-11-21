@@ -11,6 +11,8 @@ export function App() {
   const page = useAtlas((s) => s.page)
   const view = useAtlas((s) => s.view)
   const layer = useAtlas((s) => s.layer)
+  const quiz = useAtlas((s) => s.quiz)
+  const mode = useAtlas((s) => s.mode)
   useEffect(() => startUrlSync(), [])
   // on the door page, the three.js shell loads only after the door has painted
   // and the main thread is idle; deep links load it immediately
@@ -26,7 +28,9 @@ export function App() {
   useEffect(() => {
     document.documentElement.dataset.view = layer === 'cell' ? view : 'explore'
     document.documentElement.dataset.layer = layer
-  }, [view, layer])
+    document.documentElement.dataset.quiz = quiz ? '1' : '0'
+    document.documentElement.dataset.mode = mode
+  }, [view, layer, quiz, mode])
   return (
     <>
       {page !== 'style' && shellReady && (

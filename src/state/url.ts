@@ -9,7 +9,8 @@ import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } fr
  * else replaces. Free camera orbiting never touches the URL.
  */
 
-type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers'> & {
+type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers' | 'mode' | 'chunk'> & {
+  rv: 'drill' | 'coverage' | 'exam'
   cut: CutTarget | number | null
   cutAxis: 'x' | 'y'
 }
@@ -49,6 +50,11 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
   const a = q.get('a')
   const b = q.get('b')
   out.inputs = { a: a === '1' ? 1 : 0, b: b === '1' ? 1 : 0 }
+  const mode = q.get('mode')
+  out.mode = mode === 'lesson' || mode === 'revise' ? mode : 'explore'
+  out.chunk = q.get('chunk')
+  const rv = q.get('rv')
+  if (rv === 'coverage' || rv === 'exam' || rv === 'drill') out.rv = rv
   const layers = q.get('layers')
   if (layers != null) out.layoutLayers = layers.split(',').map((l) => FROM_URL_LAYER[l.trim()]).filter(Boolean)
   const vg = q.get('vg')
@@ -80,6 +86,9 @@ export function buildUrl(s: AtlasState): string {
   if (s.view === 'layout' && s.layer === 'cell' && s.layoutLayers.length !== MASK_IDS.length)
     q.set('layers', MASK_IDS.filter((m) => s.layoutLayers.includes(m)).map((m) => URL_LAYER[m]).join(','))
   if (s.focus) q.set('focus', s.focus)
+  if (s.mode !== 'explore') q.set('mode', s.mode)
+  if (s.mode === 'lesson' && s.chunk) q.set('chunk', s.chunk)
+  if (s.mode === 'revise' && s.revise.tab !== 'drill') q.set('rv', s.revise.tab)
   if (BOOT.forceWebGL) q.set('gl', 'webgl')
   if (BOOT.shots) q.set('shots', '1')
   const qs = q.toString()
@@ -98,6 +107,9 @@ export function applyUrl(loc: { pathname: string; search: string }) {
   if (p.step != null) patch.step = p.step
   if (p.inputs) patch.inputs = p.inputs
   if (p.vg != null) patch.vg = p.vg
+  if (p.mode) patch.mode = p.mode
+  if (p.chunk !== undefined && p.page === 'atlas') patch.chunk = p.chunk
+  if (p.rv) patch.revise = { ...st.revise, tab: p.rv }
   if (p.layoutLayers) patch.layoutLayers = p.layoutLayers
   else if (p.page === 'atlas') patch.layoutLayers = [...MASK_IDS]
   st.set(patch)

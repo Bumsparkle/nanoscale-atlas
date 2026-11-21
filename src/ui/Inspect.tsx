@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { CONTENT, CONTENT_BY_ID } from '../chapters/cmos/content'
 import { LAYER_BY_ID } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
+import { objectMastery } from '../learn/progress'
 
 const FAB_ONLY = new Set(['aluminium-film', 'photoresist', 'mask-oxide'])
 
@@ -22,7 +23,8 @@ export function HoverLabel() {
     window.addEventListener('pointermove', move)
     return () => window.removeEventListener('pointermove', move)
   }, [])
-  const c = hover && hover !== focus && overCanvas ? CONTENT_BY_ID[hover] : null
+  const quiz = useAtlas((s) => s.quiz)
+  const c = hover && hover !== focus && overCanvas && !quiz ? CONTENT_BY_ID[hover] : null
   return (
     <div ref={el} className="hover-label" style={{ visibility: c ? 'visible' : 'hidden' }} aria-hidden>
       {c && (
@@ -47,7 +49,10 @@ export function SceneOutline() {
   const set = useAtlas((s) => s.set)
   const [open, setOpen] = useState(false)
   const items = CONTENT.filter((c) => c.layer === layer && (view === 'fab' || !FAB_ONLY.has(c.id)))
-  if (view === 'layout') return null
+  const mode = useAtlas((s) => s.mode)
+  const mastery = useAtlas((s) => s.mastery)
+  useAtlas((s) => s.progressVersion)
+  if (view === 'layout' || mode !== 'explore') return null
   if (!items.length) return null
   const def = LAYER_BY_ID[layer]
   return (
@@ -67,6 +72,7 @@ export function SceneOutline() {
               onClick={() => set({ focus: c.id })}
             >
               {c.title}
+              {mastery && <MasteryDot id={c.id} />}
             </button>
             <span id={`d-${c.id}`} className="sr-only">
               {c.short}
@@ -76,4 +82,11 @@ export function SceneOutline() {
       </ul>
     </nav>
   )
+}
+
+/** small mastery marker used in the parts list when the overlay is on */
+function MasteryDot({ id }: { id: string }) {
+  const m = objectMastery(id)
+  if (!m) return null
+  return <i className={'mdot mdot-' + m.level} title={`${m.level} · ${Math.round(m.score * 100)} %`} aria-label={`mastery ${m.level}`} />
 }

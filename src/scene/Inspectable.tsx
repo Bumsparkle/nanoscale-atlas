@@ -61,7 +61,8 @@ export function InspectSync() {
   useEffect(() => {
     const refresh = () => {
       const st = useAtlas.getState()
-      selection.set('hover', st.hover && st.hover !== st.focus ? meshesOf(st.hover) : [])
+      const hov = st.hover && st.hover !== st.focus ? meshesOf(st.hover) : []
+      selection.set('hover', st.hint ? [...hov, ...meshesOf(st.hint)] : hov)
       selection.set('focus', meshesOf(st.focus))
     }
     const focus = (id: string) => {
@@ -72,9 +73,12 @@ export function InspectSync() {
       rig.focusBox(box, camera.fov, size.width / size.height, { padding: g.userData.fit ?? 1.5, minDist: g.userData.minDist })
     }
     const unsub = useAtlas.subscribe((s, p) => {
-      if (s.hover !== p.hover || s.focus !== p.focus) refresh()
+      if (s.hover !== p.hover || s.focus !== p.focus || s.hint !== p.hint) refresh()
+      if (s.look !== p.look && s.look && registry.has(s.look)) focus(s.look)
       if (s.focus !== p.focus) {
-        if (s.focus && CONTENT_BY_ID[s.focus] && registry.has(s.focus)) focus(s.focus)
+        if (s.quiz || p.quiz) {
+          /* answering a question: keep the framing */
+        } else if (s.focus && CONTENT_BY_ID[s.focus] && registry.has(s.focus)) focus(s.focus)
         else if (!s.focus && p.focus) rig.goHome()
       }
     })

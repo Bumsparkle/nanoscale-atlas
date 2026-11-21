@@ -5,7 +5,7 @@ import { CONTENT_BY_ID } from '../chapters/cmos/content'
 import { BOUNDS, layoutState, MASK_IDS, MASK_NAME, moveEdge, transistors, URL_LAYER, type MaskId, type Side } from '../chapters/cmos/layout'
 import { checkLayout, checksForEdge, describe, RULE_LABEL, type EdgeRef, type RuleCheck } from '../chapters/cmos/rules'
 import { LAMBDA_NM } from '../chapters/cmos/masks'
-import { layoutFrame, toLayout, toScreen, type LayoutFrame } from './layoutFrame'
+import { layoutFrame, toLayout, toScreen, LEARN_PANEL_W, type LayoutFrame } from './layoutFrame'
 import { ContentBody } from './Panel'
 import { sound } from './sound'
 import './layout.css'
@@ -91,7 +91,9 @@ export function LayoutView() {
   const bad = shown.filter((c) => !c.ok)
   const tight = shown.filter((c) => c.tight && !c.exact)
   const fets = transistors(layout)
-  const f = layoutFrame(w, h)
+  const learn = useAtlas((s) => s.mode !== 'explore')
+  const quiz = useAtlas((s) => s.quiz)
+  const f = layoutFrame(w, h, learn ? LEARN_PANEL_W + 16 : 0)
   const active = layer === 'cell' && view === 'layout'
   /** narrow screens: one-line callouts */
   const compact = f.s < 9
@@ -309,7 +311,7 @@ export function LayoutView() {
             ))}
           </div>
         )}
-        {hover?.kind === 'shape' && (
+        {hover?.kind === 'shape' && !quiz && (
           <div className="rule-tip" style={{ transform: `translate(${Math.min(pointer[0] + 16, w - 360)}px, ${pointer[1] + 18}px)` }}>
             <p>
               {MASK_NAME[hover.mask]} · rect {hover.index + 1} · {(() => {

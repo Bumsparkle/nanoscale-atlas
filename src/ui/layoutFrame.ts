@@ -15,10 +15,11 @@ export interface LayoutFrame {
   panelW: number
 }
 
-export function layoutFrame(W: number, H: number): LayoutFrame {
+export function layoutFrame(W: number, H: number, leftPanelW = 0): LayoutFrame {
   const mobile = W <= 720
-  const panelW = mobile ? 0 : 440
-  const left = 32
+  // the rules panel narrows while the lesson / revise panel is open on the left
+  const panelW = mobile ? 0 : leftPanelW ? 352 : 440
+  const left = 32 + (mobile ? 0 : leftPanelW)
   const right = W - panelW - 32
   const top = mobile ? 120 : 92
   const bottom = mobile ? H * 0.5 : H - 104
@@ -31,3 +32,6 @@ export const toLayout = (f: LayoutFrame, px: number, py: number): [number, numbe
 
 /** near-orthographic camera: a 2.5° field of view from far away */
 export const ORTHO_FOV = 2.5
+
+/** width of the lesson / revise panel on the left (desktop) */
+export const LEARN_PANEL_W = 400

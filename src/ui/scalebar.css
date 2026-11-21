@@ -116,3 +116,10 @@ html[data-view='fab'] .exaggeration {
     display: none;
   }
 }
+
+/* the top bar now carries the mode switch: keep the scale bar below it on phones */
+@media (max-width: 720px) {
+  .scalebar {
+    top: 142px;
+  }
+}

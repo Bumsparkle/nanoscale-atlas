@@ -50,6 +50,7 @@ function layout(labels: ScreenLabel[], W: number): Placed[] {
 }
 
 export function LabelOverlay() {
+  const quiz = useAtlas((s) => s.quiz)
   const [version, setVersion] = useState(overlay.version)
   const svg = useRef<SVGSVGElement>(null)
   const box = useRef<HTMLDivElement>(null)
@@ -100,7 +101,7 @@ export function LabelOverlay() {
 
   const labels = overlay.labels
   return (
-    <div className="label-overlay" aria-hidden>
+    <div className={'label-overlay' + (quiz ? ' quiz' : '')} aria-hidden>
       <svg ref={svg} width="100%" height="100%">
         {labels.map((l) => (
           <g key={l.id} data-id={l.id} style={{ opacity: 0 }}>

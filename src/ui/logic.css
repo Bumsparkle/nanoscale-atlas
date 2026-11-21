@@ -155,3 +155,8 @@
     max-height: 55vh;
   }
 }
+
+/* a question is open: the explanation would give the answer away */
+html[data-quiz='1'] .bench .bench-note {
+  visibility: hidden;
+}

@@ -344,3 +344,82 @@ Verification
   - the inline content panel used different type from the inspect panel.
 
 Open: edited layouts are not saved across reloads or encoded in the URL; hover is mouse-only (keyboard users get the violation list and shape panels, but cannot step through edges).
+
+
+### Lesson and Revise modes — done (2026-11-21)
+
+**Fact inventory.** `content/topic2/facts.json` holds 173 facts covering all 49 slides (104 key). They were read from the slide text and from the images:
+- the slide 47 rules table, metal2 and vias included;
+- the slide 8 charge and field plots, and the slide 9 band diagrams;
+- the slide 3–4 sketches, the slide 7 ion drawing and the slide 11/13 structure drawings;
+- the slide 18/23 equivalent symbols;
+- the slide 48 8/2 and 4/2 sizing.
+
+Slides that could not be read fully (also in `facts.json → unreadable`):
+- **Slide 6:** the numeric axis values of the diode I–V plot are too small to read; only the curve shape is used.
+- **Slide 11:** some tiny labels inside the 3D nMOS structure drawing are only partly legible; the readable ones are used.
+- **Slide 13:** the same for the 3D pMOS structure drawing.
+
+**Question bank.** 261 questions in `content/topic2/questions/*.ts`, zod-validated:
+
+| type | count | checked against |
+|---|---|---|
+| do | 49 | live store + layout (`checkTarget`) |
+| label | 36 | what you click in the model (focus) |
+| predict | 24 | the reveal plays after you commit |
+| calc | 26 | number within tolerance, with units |
+| recall | 126 | multiple choice or short answer |
+
+Every fact has at least one question; all 104 key facts have two or more of different types. The build test fails otherwise.
+
+**Lesson** (`?mode=lesson&chunk=…`):
+- 51 chunks in lecture order, each driving the camera and scene (layer dives, views, fab step, section lock, bench, layout, look-at).
+- Each has a short narration, then its question straight away.
+- Next unlocks on a correct answer or after the worked solution.
+- A wrong answer gives a hint and outlines the relevant part of the model.
+- Progress resumes from localStorage; the chunk menu jumps back to any unlocked chunk.
+
+**Revise** (`?mode=revise`):
+- Leitner drill over the whole bank, filtered by slide range and topic, with a live box histogram.
+- Coverage screen (`rv=coverage`): every slide with its % of facts mastered, grouped by topic; click a slide to drill it.
+- Timed exam paper (`rv=exam`): 20 minutes, 14 calc/recall questions, marked with worked solutions.
+
+**Mastery overlay** (Explore → "mastery"): tints each cell object weak / learning / strong / untested; clicking a weak part opens its lesson chunk.
+
+**Phones:** the learning panel is a bottom sheet that collapses to a strip so the model and its controls stay usable.
+
+**Verification**
+- 227 tests pass (92 new). They cover:
+  - fact coverage and key-fact type diversity;
+  - all 49 `do` questions unsolved at setup and solved by their solution, against the real store and layout;
+  - all 36 `label` answers clickable in their scene;
+  - predict reveals change the scene;
+  - grading, tolerance and normalisation;
+  - the lesson completed start to finish against live state;
+  - Leitner promotion, scheduling and filters;
+  - mastery and coverage;
+  - exam composition.
+- `scripts/lessonrun.mjs` walks all 51 chunks in the real UI. Every chunk showed its question with Next locked, and Next unlocked only after the solution. All 51 were recorded in localStorage. No page errors.
+- `scripts/learnshots.mjs` exercises each type for real:
+  - do (lattice and layout edit);
+  - predict (commit, then reveal);
+  - calc (wrong with hint, then right);
+  - label (wrong click with hint, then right, in the slide 27 section);
+  - recall (wrong, then solution);
+  - the coverage screen, exam sitting and marked, the mastery overlay, and the weak-part click opening its lesson.
+
+  All screenshots were reviewed and saved in `docs/screenshots/learn/`, with contact sheets of every lesson chunk.
+- Fixed after review:
+  - an infinite store-update loop when a `do` question solved itself;
+  - label clicks swallowed by the Section-view drag;
+  - ghosted and x-rayed geometry intercepting clicks;
+  - section callouts and truth tables giving answers away;
+  - a cramped Layout drawing beside the lesson panel;
+  - a cut-off question sheet and scale-bar collision on phones.
+- The entry bundle is unchanged (76 KB gz).
+
+**Open**
+- Recall is 48 % of the bank; see DECISIONS.md for why.
+- The mastery tint is 3D on the cell layer only; other layers show it in the parts list.
+- Lesson deep links bypass the sequential gate by design.
+- Progress is per browser (localStorage), not synced.

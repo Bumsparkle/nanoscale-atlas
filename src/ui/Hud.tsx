@@ -12,6 +12,7 @@ import { Timeline } from './Timeline'
 import { LayerControls } from './LayerControls'
 import { LogicBench } from './LogicBench'
 import { LayoutView } from './LayoutView'
+import { LearnHost, MasteryToggle, ModeSwitch } from '../learn/ui/LearnHost'
 import '../ui/layercontrols.css'
 import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
@@ -53,7 +54,9 @@ export function TopBar() {
         <span className="brand-ch">Ch.1 · CMOS inverter</span>
       </a>
       <Breadcrumbs />
+      <ModeSwitch />
       <div className="topbar-tools">
+        <MasteryToggle />
         <button className="tool" aria-pressed={reduced} onClick={() => set({ reducedMotion: !reduced })} title="Reduce motion: no camera flights, springs settle instantly">
           {reduced ? 'motion reduced' : 'motion full'}
         </button>
@@ -95,7 +98,8 @@ function LayerHint() {
   const layer = useAtlas((s) => s.layer)
   const focus = useAtlas((s) => s.focus)
   const h = HINTS[layer]
-  if (!h || focus) return null
+  const mode = useAtlas((s) => s.mode)
+  if (!h || focus || mode !== 'explore') return null
   return <p className="layer-hint mono">{h}</p>
 }
 
@@ -122,6 +126,7 @@ export function Hud() {
       <LayerControls />
       <LogicBench />
       <LayoutView />
+      <LearnHost />
       <HoverLabel />
       <Panel />
     </>

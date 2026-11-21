@@ -92,3 +92,7 @@ routes.push({
     await p.waitForTimeout(3200)
   },
 })
+// Learning modes
+routes.push({ name: 'LN-lesson-start', path: '/cmos/inverter?mode=lesson&chunk=structures', wait: 5000 })
+routes.push({ name: 'LN-lesson-layout', path: '/cmos/inverter?mode=lesson&chunk=rules-gate', wait: 6000 })
+routes.push({ name: 'LN-revise-drill', path: '/cmos/inverter?mode=revise', wait: 5000 })

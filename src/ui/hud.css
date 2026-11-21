@@ -213,3 +213,11 @@ html[data-layer='lattice'] .layer-hint {
     display: none;
   }
 }
+@media (max-width: 720px) {
+  .exaggeration {
+    top: 172px;
+  }
+  .outline-nav {
+    top: 142px;
+  }
+}

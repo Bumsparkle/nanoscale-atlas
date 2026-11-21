@@ -208,3 +208,24 @@
   font-size: var(--t-11);
   margin-left: 6px;
 }
+
+.mdot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.mdot-weak {
+  background: var(--warn);
+}
+.mdot-learning {
+  background: var(--amber);
+}
+.mdot-strong {
+  background: var(--on);
+}
+.mdot-untested {
+  border: 1px solid var(--ink-3);
+}

@@ -6,6 +6,8 @@ export type Page = 'home' | 'atlas' | 'style' | 'debug'
 export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic' | 'layout'
 export type CutTarget = 'slide27' | 'ngate' | 'pgate'
 export type CutAxis = 'x' | 'y'
+export type BenchTab = 'inverter' | 'switch' | 'nand' | 'nor' | 'junction'
+export type Mode = 'explore' | 'lesson' | 'revise'
 
 export interface SectionState {
   axis: CutAxis
@@ -35,6 +37,24 @@ export interface AtlasState {
   layoutEdit: boolean
   layoutVersion: number
   lattice: { structure: 'crystal' | 'poly' | 'amorphous'; dopant: 'none' | 'P' | 'B' }
+  /** logic bench (Logic view): tab, switch-model gate, junction bias (V) and Na/Nd */
+  bench: { tab: BenchTab; g: 0 | 1; v: number; ratio: number }
+  /** learning modes (Explore is the sandbox) */
+  mode: Mode
+  /** current lesson chunk id */
+  chunk: string | null
+  /** Revise sub-view */
+  revise: { tab: 'drill' | 'coverage' | 'exam'; from: number; to: number; topic: string | null }
+  /** camera target set by the lesson (does not open a panel) */
+  look: string | null
+  /** object outlined by a hint after a wrong answer */
+  hint: string | null
+  /** an unanswered question is open: hide labels and readouts that would give the answer away */
+  quiz: boolean
+  /** Explore: tint objects by mastery */
+  mastery: boolean
+  /** bumps when learning progress changes (localStorage is not reactive) */
+  progressVersion: number
   sound: boolean
   reducedMotion: boolean
   explode: number
@@ -70,6 +90,15 @@ export const useAtlas = create<AtlasState>((set) => ({
   layoutEdit: false,
   layoutVersion: 0,
   lattice: { structure: 'crystal', dopant: 'none' },
+  bench: { tab: 'inverter', g: 1, v: 0, ratio: 1 },
+  mode: 'explore',
+  chunk: null,
+  revise: { tab: 'drill', from: 1, to: 49, topic: null },
+  look: null,
+  hint: null,
+  quiz: false,
+  mastery: false,
+  progressVersion: 0,
   sound: false,
   reducedMotion: !!prefersReduced,
   explode: 0,

@@ -90,3 +90,8 @@
   border-left: 1px solid var(--amber);
   color: var(--ink-1);
 }
+
+/* a question is open: callouts would give the answer away */
+.label-overlay.quiz {
+  visibility: hidden;
+}

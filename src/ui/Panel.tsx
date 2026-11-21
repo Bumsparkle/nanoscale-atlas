@@ -39,7 +39,8 @@ export function Panel() {
   const inLayout = useAtlas((s) => s.view === 'layout' && s.layer === 'cell')
   const c = shown ? CONTENT_BY_ID[shown] : null
   // in the Layout view the same content renders inline in the layout panel
-  if (!c || inLayout) return null
+  const mode = useAtlas((s) => s.mode)
+  if (!c || inLayout || mode !== 'explore') return null
 
   return (
     <aside ref={el} className="panel" aria-label={c.title} aria-live="polite" data-testid="panel">

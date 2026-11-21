@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { useAtlas } from '../state/store'
+import { useAtlas, type BenchTab } from '../state/store'
 import { evaluate, GATES, conducts, nmosOn, pmosOn, type Bit, type Gate } from '../chapters/cmos/device'
 import { junction, V0 } from '../chapters/cmos/junction'
 import './logic.css'
 
-type Tab = 'inverter' | 'switch' | 'nand' | 'nor' | 'junction'
+type Tab = BenchTab
 const TABS: { id: Tab; label: string; slides: string }[] = [
   { id: 'inverter', label: 'Inverter', slides: '15–17' },
   { id: 'switch', label: 'Switches', slides: '14' },
@@ -113,6 +112,8 @@ function Schematic({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bit
 }
 
 function TruthTable({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bit> }) {
+  // while a question is open the table would give the answer away
+  const quiz = useAtlas((s) => s.quiz)
   const rows: Record<'A' | 'B', Bit>[] = gate.inputs.length === 1 ? [{ A: 0, B: 0 }, { A: 1, B: 0 }] : [{ A: 0, B: 0 }, { A: 0, B: 1 }, { A: 1, B: 0 }, { A: 1, B: 1 }]
   return (
     <table className="tt">
@@ -132,7 +133,7 @@ function TruthTable({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bi
               {gate.inputs.map((i) => (
                 <td key={i}>{r[i]}</td>
               ))}
-              <td>{evaluate(gate, r)}</td>
+              <td>{quiz && !cur ? '?' : evaluate(gate, r)}</td>
             </tr>
           )
         })}
@@ -161,7 +162,8 @@ function Inputs({ names }: { names: ('A' | 'B')[] }) {
 
 /* ───────────── slide 14: switch model ───────────── */
 function SwitchModel() {
-  const [g, setG] = useState<Bit>(1)
+  const g = useAtlas((s) => s.bench.g)
+  const setG = (v: Bit) => useAtlas.setState((s) => ({ bench: { ...s.bench, g: v } }))
   return (
     <div>
       <div className="inputs">
@@ -186,8 +188,10 @@ function SwitchModel() {
 
 /* ───────────── slides 6–9: p-n junction ───────────── */
 function Junction() {
-  const [v, setV] = useState(0)
-  const [ratio, setRatio] = useState(1)
+  const v = useAtlas((s) => s.bench.v)
+  const ratio = useAtlas((s) => s.bench.ratio)
+  const setV = (x: number) => useAtlas.setState((s) => ({ bench: { ...s.bench, v: x } }))
+  const setRatio = (x: number) => useAtlas.setState((s) => ({ bench: { ...s.bench, ratio: x } }))
   const j = junction(v, ratio)
   const W = 300
   const cx = W / 2
@@ -276,7 +280,8 @@ export function LogicBench() {
   const layer = useAtlas((s) => s.layer)
   const view = useAtlas((s) => s.view)
   const inputs = useAtlas((s) => s.inputs)
-  const [tab, setTab] = useState<Tab>('inverter')
+  const tab = useAtlas((s) => s.bench.tab)
+  const setTab = (t: Tab) => useAtlas.setState((s) => ({ bench: { ...s.bench, tab: t } }))
   if (layer !== 'cell' || view !== 'logic') return null
   const ins = { A: inputs.a, B: inputs.b }
   const gate = tab === 'nand' ? GATES.NAND : tab === 'nor' ? GATES.NOR : GATES.INV

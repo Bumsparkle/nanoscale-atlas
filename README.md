@@ -32,6 +32,13 @@ Useful URLs:
 | `/debug` | Renderer backend and fps; add `?gl=webgl` to force the WebGL 2 fallback |
 | `/style` | Type and colour system |
 
+Modes (top bar):
+- **Explore** is the sandbox. Its "mastery" toggle tints the model by how well you know each part.
+- **Lesson** (`?mode=lesson&chunk=<id>`) walks Topic 2 in lecture order, with a question after every part.
+- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 261 questions, per-slide coverage and a timed paper.
+
+The fact inventory is `content/topic2/facts.json`, the question bank is `content/topic2/questions/`, and the lesson is `content/topic2/lesson.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
+
 Keys:
 - **Global:** `Esc` goes up a level (it closes a panel first).
 - **Cell views:** `e` `s` `m` `f` `l` switch view.

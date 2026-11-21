@@ -159,13 +159,22 @@ function ghostOf(base: THREE.Material): THREE.Material {
   return m
 }
 
-/** logic view: conducting path glows (--on), a logic-1 node glows amber */
-function litOf(base: THREE.Material, kind: 'on' | 'hi'): THREE.Material {
+export type Lit = 'on' | 'hi' | 'm-weak' | 'm-learning' | 'm-strong' | 'm-untested'
+const MASTERY_TINT: Record<string, [string, number]> = {
+  'm-weak': ['#e4785a', 0.5],
+  'm-learning': ['#f0b43c', 0.38],
+  'm-strong': ['#9fd3a2', 0.4],
+  'm-untested': ['#5b6260', 0.12],
+}
+
+/** logic view: conducting path glows (--on), a logic-1 node glows amber; mastery: steady tint by level */
+function litOf(base: THREE.Material, kind: Lit): THREE.Material {
   const m = base.clone() as THREE.MeshStandardNodeMaterial
   const b = base as THREE.MeshStandardNodeMaterial
   for (const k of ['colorNode', 'roughnessNode', 'metalnessNode', 'opacityNode'] as const) (m as N)[k] = (b as N)[k]
   const pulse = sin(time.mul(3.2)).mul(0.25).add(0.75)
-  const glow = color(kind === 'on' ? '#9fd3a2' : '#f0b43c').mul(pulse).mul(kind === 'on' ? 0.55 : 0.45)
+  const tint = MASTERY_TINT[kind]
+  const glow: N = tint ? color(tint[0]).mul(tint[1]) : color(kind === 'on' ? '#9fd3a2' : '#f0b43c').mul(pulse).mul(kind === 'on' ? 0.55 : 0.45)
   m.emissiveNode = ((b as N).emissiveNode ?? vec3(0)).add(glow.mul(float(1).sub(cap())))
   if (b.transparent) {
     m.transparent = true
@@ -174,7 +183,7 @@ function litOf(base: THREE.Material, kind: 'on' | 'hi'): THREE.Material {
   return m
 }
 
-export function materialFor(key: string, near = false, lit: 'on' | 'hi' | null = null): THREE.Material {
+export function materialFor(key: string, near = false, lit: Lit | null = null): THREE.Material {
   if (lit) {
     let l = cache.get(lit + ':' + key)
     if (!l) {

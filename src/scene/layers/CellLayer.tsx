@@ -4,11 +4,12 @@ import { useEffect, useMemo, useRef } from 'react'
 import { inverterProcess } from '../../chapters/cmos/recipe'
 import { layoutState } from '../../chapters/cmos/layout'
 import { MESH_OPTS } from '../../chapters/cmos/display'
-import { resolveComponents, CONTENT_BY_ID } from '../../chapters/cmos/content'
+import { resolveComponents, CONTENT_BY_ID, CONTENT } from '../../chapters/cmos/content'
+import { chunkForObject, objectMastery } from '../../learn/progress'
 import { mesh } from '../../sim/mesher'
 import { SNAP_TARGETS, useAtlas, type CutAxis } from '../../state/store'
 import { CellModel, TIER_NAMES, TIER_SPACING, type CellView } from '../CellModel'
-import { gridMaterial, matUniforms } from '../materials'
+import { gridMaterial, matUniforms, type Lit } from '../materials'
 import { StudioLights } from '../Lighting'
 import { selection } from '../Pipeline'
 import { rig } from '../rig'
@@ -17,7 +18,7 @@ import { cellRuntime as rt, overlay, TIERS, type ScreenLabel } from '../cellRunt
 import { Spring, SPRINGS, clamp } from '../spring'
 import { cutLabels, PLANE_RANGE, snapFor, type CutLabel } from '../section'
 import { CELL_CENTRE } from '../cellGeometry'
-import { layoutFrame, ORTHO_FOV } from '../../ui/layoutFrame'
+import { layoutFrame, ORTHO_FOV, LEARN_PANEL_W } from '../../ui/layoutFrame'
 import { sound } from '../../ui/sound'
 import { FabEffects } from '../FabEffects'
 
@@ -26,8 +27,18 @@ import { FabEffects } from '../FabEffects'
  * nMOS on and connects Y to GND; A = 0 turns the pMOS on and connects Y to
  * VDD. The poly (input A) glows amber when A = 1.
  */
-function logicLit(a: 0 | 1): Map<string, 'on' | 'hi'> {
-  const m = new Map<string, 'on' | 'hi'>()
+function masteryLit(): Map<string, Lit> {
+  const m = new Map<string, Lit>()
+  for (const c of CONTENT) {
+    if (c.layer !== 'cell') continue
+    const o = objectMastery(c.id)
+    if (o) m.set(c.id, ('m-' + o.level) as Lit)
+  }
+  return m
+}
+
+function logicLit(a: 0 | 1): Map<string, Lit> {
+  const m = new Map<string, Lit>()
   const path = a ? ['metal-gnd', 'nmos-source', 'nmos-drain', 'metal-y', 'contact'] : ['metal-vdd', 'pmos-source', 'pmos-drain', 'metal-y', 'contact']
   for (const id of path) m.set(id, 'on')
   if (a) m.set('poly-gate', 'hi')
@@ -80,7 +91,8 @@ export default function CellLayer() {
 
   const refreshSelection = () => {
     const st = useAtlas.getState()
-    selection.set('hover', st.hover && st.hover !== st.focus ? model.meshesFor(st.hover) : [])
+    const hov = st.hover && st.hover !== st.focus ? model.meshesFor(st.hover) : []
+    selection.set('hover', st.hint ? [...hov, ...model.meshesFor(st.hint)] : hov)
     selection.set('focus', model.meshesFor(st.focus))
   }
 
@@ -140,10 +152,13 @@ export default function CellLayer() {
     }
 
     // x-ray: fade wiring and field oxide over buried objects
-    xray.current.target = st.view === 'logic' ? 0.55 : st.focus && BURIED.has(st.focus) ? 1 : st.hover && BURIED.has(st.hover) && st.view === 'explore' ? 0.45 : 0
+    xray.current.target = st.view === 'logic' || (st.mastery && st.mode === 'explore') ? 0.6 : st.focus && BURIED.has(st.focus) ? 1 : st.hover && BURIED.has(st.hover) && st.view === 'explore' ? 0.45 : 0
     matUniforms.xray.value = xray.current.step(dt, reduced)
     matUniforms.foxFade.value = st.view === 'masks' ? Math.min(1, Math.max(...rt.explode) * 1.5) : 0
     matUniforms.nearFade.value = Math.min(1, Math.max(0, rt.gap))
+    const ghostNear = rt.gap > 0.5
+    const throughWiring = st.mastery && st.mode === 'explore'
+    model.pickable = (m) => !(ghostNear && m.userData.half === 'near') && !(throughWiring && (m.userData.key === 'al' || m.userData.key === 'fox'))
 
     // section plane: damped follow, magnetic capture with overshoot, hysteresis release
     const sec = st.section
@@ -185,10 +200,10 @@ export default function CellLayer() {
     const clip = st.view === 'section' ? { axis: sec.axis, offset: rt.sectionOffset } : null
     const gap = st.view === 'section' ? rt.gap : 0
     const explode = rt.explode
-    const lit = st.view === 'logic' ? logicLit(st.inputs.a) : undefined
+    const lit = st.view === 'logic' ? logicLit(st.inputs.a) : st.mastery && st.mode === 'explore' && st.view === 'explore' ? masteryLit() : undefined
     // edited masks rebuild the cell when you leave the Layout view, not on every drag
     const ver = st.view === 'layout' ? builtVer.current : layoutState.version()
-    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? 'L' + st.inputs.a : ''}|v${ver}`
+    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? (st.view === 'logic' ? 'L' + st.inputs.a : 'M' + st.progressVersion) : ''}|v${ver}`
     if (key !== geoKey.current) {
       geoKey.current = key
       builtVer.current = ver
@@ -228,7 +243,7 @@ export default function CellLayer() {
     }
     /** straight down, near-orthographic, framed to match the SVG drawing */
     const layoutCamera = () => {
-      const f = layoutFrame(size.width, size.height)
+      const f = layoutFrame(size.width, size.height, useAtlas.getState().mode !== 'explore' ? LEARN_PANEL_W + 16 : 0)
       const Hworld = size.height / f.s
       rig.locked = true
       rig.fov.target = ORTHO_FOV
@@ -248,9 +263,13 @@ export default function CellLayer() {
       if (b) rig.focusBox(b, camera.fov, size.width / size.height, { padding: 1.6, minDist: 30 })
     }
     const unsub = useAtlas.subscribe((s, p) => {
-      if (s.hover !== p.hover || s.focus !== p.focus) refreshSelection()
+      if (s.hover !== p.hover || s.focus !== p.focus || s.hint !== p.hint) refreshSelection()
+      if (s.look !== p.look && s.look && CONTENT_BY_ID[s.look]?.layer === 'cell') focusOn(s.look)
       if (s.focus !== p.focus) {
-        if (s.focus && CONTENT_BY_ID[s.focus]?.layer === 'cell') focusOn(s.focus)
+        // while answering "find it on the model", clicks select without flying the camera
+        if (s.quiz || p.quiz) {
+          /* keep the question's framing */
+        } else if (s.focus && CONTENT_BY_ID[s.focus]?.layer === 'cell') focusOn(s.focus)
         else if (!s.focus && p.focus && s.view !== 'layout') rig.goHome()
       }
       if (s.section.locked !== p.section.locked || (s.view === 'section' && p.view !== 'section' && s.section.locked)) {
@@ -282,6 +301,22 @@ export default function CellLayer() {
         }
       }
     })
+    // test hook: screen position of an object's visible centre (scripted clicks in screenshot runs)
+    ;(window as unknown as { __objectPoint: unknown }).__objectPoint = (id: string) => {
+      const ms = model.meshesFor(id).filter((m) => m.userData.half !== 'near')
+      if (!ms.length) return null
+      const box = new THREE.Box3()
+      for (const m of ms) box.expandByObject(m)
+      const c = box.getCenter(new THREE.Vector3())
+      // aim at the top or the front face, whichever the camera sees
+      if (useAtlas.getState().view === 'section') c.z = box.max.z - 0.05 // the cut face, middle height
+      else {
+        c.y = Math.min(box.max.y, c.y + (box.max.y - box.min.y) * 0.3)
+        c.z = Math.max(c.z, box.max.z - 0.4)
+      }
+      c.project(camera)
+      return [((c.x + 1) / 2) * size.width, ((1 - c.y) / 2) * size.height]
+    }
     const f = st0.focus
     if (f) setTimeout(() => (focusOn(f), refreshSelection()), 50)
     if (st0.view === 'logic') setTimeout(() => {
@@ -393,10 +428,19 @@ export default function CellLayer() {
     if (useAtlas.getState().hover) useAtlas.getState().set({ hover: null })
   }
   const onClick = (e: ThreeEvent<MouseEvent>) => {
-    if (e.delta > 5 || rig.owner) return
+    // a press that did not move is a click, even in Section/Masks views where pressing starts a drag
+    if (e.delta > 5 || rig.owner === 'orbit') return
     e.stopPropagation()
     const id = (e.object.userData.content as string | null) ?? null
-    if (id) useAtlas.getState().set({ focus: id })
+    if (!id) return
+    const st = useAtlas.getState()
+    // mastery overlay: a weak object opens the lesson chunk that teaches it
+    if (st.mastery && st.mode === 'explore') {
+      const m = objectMastery(id)
+      const chunk = m && (m.level === 'weak' || m.level === 'untested') ? chunkForObject(id) : null
+      if (chunk) return st.set({ mode: 'lesson', chunk, mastery: false })
+    }
+    st.set({ focus: id })
   }
 
   return (
