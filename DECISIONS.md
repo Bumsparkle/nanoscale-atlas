@@ -102,6 +102,11 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
   - **Credentials:** any username; the password is compared in constant time on SHA-256 digests.
   - **Headers:** `/slides/*` responses get `Cache-Control: private` and `X-Robots-Tag: noindex`.
   - **Tests:** `src/middleware.test.ts` covers missing, wrong and right passwords and the no-matcher rule.
+- **Where the archive lives (chosen 2026-11-21): a private GitHub release.** A release on the public `nanoscale-atlas` repo would itself be public, so the archive sits in a separate private repo, `Bumsparkle/nanoscale-atlas-slides`, which holds nothing but a README and the release `topic2-slides`.
+  - **URL:** `SLIDES_ARCHIVE_URL` is the API asset URL, `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/776184764`, fetched with `Accept: application/octet-stream`. GitHub redirects to a signed download, and the token is not forwarded on that cross-origin redirect.
+  - **Token:** `SLIDES_TOKEN` should be a fine-grained personal access token limited to that one repository, with *Contents: read-only* and nothing else.
+  - **Verified:** no token gives 404, a wrong token gives 401 and the build continues without slides, and a valid token fetches all 49 images.
+  - **Updating the slides:** run `npm run slides`, then `gh release upload topic2-slides private/slides-topic2.tar.gz --clobber -R Bumsparkle/nanoscale-atlas-slides`. A clobbered asset gets a new id, so update `SLIDES_ARCHIVE_URL` from `gh api repos/Bumsparkle/nanoscale-atlas-slides/releases/tags/topic2-slides --jq '.assets[0].url'`.
 - **Vercel env vars needed:** `SITE_PASSWORD` (required, or the site serves 503), `SLIDES_ARCHIVE_URL` and optionally `SLIDES_TOKEN`.
 
 ## The section lesson (2026-11-21)

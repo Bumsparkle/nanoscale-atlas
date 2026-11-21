@@ -434,9 +434,8 @@ Every fact has at least one question; all 104 key facts have two or more of diff
   - dev serving refuses path traversal;
   - an authenticated archive fetch works: a wrong token gives 403 and the build continues without slides;
   - `dist/slides` gets all 49 images.
-- **Still to do by hand:**
-  - upload `private/slides-topic2.tar.gz` to private storage;
-  - set `SITE_PASSWORD`, `SLIDES_ARCHIVE_URL` and `SLIDES_TOKEN` in Vercel.
+- **Archive uploaded** as a release asset in the private repo `Bumsparkle/nanoscale-atlas-slides` (see DECISIONS.md).
+- **Still to do by hand:** set `SITE_PASSWORD`, `SLIDES_ARCHIVE_URL` and `SLIDES_TOKEN` in Vercel.
 
 ### The section lesson — done (2026-11-21)
 
