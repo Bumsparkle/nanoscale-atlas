@@ -1,5 +1,7 @@
 # Nanoscale Atlas
 
+**Live site:** _(add the Vercel URL here)_
+
 A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation). Chapter 1 is the CMOS inverter from Topic 2, followed from a 300 mm wafer down to the 5.43 Å silicon lattice. Every 3D structure inside the chip is **generated** from the six masks of slide 28 and the fabrication recipe of slides 29–45. Every panel cites its slide.
 
 - Spec: [BRIEF.md](BRIEF.md)
@@ -72,7 +74,13 @@ A chapter is masks + a recipe + content. No 3D modelling.
 6. **Section targets.** Add snap targets to `SNAP_TARGETS` in `state/store.ts`.
 7. **Check it by eye.** Run `node scripts/shots.mjs`, `node scripts/fabsheet.mjs` and `node scripts/tour.mjs`, and look at the images.
 
+## Deploy
+
+The repository deploys to Vercel as a static Vite SPA (`vercel.json`): build `npm run build`, output `dist/`, and a rewrite that sends every route to `/index.html` so deep links survive a refresh. Import the GitHub repo in Vercel; no environment variables are needed.
+
 ## Facts and sources
+
+The lecture PDF is UCL course material and is **not** included in this repository. To work on the content, put your own copy at `docs/topic2-cmos.pdf` (gitignored).
 
 On-slide facts cite the Topic 2 slide numbers (PDF page = slide). Anything beyond the lecture is marked "beyond the lecture" with a named source. The main ones are:
 - Plummer, Deal & Griffin, *Silicon VLSI Technology*

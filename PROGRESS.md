@@ -1,6 +1,6 @@
 # Nanoscale Atlas — progress log
 
-Spec: [BRIEF.md](BRIEF.md). Physics source: [docs/topic2-cmos.pdf](docs/topic2-cmos.pdf) (ELEC0031 Topic 2, 49 slides; PDF page = slide number).
+Spec: [BRIEF.md](BRIEF.md). Physics source: the ELEC0031 Topic 2 lecture slides (49 slides; PDF page = slide number). The PDF is UCL course material and is not in this repository; locally it lives at `docs/topic2-cmos.pdf`, which is gitignored.
 Decisions: [DECISIONS.md](DECISIONS.md).
 
 ## Plan

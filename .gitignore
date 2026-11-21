@@ -1,9 +1,25 @@
+# dependencies and build output
 node_modules
 dist
 .vercel
+
+# secrets
 .env*
+
+# Playwright output
 test-results
 playwright-report
+blob-report
+playwright/.cache
+
+# local scratch: screenshot runs, recordings, Lighthouse reports
+shots/
+docs/recordings/
+docs/lighthouse*.json
+
+# UCL lecture material: copyrighted, must never be public
+docs/topic2-cmos.pdf
+*.pdf
+
 *.log
 .DS_Store
-docs/recordings/
