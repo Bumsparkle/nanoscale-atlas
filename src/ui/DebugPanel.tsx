@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { IS_APP, SLIDES_AVAILABLE } from '../platform'
 import { live, useAtlas } from '../state/store'
 import { LAYERS } from '../chapters/cmos/layers'
 import { navigate } from '../state/url'
@@ -21,6 +22,10 @@ export function DebugPanel() {
         </dd>
         <dt>detail</dt>
         <dd>{renderer.detail ?? '—'}</dd>
+        <dt>shell</dt>
+        <dd data-testid="shell">{IS_APP ? 'desktop app (Tauri)' : 'web browser'}</dd>
+        <dt>slides</dt>
+        <dd>{SLIDES_AVAILABLE ? 'bundled' : 'not bundled'}</dd>
         <dt>navigator.gpu</dt>
         <dd>{'gpu' in navigator ? 'present' : 'absent'}</dd>
         <dt>fps</dt>

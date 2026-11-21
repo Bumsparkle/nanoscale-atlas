@@ -187,3 +187,45 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **No sound.** The optional sound (snap clicks, fab tool hum, dive whoosh) and its top-bar toggle were removed at the user's request. The top bar's preferences are now just reduced motion.
 - **Models back to their original dark look; the background stays grey** (revised the same day at the user's request). The materials, the key/fill/rim lights and the environment were restored to their earlier values, with exposure back at 1.0. Only the backdrop (#1d2124), the die's ground plane and the brighter λ grid keep the lift. So the lifted-albedo bullet above no longer applies to the models. The contrast tests are unaffected, since they test text against surfaces, not the models.
 - **Mastery is back at the top left**, beside "parts", with its legend just below. It had briefly moved into the scene tools.
+
+## Desktop app (Tauri v2, 2026-11-21)
+
+- **Tauri v2, wrapping the same Vite build.** `src-tauri/` holds the shell. The app loads `dist/` from `npm run build:app`, which is the normal build with `ATLAS_APP=1`. `npm run tauri dev` runs the dev server in the window. The web build, `vercel.json` and the middleware are untouched.
+- **Window.** It is transparent with native vibrancy (`underWindowBackground`, which follows the system light/dark appearance). The title bar is hidden as an overlay with the traffic lights inset at (18, 26). The top strip is a `data-tauri-drag-region`. `macOSPrivateApi` is on, because a transparent window requires it. `ATLAS_FORCE_THEME=light|dark` overrides the appearance for one run, for screenshots, without touching System Settings.
+- **App mode is detected at runtime** (`__TAURI_INTERNALS__`). An inline script sets `html[data-app]` before first paint, and `src/platform.ts` exports `IS_APP`. In app mode:
+  - the page, `#root` and the WebGPU canvas are transparent, and the post-processing output keeps the scene's alpha;
+  - the scene background is null, and the die's ground plane is hidden;
+  - a faint tint (rgba(22,26,29,0.38), 0.48 on a light appearance) sits behind the scene, so model colours read on any wallpaper;
+  - panels, labels and the legend use a more opaque glass (0.95 / 0.985);
+  - the top bar makes room for the traffic lights.
+  
+  The web version is visually unchanged. The wafer's warm floor disc was removed everywhere: it showed as a brown backdrop.
+- **Renderer.** WebGPU works in the macOS 26 web view (WKWebView), measured at 50–60 fps on the cell. `?gl=webgl` forces the WebGL 2 fallback, which also renders. The `/debug` readout (⌥D, since the app has no address bar) shows the renderer, whether this is the app, and whether slides are bundled.
+- **Routing.** Tauri's asset server falls back to `index.html` for unknown paths. A full reload on `/debug?gl=webgl` inside the app came back on the right route.
+- **Slides.**
+  - The app build bundles slides only with `INCLUDE_SLIDES=1`, a personal build from the local gitignored `private/slides`.
+  - Otherwise none are copied, any left in `dist/slides` from a web build are deleted, and `SourceButton` renders nothing (`__SLIDES__` is a build-time constant).
+  - `scripts/check-app-slides.mjs` runs after every app build and fails it if slides are present without the flag.
+  - **Root cause of two leaks, found by the guard.** Two local builds embedded the slides even without the flag. Vite also calls a plugin's `closeBundle` when a dev or test server shuts down, so a Vitest run during an app build copied the slides into `dist/` just before the Rust compile embedded it. This was confirmed by experiment: one test run with the old plugin put 49 slides in `dist/`, and none after the fix.
+  - The fix: the plugin now acts only in a real `vite build`, and never under Vitest. CI could not have leaked, because `private/` is never present there.
+- **No password in the app.** The basic-auth middleware is Vercel-only.
+- **Icon.** `assets/app-icon.svg` shows the brand mark (a silicon block with an amber gate stripe, n+/p+/n-well patches) as a lit isometric cell on the instrument-grey squircle. `scripts/app-icon.mjs` renders it at 1024 px, and `tauri icon` makes the .icns and PNG set.
+- **Unsigned .dmg.** The app is ad-hoc signed (`signingIdentity: "-"`) and not notarised. The README describes signing and notarising later with a Developer ID.
+- **Toolchain.** Rust 1.100 was installed via Homebrew's `rustup`, without editing shell profiles.
+
+## Releases and updates (2026-11-21)
+
+- **GitHub Actions builds releases from tags** (`.github/workflows/release-macos.yml`, on `v*`). It runs on `macos-latest` and makes one universal build (`--target universal-apple-darwin`) rather than two per-architecture jobs: one download, one updater bundle, half the CI time. The release body is written from `git log` since the previous tag, because GitHub's own auto-generated notes only list merged PRs and this repo commits straight to main.
+- **Fixed asset names.** The workflow uploads `Nanoscale-Atlas-macOS.dmg` (plus a versioned copy), so `releases/latest/download/Nanoscale-Atlas-macOS.dmg` is a permanent "latest" link. The site's "Download for Mac" link on the home page uses it and is hidden in the app.
+- **No lecture material in releases, checked three ways.**
+  1. `INCLUDE_SLIDES` is forced off in CI.
+  2. The job fails if `private/` exists, or if any PDF or slide image is tracked.
+  3. After the build, `check-app-slides.mjs` scans the .app files and the asset paths embedded in the executable, the mounted .dmg, and the unpacked updater tarball. It fails on any slide image or PDF.
+- **Updater.** `tauri-plugin-updater` 2.14.1 and `tauri-plugin-process` 2.4.0 are installed, with the npm packages pinned to match.
+  - On launch the app fetches `releases/latest/download/latest.json` and offers "Update and restart". The prompt is a lazy chunk loaded only when `IS_APP`.
+  - `latest.json` is generated by `scripts/updater-manifest.mjs` from the `.sig` the build produces. It lists the universal tarball for darwin-aarch64, darwin-x86_64 and darwin-universal.
+  - Updater artifacts are switched on only in CI (`--config '{"bundle":{"createUpdaterArtifacts":true}}'`), so local builds, including `INCLUDE_SLIDES=1`, need no key.
+- **Signing key.**
+  - Generated with `tauri signer generate`, with a random password.
+  - The private key and password live only in `~/.tauri/` (mode 600) and in the repository's Actions secrets `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`. They are never committed.
+  - The public key is in `tauri.conf.json`.

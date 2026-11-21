@@ -1,0 +1,36 @@
+.update {
+  position: fixed;
+  left: 50%;
+  top: calc(var(--top-h) + var(--s-2));
+  transform: translateX(-50%);
+  z-index: 30;
+  max-width: min(520px, calc(100vw - 32px));
+  padding: var(--s-3) var(--s-4);
+  background: var(--glass-strong);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: var(--t-13);
+}
+.update p {
+  margin: 0;
+}
+.update .eyebrow {
+  margin-right: var(--s-2);
+  color: var(--amber-ink);
+}
+.update-from {
+  color: var(--ink-2);
+  font-size: var(--t-12);
+}
+.update-actions {
+  display: flex;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+.update-progress,
+.update-failed {
+  margin-top: var(--s-2) !important;
+  color: var(--ink-2);
+}

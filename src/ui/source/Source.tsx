@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useAtlas } from '../../state/store'
 import { slideUrl, sourceLabel, uniqueRefs, type SourceRef } from '../../sources'
 import './source.css'
+import { SLIDES_AVAILABLE } from '../../platform'
 
 /**
  * One small "Source" button per panel, step or question. It opens the
@@ -11,7 +12,8 @@ import './source.css'
 export function SourceButton({ refs, className = '' }: { refs: SourceRef[]; className?: string }) {
   const set = useAtlas((s) => s.set)
   const list = uniqueRefs(refs)
-  if (!list.length) return null
+  // an app built without the slides has nothing to show: no button at all
+  if (!list.length || !SLIDES_AVAILABLE) return null
   const label = list.length === 1 ? sourceLabel(list[0]) : `${sourceLabel(list[0])} +${list.length - 1}`
   return (
     <button className={'source-btn ' + className} onClick={() => set({ source: { refs: list, index: 0 } })} aria-label={`Source: ${list.map(sourceLabel).join(', ')}`} title={label}>

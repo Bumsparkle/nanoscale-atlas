@@ -1,4 +1,5 @@
 import { SCENE } from './sceneTheme'
+import { IS_APP } from '../platform'
 import * as THREE from 'three/webgpu'
 import { Canvas, extend, useFrame, useThree, type ThreeToJSXElements } from '@react-three/fiber'
 import { Suspense, useEffect, useRef } from 'react'
@@ -156,7 +157,8 @@ export function Stage() {
         const renderer = new THREE.WebGPURenderer({
           ...(props as object),
           antialias: true,
-          alpha: false,
+          // the desktop app floats the scene on window glass: a transparent canvas
+          alpha: IS_APP,
           forceWebGL: BOOT.forceWebGL,
         } as never)
         try {

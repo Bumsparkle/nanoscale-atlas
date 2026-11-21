@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { IS_APP } from '../platform'
 import { LAYERS, layerIndex } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
 import { transition } from '../scene/transition'
@@ -70,6 +71,8 @@ export function useGlobalKeys() {
       if ((e.target as HTMLElement)?.closest?.('input, textarea, select')) return
       const st = useAtlas.getState()
       if (st.page !== 'atlas') return
+      // ⌥D: the renderer / debug readout (handy in the desktop app, which has no address bar)
+      if (e.altKey && e.code === 'KeyD') return navigate('/debug')
       if (e.key === 'Escape') {
         if (st.focus) st.set({ focus: null })
         else if (st.view !== 'explore') st.set({ view: 'explore' })
@@ -81,10 +84,17 @@ export function useGlobalKeys() {
   }, [])
 }
 
+/** desktop app: the strip under the title bar drags the window (Tauri drag region) */
+function AppDragStrip() {
+  if (!IS_APP) return null
+  return <div className="app-drag" data-tauri-drag-region aria-hidden />
+}
+
 export function Hud() {
   useGlobalKeys()
   return (
     <>
+      <AppDragStrip />
       <TopBar />
       <SceneOutline />
       <ScaleBar />

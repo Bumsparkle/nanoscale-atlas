@@ -521,3 +521,28 @@ The old lesson had 1,662 words of narration and 51 questions; the new one has 6,
 - Before and after screenshots were reviewed at every size; the sheets are in `docs/screenshots/theme/`.
 
 **Revision (2026-11-21).** The models are back to their original dark materials and lighting, on the new grey background. The mastery toggle is at the top left beside "parts". There are still no overlaps at 1440, 1280 or 375 across the 17 review screens, mastery-on included.
+
+### Desktop app — done (2026-11-21)
+
+**The app.** Tauri v2 packages the atlas as a Mac app with a native glass window (vibrancy, following the system appearance), a hidden title bar, inset traffic lights and a draggable top strip. In the app, the scene floats on the glass over a faint tint, and the panels are more opaque. The web build is unchanged.
+
+**Verified in the installed app** (installed from the .dmg into /Applications):
+- it launches;
+- WebGPU is active at 50–60 fps, and the WebGL 2 fallback works via `?gl=webgl`;
+- a full reload on a deep route works;
+- the wafer, die, cell (Section, Fab replay and controls, Logic, Layout), transistor, oxide and lattice all work;
+- Lesson works, including a check with the two-try hint flow;
+- Revise works, and its drill counts the lesson answer;
+- the Source buttons are hidden (no slides bundled), and the binary embeds no slide paths.
+
+**Glass screenshots.** The planned screenshots on three wallpapers (light, dark and busy, shown behind the window in Preview) were not taken. They need full-screen capture, which was not granted. The user reviewed the app and was happy with it. Their follow-up (no brown wafer backdrop; about 17 % less tint) is applied.
+
+**Personal build.** `INCLUDE_SLIDES=1 npm run tauri build` bundles the 49 slides from the local private folder. A default build bundles none, and a guard fails the build otherwise.
+
+### Releases and updates — done (2026-11-21)
+
+- **Release workflow.** Pushing a `v*` tag builds a universal .dmg, checks the bundle for slides and PDFs, and publishes a GitHub Release with commit-based notes, the .dmg, the signed updater bundle and `latest.json`.
+- **Updater.** The app checks the latest release on launch and offers to update.
+- **Download link.** The home page's "Download for Mac" link always resolves to the newest .dmg, and is hidden in the app.
+- **Docs.** The README covers releasing (bump the three versions, tag, push) and the key setup.
+- **Verified locally.** The universal build with updater signing produces the .dmg, `.app.tar.gz` and `.sig`. `latest.json` generates. The slide/PDF guard passes the real bundle and fails a planted slide and PDF.

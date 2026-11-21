@@ -1,5 +1,6 @@
 import * as THREE from 'three/webgpu'
-import { pass, uniform, color, mix, vec4, float } from 'three/tsl'
+import { IS_APP } from '../platform'
+import { pass, uniform, color, mix, vec4, float, min } from 'three/tsl'
 import { outline } from 'three/addons/tsl/display/OutlineNode.js'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo } from 'react'
@@ -45,7 +46,10 @@ export function Pipeline() {
     const litho = vec4(rgb.r.mul(1.05), rgb.g.mul(0.86), rgb.b.mul(0.32), 1)
     rgb = mix(rgb, litho.rgb, post.amber)
     rgb = rgb.mul(float(1).sub(post.veil))
-    p.outputNode = vec4(rgb, 1)
+    // desktop app: keep the scene's alpha so empty space shows the window glass;
+    // outlines stay visible where they fall outside an object
+    const a = IS_APP ? min(float(1), scenePass.a.add(hover.visibleEdge.r).add(focus.visibleEdge.r).add(post.veil)) : float(1)
+    p.outputNode = vec4(rgb, a)
     return p
   }, [gl, scene, camera])
 

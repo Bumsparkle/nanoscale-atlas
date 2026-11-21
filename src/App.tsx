@@ -3,9 +3,12 @@ import { useAtlas } from './state/store'
 import { startUrlSync } from './state/url'
 import { Home } from './ui/Home'
 import { StylePage } from './ui/StylePage'
+import { IS_APP } from './platform'
 
 export const loadShell = () => import('./AtlasShell')
 const AtlasShell = lazy(loadShell)
+// desktop app only: the update check (never loaded on the web)
+const UpdatePrompt = lazy(() => import('./app/UpdatePrompt'))
 
 export function App() {
   const page = useAtlas((s) => s.page)
@@ -40,6 +43,11 @@ export function App() {
       )}
       {page === 'home' && <Home />}
       {page === 'style' && <StylePage />}
+      {IS_APP && (
+        <Suspense fallback={null}>
+          <UpdatePrompt />
+        </Suspense>
+      )}
     </>
   )
 }

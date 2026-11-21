@@ -1,0 +1,51 @@
+/*
+ * Desktop app (Tauri, html[data-app]): the window is native macOS glass
+ * (vibrancy), so the page and the canvas are transparent and the 3D scene
+ * floats on it. A faint tint behind the scene keeps material colours
+ * readable on any wallpaper; panels, labels and the legend use a more
+ * opaque glass. None of this applies to the web build.
+ */
+html[data-app] {
+  background: transparent;
+  --glass: rgba(33, 37, 41, 0.95);
+  --glass-strong: rgba(33, 37, 41, 0.985);
+  --top-h: 70px;
+}
+html[data-app] body {
+  background: transparent;
+}
+html[data-app] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 26, 29, 0.38);
+  pointer-events: none;
+  z-index: -1;
+}
+/* on a light window appearance the vibrancy is pale: a little more tint keeps the dark models legible */
+@media (prefers-color-scheme: light) {
+  html[data-app] body::before {
+    background: rgba(22, 26, 29, 0.48);
+  }
+}
+/* room for the traffic lights, and a strip that drags the window */
+html[data-app] .topbar {
+  padding-top: 18px;
+  padding-left: 92px;
+}
+html[data-app] .topbar::before {
+  background: linear-gradient(rgba(22, 26, 29, 0.55), transparent);
+}
+.app-drag {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: 9;
+  -webkit-user-select: none;
+  user-select: none;
+}
+html[data-app] #root {
+  background: transparent;
+}

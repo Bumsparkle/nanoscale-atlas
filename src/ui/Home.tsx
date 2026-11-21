@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { IS_APP, MAC_DOWNLOAD_URL } from '../platform'
 import { useAtlas } from '../state/store'
 import { navigate } from '../state/url'
 import './home.css'
@@ -158,6 +159,11 @@ export function Home() {
           <a href="/cmos/inverter" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter'))}>inverter cell</a>
           <a href="/cmos/inverter?view=section&cut=slide27" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter?view=section&cut=slide27'))}>slide 27 section</a>
           <a href="/cmos/inverter?view=fab&step=0" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter?view=fab&step=0'))}>fab sequence</a>
+          {!IS_APP && (
+            <a className="home-download" href={MAC_DOWNLOAD_URL} data-testid="download-mac">
+              Download for Mac ↓
+            </a>
+          )}
         </nav>
       </section>
       {phase === 'gowning' && step === 2 && <div className="air" aria-hidden />}

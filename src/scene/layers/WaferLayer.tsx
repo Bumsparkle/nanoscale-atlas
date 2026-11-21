@@ -111,10 +111,6 @@ export default function WaferLayer() {
       <mesh material={chuck} position={[0, -2.5, 0]}>
         <cylinderGeometry args={[158, 162, 4.2, 128]} />
       </mesh>
-      <mesh position={[0, -40, 0]} rotation-x={-Math.PI / 2}>
-        <circleGeometry args={[900, 64]} />
-        <meshStandardNodeMaterial color="#0c0b0a" roughness={1} />
-      </mesh>
       <InspectSync />
       <ClearOnMiss />
     </>

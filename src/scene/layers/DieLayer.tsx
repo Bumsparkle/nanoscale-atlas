@@ -1,4 +1,5 @@
 import * as THREE from 'three/webgpu'
+import { IS_APP } from '../../platform'
 import { SCENE } from '../sceneTheme'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
@@ -207,7 +208,7 @@ export default function DieLayer() {
       <Inspectable node="inverter-instance" fit={3} minDist={7}>
         <mesh material={frame} geometry={rectFrame(CELL_W + 0.3, CELL_H + 0.3, 0.1)} position={[CELL_AT[0], 0.08, CELL_AT[1]]} rotation-x={-Math.PI / 2} renderOrder={3} />
       </Inspectable>
-      <mesh position={[0, -THICK - 2, 0]} rotation-x={-Math.PI / 2}>
+      <mesh position={[0, -THICK - 2, 0]} rotation-x={-Math.PI / 2} visible={!IS_APP}>
         <planeGeometry args={[4000, 4000]} />
         <meshStandardNodeMaterial color={SCENE.floor} roughness={1} />
       </mesh>

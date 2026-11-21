@@ -81,9 +81,96 @@ A chapter is masks + a recipe + content. No 3D modelling.
 6. **Section targets.** Add snap targets to `SNAP_TARGETS` in `state/store.ts`.
 7. **Check it by eye.** Run `node scripts/shots.mjs`, `node scripts/fabsheet.mjs` and `node scripts/tour.mjs`, and look at the images.
 
-## Deploy
+## Deploy (web)
 
-The repository deploys to Vercel as a static Vite SPA (`vercel.json`): build `npm run build`, output `dist/`, and a rewrite that sends every route to `/index.html` so deep links survive a refresh. Import the GitHub repo in Vercel; no environment variables are needed.
+The repository deploys to Vercel as a static Vite SPA (`vercel.json`): build `npm run build`, output `dist/`, and a rewrite that sends every route to `/index.html` so deep links survive a refresh. `middleware.ts` puts the whole site, slides included, behind HTTP basic auth. Set these in Vercel:
+
+- `SITE_PASSWORD`: required. Without it the site serves nothing (it fails closed).
+- `SLIDES_ARCHIVE_URL` and `SLIDES_TOKEN`: where the build fetches the private slide archive (see DECISIONS.md).
+
+## Desktop app (macOS)
+
+A Tauri v2 wrapper in `src-tauri/` packages the same build as a Mac app. The window is native glass (vibrancy, following the system light or dark appearance), with a hidden title bar and inset traffic lights. The top strip drags the window, and the 3D scene floats on the glass. The web build is unaffected: app mode is detected at runtime, and the app build uses its own flag.
+
+Prerequisites: the Xcode command-line tools and Rust (for example `brew install rustup && rustup default stable`, with `/opt/homebrew/opt/rustup/bin` on your `PATH`).
+
+```bash
+npm run tauri dev
+```
+
+```bash
+npm run tauri build
+```
+
+`tauri dev` runs the dev server inside the app window. `tauri build` writes an unsigned app and `.dmg` to `src-tauri/target/release/bundle/` (`macos/Nanoscale Atlas.app` and `dmg/Nanoscale Atlas_0.1.0_aarch64.dmg`). Open the .dmg and drag the app to Applications.
+
+**Lecture slides in the app.** By default the app contains **no** slide images, and the Source buttons are hidden. For a personal build that bundles the slides from your local, gitignored `private/slides/` (rendered with `npm run slides`), set `INCLUDE_SLIDES=1`:
+
+```bash
+INCLUDE_SLIDES=1 npm run tauri build
+```
+
+That .dmg contains UCL lecture material: keep it to yourself, and never commit it or attach it to a release. A default build (`npm run tauri build`) removes any slides left in `dist/` from an earlier build.
+
+There is no password in the app: the Vercel middleware is web-only.
+
+**Debug readout.** Press ⌥D for `/debug`. It shows the active renderer (WebGPU, or the WebGL 2 fallback), whether it is running as the app or in a browser, and whether slides are bundled.
+
+**Download.** The cleanroom home page has a "Download for Mac" link (hidden inside the app). It always points to `releases/latest/download/Nanoscale-Atlas-macOS.dmg`, the newest release.
+
+**Updates.** On launch the app checks `latest.json` on the latest GitHub Release, using the Tauri updater plugin. If a newer version exists it offers "Update and restart". Each update bundle is signed with the updater key, and the app refuses anything the public key in `src-tauri/tauri.conf.json` does not verify.
+
+### Releases
+
+Releases are built by GitHub Actions (`.github/workflows/release-macos.yml`) whenever a `v*` tag is pushed. The workflow:
+
+1. checks the tag matches the app version;
+2. refuses to run if any slide or PDF is tracked;
+3. builds a universal (Apple Silicon and Intel) app with `INCLUDE_SLIDES` off;
+4. fails if any slide image or PDF ended up in the .app, the .dmg or the updater bundle (`scripts/check-app-slides.mjs`);
+5. publishes a GitHub Release with the .dmg, the signed updater bundle, `latest.json`, and notes listing the commits since the previous tag.
+
+To release:
+
+1. Bump the version in `package.json`, `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml` (all three must match).
+2. Commit, then tag and push:
+
+```bash
+git commit -am "Release v0.3.0"
+```
+
+```bash
+git tag v0.3.0
+```
+
+```bash
+git push origin main v0.3.0
+```
+
+The build takes about 10–15 minutes. Watch it under Actions. The app's "Update and restart" then picks the new version up.
+
+**Updater signing key (one-time setup, already done).** The keypair was made with `npx tauri signer generate -w ~/.tauri/nanoscale-atlas.key`. The private key and its password stay on your Mac in `~/.tauri/`, which is outside the repository, and are never committed. They are also stored as GitHub Actions secrets `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`:
+
+```bash
+gh secret set TAURI_SIGNING_PRIVATE_KEY < ~/.tauri/nanoscale-atlas.key
+```
+
+```bash
+gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD < ~/.tauri/nanoscale-atlas.key.password
+```
+
+Keep a backup of `~/.tauri/`. If the private key is lost, installed apps can't verify any new update: you would need a new keypair, a new public key in `tauri.conf.json`, and everyone would have to download the .dmg once by hand.
+
+**Local builds** don't need the key. `npm run tauri build` (and your personal `INCLUDE_SLIDES=1 npm run tauri build`) skip the updater artifacts, which only the release workflow switches on. A personal build with slides must never be uploaded to a release.
+
+**Signing and notarising (later).** The .dmg is ad-hoc signed only. A Mac that downloads it will refuse to open it until you right-click it and choose Open. To distribute it properly with an Apple Developer account:
+
+1. Create a "Developer ID Application" certificate in your Apple Developer account and install it in your keychain.
+2. Set `bundle.macOS.signingIdentity` in `src-tauri/tauri.conf.json` to that identity, for example `"Developer ID Application: Your Name (TEAMID)"`, or export `APPLE_SIGNING_IDENTITY`.
+3. For notarisation, export `APPLE_ID`, `APPLE_PASSWORD` (an app-specific password) and `APPLE_TEAM_ID`, or an App Store Connect API key (`APPLE_API_ISSUER`, `APPLE_API_KEY`, `APPLE_API_KEY_PATH`).
+4. Run `npm run tauri build`. Tauri signs the app and submits it to Apple's notary service, and the resulting .dmg opens without warnings.
+
+None of this is set up yet, and no credentials are in the repository.
 
 ## Facts and sources
 

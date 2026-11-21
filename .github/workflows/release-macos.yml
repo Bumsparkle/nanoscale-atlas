@@ -1,0 +1,96 @@
+# Build the macOS app for a version tag and publish it as a GitHub Release.
+#   git tag v0.3.0 && git push origin v0.3.0
+# The release gets: a universal (Apple Silicon + Intel) .dmg, the signed updater
+# bundle and latest.json for the in-app updater, and notes listing the commits
+# since the previous tag. Release builds never contain lecture slides or PDFs.
+name: Release macOS app
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    env:
+      # never bundle the lecture slides in a release (private/ is not in the repo either)
+      INCLUDE_SLIDES: '0'
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag matches the app version
+        run: |
+          v=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          test "${GITHUB_REF_NAME}" = "v$v" || { echo "tag ${GITHUB_REF_NAME} does not match version $v in tauri.conf.json"; exit 1; }
+          test "$(node -p "require('./package.json').version")" = "$v" || { echo "package.json version differs from tauri.conf.json"; exit 1; }
+
+      - name: No lecture material in the checkout
+        run: |
+          test ! -e private || { echo "private/ must never be in the repository"; exit 1; }
+          if git ls-files | grep -Ei '\.pdf$|(^|/)slides?/.*\.(jpe?g|png|webp)$'; then echo "slides or PDFs are tracked"; exit 1; fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - run: npm ci
+
+      - name: Build the universal app (with signed updater artifacts)
+        run: npm run tauri build -- --target universal-apple-darwin --config '{"bundle":{"createUpdaterArtifacts":true}}'
+
+      - name: Collect release files
+        id: files
+        run: |
+          B=src-tauri/target/universal-apple-darwin/release/bundle
+          mkdir -p out
+          cp "$B"/dmg/*.dmg out/Nanoscale-Atlas-macOS.dmg
+          cp "$B"/dmg/*.dmg "out/Nanoscale-Atlas-${GITHUB_REF_NAME}-macOS-universal.dmg"
+          cp "$B/macos/Nanoscale Atlas.app.tar.gz" out/Nanoscale-Atlas-macOS.app.tar.gz
+          cp "$B/macos/Nanoscale Atlas.app.tar.gz.sig" out/Nanoscale-Atlas-macOS.app.tar.gz.sig
+          echo "app=$B/macos/Nanoscale Atlas.app" >> "$GITHUB_OUTPUT"
+
+      - name: Fail if any slide image or PDF is in the bundle
+        run: |
+          node scripts/check-app-slides.mjs --bundle "${{ steps.files.outputs.app }}" --dmg out/Nanoscale-Atlas-macOS.dmg
+          mkdir -p /tmp/tarcheck && tar -xzf out/Nanoscale-Atlas-macOS.app.tar.gz -C /tmp/tarcheck
+          node scripts/check-app-slides.mjs --bundle "/tmp/tarcheck/Nanoscale Atlas.app"
+
+      - name: Release notes from the commits since the last tag
+        run: |
+          prev=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null || true)
+          {
+            echo "## Changes"
+            echo
+            if [ -n "$prev" ]; then git log --no-merges --pretty='- %s (%h)' "$prev..${GITHUB_REF_NAME}"; else git log --no-merges --pretty='- %s (%h)' "${GITHUB_REF_NAME}"; fi
+            echo
+            if [ -n "$prev" ]; then echo "Full changelog: https://github.com/${GITHUB_REPOSITORY}/compare/$prev...${GITHUB_REF_NAME}"; fi
+            echo
+            echo "Download **Nanoscale-Atlas-macOS.dmg** (Apple Silicon and Intel). The app is not notarised yet: the first time, right-click it and choose Open."
+          } > notes.md
+          git log --no-merges --pretty='- %s' ${prev:+$prev..}"${GITHUB_REF_NAME}" | head -20 > updater-notes.md
+          node scripts/updater-manifest.mjs "${GITHUB_REF_NAME}" out/Nanoscale-Atlas-macOS.app.tar.gz.sig updater-notes.md > out/latest.json
+
+      - name: Publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" out/* --title "Nanoscale Atlas ${GITHUB_REF_NAME}" --notes-file notes.md --verify-tag

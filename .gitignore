@@ -26,3 +26,7 @@ docs/topic2-cmos.pdf
 
 # rendered lecture slides and their upload archive: UCL material, never public
 private/
+
+# Tauri build output
+src-tauri/target/
+src-tauri/gen/schemas/

@@ -138,6 +138,13 @@
 .home-links a:hover {
   color: var(--amber-ink);
 }
+.home-links .home-download {
+  margin-left: auto;
+  color: var(--amber-ink);
+}
+.home-links .home-download:hover {
+  text-decoration: underline;
+}
 
 .gown {
   list-style: none;
