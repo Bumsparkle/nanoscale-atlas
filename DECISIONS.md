@@ -78,7 +78,59 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
   - Right on the first attempt moves a card up a box (a new card starts in box 2); any miss sends it back to box 1.
   - Review intervals: box 1 now, then 1, 3, 7 and 21 days.
   - A fact's score is the mean over its questions of (box − 1)/3, capped at 1. It counts as mastered at ≥ 2/3, i.e. its questions are around box 3. Lesson answers feed the same boxes.
-- **Lesson gating.** A chunk unlocks the next once its question is answered correctly or its worked solution is opened. A wrong predict also unlocks, since the reveal has shown the answer. Deep links (`?mode=lesson&chunk=…`) open any chunk directly; sequential gating applies to Next and the chunk menu.
+- **Lesson gating** (superseded by the section lesson below). A chunk unlocked the next once its question was answered or its worked solution opened.
 - **Exam paper.** 14 questions, about 40 % calc and the rest recall, drawn from the current Revise filter. 20 minutes, auto-marked on time-out, with a worked solution per question. Do, label and predict are excluded because they need the model.
-- **Mastery overlay.** The 3D tint is on the cell layer, which carries most objects. On other layers the parts list shows a mastery dot per object, and the legend says so. Clicking a weak or untested part opens the lesson chunk for its weakest fact.
-- **Progress lives in localStorage** (`atlas.leitner.v1`, `atlas.lesson.v1`), per browser. Every access is guarded, so a private window just forgets.
+- **Mastery overlay.** The 3D tint is on the cell layer, which carries most objects. On other layers the parts list shows a mastery dot per object, and the legend says so. Clicking a weak or untested part opens the lesson step that teaches its weakest fact.
+- **Progress lives in localStorage** (`atlas.leitner.v1`, `atlas.lesson.v2`), per browser. Every access is guarded, so a private window just forgets.
+
+## Slide sources, the slide images and the password (2026-11-21)
+
+- **References are `{topic, slide}`, not bare numbers.** `src/sources.ts` defines `SourceRef` and `T2(n)`; every panel, fab step, lesson step and question carries one or more. With `topic` in the reference, Topic 3 can add `T3(n)` without touching the UI. Inline "(slide N)" text and the slide chips are gone. Each panel, step and question has one small **Source** button that opens a modal with the slide image, captioned "Topic 2 · slide N", with a pager when there are several.
+- **The slide images are never in the repository.** `npm run slides` renders the PDF with `pdftoppm` (JPEG q84, 1600 px wide, 80–240 KB each, 4.8 MB archived) into `private/slides/topic2/slide-NN.jpg` and packs `private/slides-topic2.tar.gz`. `private/` and `*.pdf` are gitignored, and `src/repo.test.ts` fails if any PDF or slide image is ever tracked.
+- **How they reach the deployment.** The archive is uploaded once to private storage (Vercel Blob, a private bucket, or a private GitHub release asset). `npm run build` runs `scripts/fetch-slides.mjs` first:
+  - it uses `private/slides` if present (a local build);
+  - otherwise it downloads `SLIDES_ARCHIVE_URL`, with `Authorization: Bearer $SLIDES_TOKEN` if set;
+  - it rejects archive entries outside `topic*/slide-NN.jpg`, then unpacks.
+  
+  The Vite plugin copies them to `dist/slides/` after the bundle. Without the archive the build still succeeds, and the Source modal says the image is unavailable.
+  
+  Rejected alternatives:
+  - runtime fetching from Blob: the images would need public or signed URLs outside the password;
+  - committing an encrypted archive: the key handling just moves the secret.
+- **The whole site is behind HTTP basic auth.** `middleware.ts` is Vercel Routing Middleware with no `matcher`, so it runs on every request: HTML, JS, assets and `/slides/*`.
+  - **Fail closed:** if `SITE_PASSWORD` is unset it serves nothing (503), so a misconfigured deployment never exposes the slides.
+  - **Credentials:** any username; the password is compared in constant time on SHA-256 digests.
+  - **Headers:** `/slides/*` responses get `Cache-Control: private` and `X-Robots-Tag: noindex`.
+  - **Tests:** `src/middleware.test.ts` covers missing, wrong and right passwords and the no-matcher rule.
+- **Vercel env vars needed:** `SITE_PASSWORD` (required, or the site serves 503), `SLIDES_ARCHIVE_URL` and optionally `SLIDES_TOKEN`.
+
+## The section lesson (2026-11-21)
+
+- **15 sections replace 51 slide-sized chunks.** Each section is one idea in depth, with 3–5 teaching steps and a 3–4 question review. Every step has:
+  - an explanation aimed at *why*;
+  - an optional worked example or "try it on the model" demonstration;
+  - a scene the model is driven to;
+  - its sources;
+  - the facts it teaches;
+  - one check, or two when one is a calculation.
+  
+  Content lives in `content/topic2/lesson/0N-*.ts`, which exports both `sections` and the step `questions`. The step questions join the bank, so Revise drills them too.
+- **Rules enforced by `src/learn/lesson.test.ts`, not by convention:**
+  - 12–15 sections and 3–6 steps each.
+  - At least as long as the old lesson: 6,191 words against 1,662, and 66 step checks against 51.
+  - All 173 facts are taught.
+  - Each check tests only facts its step taught.
+  - At least half of each section's checks and reviews are do / predict / label / calc. The lowest is 5/7.
+  - Each review covers this section and, after the first, an earlier one, and never repeats a step check.
+  - The whole lesson completes against the live store.
+- **"Not answerable by matching words" is mechanised.** For recall and predict checks, the correct option must not appear in the step text, title or example, and must share no 4-word run with it. For calc checks, the answer value must not appear as a number in the step. Several checks were reworded when the test caught them, e.g. "ion implantation" became "the energy of the ions".
+- **Section time estimate:** reading words ÷ 200 wpm, plus ¾ min per check, plus ⅗ min per review question. All sections fall between 5.5 and 9.5 minutes, 115 minutes in total. The estimate is shown in the section intro and menu.
+- **Two tries.**
+  - A wrong answer shows a hint and outlines part of the model; a wrong multiple-choice option is disabled.
+  - A second wrong answer opens the worked solution.
+  - "Stuck? get a hint" spends the first try.
+  - Predict gets one try, since its reveal is the answer.
+  - Any miss counts as a miss for Leitner.
+- **Peek.** During a check the step text folds into a bar. Opening it marks the current question as peeked, and a right answer then records as `'peeked'`: the card keeps its box and is due again at once, so it never counts towards mastery.
+- **Gating.** A step is done once all its checks are answered or solved. The review is done when finished. Next and the section menu follow `POSITIONS` (steps, then review, per section). Deep links (`?mode=lesson&at=<step id>` or `at=review:<section>`) open any position; the old `chunk` parameter is gone. Lesson progress moved to `atlas.lesson.v2`, since old chunk ids mean nothing in the new structure. Leitner cards are kept.
+- **The slide 48 wording trap** is taught explicitly in the "minimum transistor" step, as the Layout view already shows it.

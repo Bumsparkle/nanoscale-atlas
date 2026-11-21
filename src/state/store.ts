@@ -42,8 +42,8 @@ export interface AtlasState {
   bench: { tab: BenchTab; g: 0 | 1; v: number; ratio: number }
   /** learning modes (Explore is the sandbox) */
   mode: Mode
-  /** current lesson chunk id */
-  chunk: string | null
+  /** current lesson position: a step id or review:<section> */
+  lessonAt: string | null
   /** Revise sub-view */
   revise: { tab: 'drill' | 'coverage' | 'exam'; from: number; to: number; area: string | null }
   /** camera target set by the lesson (does not open a panel) */
@@ -95,7 +95,7 @@ export const useAtlas = create<AtlasState>((set) => ({
   lattice: { structure: 'crystal', dopant: 'none' },
   bench: { tab: 'inverter', g: 1, v: 0, ratio: 1 },
   mode: 'explore',
-  chunk: null,
+  lessonAt: null,
   revise: { tab: 'drill', from: 1, to: 49, area: null },
   look: null,
   hint: null,

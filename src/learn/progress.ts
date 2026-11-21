@@ -1,5 +1,5 @@
 import { FACTS, QUESTIONS, QUESTIONS_FOR_FACT, FACT_BY_ID } from './bank'
-import { LESSON } from './lesson'
+import { POSITIONS, STEPS } from './lesson'
 import type { Question } from './schema'
 
 /**
@@ -8,7 +8,7 @@ import type { Question } from './schema'
  * private window or blocked storage just means nothing is remembered.
  */
 const KEY_L = 'atlas.leitner.v1'
-const KEY_LESSON = 'atlas.lesson.v1'
+const KEY_LESSON = 'atlas.lesson.v2'
 const DAY = 86_400_000
 /** box → review interval: box 1 is due again at once, box 5 after three weeks */
 export const INTERVALS = [0, 0, DAY, 3 * DAY, 7 * DAY, 21 * DAY]
@@ -21,10 +21,13 @@ export interface Card {
   right: number
 }
 export interface LessonProgress {
-  chunk: string
-  /** chunks unlocked by a correct answer or a viewed solution */
+  /** where you are: a step id, or 'review:<section>' */
+  at: string
+  /** positions finished (checks answered or their solutions opened) */
   done: string[]
 }
+/** a first attempt: right, wrong, or right after re-opening the step text */
+export type Result = boolean | 'peeked'
 
 const read = <T,>(k: string, fallback: T): T => {
   try {
@@ -43,7 +46,8 @@ const write = (k: string, v: unknown) => {
 }
 
 let cards: Record<string, Card> = read(KEY_L, {})
-let lesson: LessonProgress = read(KEY_LESSON, { chunk: LESSON[0].id, done: [] })
+let lesson: LessonProgress = read(KEY_LESSON, { at: POSITIONS[0], done: [] })
+if (!POSITIONS.includes(lesson.at)) lesson = { at: POSITIONS[0], done: lesson.done.filter((d) => POSITIONS.includes(d)) }
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((f) => f())
 
@@ -54,9 +58,19 @@ export const progress = {
   },
   card: (id: string): Card | undefined => cards[id],
 
-  /** Leitner: right on the first attempt moves up a box; any miss sends the card back to box 1 */
-  record(id: string, correct: boolean, now = Date.now()) {
+  /**
+   * Leitner: right on the first attempt moves up a box; any miss sends the
+   * card back to box 1; right after a peek keeps its box and is due again now.
+   */
+  record(id: string, result: Result, now = Date.now()) {
     const c = cards[id] ?? { box: 1, due: now, seen: 0, right: 0 }
+    const correct = result === true
+    if (result === 'peeked') {
+      cards = { ...cards, [id]: { ...c, due: now, seen: c.seen + 1 } }
+      write(KEY_L, cards)
+      emit()
+      return
+    }
     const box = correct ? Math.min(BOXES, c.seen === 0 ? 2 : c.box + 1) : 1
     cards = { ...cards, [id]: { box, due: now + INTERVALS[box], seen: c.seen + 1, right: c.right + (correct ? 1 : 0) } }
     write(KEY_L, cards)
@@ -64,27 +78,29 @@ export const progress = {
   },
 
   lesson: () => lesson,
-  setChunk(chunk: string) {
-    lesson = { ...lesson, chunk }
+  setAt(at: string) {
+    if (!POSITIONS.includes(at) || lesson.at === at) return
+    lesson = { ...lesson, at }
     write(KEY_LESSON, lesson)
     emit()
   },
-  complete(chunk: string) {
-    if (lesson.done.includes(chunk)) return
-    lesson = { ...lesson, done: [...lesson.done, chunk] }
+  complete(pos: string) {
+    if (lesson.done.includes(pos)) return
+    lesson = { ...lesson, done: [...lesson.done, pos] }
     write(KEY_LESSON, lesson)
     emit()
   },
-  /** furthest chunk you may open: one past the last completed in sequence */
+  /** furthest position you may open (index into POSITIONS): one past the last finished in sequence */
   reachable(): number {
     let i = 0
-    while (i < LESSON.length && lesson.done.includes(LESSON[i].id)) i++
-    return Math.min(i, LESSON.length - 1)
+    while (i < POSITIONS.length && lesson.done.includes(POSITIONS[i])) i++
+    return Math.min(i, POSITIONS.length - 1)
   },
+  canOpen: (pos: string) => POSITIONS.indexOf(pos) <= progress.reachable(),
 
   reset() {
     cards = {}
-    lesson = { chunk: LESSON[0].id, done: [] }
+    lesson = { at: POSITIONS[0], done: [] }
     write(KEY_L, cards)
     write(KEY_LESSON, lesson)
     emit()
@@ -137,13 +153,13 @@ export function objectMastery(contentId: string): { level: Level; score: number;
   return { level: score >= MASTERED ? 'strong' : score >= 0.3 ? 'learning' : 'weak', score, facts }
 }
 
-/** the lesson chunk teaching an object's weakest fact */
-export function chunkForObject(contentId: string): string | null {
+/** the lesson step teaching an object's weakest fact */
+export function stepForObject(contentId: string): string | null {
   const m = objectMastery(contentId)
   if (!m) return null
   const weakest = [...m.facts].sort((a, b) => factScore(a) - factScore(b) || FACT_BY_ID[a].source.slide - FACT_BY_ID[b].source.slide)
   for (const f of weakest) {
-    const c = LESSON.find((ch) => ch.factIds.includes(f))
+    const c = STEPS.find((st) => st.factIds.includes(f))
     if (c) return c.id
   }
   return null

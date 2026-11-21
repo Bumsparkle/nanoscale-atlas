@@ -9,10 +9,17 @@ export const SLIDES = FACT_FILE.slides
 
 const modules = import.meta.glob('../../content/topic2/questions/[0-9]*.ts', { eager: true }) as Record<string, { default: unknown[] }>
 
-export const QUESTIONS: Question[] = Object.keys(modules)
-  .sort()
-  .flatMap((path) =>
-    modules[path].default.map((raw, i) => {
+const lessonModules = import.meta.glob('../../content/topic2/lesson/[0-9]*.ts', { eager: true }) as Record<string, { questions: unknown[] }>
+
+const sources: [string, unknown[]][] = [
+  ...Object.keys(modules).sort().map((p): [string, unknown[]] => [p, modules[p].default]),
+  ...Object.keys(lessonModules).sort().map((p): [string, unknown[]] => [p, lessonModules[p].questions]),
+]
+
+/** the bank: the slide-by-slide questions, then the lesson's step checks */
+export const QUESTIONS: Question[] = sources
+  .flatMap(([path, list]) =>
+    list.map((raw, i) => {
       const r = QuestionSchema.safeParse(raw)
       if (!r.success) throw new Error(`Invalid question ${path} #${i}: ${r.error.message}`)
       return r.data

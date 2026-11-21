@@ -408,7 +408,7 @@ Every fact has at least one question; all 104 key facts have two or more of diff
   - recall (wrong, then solution);
   - the coverage screen, exam sitting and marked, the mastery overlay, and the weak-part click opening its lesson.
 
-  All screenshots were reviewed and saved in `docs/screenshots/learn/`, with contact sheets of every lesson chunk.
+  (Superseded by the section lesson screenshots below.)
 - Fixed after review:
   - an infinite store-update loop when a `do` question solved itself;
   - label clicks swallowed by the Section-view drag;
@@ -423,3 +423,67 @@ Every fact has at least one question; all 104 key facts have two or more of diff
 - The mastery tint is 3D on the cell layer only; other layers show it in the parts list.
 - Lesson deep links bypass the sequential gate by design.
 - Progress is per browser (localStorage), not synced.
+
+### Source modal, private slides, password — done (2026-11-21)
+
+- **No inline slide references.** Every "(slide N)" and slide chip is gone from panels, the fab timeline, the logic bench, the Layout view, the lesson and all questions. There is now one **Source** button per panel, step and question, which opens the slide image captioned "Topic 2 · slide N". References are `{topic, slide}` (`src/sources.ts`).
+- **Slide images.** `npm run slides` renders 49 JPEGs into the gitignored `private/` folder. The build fetches them from private storage (`SLIDES_ARCHIVE_URL`, optional `SLIDES_TOKEN`) when they are not on disk. The repo test fails if a PDF or slide image is ever tracked.
+- **Password.** `middleware.ts` puts HTTP basic auth on every route and asset against `SITE_PASSWORD`. When the variable is unset it fails closed with a 503.
+- **Verified:**
+  - the modal shows the right slides, with a pager for multi-slide panels;
+  - dev serving refuses path traversal;
+  - an authenticated archive fetch works: a wrong token gives 403 and the build continues without slides;
+  - `dist/slides` gets all 49 images.
+- **Still to do by hand:**
+  - upload `private/slides-topic2.tar.gz` to private storage;
+  - set `SITE_PASSWORD`, `SLIDES_ARCHIVE_URL` and `SLIDES_TOKEN` in Vercel.
+
+### The section lesson — done (2026-11-21)
+
+**Structure.** 15 sections, 59 teaching steps, 66 step checks and 58 review questions; 115 minutes estimated in total.
+
+| § | section | steps | words | est. min | model-based checks |
+|---|---|---|---|---|---|
+| 1 | Silicon: from chip to crystal | 4 | 540 | 7.5 | 6/7 |
+| 2 | The p-n junction | 3 | 390 | 6.6 | 5/7 |
+| 3 | Inside the junction: charge, field and bands | 4 | 517 | 9.5 | 9/10 |
+| 4 | The MOS transistor | 4 | 469 | 7.7 | 7/8 |
+| 5 | pMOS, supply voltage and switches | 3 | 338 | 6.3 | 6/7 |
+| 6 | The CMOS inverter | 3 | 316 | 6.2 | 6/7 |
+| 7 | NAND and NOR | 5 | 504 | 8.7 | 7/9 |
+| 8 | From circuit to silicon | 5 | 529 | 8.8 | 8/9 |
+| 9 | Oxide and lithography: the first cycle | 5 | 484 | 9.3 | 10/10 |
+| 10 | Forming the n-well | 3 | 300 | 5.5 | 5/6 |
+| 11 | The gate stack | 3 | 307 | 6.9 | 7/8 |
+| 12 | Self-aligned source and drain | 5 | 400 | 8.2 | 7/9 |
+| 13 | Wiring the chip | 3 | 208 | 5.7 | 5/7 |
+| 14 | Layout and λ | 5 | 501 | 9.4 | 8/10 |
+| 15 | Design rules | 4 | 388 | 8.8 | 9/10 |
+
+The old lesson had 1,662 words of narration and 51 questions; the new one has 6,191 and 66 (plus 58 in reviews). All 173 facts are taught. The bank is now 327 questions: the 261 slide questions plus 66 step checks.
+
+**Flow:**
+- The section intro gives the time estimate and the step list.
+- Each step teaches: why-focused text, a worked example or model demo, and its Source button, while the model is driven to the step's scene.
+- "Check your understanding" folds the text into a "peek" bar and the question takes over the panel, one question at a time.
+- **Wrong answers:**
+  - a wrong answer brings a hint and an outline on the model, then a second try;
+  - a second miss brings the worked solution;
+  - wrong multiple-choice options are disabled.
+- A peeked right answer is recorded as `peeked`: it keeps its Leitner box and is due again now, so it doesn't count as mastered.
+- After the last step comes the mixed section review, then a summary with the first-try score and a note that missed questions are now first in Revise.
+
+**Verification:**
+- `src/learn/lesson.test.ts` enforces the structure, the length, fact coverage, the model-check ratio, review mixing, completion against live state, label and hint objects, and the "no word matching" rule.
+- 289 tests pass (288 plus the separately run perf test). The perf test passed on its own run; it is still sensitive to machine load.
+- `scripts/lessonrun.mjs` walked all 74 positions in the real UI: 59 steps, 66 checks and 15 reviews. Next was locked before every check, the step text was folded during checks, and every section summary appeared. All 74 positions were recorded in localStorage. No problems, no page errors.
+- `scripts/learnshots.mjs` screenshots were reviewed and saved in `docs/screenshots/learn/`. They show:
+  - the section intro and a worked example;
+  - a check with the text folded, then peek;
+  - a calc wrong then right;
+  - a label wrong click with its hint;
+  - a predict reveal;
+  - a recall with the wrong option disabled, then the solution after two misses;
+  - a review and the section summary;
+  - coverage, exam and mastery.
+- The Source-modal screenshot is kept out of the repo because it shows a lecture slide.

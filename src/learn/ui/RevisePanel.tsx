@@ -119,7 +119,7 @@ export function RevisePanel() {
                   key={q.id + round}
                   q={q}
                   onFirst={(ok) => {
-                    progress.record(q.id, ok)
+                    progress.record(q.id, ok === 'right')
                     set({ progressVersion: useAtlas.getState().progressVersion + 1 })
                   }}
                   onDone={() => setAnswered(true)}

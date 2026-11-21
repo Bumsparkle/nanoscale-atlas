@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { boxCounts, chunkForObject, examPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
+import { boxCounts, stepForObject, examPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
 import { QUESTIONS, QUESTIONS_FOR_FACT } from './bank'
+import { POSITIONS } from './lesson'
 
 const ALL = { from: 1, to: 49, area: null }
 beforeEach(() => progress._load({}))
@@ -40,11 +41,11 @@ describe('mastery', () => {
     expect(s30.mastered).toBe(1)
     expect(s30.facts).toBe(2)
   })
-  it('objects start untested, turn weak after misses, and lead to their lesson chunk', () => {
+  it('objects start untested, turn weak after misses, and lead to their lesson step', () => {
     expect(objectMastery('nwell')!.level).toBe('untested')
     for (const q of QUESTIONS.filter((x) => x.factIds.includes('s25-nwell'))) progress.record(q.id, false, 0)
     expect(objectMastery('nwell')!.level).toBe('weak')
-    expect(chunkForObject('nwell')).toBeTruthy()
+    expect(stepForObject('nwell')).toBeTruthy()
     expect(objectMastery('no-such-object')).toBeNull()
   })
 })
@@ -56,5 +57,25 @@ describe('exam paper', () => {
     expect(p.every((q) => q.type === 'calc' || q.type === 'recall')).toBe(true)
     expect(p.filter((q) => q.type === 'calc').length).toBeGreaterThanOrEqual(5)
     expect(examPaper(42, ALL).map((q) => q.id)).toEqual(p.map((q) => q.id))
+  })
+})
+
+describe('lesson progress', () => {
+  it('a peeked right answer keeps the box and is due again now', () => {
+    progress.record('q-s30-temp', true, 0)
+    progress.record('q-s30-temp', 'peeked', 5000)
+    const c = progress.card('q-s30-temp')!
+    expect(c.box).toBe(2)
+    expect(c.due).toBe(5000)
+    expect(c.right).toBe(1)
+  })
+  it('positions unlock in order: steps, then the section review', () => {
+    progress.reset()
+    expect(progress.reachable()).toBe(0)
+    expect(progress.canOpen(POSITIONS[1])).toBe(false)
+    progress.complete(POSITIONS[0])
+    expect(progress.canOpen(POSITIONS[1])).toBe(true)
+    expect(POSITIONS).toContain('review:silicon')
+    progress.reset()
   })
 })

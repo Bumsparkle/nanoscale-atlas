@@ -43,7 +43,7 @@ const BIT = z.union([z.literal(0), z.literal(1)])
 const TAB = z.enum(['inverter', 'switch', 'nand', 'nor', 'junction'])
 const SIDE = z.enum(['x0', 'x1', 'y0', 'y1'])
 
-/** A scene state to put the app in: lesson chunks, question setup, predict reveals, "show me". */
+/** A scene state to put the app in: lesson steps, question setup, predict reveals, "show me". */
 export const SceneSchema = z.object({
   layer: LAYER.optional(),
   device: z.enum(['nmos', 'pmos']).optional(),
@@ -74,7 +74,7 @@ export const TargetSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('section'), cut: CUT }),
   z.object({ kind: z.literal('fab'), steps: z.array(z.string()).min(1) }),
   z.object({ kind: z.literal('layoutViolation'), rule: z.string() }),
-  z.object({ kind: z.literal('layoutClean'), nmosL: z.number().optional(), pmosL: z.number().optional(), nmosW: z.number().optional() }),
+  z.object({ kind: z.literal('layoutClean'), nmosL: z.number().optional(), pmosL: z.number().optional(), nmosW: z.number().optional(), pmosW: z.number().optional() }),
   z.object({ kind: z.literal('layers'), layers: z.array(MASK) }),
   z.object({ kind: z.literal('vg'), device: z.enum(['nmos', 'pmos']), on: z.boolean() }),
   z.object({ kind: z.literal('lattice'), structure: z.enum(['crystal', 'poly', 'amorphous']).optional(), dopant: z.enum(['none', 'P', 'B']).optional() }),
@@ -89,7 +89,7 @@ const base = {
   id: z.string().regex(/^q-[a-z0-9-]+$/),
   prompt: z.string().min(8),
   factIds: z.array(z.string()).min(1),
-  /** the model object the question is about (mastery, "open chunk") */
+  /** the model object the question is about (mastery, "open step") */
   objectRef: z.string().nullable().default(null),
   /** the slide it draws on (opened by the Source button) */
   source: SourceRefSchema,
@@ -126,15 +126,31 @@ export type Question = z.infer<typeof QuestionSchema>
 export type QuestionInput = z.input<typeof QuestionSchema>
 export type QType = Question['type']
 
-export const ChunkSchema = z.object({
+/** One teaching step: explain why, show it on the model, then check. */
+export const LessonStepSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   title: z.string(),
-  slides: z.array(z.number().int().min(1).max(49)).min(1),
-  narration: z.string().min(20),
+  /** the explanation: why, not just what */
+  text: z.string().min(120),
+  /** a worked example or a demonstration to try on the model */
+  example: z.object({ kind: z.enum(['worked', 'demo']), text: z.string().min(40) }).optional(),
   scene: SceneSchema,
+  sources: z.array(SourceRefSchema).min(1),
   factIds: z.array(z.string()).min(1),
-  question: z.string(),
+  /** one check, or two when the step includes a calculation */
+  checks: z.array(z.string()).min(1).max(2),
 })
-export type Chunk = z.infer<typeof ChunkSchema>
+export type LessonStep = z.infer<typeof LessonStepSchema>
+
+export const LessonSectionSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  title: z.string(),
+  /** what you will be able to do by the end */
+  intro: z.string().min(40),
+  steps: z.array(LessonStepSchema).min(3).max(6),
+  /** 3–4 questions mixing this section with earlier ones */
+  review: z.array(z.string()).min(3).max(4),
+})
+export type LessonSection = z.infer<typeof LessonSectionSchema>
 
 export const q = (x: QuestionInput) => x

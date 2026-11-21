@@ -34,7 +34,7 @@ Useful URLs:
 
 Modes (top bar):
 - **Explore** is the sandbox. Its "mastery" toggle tints the model by how well you know each part.
-- **Lesson** (`?mode=lesson&chunk=<id>`) walks Topic 2 in lecture order, with a question after every part.
+- **Lesson** (`?mode=lesson&at=<step id>`) teaches Topic 2 in 15 sections. Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
 - **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 261 questions, per-slide coverage and a timed paper.
 
 The fact inventory is `content/topic2/facts.json`, the question bank is `content/topic2/questions/`, and the lesson is `content/topic2/lesson.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.

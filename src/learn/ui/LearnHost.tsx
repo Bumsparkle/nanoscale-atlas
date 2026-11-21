@@ -24,7 +24,7 @@ export function ModeSwitch() {
           onClick={() =>
             set({
               mode: m.id,
-              chunk: m.id === 'lesson' ? progress.lesson().chunk : useAtlas.getState().chunk,
+              lessonAt: m.id === 'lesson' ? progress.lesson().at : useAtlas.getState().lessonAt,
               hint: null,
               look: null,
               quiz: false,

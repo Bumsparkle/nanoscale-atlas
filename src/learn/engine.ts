@@ -82,6 +82,7 @@ export function checkTarget(t: Target, st: AtlasState, layout: Layout): boolean 
       if (t.nmosL != null && n?.L !== t.nmosL) return false
       if (t.nmosW != null && n?.W !== t.nmosW) return false
       if (t.pmosL != null && p?.L !== t.pmosL) return false
+      if (t.pmosW != null && p?.W !== t.pmosW) return false
       return true
     }
     case 'layers': {

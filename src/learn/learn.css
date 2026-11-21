@@ -139,7 +139,7 @@ html[data-view='fab'] .learn-panel {
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
-.lp-slides {
+.lp-old-slides {
   display: flex;
   gap: 4px;
   margin: var(--s-2) 0 var(--s-3);
@@ -767,4 +767,123 @@ html[data-mode='revise'] .layout-panel {
   .sheet {
     top: 142px;
   }
+}
+
+/* lesson: sections and steps */
+.lp-intro {
+  margin: 0 0 var(--s-5);
+  padding: 0 0 var(--s-4);
+  border-bottom: var(--hair);
+}
+.lp-intro > p:not(.eyebrow) {
+  margin: var(--s-2) 0 var(--s-3);
+  font-size: var(--t-15);
+  line-height: 1.6;
+  color: var(--ink-1);
+}
+.lp-section-title {
+  margin: var(--s-1) 0 0;
+  font-size: var(--t-24);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+.lp-steplist {
+  margin: 0;
+  padding-left: 1.4em;
+  font-size: var(--t-13);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+.lp-steplist-review {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.lp-steplist.done li::marker {
+  color: var(--amber);
+}
+.lp-step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-bottom: var(--s-1);
+}
+.lp-eyebrow {
+  margin: 0;
+}
+.lp-step-head + .lp-title {
+  margin-bottom: var(--s-3);
+}
+.lp-title + .lp-narration,
+.lp-title + .lp-review-note {
+  margin-top: var(--s-3);
+}
+.lp-example {
+  margin: 0 0 var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-left: 2px solid var(--amber);
+  background: var(--bg-2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.lp-example-demo {
+  border-left-color: var(--line-strong);
+}
+.lp-example p:not(.eyebrow) {
+  margin: var(--s-1) 0 0;
+  font-size: var(--t-13);
+  line-height: 1.55;
+  color: var(--ink-1);
+}
+.lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin: var(--s-4) 0 var(--s-2);
+}
+.lp-fold {
+  margin: 0 0 var(--s-3);
+  border: var(--hair);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+}
+.lp-peek {
+  width: 100%;
+  padding: 8px var(--s-3);
+  text-align: left;
+  font-size: var(--t-11);
+  color: var(--ink-2);
+}
+.lp-peek:hover {
+  color: var(--amber);
+}
+.lp-fold-body {
+  padding: 0 var(--s-3) var(--s-1);
+}
+.lp-fold-body .lp-narration {
+  font-size: var(--t-13);
+  color: var(--ink-1);
+}
+.lp-qcount {
+  margin: 0 0 var(--s-2);
+  font-size: var(--t-11);
+  color: var(--ink-3);
+}
+.lp-score {
+  margin: var(--s-3) 0;
+  font-size: var(--t-15);
+  color: var(--ink-1);
+}
+.lp-score-n {
+  font-size: var(--t-24);
+  color: var(--amber);
+}
+.lp-menu-min {
+  margin-left: auto;
+  font-size: var(--t-11);
+  color: var(--ink-3);
+}
+.lp-steplist.done {
+  margin: var(--s-2) 0 var(--s-4);
 }

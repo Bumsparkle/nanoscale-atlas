@@ -5,7 +5,7 @@ import { inverterProcess } from '../../chapters/cmos/recipe'
 import { layoutState } from '../../chapters/cmos/layout'
 import { MESH_OPTS } from '../../chapters/cmos/display'
 import { resolveComponents, CONTENT_BY_ID, CONTENT } from '../../chapters/cmos/content'
-import { chunkForObject, objectMastery } from '../../learn/progress'
+import { stepForObject, objectMastery } from '../../learn/progress'
 import { mesh } from '../../sim/mesher'
 import { SNAP_TARGETS, useAtlas, type CutAxis } from '../../state/store'
 import { CellModel, TIER_NAMES, TIER_SPACING, type CellView } from '../CellModel'
@@ -434,11 +434,11 @@ export default function CellLayer() {
     const id = (e.object.userData.content as string | null) ?? null
     if (!id) return
     const st = useAtlas.getState()
-    // mastery overlay: a weak object opens the lesson chunk that teaches it
+    // mastery overlay: a weak object opens the lesson step that teaches it
     if (st.mastery && st.mode === 'explore') {
       const m = objectMastery(id)
-      const chunk = m && (m.level === 'weak' || m.level === 'untested') ? chunkForObject(id) : null
-      if (chunk) return st.set({ mode: 'lesson', chunk, mastery: false })
+      const at = m && (m.level === 'weak' || m.level === 'untested') ? stepForObject(id) : null
+      if (at) return st.set({ mode: 'lesson', lessonAt: at, mastery: false })
     }
     st.set({ focus: id })
   }
