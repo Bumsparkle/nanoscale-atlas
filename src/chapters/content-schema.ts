@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { SourceRefSchema } from '../sources'
 
 /**
  * Typed frontmatter for an inspectable object. Every panel has the same four
@@ -24,7 +25,8 @@ export const ContentSchema = z.object({
   anchors: z.array(AnchorSchema).default([]),
   /** named scene object (non-generated layers) */
   node: z.string().optional(),
-  slides: z.array(z.number().int().min(1).max(49)).min(1),
+  /** lecture slides this panel draws on, as {topic, slide} */
+  sources: z.array(SourceRefSchema).min(1),
   /** recipe step id where it is made */
   fabStep: z.string().optional(),
   what: z.string().min(10),

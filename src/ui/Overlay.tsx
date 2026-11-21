@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { overlay, type ScreenLabel } from '../scene/cellRuntime'
 import { useAtlas } from '../state/store'
 import './overlay.css'
+import { SourceButton } from './source/Source'
+import { T2 } from '../sources'
 
 interface Placed {
   l: ScreenLabel
@@ -137,8 +139,8 @@ export function SectionLegend() {
     ['var(--leg-psub)', 'p substrate'],
   ]
   return (
-    <figure className="legend" aria-label="Cross-section legend (slide 25)">
-      <figcaption className="eyebrow">legend · slide 25</figcaption>
+    <figure className="legend" aria-label="Cross-section legend">
+      <figcaption className="eyebrow legend-head">legend <SourceButton refs={[T2(25)]} /></figcaption>
       <ul>
         {rows.map(([c, t, h]) => (
           <li key={t}>

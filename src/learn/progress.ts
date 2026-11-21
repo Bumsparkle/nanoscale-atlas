@@ -121,7 +121,7 @@ export interface SlideCoverage {
 export function slideCoverage(): SlideCoverage[] {
   return Array.from({ length: 49 }, (_, i) => {
     const slide = i + 1
-    const fs = FACTS.filter((f) => f.slide === slide)
+    const fs = FACTS.filter((f) => f.source.slide === slide)
     const mastered = fs.filter((f) => factMastered(f.id)).length
     return { slide, facts: fs.length, mastered, seen: fs.filter((f) => factSeen(f.id)).length, pct: fs.length ? mastered / fs.length : 0 }
   })
@@ -141,7 +141,7 @@ export function objectMastery(contentId: string): { level: Level; score: number;
 export function chunkForObject(contentId: string): string | null {
   const m = objectMastery(contentId)
   if (!m) return null
-  const weakest = [...m.facts].sort((a, b) => factScore(a) - factScore(b) || FACT_BY_ID[a].slide - FACT_BY_ID[b].slide)
+  const weakest = [...m.facts].sort((a, b) => factScore(a) - factScore(b) || FACT_BY_ID[a].source.slide - FACT_BY_ID[b].source.slide)
   for (const f of weakest) {
     const c = LESSON.find((ch) => ch.factIds.includes(f))
     if (c) return c.id
@@ -152,11 +152,11 @@ export function chunkForObject(contentId: string): string | null {
 export interface Filter {
   from: number
   to: number
-  topic: string | null
+  area: string | null
 }
 export const inFilter = (q: Question, f: Filter) => {
-  if (q.slide < f.from || q.slide > f.to) return false
-  if (f.topic && !q.factIds.some((id) => FACT_BY_ID[id].topic === f.topic)) return false
+  if (q.source.slide < f.from || q.source.slide > f.to) return false
+  if (f.area && !q.factIds.some((id) => FACT_BY_ID[id].area === f.area)) return false
   return true
 }
 
@@ -174,7 +174,7 @@ export function queue(f: Filter, now = Date.now(), ahead = false): Question[] {
   }
   return qs
     .filter((q) => ahead || !cards[q.id] || cards[q.id].due <= now)
-    .sort((a, b) => rank(a) - rank(b) || (cards[a.id]?.due ?? 0) - (cards[b.id]?.due ?? 0) || a.slide - b.slide)
+    .sort((a, b) => rank(a) - rank(b) || (cards[a.id]?.due ?? 0) - (cards[b.id]?.due ?? 0) || a.source.slide - b.source.slide)
 }
 
 export function boxCounts(f: Filter): number[] {
@@ -192,6 +192,6 @@ export function examPaper(seed: number, f: Filter, n = 14): Question[] {
   const calcs = pool.filter((q) => q.type === 'calc')
   const recalls = pool.filter((q) => q.type === 'recall')
   const nc = Math.min(calcs.length, Math.round(n * 0.4))
-  return [...pick(calcs, nc), ...pick(recalls, n - nc)].sort((a, b) => a.slide - b.slide)
+  return [...pick(calcs, nc), ...pick(recalls, n - nc)].sort((a, b) => a.source.slide - b.source.slide)
 }
 export const EXAM_MINUTES = 20

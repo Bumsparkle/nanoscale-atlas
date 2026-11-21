@@ -96,3 +96,5 @@ routes.push({
 routes.push({ name: 'LN-lesson-start', path: '/cmos/inverter?mode=lesson&chunk=structures', wait: 5000 })
 routes.push({ name: 'LN-lesson-layout', path: '/cmos/inverter?mode=lesson&chunk=rules-gate', wait: 6000 })
 routes.push({ name: 'LN-revise-drill', path: '/cmos/inverter?mode=revise', wait: 5000 })
+routes.push({ name: 'SRC-panel', path: '/cmos/inverter?focus=gate-oxide', wait: 3500, action: async (p) => { await p.locator('.panel .source-btn').click(); await p.waitForTimeout(900) } })
+routes.push({ name: 'SRC-step', path: '/cmos/inverter?view=fab&step=10', wait: 3500, action: async (p) => { await p.locator('.stepcard .source-btn').click(); await p.waitForTimeout(900) } })

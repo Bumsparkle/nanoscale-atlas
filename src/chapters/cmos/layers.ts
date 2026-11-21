@@ -40,17 +40,17 @@ export const LAYERS: LayerDef[] = [
   {
     id: 'cell', path: ['inverter'], crumb: 'inverter cell', title: 'CMOS inverter cell',
     metresPerUnit: 0.3e-6, minDist: 24, maxDist: 190, restDist: 112, restPolar: 0.9, restAzimuth: -0.5,
-    near: 0.1, far: 1000, scaleNote: 'λ = 0.3 µm (slide 46)',
+    near: 0.1, far: 1000, scaleNote: 'λ = 0.3 µm',
   },
   {
     id: 'transistor', path: ['inverter', 'nmos'], crumb: 'nMOS', title: 'nMOS transistor',
     metresPerUnit: 0.3e-6, minDist: 6, maxDist: 70, restDist: 30, restPolar: 1.22, restAzimuth: -0.32,
-    near: 0.05, far: 500, scaleNote: 'L = 2λ = 0.6 µm (slides 46, 48)',
+    near: 0.05, far: 500, scaleNote: 'L = 2λ = 0.6 µm',
   },
   {
     id: 'oxide', path: ['inverter', 'nmos', 'gate-oxide'], crumb: 'gate oxide', title: 'Gate oxide',
     metresPerUnit: 1e-10, minDist: 14, maxDist: 220, restDist: 118, restPolar: 1.3, restAzimuth: -0.35,
-    near: 0.1, far: 1000, scaleNote: '< 20 Å, 6–7 atomic layers (slide 37)',
+    near: 0.1, far: 1000, scaleNote: '< 20 Å, 6–7 atomic layers',
   },
   {
     id: 'lattice', path: ['inverter', 'nmos', 'gate-oxide', 'lattice'], crumb: 'Si lattice', title: 'Silicon lattice',

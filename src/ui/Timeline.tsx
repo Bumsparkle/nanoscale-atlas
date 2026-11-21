@@ -4,6 +4,7 @@ import { useAtlas } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
 import { sound } from './sound'
 import './timeline.css'
+import { SourceButton } from './source/Source'
 
 const GROUP_LABEL: Record<string, string> = {
   start: 'wafer',
@@ -127,7 +128,7 @@ export function Timeline() {
     <>
       <aside className="stepcard" aria-live="polite" data-testid="stepcard">
         <p className="eyebrow">
-          step {String(step).padStart(2, '0')} / {n} · {GROUP_LABEL[s.group]} <span className="slide-ref">slide {s.slide}</span>
+          step {String(step).padStart(2, '0')} / {n} · {GROUP_LABEL[s.group]} <SourceButton refs={[s.source]} />
         </p>
         <h2>{s.title}</h2>
         <dl>

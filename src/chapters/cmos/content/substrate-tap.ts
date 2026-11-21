@@ -1,4 +1,5 @@
 import { defineContent } from '../../content-schema'
+import { T2 } from '../../../sources'
 
 export default defineContent({
   id: 'substrate-tap',
@@ -7,9 +8,9 @@ export default defineContent({
   layer: 'cell',
   parent: 'cell',
   anchors: [{ key: 'si:p+', x: 2, y: 2 }],
-  slides: [26, 27, 43],
+  sources: [T2(26), T2(27), T2(43)],
   fabStep: 'p-implant',
-  what: 'A small p+ region in the p substrate under the GND metal (slides 26–27).',
-  made: 'Formed by the same p+ implant as the pMOS source and drain (slide 43).',
-  does: 'The substrate must be tied to GND (slide 26). Metal on lightly doped silicon forms a poor connection, a Schottky diode, so the contact lands on heavily doped p+ instead (slide 26).',
+  what: 'A small p+ region in the p substrate under the GND metal.',
+  made: 'Formed by the same p+ implant as the pMOS source and drain.',
+  does: 'The substrate must be tied to GND. Metal on lightly doped silicon forms a poor connection, a Schottky diode, so the contact lands on heavily doped p+ instead.',
 })

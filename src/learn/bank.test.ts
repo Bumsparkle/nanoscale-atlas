@@ -4,12 +4,12 @@ import { CONTENT_BY_ID } from '../chapters/cmos/content'
 
 describe('fact inventory (content/topic2/facts.json)', () => {
   it('covers all 49 slides', () => {
-    const slides = new Set(FACTS.map((f) => f.slide))
+    const slides = new Set(FACTS.map((f) => f.source.slide))
     for (let s = 1; s <= 49; s++) expect(slides.has(s), `slide ${s} has no fact`).toBe(true)
   })
   it('fact ids are unique and match their slide', () => {
     expect(new Set(FACTS.map((f) => f.id)).size).toBe(FACTS.length)
-    for (const f of FACTS) expect(f.id.slice(1, 3), f.id).toBe(String(f.slide).padStart(2, '0'))
+    for (const f of FACTS) expect(f.id.slice(1, 3), f.id).toBe(String(f.source.slide).padStart(2, '0'))
   })
   it('numbers, fab steps and rules are all marked key', () => {
     for (const f of FACTS) if (f.kind === 'number' || f.kind === 'process-step' || f.kind === 'rule') expect(f.key, f.id).toBe(true)
@@ -29,7 +29,7 @@ describe('question bank', () => {
   it('every question points at real facts, and its slide is one of theirs', () => {
     for (const q of QUESTIONS) {
       for (const id of q.factIds) expect(FACT_BY_ID[id], `${q.id} → ${id}`).toBeTruthy()
-      expect(q.factIds.some((id) => FACT_BY_ID[id].slide === q.slide), `${q.id} slide ${q.slide}`).toBe(true)
+      expect(q.factIds.some((id) => FACT_BY_ID[id].source.slide === q.source.slide), `${q.id} slide ${q.source.slide}`).toBe(true)
     }
   })
   it('every fact has at least one question', () => {

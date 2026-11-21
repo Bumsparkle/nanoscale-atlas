@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { Device, LayerId } from '../chapters/cmos/layers'
 import { MASK_IDS, type MaskId } from '../chapters/cmos/layout'
+import type { SourceRef } from '../sources'
 
 export type Page = 'home' | 'atlas' | 'style' | 'debug'
 export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic' | 'layout'
@@ -44,13 +45,15 @@ export interface AtlasState {
   /** current lesson chunk id */
   chunk: string | null
   /** Revise sub-view */
-  revise: { tab: 'drill' | 'coverage' | 'exam'; from: number; to: number; topic: string | null }
+  revise: { tab: 'drill' | 'coverage' | 'exam'; from: number; to: number; area: string | null }
   /** camera target set by the lesson (does not open a panel) */
   look: string | null
   /** object outlined by a hint after a wrong answer */
   hint: string | null
   /** an unanswered question is open: hide labels and readouts that would give the answer away */
   quiz: boolean
+  /** the Source modal: lecture slides being shown */
+  source: { refs: SourceRef[]; index: number } | null
   /** Explore: tint objects by mastery */
   mastery: boolean
   /** bumps when learning progress changes (localStorage is not reactive) */
@@ -93,10 +96,11 @@ export const useAtlas = create<AtlasState>((set) => ({
   bench: { tab: 'inverter', g: 1, v: 0, ratio: 1 },
   mode: 'explore',
   chunk: null,
-  revise: { tab: 'drill', from: 1, to: 49, topic: null },
+  revise: { tab: 'drill', from: 1, to: 49, area: null },
   look: null,
   hint: null,
   quiz: false,
+  source: null,
   mastery: false,
   progressVersion: 0,
   sound: false,

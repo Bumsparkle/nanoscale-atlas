@@ -1,250 +1,251 @@
 {
  "source": "ELEC0031 Topic 2, Introduction to CMOS VLSI Design (49 slides). Facts are paraphrased from the slides; slide = PDF page.",
+ "topic": "topic2",
  "slides": [
   {
    "slide": 1,
    "title": "Title",
-   "topic": "intro"
+   "area": "intro"
   },
   {
    "slide": 2,
    "title": "Introduction",
-   "topic": "intro"
+   "area": "intro"
   },
   {
    "slide": 3,
    "title": "Silicon structures",
-   "topic": "materials"
+   "area": "materials"
   },
   {
    "slide": 4,
    "title": "Silicon lattice",
-   "topic": "materials"
+   "area": "materials"
   },
   {
    "slide": 5,
    "title": "Dopants",
-   "topic": "materials"
+   "area": "materials"
   },
   {
    "slide": 6,
    "title": "p-n junctions",
-   "topic": "junction"
+   "area": "junction"
   },
   {
    "slide": 7,
    "title": "Review of PN junction",
-   "topic": "junction"
+   "area": "junction"
   },
   {
    "slide": 8,
    "title": "Charge and field",
-   "topic": "junction"
+   "area": "junction"
   },
   {
    "slide": 9,
    "title": "Energy band diagram",
-   "topic": "junction"
+   "area": "junction"
   },
   {
    "slide": 10,
    "title": "CMOS technologies",
-   "topic": "devices"
+   "area": "devices"
   },
   {
    "slide": 11,
    "title": "nMOS transistor",
-   "topic": "devices"
+   "area": "devices"
   },
   {
    "slide": 12,
    "title": "nMOS operation",
-   "topic": "devices"
+   "area": "devices"
   },
   {
    "slide": 13,
    "title": "pMOS transistor",
-   "topic": "devices"
+   "area": "devices"
   },
   {
    "slide": 14,
    "title": "Transistors as switches",
-   "topic": "devices"
+   "area": "devices"
   },
   {
    "slide": 15,
    "title": "CMOS inverter",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 16,
    "title": "Inverter, A = 1",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 17,
    "title": "Inverter, A = 0",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 18,
    "title": "CMOS NAND gate",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 19,
    "title": "NAND, A=0 B=0",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 20,
    "title": "NAND, A=0 B=1",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 21,
    "title": "NAND, A=1 B=0",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 22,
    "title": "NAND, A=1 B=1",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 23,
    "title": "CMOS NOR gate",
-   "topic": "logic"
+   "area": "logic"
   },
   {
    "slide": 24,
    "title": "CMOS fabrication",
-   "topic": "structure"
+   "area": "structure"
   },
   {
    "slide": 25,
    "title": "Inverter cross-section",
-   "topic": "structure"
+   "area": "structure"
   },
   {
    "slide": 26,
    "title": "Well and substrate taps",
-   "topic": "structure"
+   "area": "structure"
   },
   {
    "slide": 27,
    "title": "Inverter mask set",
-   "topic": "structure"
+   "area": "structure"
   },
   {
    "slide": 28,
    "title": "Detailed mask views",
-   "topic": "structure"
+   "area": "structure"
   },
   {
    "slide": 29,
    "title": "Fabrication steps",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 30,
    "title": "Oxidation",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 31,
    "title": "Photoresist",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 32,
    "title": "Lithography",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 33,
    "title": "Etch",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 34,
    "title": "Strip photoresist",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 35,
    "title": "n-well",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 36,
    "title": "Strip oxide",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 37,
    "title": "Polysilicon",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 38,
    "title": "Polysilicon patterning",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 39,
    "title": "Self-aligned process",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 40,
    "title": "N-diffusion",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 41,
    "title": "N-diffusion cont.",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 42,
    "title": "N-diffusion cont.",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 43,
    "title": "P-diffusion",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 44,
    "title": "Contacts",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 45,
    "title": "Metalization",
-   "topic": "fabrication"
+   "area": "fabrication"
   },
   {
    "slide": 46,
    "title": "Layout",
-   "topic": "layout"
+   "area": "layout"
   },
   {
    "slide": 47,
    "title": "Simplified design rules",
-   "topic": "layout"
+   "area": "layout"
   },
   {
    "slide": 48,
    "title": "Inverter layout",
-   "topic": "layout"
+   "area": "layout"
   },
   {
    "slide": 49,
    "title": "Summary",
-   "topic": "summary"
+   "area": "summary"
   }
  ],
  "unreadable": [
@@ -264,19 +265,25 @@
  "facts": [
   {
    "id": "s01-topic",
-   "slide": 1,
+   "source": {
+    "topic": "topic2",
+    "slide": 1
+   },
    "kind": "definition",
    "statement": "ELEC0031 Topic 2 is \"Introduction to CMOS VLSI Design\".",
-   "topic": "intro",
+   "area": "intro",
    "key": false,
    "objects": []
   },
   {
    "id": "s02-ic",
-   "slide": 2,
+   "source": {
+    "topic": "topic2",
+    "slide": 2
+   },
    "kind": "definition",
    "statement": "An integrated circuit has many transistors on one chip.",
-   "topic": "intro",
+   "area": "intro",
    "key": false,
    "objects": [
     "die"
@@ -284,46 +291,61 @@
   },
   {
    "id": "s02-ulsi",
-   "slide": 2,
+   "source": {
+    "topic": "topic2",
+    "slide": 2
+   },
    "kind": "definition",
    "statement": "ULSI stands for Ultra Large Scale Integration.",
-   "topic": "intro",
+   "area": "intro",
    "key": false,
    "objects": []
   },
   {
    "id": "s02-cmos",
-   "slide": 2,
+   "source": {
+    "topic": "topic2",
+    "slide": 2
+   },
    "kind": "definition",
    "statement": "CMOS stands for Complementary Metal Oxide Semiconductor.",
-   "topic": "intro",
+   "area": "intro",
    "key": false,
    "objects": []
   },
   {
    "id": "s02-cmos-props",
-   "slide": 2,
+   "source": {
+    "topic": "topic2",
+    "slide": 2
+   },
    "kind": "cause-effect",
    "statement": "CMOS transistors are fast, cheap and low power.",
-   "topic": "intro",
+   "area": "intro",
    "key": false,
    "objects": []
   },
   {
    "id": "s02-plan",
-   "slide": 2,
+   "source": {
+    "topic": "topic2",
+    "slide": 2
+   },
    "kind": "definition",
    "statement": "Building a simple CMOS chip covers the CMOS transistor, building logic gates from transistors, and transistor layout and fabrication.",
-   "topic": "intro",
+   "area": "intro",
    "key": false,
    "objects": []
   },
   {
    "id": "s03-amorphous-order",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "definition",
    "statement": "Amorphous Si has no recognizable long-range order.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -331,10 +353,13 @@
   },
   {
    "id": "s03-amorphous-defects",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "definition",
    "statement": "Amorphous Si has many dangling bonds, and defects, voids and traps.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -342,10 +367,13 @@
   },
   {
    "id": "s03-amorphous-conductor",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "cause-effect",
    "statement": "Amorphous Si is a poor charge conductor.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -353,10 +381,13 @@
   },
   {
    "id": "s03-poly-grains",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "definition",
    "statement": "Poly-Si is made of segments (grains) randomly oriented to each other.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "oxide-poly",
@@ -365,10 +396,13 @@
   },
   {
    "id": "s03-poly-size",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "number",
    "statement": "Poly-Si grains range from micron to nm size.",
-   "topic": "materials",
+   "area": "materials",
    "key": true,
    "objects": [
     "oxide-poly"
@@ -376,10 +410,13 @@
   },
   {
    "id": "s03-poly-traps",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "cause-effect",
    "statement": "Poly-Si has traps and defects at the grain boundaries, so it is an \"average\" conductor.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "oxide-poly",
@@ -388,10 +425,13 @@
   },
   {
    "id": "s03-crystal-order",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "definition",
    "statement": "Single-crystal Si is a totally ordered array of atoms with good long-range order and symmetry.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "oxide-substrate",
@@ -400,10 +440,13 @@
   },
   {
    "id": "s03-crystal-defects",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "definition",
    "statement": "Single-crystal Si has very few defects and traps.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "oxide-substrate"
@@ -411,10 +454,13 @@
   },
   {
    "id": "s03-crystal-conductor",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "cause-effect",
    "statement": "Single-crystal Si is a good conductor if free electrons are present.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "oxide-substrate"
@@ -422,10 +468,13 @@
   },
   {
    "id": "s03-diagram",
-   "slide": 3,
+   "source": {
+    "topic": "topic2",
+    "slide": 3
+   },
    "kind": "diagram",
    "statement": "The three sketches, left to right, show a random network (amorphous), randomly oriented ordered grains (poly) and one regular grid (single crystal).",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -433,10 +482,13 @@
   },
   {
    "id": "s04-substrate",
-   "slide": 4,
+   "source": {
+    "topic": "topic2",
+    "slide": 4
+   },
    "kind": "definition",
    "statement": "Transistors are built on a silicon substrate.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "substrate"
@@ -444,10 +496,13 @@
   },
   {
    "id": "s04-group-iv",
-   "slide": 4,
+   "source": {
+    "topic": "topic2",
+    "slide": 4
+   },
    "kind": "number",
    "statement": "Silicon is a group IV material: 4 electrons to share.",
-   "topic": "materials",
+   "area": "materials",
    "key": true,
    "objects": [
     "lattice-cell"
@@ -455,10 +510,13 @@
   },
   {
    "id": "s04-four-bonds",
-   "slide": 4,
+   "source": {
+    "topic": "topic2",
+    "slide": 4
+   },
    "kind": "definition",
    "statement": "Silicon forms a crystal lattice with bonds to its four nearest neighbours.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -466,10 +524,13 @@
   },
   {
    "id": "s04-diagram",
-   "slide": 4,
+   "source": {
+    "topic": "topic2",
+    "slide": 4
+   },
    "kind": "diagram",
    "statement": "The 2D sketch shows silicon atoms sharing electrons in covalent bonds; the 3D sketch shows the cubic unit cell with each atom bonded to four neighbours.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -477,10 +538,13 @@
   },
   {
    "id": "s05-semiconductor",
-   "slide": 5,
+   "source": {
+    "topic": "topic2",
+    "slide": 5
+   },
    "kind": "definition",
    "statement": "Silicon is a semiconductor.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -488,10 +552,13 @@
   },
   {
    "id": "s05-pure",
-   "slide": 5,
+   "source": {
+    "topic": "topic2",
+    "slide": 5
+   },
    "kind": "cause-effect",
    "statement": "Pure silicon has no free carriers and conducts poorly.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-cell"
@@ -499,10 +566,13 @@
   },
   {
    "id": "s05-dopants",
-   "slide": 5,
+   "source": {
+    "topic": "topic2",
+    "slide": 5
+   },
    "kind": "cause-effect",
    "statement": "Adding dopants increases the conductivity.",
-   "topic": "materials",
+   "area": "materials",
    "key": false,
    "objects": [
     "lattice-dopant"
@@ -510,10 +580,13 @@
   },
   {
    "id": "s05-group-v",
-   "slide": 5,
+   "source": {
+    "topic": "topic2",
+    "slide": 5
+   },
    "kind": "definition",
    "statement": "Group V dopants (e.g. P, As) give an extra electron: n-type.",
-   "topic": "materials",
+   "area": "materials",
    "key": true,
    "objects": [
     "lattice-dopant",
@@ -523,10 +596,13 @@
   },
   {
    "id": "s05-group-iii",
-   "slide": 5,
+   "source": {
+    "topic": "topic2",
+    "slide": 5
+   },
    "kind": "definition",
    "statement": "Group III dopants (e.g. B, Al) leave a missing electron, a hole: p-type.",
-   "topic": "materials",
+   "area": "materials",
    "key": true,
    "objects": [
     "lattice-dopant",
@@ -536,226 +612,301 @@
   },
   {
    "id": "s06-diode",
-   "slide": 6,
+   "source": {
+    "topic": "topic2",
+    "slide": 6
+   },
    "kind": "definition",
    "statement": "A junction between p-type and n-type semiconductor forms a diode.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s06-one-way",
-   "slide": 6,
+   "source": {
+    "topic": "topic2",
+    "slide": 6
+   },
    "kind": "cause-effect",
    "statement": "Current flows only in one direction: diode behaviour.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s06-nplus",
-   "slide": 6,
+   "source": {
+    "topic": "topic2",
+    "slide": 6
+   },
    "kind": "diagram",
    "statement": "In the diode structure drawing, an n+ layer under the n layer gives low resistance to the metal back contact.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s06-iv",
-   "slide": 6,
+   "source": {
+    "topic": "topic2",
+    "slide": 6
+   },
    "kind": "diagram",
    "statement": "The diode I–V curve shows almost no current in reverse bias and a current rising sharply in forward bias.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s07-n-region",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "definition",
    "statement": "The n-region has fixed donor ions with free electrons.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s07-p-region",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "definition",
    "statement": "The p-region has fixed acceptor ions with free holes.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s07-diffusion",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "cause-effect",
    "statement": "Holes diffuse from the p-side (high concentration p_po) to the n-side (low p_no); electrons diffuse the other way.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s07-depleted",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "cause-effect",
    "statement": "Near the junction both sides become depleted of majority carriers, exposing the fixed ions.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s07-depletion",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "definition",
    "statement": "The region depleted of free carriers on both sides is called the depletion region or space charge layer.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s07-field",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "cause-effect",
    "statement": "There is an internal electric field from the positive ions to the negative ions, i.e. from the n side to the p side.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s07-diagram",
-   "slide": 7,
+   "source": {
+    "topic": "topic2",
+    "slide": 7
+   },
    "kind": "diagram",
    "statement": "In the drawing the p side holds B⁻ acceptor ions and holes, the n side As⁺ donor ions and electrons; the field E0 points from n to p across the space charge region at the metallurgical junction M.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s08-charge",
-   "slide": 8,
+   "source": {
+    "topic": "topic2",
+    "slide": 8
+   },
    "kind": "definition",
    "statement": "The volume charge density is −eNa in the p-type layer and +eNd in the n-type layer.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s08-neutrality",
-   "slide": 8,
+   "source": {
+    "topic": "topic2",
+    "slide": 8
+   },
    "kind": "rule",
    "statement": "Charge neutrality: NaWp = NdWn.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s08-gauss",
-   "slide": 8,
+   "source": {
+    "topic": "topic2",
+    "slide": 8
+   },
    "kind": "rule",
    "statement": "Gauss's theorem: dE/dz = ρ/(εrε0), i.e. −eNa/(εrε0) on the p side and +eNd/(εrε0) on the n side.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s08-symbols",
-   "slide": 8,
+   "source": {
+    "topic": "topic2",
+    "slide": 8
+   },
    "kind": "definition",
    "statement": "εr is the relative permittivity, ε0 the permittivity of free space, ρ the volume charge density, Na and Nd the acceptor and donor densities per unit volume.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s08-boundary",
-   "slide": 8,
+   "source": {
+    "topic": "topic2",
+    "slide": 8
+   },
    "kind": "rule",
    "statement": "Boundary condition: E(−Wp) = E(Wn) = 0.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s08-diagram",
-   "slide": 8,
+   "source": {
+    "topic": "topic2",
+    "slide": 8
+   },
    "kind": "diagram",
    "statement": "ρnet is a step (−eNa from −Wp to 0, +eNd from 0 to Wn) and the field is a triangle with its largest magnitude E0 at the junction.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s09-open",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "cause-effect",
    "statement": "Open circuit: the Fermi level must be uniform through the p- and n-side materials.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s09-barrier",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "definition",
    "statement": "At open circuit the potential energy barrier is eV0, the built-in (junction) potential.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s09-forward",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "cause-effect",
    "statement": "Forward bias: the applied voltage drops across the depletion region, the barrier falls to e(V0 − V) and a current flows.",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s09-reverse",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "cause-effect",
    "statement": "Reverse bias: the barrier rises to e(V0 + Vr).",
-   "topic": "junction",
+   "area": "junction",
    "key": true,
    "objects": []
   },
   {
    "id": "s09-thermal",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "cause-effect",
    "statement": "Under reverse bias, thermal generation of electron–hole pairs in the depletion region gives a small reverse current.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s09-photo",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "cause-effect",
    "statement": "Photo-generation of electron–hole pairs in the depletion region leads to a photocurrent.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s09-diagram",
-   "slide": 9,
+   "source": {
+    "topic": "topic2",
+    "slide": 9
+   },
    "kind": "diagram",
    "statement": "In the band diagrams Ec and Ev bend down from p to n; forward bias separates EFn above EFp by eV, reverse bias puts EFn below EFp by eVr.",
-   "topic": "junction",
+   "area": "junction",
    "key": false,
    "objects": []
   },
   {
    "id": "s10-pchannel",
-   "slide": 10,
+   "source": {
+    "topic": "topic2",
+    "slide": 10
+   },
    "kind": "cause-effect",
    "statement": "p-channel is the oldest and simplest technology but is slow, due to the lower mobility of holes.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "pmos-source"
@@ -763,10 +914,13 @@
   },
   {
    "id": "s10-nchannel",
-   "slide": 10,
+   "source": {
+    "topic": "topic2",
+    "slide": 10
+   },
    "kind": "cause-effect",
    "statement": "n-channel is faster than p-channel because electrons have higher mobility than holes.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "nmos-source"
@@ -774,19 +928,25 @@
   },
   {
    "id": "s10-cmos",
-   "slide": 10,
+   "source": {
+    "topic": "topic2",
+    "slide": 10
+   },
    "kind": "definition",
    "statement": "CMOS (complementary) technology is the prevalent technology at present.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": []
   },
   {
    "id": "s11-terminals",
-   "slide": 11,
+   "source": {
+    "topic": "topic2",
+    "slide": 11
+   },
    "kind": "number",
    "statement": "An nMOS transistor has four terminals: gate, source, drain and body.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "nmos-source",
@@ -797,10 +957,13 @@
   },
   {
    "id": "s11-capacitor",
-   "slide": 11,
+   "source": {
+    "topic": "topic2",
+    "slide": 11
+   },
    "kind": "definition",
    "statement": "The gate–oxide–body stack looks like a capacitor: gate and body are conductors, and SiO2 is a very good insulator.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "gate-oxide"
@@ -808,10 +971,13 @@
   },
   {
    "id": "s11-mos-name",
-   "slide": 11,
+   "source": {
+    "topic": "topic2",
+    "slide": 11
+   },
    "kind": "definition",
    "statement": "It is called a metal–oxide–semiconductor (MOS) capacitor even though the gate is no longer made of metal.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "poly-gate"
@@ -819,10 +985,13 @@
   },
   {
    "id": "s11-structure",
-   "slide": 11,
+   "source": {
+    "topic": "topic2",
+    "slide": 11
+   },
    "kind": "diagram",
    "statement": "The nMOS structure drawing shows n-type source and drain in p-type silicon, a gate electrode on silicon dioxide, an n-channel under the gate and metal tracks to source and drain.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "nmos-source",
@@ -832,19 +1001,25 @@
   },
   {
    "id": "s11-symbol",
-   "slide": 11,
+   "source": {
+    "topic": "topic2",
+    "slide": 11
+   },
    "kind": "diagram",
    "statement": "The nMOS symbol has gate, source S and drain D, with no circle on the gate.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": []
   },
   {
    "id": "s12-body",
-   "slide": 12,
+   "source": {
+    "topic": "topic2",
+    "slide": 12
+   },
    "kind": "definition",
    "statement": "The nMOS body is commonly tied to ground.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "substrate",
@@ -853,10 +1028,13 @@
   },
   {
    "id": "s12-low",
-   "slide": 12,
+   "source": {
+    "topic": "topic2",
+    "slide": 12
+   },
    "kind": "cause-effect",
    "statement": "Gate low: the p-type body is at low voltage, the source–body and drain–body diodes are OFF, no current flows: the transistor is OFF.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "channel"
@@ -864,10 +1042,13 @@
   },
   {
    "id": "s12-high",
-   "slide": 12,
+   "source": {
+    "topic": "topic2",
+    "slide": 12
+   },
    "kind": "cause-effect",
    "statement": "Gate high: positive charge on the gate attracts negative charge to the body, inverting a channel under the gate to n-type.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "channel",
@@ -876,10 +1057,13 @@
   },
   {
    "id": "s12-on",
-   "slide": 12,
+   "source": {
+    "topic": "topic2",
+    "slide": 12
+   },
    "kind": "cause-effect",
    "statement": "With the channel inverted, current flows through n-type silicon from source through the channel to drain: the transistor is ON.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "channel"
@@ -887,10 +1071,13 @@
   },
   {
    "id": "s13-reversed",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "definition",
    "statement": "pMOS is like nMOS but with doping and voltages reversed.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "pmos-source",
@@ -899,10 +1086,13 @@
   },
   {
    "id": "s13-body",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "definition",
    "statement": "The pMOS body is tied to high voltage (VDD).",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "nwell",
@@ -911,10 +1101,13 @@
   },
   {
    "id": "s13-on-off",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "rule",
    "statement": "pMOS: gate low → ON; gate high → OFF.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "channel"
@@ -922,19 +1115,25 @@
   },
   {
    "id": "s13-circle",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "diagram",
    "statement": "The circle on the pMOS symbol indicates inverted behaviour.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": []
   },
   {
    "id": "s13-gnd",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "number",
    "statement": "GND = 0 V.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "metal-gnd"
@@ -942,10 +1141,13 @@
   },
   {
    "id": "s13-vdd-1980",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "number",
    "statement": "In the 1980s, VDD = 5 V.",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "metal-vdd"
@@ -953,10 +1155,13 @@
   },
   {
    "id": "s13-vdd-modern",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "number",
    "statement": "VDD has decreased in modern processes: 3.3, 2.5, 1.8, 1.5, 1.2, 1.0 V, …",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "metal-vdd"
@@ -964,10 +1169,13 @@
   },
   {
    "id": "s13-vdd-why",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "cause-effect",
    "statement": "VDD fell because high voltage would damage modern tiny transistors, and lower VDD saves power.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "metal-vdd"
@@ -975,10 +1183,13 @@
   },
   {
    "id": "s13-structure",
-   "slide": 13,
+   "source": {
+    "topic": "topic2",
+    "slide": 13
+   },
    "kind": "diagram",
    "statement": "The pMOS structure drawing shows p-type source and drain in n-type silicon with a p-channel under a polycrystalline-silicon gate electrode.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": [
     "pmos-source",
@@ -987,19 +1198,25 @@
   },
   {
    "id": "s14-switch",
-   "slide": 14,
+   "source": {
+    "topic": "topic2",
+    "slide": 14
+   },
    "kind": "definition",
    "statement": "MOS transistors can be viewed as electrically controlled switches: the gate voltage controls the path from source to drain.",
-   "topic": "devices",
+   "area": "devices",
    "key": false,
    "objects": []
   },
   {
    "id": "s14-nmos",
-   "slide": 14,
+   "source": {
+    "topic": "topic2",
+    "slide": 14
+   },
    "kind": "rule",
    "statement": "Switch model, nMOS: g = 0 → OFF (open), g = 1 → ON (closed).",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "channel"
@@ -1007,10 +1224,13 @@
   },
   {
    "id": "s14-pmos",
-   "slide": 14,
+   "source": {
+    "topic": "topic2",
+    "slide": 14
+   },
    "kind": "rule",
    "statement": "Switch model, pMOS: g = 0 → ON (closed), g = 1 → OFF (open).",
-   "topic": "devices",
+   "area": "devices",
    "key": true,
    "objects": [
     "channel"
@@ -1018,10 +1238,13 @@
   },
   {
    "id": "s15-inv-table",
-   "slide": 15,
+   "source": {
+    "topic": "topic2",
+    "slide": 15
+   },
    "kind": "rule",
    "statement": "Inverter truth table: A = 0 → Y = 1; A = 1 → Y = 0.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": [
     "metal-y",
@@ -1030,10 +1253,13 @@
   },
   {
    "id": "s15-inv-schematic",
-   "slide": 15,
+   "source": {
+    "topic": "topic2",
+    "slide": 15
+   },
    "kind": "diagram",
    "statement": "CMOS inverter schematic: a pMOS from VDD to Y and an nMOS from Y to GND, both gates driven by A.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": [
     "metal-y",
@@ -1043,10 +1269,13 @@
   },
   {
    "id": "s15-vdd",
-   "slide": 15,
+   "source": {
+    "topic": "topic2",
+    "slide": 15
+   },
    "kind": "definition",
    "statement": "VDD stands for the supply voltage.",
-   "topic": "logic",
+   "area": "logic",
    "key": false,
    "objects": [
     "metal-vdd"
@@ -1054,19 +1283,25 @@
   },
   {
    "id": "s15-symbol",
-   "slide": 15,
+   "source": {
+    "topic": "topic2",
+    "slide": 15
+   },
    "kind": "diagram",
    "statement": "The inverter symbol is a triangle with a circle (bubble) at the output.",
-   "topic": "logic",
+   "area": "logic",
    "key": false,
    "objects": []
   },
   {
    "id": "s16-a1",
-   "slide": 16,
+   "source": {
+    "topic": "topic2",
+    "slide": 16
+   },
    "kind": "cause-effect",
    "statement": "A = 1: the nMOS is ON and the pMOS is OFF, so Y is pulled to GND: Y = 0.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": [
     "nmos-source",
@@ -1076,10 +1311,13 @@
   },
   {
    "id": "s17-a0",
-   "slide": 17,
+   "source": {
+    "topic": "topic2",
+    "slide": 17
+   },
    "kind": "cause-effect",
    "statement": "A = 0: the pMOS is ON and the nMOS is OFF, so Y is pulled to VDD: Y = 1.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": [
     "pmos-source",
@@ -1089,109 +1327,145 @@
   },
   {
    "id": "s17-one-on",
-   "slide": 17,
+   "source": {
+    "topic": "topic2",
+    "slide": 17
+   },
    "kind": "cause-effect",
    "statement": "For each input exactly one of the two inverter transistors is ON and the other OFF.",
-   "topic": "logic",
+   "area": "logic",
    "key": false,
    "objects": []
   },
   {
    "id": "s18-schematic",
-   "slide": 18,
+   "source": {
+    "topic": "topic2",
+    "slide": 18
+   },
    "kind": "diagram",
    "statement": "NAND schematic: two pMOS in parallel from VDD to Y, two nMOS in series from Y to GND.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s18-symbol",
-   "slide": 18,
+   "source": {
+    "topic": "topic2",
+    "slide": 18
+   },
    "kind": "diagram",
    "statement": "The NAND symbol is an AND gate with an output bubble, equivalent to an OR gate with bubbles on both inputs.",
-   "topic": "logic",
+   "area": "logic",
    "key": false,
    "objects": []
   },
   {
    "id": "s19-row00",
-   "slide": 19,
+   "source": {
+    "topic": "topic2",
+    "slide": 19
+   },
    "kind": "rule",
    "statement": "NAND, A = 0, B = 0: both pMOS ON, both nMOS OFF: Y = 1.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s20-row01",
-   "slide": 20,
+   "source": {
+    "topic": "topic2",
+    "slide": 20
+   },
    "kind": "rule",
    "statement": "NAND, A = 0, B = 1: the A pMOS is ON (B pMOS OFF) and the series nMOS path is broken by the A nMOS: Y = 1.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s21-row10",
-   "slide": 21,
+   "source": {
+    "topic": "topic2",
+    "slide": 21
+   },
    "kind": "rule",
    "statement": "NAND, A = 1, B = 0: the B pMOS is ON and the series nMOS path is broken by the B nMOS: Y = 1.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s22-row11",
-   "slide": 22,
+   "source": {
+    "topic": "topic2",
+    "slide": 22
+   },
    "kind": "rule",
    "statement": "NAND, A = 1, B = 1: both pMOS OFF, both nMOS ON: Y = 0.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s22-table",
-   "slide": 22,
+   "source": {
+    "topic": "topic2",
+    "slide": 22
+   },
    "kind": "rule",
    "statement": "NAND truth table: Y = 0 only when A = B = 1.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s23-table",
-   "slide": 23,
+   "source": {
+    "topic": "topic2",
+    "slide": 23
+   },
    "kind": "rule",
    "statement": "NOR truth table: Y = 1 only when A = B = 0.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s23-schematic",
-   "slide": 23,
+   "source": {
+    "topic": "topic2",
+    "slide": 23
+   },
    "kind": "diagram",
    "statement": "NOR schematic: two pMOS in series from VDD to Y, two nMOS in parallel from Y to GND.",
-   "topic": "logic",
+   "area": "logic",
    "key": true,
    "objects": []
   },
   {
    "id": "s23-symbol",
-   "slide": 23,
+   "source": {
+    "topic": "topic2",
+    "slide": 23
+   },
    "kind": "diagram",
    "statement": "The NOR symbol is an OR gate with an output bubble, equivalent to an AND gate with bubbles on both inputs.",
-   "topic": "logic",
+   "area": "logic",
    "key": false,
    "objects": []
   },
   {
    "id": "s24-wafer",
-   "slide": 24,
+   "source": {
+    "topic": "topic2",
+    "slide": 24
+   },
    "kind": "definition",
    "statement": "CMOS transistors are fabricated on a silicon wafer.",
-   "topic": "structure",
+   "area": "structure",
    "key": false,
    "objects": [
     "wafer"
@@ -1199,10 +1473,13 @@
   },
   {
    "id": "s24-litho",
-   "slide": 24,
+   "source": {
+    "topic": "topic2",
+    "slide": 24
+   },
    "kind": "definition",
    "statement": "Lithography is a process similar to a printing press.",
-   "topic": "structure",
+   "area": "structure",
    "key": false,
    "objects": [
     "wafer"
@@ -1210,28 +1487,37 @@
   },
   {
    "id": "s24-steps",
-   "slide": 24,
+   "source": {
+    "topic": "topic2",
+    "slide": 24
+   },
    "kind": "process-step",
    "statement": "On each step, different materials are deposited or etched.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": []
   },
   {
    "id": "s24-views",
-   "slide": 24,
+   "source": {
+    "topic": "topic2",
+    "slide": 24
+   },
    "kind": "definition",
    "statement": "Fabrication is easiest to understand by viewing both the top view and the cross-section of the wafer.",
-   "topic": "structure",
+   "area": "structure",
    "key": false,
    "objects": []
   },
   {
    "id": "s25-psub",
-   "slide": 25,
+   "source": {
+    "topic": "topic2",
+    "slide": 25
+   },
    "kind": "definition",
    "statement": "A p-type substrate is typically used for nMOS transistors.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "substrate"
@@ -1239,10 +1525,13 @@
   },
   {
    "id": "s25-nwell",
-   "slide": 25,
+   "source": {
+    "topic": "topic2",
+    "slide": 25
+   },
    "kind": "cause-effect",
    "statement": "An n-well is required for the body of pMOS transistors.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "nwell"
@@ -1250,10 +1539,13 @@
   },
   {
    "id": "s25-order",
-   "slide": 25,
+   "source": {
+    "topic": "topic2",
+    "slide": 25
+   },
    "kind": "diagram",
    "statement": "In the inverter cross-section the nMOS (n+ n+ in the p substrate) is on the left and the pMOS (p+ p+ in the n well) on the right.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "nmos-source",
@@ -1263,10 +1555,13 @@
   },
   {
    "id": "s25-legend",
-   "slide": 25,
+   "source": {
+    "topic": "topic2",
+    "slide": 25
+   },
    "kind": "diagram",
    "statement": "The cross-section legend: SiO2, n+ diffusion, p+ diffusion, polysilicon, n well, p substrate, metal1.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "field-oxide",
@@ -1280,10 +1575,13 @@
   },
   {
    "id": "s25-wiring",
-   "slide": 25,
+   "source": {
+    "topic": "topic2",
+    "slide": 25
+   },
    "kind": "diagram",
    "statement": "A drives both polysilicon gates; Y joins the nMOS and pMOS drains; GND goes to the nMOS source and VDD to the pMOS source.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "poly-gate",
@@ -1294,10 +1592,13 @@
   },
   {
    "id": "s26-ties",
-   "slide": 26,
+   "source": {
+    "topic": "topic2",
+    "slide": 26
+   },
    "kind": "rule",
    "statement": "The substrate must be tied to GND and the n-well to VDD.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "substrate-tap",
@@ -1306,10 +1607,13 @@
   },
   {
    "id": "s26-schottky",
-   "slide": 26,
+   "source": {
+    "topic": "topic2",
+    "slide": 26
+   },
    "kind": "cause-effect",
    "statement": "Metal on lightly doped semiconductor forms a poor connection called a Schottky diode.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "substrate-tap",
@@ -1318,10 +1622,13 @@
   },
   {
    "id": "s26-taps",
-   "slide": 26,
+   "source": {
+    "topic": "topic2",
+    "slide": 26
+   },
    "kind": "cause-effect",
    "statement": "So heavily doped well and substrate contacts (taps) are used.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "substrate-tap",
@@ -1330,10 +1637,13 @@
   },
   {
    "id": "s26-xsec",
-   "slide": 26,
+   "source": {
+    "topic": "topic2",
+    "slide": 26
+   },
    "kind": "diagram",
    "statement": "With taps, the cross-section reads p+ (substrate tap), n+ n+ (nMOS), p+ p+ (pMOS), n+ (well tap).",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "substrate-tap",
@@ -1342,10 +1652,13 @@
   },
   {
    "id": "s27-masks",
-   "slide": 27,
+   "source": {
+    "topic": "topic2",
+    "slide": 27
+   },
    "kind": "definition",
    "statement": "Transistors and wires are defined by masks.",
-   "topic": "structure",
+   "area": "structure",
    "key": false,
    "objects": [
     "mask-poly"
@@ -1353,19 +1666,25 @@
   },
   {
    "id": "s27-line",
-   "slide": 27,
+   "source": {
+    "topic": "topic2",
+    "slide": 27
+   },
    "kind": "diagram",
    "statement": "The cross-section is taken along the dashed line through both transistors and both taps.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": []
   },
   {
    "id": "s27-order",
-   "slide": 27,
+   "source": {
+    "topic": "topic2",
+    "slide": 27
+   },
    "kind": "diagram",
    "statement": "Along the dashed line: substrate tap, nMOS, pMOS, well tap, with GND on the left and VDD on the right.",
-   "topic": "structure",
+   "area": "structure",
    "key": false,
    "objects": [
     "substrate-tap",
@@ -1374,10 +1693,13 @@
   },
   {
    "id": "s28-six",
-   "slide": 28,
+   "source": {
+    "topic": "topic2",
+    "slide": 28
+   },
    "kind": "number",
    "statement": "Six masks: n-well, polysilicon, n+ diffusion, p+ diffusion, contact, metal.",
-   "topic": "structure",
+   "area": "structure",
    "key": true,
    "objects": [
     "mask-nwell",
@@ -1390,10 +1712,13 @@
   },
   {
    "id": "s29-start",
-   "slide": 29,
+   "source": {
+    "topic": "topic2",
+    "slide": 29
+   },
    "kind": "process-step",
    "statement": "Fabrication starts with a blank wafer and builds the inverter from the bottom up.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "substrate"
@@ -1401,10 +1726,13 @@
   },
   {
    "id": "s29-first",
-   "slide": 29,
+   "source": {
+    "topic": "topic2",
+    "slide": 29
+   },
    "kind": "process-step",
    "statement": "The first step forms the n-well.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell"
@@ -1412,10 +1740,13 @@
   },
   {
    "id": "s29-sequence",
-   "slide": 29,
+   "source": {
+    "topic": "topic2",
+    "slide": 29
+   },
    "kind": "process-step",
    "statement": "n-well steps: cover the wafer with SiO2, remove it where the n-well goes, implant or diffuse n dopants into the exposed wafer, strip off the SiO2.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell",
@@ -1424,10 +1755,13 @@
   },
   {
    "id": "s30-grow",
-   "slide": 30,
+   "source": {
+    "topic": "topic2",
+    "slide": 30
+   },
    "kind": "process-step",
    "statement": "Grow SiO2 on top of the Si wafer.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "mask-oxide"
@@ -1435,10 +1769,13 @@
   },
   {
    "id": "s30-temp",
-   "slide": 30,
+   "source": {
+    "topic": "topic2",
+    "slide": 30
+   },
    "kind": "number",
    "statement": "Oxidation: 900–1200 °C with H2O or O2 in an oxidation furnace.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "mask-oxide"
@@ -1446,10 +1783,13 @@
   },
   {
    "id": "s31-spin",
-   "slide": 31,
+   "source": {
+    "topic": "topic2",
+    "slide": 31
+   },
    "kind": "process-step",
    "statement": "Spin on photoresist.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "photoresist"
@@ -1457,10 +1797,13 @@
   },
   {
    "id": "s31-resist",
-   "slide": 31,
+   "source": {
+    "topic": "topic2",
+    "slide": 31
+   },
    "kind": "definition",
    "statement": "Photoresist is a light-sensitive organic polymer.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": false,
    "objects": [
     "photoresist"
@@ -1468,10 +1811,13 @@
   },
   {
    "id": "s31-soften",
-   "slide": 31,
+   "source": {
+    "topic": "topic2",
+    "slide": 31
+   },
    "kind": "cause-effect",
    "statement": "Photoresist softens where exposed to light.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "photoresist"
@@ -1479,10 +1825,13 @@
   },
   {
    "id": "s32-expose",
-   "slide": 32,
+   "source": {
+    "topic": "topic2",
+    "slide": 32
+   },
    "kind": "process-step",
    "statement": "Expose the photoresist through the n-well mask.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "photoresist",
@@ -1491,10 +1840,13 @@
   },
   {
    "id": "s32-strip",
-   "slide": 32,
+   "source": {
+    "topic": "topic2",
+    "slide": 32
+   },
    "kind": "process-step",
    "statement": "Strip off the exposed photoresist.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "photoresist"
@@ -1502,10 +1854,13 @@
   },
   {
    "id": "s33-hf",
-   "slide": 33,
+   "source": {
+    "topic": "topic2",
+    "slide": 33
+   },
    "kind": "process-step",
    "statement": "Etch the oxide with hydrofluoric acid (HF).",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "mask-oxide"
@@ -1513,19 +1868,25 @@
   },
   {
    "id": "s33-danger",
-   "slide": 33,
+   "source": {
+    "topic": "topic2",
+    "slide": 33
+   },
    "kind": "cause-effect",
    "statement": "HF seeps through skin and eats bone.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": false,
    "objects": []
   },
   {
    "id": "s33-only",
-   "slide": 33,
+   "source": {
+    "topic": "topic2",
+    "slide": 33
+   },
    "kind": "cause-effect",
    "statement": "HF only attacks oxide where the resist has been exposed (removed).",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "mask-oxide"
@@ -1533,10 +1894,13 @@
   },
   {
    "id": "s34-piranha",
-   "slide": 34,
+   "source": {
+    "topic": "topic2",
+    "slide": 34
+   },
    "kind": "process-step",
    "statement": "Strip the remaining photoresist with a mixture of acids called piranha etch.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "photoresist"
@@ -1544,10 +1908,13 @@
   },
   {
    "id": "s34-why",
-   "slide": 34,
+   "source": {
+    "topic": "topic2",
+    "slide": 34
+   },
    "kind": "cause-effect",
    "statement": "Stripping is necessary so the resist doesn't melt in the next step.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "photoresist"
@@ -1555,10 +1922,13 @@
   },
   {
    "id": "s35-methods",
-   "slide": 35,
+   "source": {
+    "topic": "topic2",
+    "slide": 35
+   },
    "kind": "process-step",
    "statement": "The n-well is formed by diffusion or ion implantation.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell"
@@ -1566,10 +1936,13 @@
   },
   {
    "id": "s35-diffusion",
-   "slide": 35,
+   "source": {
+    "topic": "topic2",
+    "slide": 35
+   },
    "kind": "process-step",
    "statement": "Diffusion: place the wafer in a furnace with arsenic gas and heat until As atoms diffuse into the exposed Si.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell"
@@ -1577,10 +1950,13 @@
   },
   {
    "id": "s35-implant",
-   "slide": 35,
+   "source": {
+    "topic": "topic2",
+    "slide": 35
+   },
    "kind": "process-step",
    "statement": "Ion implantation: blast the wafer with a beam of As ions.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell"
@@ -1588,10 +1964,13 @@
   },
   {
    "id": "s35-block",
-   "slide": 35,
+   "source": {
+    "topic": "topic2",
+    "slide": 35
+   },
    "kind": "cause-effect",
    "statement": "Ions are blocked by SiO2 and only enter exposed Si.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell",
@@ -1600,10 +1979,13 @@
   },
   {
    "id": "s36-strip",
-   "slide": 36,
+   "source": {
+    "topic": "topic2",
+    "slide": 36
+   },
    "kind": "process-step",
    "statement": "Strip off the remaining oxide using HF, leaving a bare wafer with an n-well.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nwell"
@@ -1611,19 +1993,25 @@
   },
   {
    "id": "s36-similar",
-   "slide": 36,
+   "source": {
+    "topic": "topic2",
+    "slide": 36
+   },
    "kind": "definition",
    "statement": "Subsequent steps involve a similar series of steps.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": false,
    "objects": []
   },
   {
    "id": "s37-gox",
-   "slide": 37,
+   "source": {
+    "topic": "topic2",
+    "slide": 37
+   },
    "kind": "process-step",
    "statement": "Deposit a very thin layer of gate oxide.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "gate-oxide"
@@ -1631,10 +2019,13 @@
   },
   {
    "id": "s37-thickness",
-   "slide": 37,
+   "source": {
+    "topic": "topic2",
+    "slide": 37
+   },
    "kind": "number",
    "statement": "Gate oxide is < 20 Å thick: 6–7 atomic layers.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "gate-oxide",
@@ -1643,10 +2034,13 @@
   },
   {
    "id": "s37-cvd",
-   "slide": 37,
+   "source": {
+    "topic": "topic2",
+    "slide": 37
+   },
    "kind": "process-step",
    "statement": "Chemical Vapour Deposition (CVD) of a silicon layer: place the wafer in a furnace with silane gas (SiH4).",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "poly-gate"
@@ -1654,10 +2048,13 @@
   },
   {
    "id": "s37-poly",
-   "slide": 37,
+   "source": {
+    "topic": "topic2",
+    "slide": 37
+   },
    "kind": "definition",
    "statement": "CVD forms many small crystals called polysilicon.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "poly-gate",
@@ -1666,10 +2063,13 @@
   },
   {
    "id": "s37-doped",
-   "slide": 37,
+   "source": {
+    "topic": "topic2",
+    "slide": 37
+   },
    "kind": "cause-effect",
    "statement": "Polysilicon is heavily doped to be a good conductor.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": false,
    "objects": [
     "poly-gate"
@@ -1677,10 +2077,13 @@
   },
   {
    "id": "s38-pattern",
-   "slide": 38,
+   "source": {
+    "topic": "topic2",
+    "slide": 38
+   },
    "kind": "process-step",
    "statement": "The same lithography process patterns the polysilicon.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "poly-gate"
@@ -1688,10 +2091,13 @@
   },
   {
    "id": "s39-expose",
-   "slide": 39,
+   "source": {
+    "topic": "topic2",
+    "slide": 39
+   },
    "kind": "process-step",
    "statement": "Use oxide and masking to expose where n+ dopants should be diffused or implanted.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "mask-oxide"
@@ -1699,10 +2105,13 @@
   },
   {
    "id": "s39-forms",
-   "slide": 39,
+   "source": {
+    "topic": "topic2",
+    "slide": 39
+   },
    "kind": "definition",
    "statement": "n-diffusion forms the nMOS source, drain and the n-well contact.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nmos-source",
@@ -1712,10 +2121,13 @@
   },
   {
    "id": "s40-pattern",
-   "slide": 40,
+   "source": {
+    "topic": "topic2",
+    "slide": 40
+   },
    "kind": "process-step",
    "statement": "Pattern the oxide and form n+ regions.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "nmos-source"
@@ -1723,10 +2135,13 @@
   },
   {
    "id": "s40-selfaligned",
-   "slide": 40,
+   "source": {
+    "topic": "topic2",
+    "slide": 40
+   },
    "kind": "cause-effect",
    "statement": "Self-aligned process: the gate blocks the diffusion.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "poly-gate",
@@ -1735,10 +2150,13 @@
   },
   {
    "id": "s40-poly-better",
-   "slide": 40,
+   "source": {
+    "topic": "topic2",
+    "slide": 40
+   },
    "kind": "cause-effect",
    "statement": "Polysilicon is better than metal for self-aligned gates because it doesn't melt during later processing.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "poly-gate"
@@ -1746,10 +2164,13 @@
   },
   {
    "id": "s41-history",
-   "slide": 41,
+   "source": {
+    "topic": "topic2",
+    "slide": 41
+   },
    "kind": "definition",
    "statement": "Historically dopants were diffused; today it is usually ion implantation, but the regions are still called diffusion.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": false,
    "objects": [
     "nmos-source"
@@ -1757,10 +2178,13 @@
   },
   {
    "id": "s42-strip",
-   "slide": 42,
+   "source": {
+    "topic": "topic2",
+    "slide": 42
+   },
    "kind": "process-step",
    "statement": "Strip off the oxide to complete the patterning step.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "mask-oxide"
@@ -1768,10 +2192,13 @@
   },
   {
    "id": "s43-pdiff",
-   "slide": 43,
+   "source": {
+    "topic": "topic2",
+    "slide": 43
+   },
    "kind": "process-step",
    "statement": "A similar set of steps forms p+ diffusion regions for the pMOS source and drain and the substrate contact.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "pmos-source",
@@ -1781,10 +2208,13 @@
   },
   {
    "id": "s43-xsec",
-   "slide": 43,
+   "source": {
+    "topic": "topic2",
+    "slide": 43
+   },
    "kind": "diagram",
    "statement": "After the p-diffusion the cross-section reads p+ n+ n+ p+ p+ n+ along the line.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "substrate-tap",
@@ -1793,19 +2223,25 @@
   },
   {
    "id": "s44-why",
-   "slide": 44,
+   "source": {
+    "topic": "topic2",
+    "slide": 44
+   },
    "kind": "definition",
    "statement": "Now the devices must be wired together.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": false,
    "objects": []
   },
   {
    "id": "s44-fox",
-   "slide": 44,
+   "source": {
+    "topic": "topic2",
+    "slide": 44
+   },
    "kind": "process-step",
    "statement": "Cover the chip with thick field oxide.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "field-oxide"
@@ -1813,10 +2249,13 @@
   },
   {
    "id": "s44-cuts",
-   "slide": 44,
+   "source": {
+    "topic": "topic2",
+    "slide": 44
+   },
    "kind": "process-step",
    "statement": "Etch the oxide where contact cuts are needed.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "contact"
@@ -1824,10 +2263,13 @@
   },
   {
    "id": "s45-sputter",
-   "slide": 45,
+   "source": {
+    "topic": "topic2",
+    "slide": 45
+   },
    "kind": "process-step",
    "statement": "Sputter aluminium over the whole wafer.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "aluminium-film"
@@ -1835,10 +2277,13 @@
   },
   {
    "id": "s45-pattern",
-   "slide": 45,
+   "source": {
+    "topic": "topic2",
+    "slide": 45
+   },
    "kind": "process-step",
    "statement": "Pattern to remove the excess metal, leaving wires.",
-   "topic": "fabrication",
+   "area": "fabrication",
    "key": true,
    "objects": [
     "metal-y",
@@ -1848,10 +2293,13 @@
   },
   {
    "id": "s46-masks",
-   "slide": 46,
+   "source": {
+    "topic": "topic2",
+    "slide": 46
+   },
    "kind": "definition",
    "statement": "Chips are specified with a set of masks.",
-   "topic": "layout",
+   "area": "layout",
    "key": false,
    "objects": [
     "lambda"
@@ -1859,10 +2307,13 @@
   },
   {
    "id": "s46-mindim",
-   "slide": 46,
+   "source": {
+    "topic": "topic2",
+    "slide": 46
+   },
    "kind": "cause-effect",
    "statement": "The minimum dimensions of the masks determine transistor size, and hence speed, cost and power.",
-   "topic": "layout",
+   "area": "layout",
    "key": false,
    "objects": [
     "lambda"
@@ -1870,10 +2321,13 @@
   },
   {
    "id": "s46-f",
-   "slide": 46,
+   "source": {
+    "topic": "topic2",
+    "slide": 46
+   },
    "kind": "definition",
    "statement": "Feature size f = distance between source and drain, set by the minimum width of polysilicon.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-poly",
@@ -1882,10 +2336,13 @@
   },
   {
    "id": "s46-improve",
-   "slide": 46,
+   "source": {
+    "topic": "topic2",
+    "slide": 46
+   },
    "kind": "number",
    "statement": "Feature size improves about 30 % every 3 years or so.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "lambda"
@@ -1893,10 +2350,13 @@
   },
   {
    "id": "s46-lambda",
-   "slide": 46,
+   "source": {
+    "topic": "topic2",
+    "slide": 46
+   },
    "kind": "rule",
    "statement": "Design rules are normalised to feature size and expressed in λ = f/2.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "lambda"
@@ -1904,10 +2364,13 @@
   },
   {
    "id": "s46-example",
-   "slide": 46,
+   "source": {
+    "topic": "topic2",
+    "slide": 46
+   },
    "kind": "number",
    "statement": "λ = 0.3 µm in a 0.6 µm process.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "lambda"
@@ -1915,10 +2378,13 @@
   },
   {
    "id": "s47-conservative",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "definition",
    "statement": "The simplified design rules are conservative rules to get you started.",
-   "topic": "layout",
+   "area": "layout",
    "key": false,
    "objects": [
     "lambda"
@@ -1926,10 +2392,13 @@
   },
   {
    "id": "s47-m1",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Metal1: width 4λ, spacing 4λ.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-metal"
@@ -1937,19 +2406,25 @@
   },
   {
    "id": "s47-m2",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Metal2: width 4λ, spacing 4λ.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": []
   },
   {
    "id": "s47-diff",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Diffusion: width 4λ, spacing 4λ.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-nplus",
@@ -1958,10 +2433,13 @@
   },
   {
    "id": "s47-poly",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Polysilicon: width 2λ, spacing 3λ.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-poly"
@@ -1969,10 +2447,13 @@
   },
   {
    "id": "s47-ext",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "A polysilicon gate extends 2λ beyond the diffusion it crosses.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-poly"
@@ -1980,10 +2461,13 @@
   },
   {
    "id": "s47-well-in",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Diffusion inside the n-well stays 6λ from the well edge.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-nwell"
@@ -1991,10 +2475,13 @@
   },
   {
    "id": "s47-well-out",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Diffusion outside the n-well stays 6λ from the well edge.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-nwell"
@@ -2002,10 +2489,13 @@
   },
   {
    "id": "s47-cdiff",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Metal1–diffusion contact: the metal surrounds the contact by 1λ.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-contact"
@@ -2013,10 +2503,13 @@
   },
   {
    "id": "s47-cpoly",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Metal1–polysilicon contact: the contact is 2λ across.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "mask-contact"
@@ -2024,19 +2517,25 @@
   },
   {
    "id": "s47-via",
-   "slide": 47,
+   "source": {
+    "topic": "topic2",
+    "slide": 47
+   },
    "kind": "rule",
    "statement": "Metal1–metal2 vias: spacing 3λ.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": []
   },
   {
    "id": "s48-spec",
-   "slide": 48,
+   "source": {
+    "topic": "topic2",
+    "slide": 48
+   },
    "kind": "definition",
    "statement": "The slide specifies transistor dimensions as Length / Width.",
-   "topic": "layout",
+   "area": "layout",
    "key": false,
    "objects": [
     "min-transistor"
@@ -2044,10 +2543,13 @@
   },
   {
    "id": "s48-min",
-   "slide": 48,
+   "source": {
+    "topic": "topic2",
+    "slide": 48
+   },
    "kind": "number",
    "statement": "Minimum transistor size is 4λ / 2λ, sometimes called 1 unit.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "min-transistor"
@@ -2055,10 +2557,13 @@
   },
   {
    "id": "s48-um",
-   "slide": 48,
+   "source": {
+    "topic": "topic2",
+    "slide": 48
+   },
    "kind": "number",
    "statement": "In the f = 0.6 µm process the minimum transistor is 0.6 µm (2λ) by 1.2 µm (4λ). The slide words this as \"0.6 µm wide, 1.2 µm long\"; by slide 46 the 2λ source–drain distance is the channel length.",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "min-transistor"
@@ -2066,10 +2571,13 @@
   },
   {
    "id": "s48-sizing",
-   "slide": 48,
+   "source": {
+    "topic": "topic2",
+    "slide": 48
+   },
    "kind": "number",
    "statement": "The slide 48 inverter uses a pMOS of 8/2 (2 units) and an nMOS of 4/2 (1 unit).",
-   "topic": "layout",
+   "area": "layout",
    "key": true,
    "objects": [
     "min-transistor"
@@ -2077,10 +2585,13 @@
   },
   {
    "id": "s48-layout",
-   "slide": 48,
+   "source": {
+    "topic": "topic2",
+    "slide": 48
+   },
    "kind": "diagram",
    "statement": "In the slide 48 layout VDD runs along the top, GND along the bottom, input A enters on the left and output Y leaves on the right.",
-   "topic": "layout",
+   "area": "layout",
    "key": false,
    "objects": [
     "mask-metal"
@@ -2088,10 +2599,13 @@
   },
   {
    "id": "s49-stack",
-   "slide": 49,
+   "source": {
+    "topic": "topic2",
+    "slide": 49
+   },
    "kind": "definition",
    "statement": "MOS transistors are a stack of gate, oxide and silicon.",
-   "topic": "summary",
+   "area": "summary",
    "key": false,
    "objects": [
     "gate-oxide"
@@ -2099,19 +2613,25 @@
   },
   {
    "id": "s49-switches",
-   "slide": 49,
+   "source": {
+    "topic": "topic2",
+    "slide": 49
+   },
    "kind": "definition",
    "statement": "They can be viewed as electrically controlled switches, and logic gates are built out of switches.",
-   "topic": "summary",
+   "area": "summary",
    "key": false,
    "objects": []
   },
   {
    "id": "s49-masks",
-   "slide": 49,
+   "source": {
+    "topic": "topic2",
+    "slide": 49
+   },
    "kind": "definition",
    "statement": "Masks are drawn to specify the layout of transistors.",
-   "topic": "summary",
+   "area": "summary",
    "key": false,
    "objects": [
     "lambda"

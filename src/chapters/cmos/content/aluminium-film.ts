@@ -1,4 +1,5 @@
 import { defineContent } from '../../content-schema'
+import { T2 } from '../../../sources'
 
 export default defineContent({
   id: 'aluminium-film',
@@ -7,10 +8,10 @@ export default defineContent({
   layer: 'cell',
   parent: 'cell',
   anchors: [{ key: 'al' }],
-  slides: [45],
+  sources: [T2(45)],
   fabStep: 'al',
-  what: 'Aluminium covering the whole wafer, before patterning (slide 45).',
-  made: 'Sputtered over the whole wafer (slide 45).',
-  does: 'Fills the contact cuts. Patterning with the metal mask leaves the GND, Y and VDD wires (slide 45).',
+  what: 'Aluminium covering the whole wafer, before patterning.',
+  made: 'Sputtered over the whole wafer.',
+  does: 'Fills the contact cuts. Patterning with the metal mask leaves the GND, Y and VDD wires.',
   beyond: [{ text: 'Drawn 700 nm thick, a typical value.', source: 'Plummer, Deal & Griffin, ch. 2' }],
 })

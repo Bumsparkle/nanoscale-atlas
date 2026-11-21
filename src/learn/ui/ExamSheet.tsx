@@ -5,6 +5,7 @@ import { grade } from '../engine'
 import { layoutState } from '../../chapters/cmos/layout'
 import { parseNumber } from './QuestionCard'
 import type { Question } from '../schema'
+import { SourceButton } from '../../ui/source/Source'
 
 type Ans = { choice?: number; text?: string }
 
@@ -54,7 +55,7 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
           <h2>Topic 2 · timed paper</h2>
           <p className="sheet-sub mono">
             {EXAM_MINUTES} minutes · {paper.length || 14} questions · calculations and recall · 1 mark each
-            {(filter.from !== 1 || filter.to !== 49 || filter.topic) && ` · slides ${filter.from}–${filter.to}${filter.topic ? ' · ' + filter.topic : ''}`}
+            {(filter.from !== 1 || filter.to !== 49 || filter.area) && ` · slides ${filter.from}–${filter.to}${filter.area ? ' · ' + filter.area : ''}`}
           </p>
         </div>
         <div className="exam-tools">
@@ -90,7 +91,7 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
               <li key={q.id} className={'exam-q' + (ok === true ? ' ok' : ok === false ? ' no' : '')}>
                 <header>
                   <span className="mono exam-n">Q{n + 1}</span>
-                  <span className="slide-ref">slide {q.slide}</span>
+                  {marked && <SourceButton refs={[q.source]} />}
                   <span className="mono exam-m">[1]</span>
                 </header>
                 <p className="qprompt">{q.prompt}</p>

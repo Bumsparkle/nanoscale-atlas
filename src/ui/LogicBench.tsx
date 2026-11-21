@@ -2,14 +2,16 @@ import { useAtlas, type BenchTab } from '../state/store'
 import { evaluate, GATES, conducts, nmosOn, pmosOn, type Bit, type Gate } from '../chapters/cmos/device'
 import { junction, V0 } from '../chapters/cmos/junction'
 import './logic.css'
+import { SourceButton } from './source/Source'
+import { T2 } from '../sources'
 
 type Tab = BenchTab
-const TABS: { id: Tab; label: string; slides: string }[] = [
-  { id: 'inverter', label: 'Inverter', slides: '15–17' },
-  { id: 'switch', label: 'Switches', slides: '14' },
-  { id: 'nand', label: 'NAND', slides: '18–22' },
-  { id: 'nor', label: 'NOR', slides: '23' },
-  { id: 'junction', label: 'p-n junction', slides: '6–9' },
+const TABS: { id: Tab; label: string; slides: number[] }[] = [
+  { id: 'inverter', label: 'Inverter', slides: [15, 16, 17] },
+  { id: 'switch', label: 'Switches', slides: [14] },
+  { id: 'nand', label: 'NAND', slides: [18, 19, 20, 21, 22] },
+  { id: 'nor', label: 'NOR', slides: [23] },
+  { id: 'junction', label: 'p-n junction', slides: [6, 7, 8, 9] },
 ]
 
 /* ───────────── schematic primitives (switch-level, as drawn on slide 14) ───────────── */
@@ -180,7 +182,7 @@ function SwitchModel() {
         <text x={190} y={146} className="rail" textAnchor="middle">s</text>
       </svg>
       <p className="bench-note">
-        The voltage at the gate controls the path from source to drain. nMOS is ON at g = 1, pMOS at g = 0. <span className="slide-ref">slide 14</span>
+        The voltage at the gate controls the path from source to drain. nMOS is ON at g = 1, pMOS at g = 0.
       </p>
     </div>
   )
@@ -269,7 +271,7 @@ function Junction() {
         <text x={cx - 30} y={eY(D) - 8} className="rail">barrier {D.toFixed(2)} eV</text>
       </svg>
       <p className="bench-note">
-        {regime} N<sub>a</sub>W<sub>p</sub> = N<sub>d</sub>W<sub>n</sub>, so the lighter-doped side holds more of the depletion region. <span className="slide-ref">slides 7–9</span>
+        {regime} N<sub>a</sub>W<sub>p</sub> = N<sub>d</sub>W<sub>n</sub>, so the lighter-doped side holds more of the depletion region.
       </p>
       <p className="lc-fine mono">beyond the lecture: V₀ = 0.7 V, Eg = 1.12 eV, W ∝ √(V₀ − V) (Sze &amp; Ng, ch. 2)</p>
     </div>
@@ -296,7 +298,7 @@ export function LogicBench() {
         ))}
       </div>
       <p className="eyebrow">
-        slides {t.slides}
+        <SourceButton refs={t.slides.map(T2)} />
         {tab === 'inverter' && ' · lit on the 3D cell'}
       </p>
       {(tab === 'inverter' || tab === 'nand' || tab === 'nor') && (
@@ -314,7 +316,7 @@ export function LogicBench() {
               : gate.name === 'NAND'
                 ? 'Series nMOS pull Y down only when A and B are both 1; either parallel pMOS pulls Y up otherwise.'
                 : 'Parallel nMOS pull Y down if A or B is 1; the series pMOS pull Y up only when both are 0.'}{' '}
-            <span className="slide-ref">slide {gate.name === 'INV' ? (ins.A ? 16 : 17) : gate.name === 'NOR' ? 23 : 19 + (ins.A * 2 + ins.B)}</span>
+
           </p>
         </>
       )}

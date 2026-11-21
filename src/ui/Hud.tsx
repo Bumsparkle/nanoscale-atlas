@@ -13,6 +13,7 @@ import { LayerControls } from './LayerControls'
 import { LogicBench } from './LogicBench'
 import { LayoutView } from './LayoutView'
 import { LearnHost, MasteryToggle, ModeSwitch } from '../learn/ui/LearnHost'
+import { SourceModal } from './source/Source'
 import '../ui/layercontrols.css'
 import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
@@ -127,6 +128,7 @@ export function Hud() {
       <LogicBench />
       <LayoutView />
       <LearnHost />
+      <SourceModal />
       <HoverLabel />
       <Panel />
     </>

@@ -120,11 +120,11 @@ export default function LatticeLayer() {
       return { id, text, sub, x: ((v.x + 1) / 2) * size.width, y: ((1 - v.y) / 2) * size.height, group, visible: v.z < 1 }
     }
     const labels: ScreenLabel[] = []
-    if (dop === 'none' && structure === 'crystal') labels.push(lab('l-si', 'Si, group IV', '4 bonds to nearest neighbours (slide 4)', c))
-    if (dop === 'P') labels.push(lab('l-p', 'P⁺ donor (group V)', 'spare electron → n-type (slide 5)', c), lab('l-e', 'free electron', 'n ≈ ND', wk.pos.clone(), 'bottom'))
-    if (dop === 'B') labels.push(lab('l-b', 'B⁻ acceptor (group III)', 'missing electron → p-type (slide 5)', c), lab('l-h', 'mobile hole', 'p ≈ NA', wk.pos.clone(), 'bottom'))
+    if (dop === 'none' && structure === 'crystal') labels.push(lab('l-si', 'Si, group IV', '4 bonds to nearest neighbours', c))
+    if (dop === 'P') labels.push(lab('l-p', 'P⁺ donor (group V)', 'spare electron → n-type', c), lab('l-e', 'free electron', 'n ≈ ND', wk.pos.clone(), 'bottom'))
+    if (dop === 'B') labels.push(lab('l-b', 'B⁻ acceptor (group III)', 'missing electron → p-type', c), lab('l-h', 'mobile hole', 'p ≈ NA', wk.pos.clone(), 'bottom'))
     if (structure !== 'crystal')
-      labels.push(lab('l-s', structure === 'poly' ? 'grain boundary' : 'no long-range order', structure === 'poly' ? 'traps & broken bonds (slide 3)' : 'dangling bonds (slide 3)', new THREE.Vector3(structure === 'poly' ? 0.8 : -2, L / 2, 0), 'top'))
+      labels.push(lab('l-s', structure === 'poly' ? 'grain boundary' : 'no long-range order', structure === 'poly' ? 'traps & broken bonds' : 'dangling bonds', new THREE.Vector3(structure === 'poly' ? 0.8 : -2, L / 2, 0), 'top'))
     overlay.labels = labels
     overlay.version = 3000 + labels.length * 7 + (dop === 'P' ? 1 : dop === 'B' ? 2 : 0) + (structure === 'poly' ? 20 : structure === 'amorphous' ? 40 : 0)
   })

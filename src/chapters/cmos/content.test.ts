@@ -43,7 +43,7 @@ describe('content ↔ mesh integrity', () => {
   it('every panel cites a slide and names its fab step when it has one', () => {
     const stepIds = new Set(STEPS.map((s) => s.id))
     for (const c of CONTENT) {
-      expect(c.slides.length).toBeGreaterThan(0)
+      expect(c.sources.length).toBeGreaterThan(0)
       if (c.fabStep) expect(stepIds.has(c.fabStep), `${c.id} → ${c.fabStep}`).toBe(true)
       for (const b of c.beyond) expect(b.source.length).toBeGreaterThan(3)
     }

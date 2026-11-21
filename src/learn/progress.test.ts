@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { boxCounts, chunkForObject, examPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
 import { QUESTIONS, QUESTIONS_FOR_FACT } from './bank'
 
-const ALL = { from: 1, to: 49, topic: null }
+const ALL = { from: 1, to: 49, area: null }
 beforeEach(() => progress._load({}))
 
 describe('Leitner boxes', () => {
@@ -24,10 +24,10 @@ describe('Leitner boxes', () => {
     expect(queue(ALL, 1000, true).some((x) => x.id === 'q-s37-nm')).toBe(true)
   })
   it('filters by slide range and topic', () => {
-    expect(queue({ from: 47, to: 47, topic: null }).every((q) => q.slide === 47)).toBe(true)
-    const fab = queue({ from: 1, to: 49, topic: 'fabrication' })
+    expect(queue({ from: 47, to: 47, area: null }).every((q) => q.source.slide === 47)).toBe(true)
+    const fab = queue({ from: 1, to: 49, area: 'fabrication' })
     expect(fab.length).toBeGreaterThan(20)
-    expect(fab.every((q) => q.slide >= 24 && q.slide <= 45)).toBe(true)
+    expect(fab.every((q) => q.source.slide >= 24 && q.source.slide <= 45)).toBe(true)
     expect(boxCounts(ALL)[0]).toBe(QUESTIONS.length)
   })
 })

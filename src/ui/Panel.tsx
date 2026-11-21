@@ -6,6 +6,7 @@ import { useAtlas } from '../state/store'
 import { transition } from '../scene/transition'
 import { Spring, SPRINGS } from '../scene/spring'
 import './panel.css'
+import { SourceButton } from './source/Source'
 
 /**
  * Inspect panel: right-hand on desktop, bottom sheet on mobile. Slides in
@@ -99,13 +100,8 @@ export function ContentBody({ c }: { c: Content }) {
           </section>
         )}
         <footer className="panel-foot">
-          <span className="eyebrow">Topic 2 slides</span>
           <div className="panel-slides">
-            {c.slides.map((n) => (
-              <span key={n} className="slide-ref">
-                {n}
-              </span>
-            ))}
+            <SourceButton refs={c.sources} />
           </div>
           {c.dive && (
             <button

@@ -232,12 +232,12 @@ export function checksForEdge(checks: RuleCheck[], edge: EdgeRef) {
   return checks.filter((c) => c.edges.some((x) => x.mask === edge.mask && x.index === edge.index && x.side === edge.side))
 }
 
-/** one-line description, e.g. "Poly width: 2λ (min 2λ) · slide 47" */
+/** one-line description, e.g. "Poly width: 2λ (min 2λ)" */
 export function describe(c: RuleCheck) {
   const v = (n: number) => (Number.isInteger(n) ? n : n.toFixed(1)) + 'λ'
   const req = c.exact ? `must be ${v(c.required)}` : `min ${v(c.required)}`
   const short = c.ok ? '' : c.exact ? ` · off by ${v(Math.abs(c.measured - c.required))}` : ` · short by ${v(c.required - c.measured)}`
-  return `${RULE_LABEL[c.rule]}: ${v(c.measured)} (${req})${short} · slide ${c.slide}`
+  return `${RULE_LABEL[c.rule]}: ${v(c.measured)} (${req})${short}`
 }
 
 /** default layout, kept for the original call sites */

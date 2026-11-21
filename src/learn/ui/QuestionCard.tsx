@@ -6,6 +6,7 @@ import { useAtlas } from '../../state/store'
 import { layoutState } from '../../chapters/cmos/layout'
 import { CONTENT_BY_ID } from '../../chapters/cmos/content'
 import { sound } from '../../ui/sound'
+import { SourceButton } from '../../ui/source/Source'
 
 /**
  * One question of any type. "do" watches the live store and layout; "label"
@@ -160,7 +161,7 @@ export function QuestionCard({ q, onFirst, onDone, autoScene = true }: { q: Ques
     <section className={'qcard qcard-' + status} aria-label="Question" data-testid="question" data-qid={q.id} data-qtype={q.type}>
       <header className="qcard-head">
         <span className={'qtype qtype-' + q.type}>{TYPE_LABEL[q.type]}</span>
-        <span className="slide-ref">slide {q.slide}</span>
+        <SourceButton refs={[q.source]} />
         <span className="qdiff" aria-label={`difficulty ${q.difficulty} of 3`}>
           {[1, 2, 3].map((d) => (
             <i key={d} className={d <= q.difficulty ? 'on' : ''} />

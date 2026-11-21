@@ -2,6 +2,8 @@ import { useAtlas } from '../state/store'
 import { channelStrength } from '../chapters/cmos/device'
 import { transition } from '../scene/transition'
 import './layercontrols.css'
+import { SourceButton } from './source/Source'
+import { T2 } from '../sources'
 
 /** gate voltage for the transistor layer (slides 12–14) */
 function TransistorControls() {
@@ -41,9 +43,9 @@ function TransistorControls() {
         <button className="chip" onClick={() => set({ vg: 1 })}>g = 1</button>
       </div>
       <p className="lc-note">
-        {state} <span className="slide-ref">slide {device === 'nmos' ? 12 : 13}</span>
+        {state} <SourceButton refs={device === 'nmos' ? [T2(11), T2(12)] : [T2(13)]} />
       </p>
-      <p className="lc-fine mono">VDD = 1.0 V: modern processes use 1.0 V and below; 5 V in the 1980s (slide 13).</p>
+      <p className="lc-fine mono">VDD = 1.0 V: modern processes use 1.0 V and below; 5 V in the 1980s.</p>
     </section>
   )
 }
@@ -54,7 +56,7 @@ function LatticeControls() {
   const L = (p: Partial<typeof lattice>) => set({ lattice: { ...lattice, ...p } })
   return (
     <section className="lc" aria-label="Lattice">
-      <span className="eyebrow">structure · slide 3</span>
+      <span className="eyebrow lc-head">structure <SourceButton refs={[T2(3), T2(4)]} /></span>
       <div className="seg" role="group">
         {(['crystal', 'poly', 'amorphous'] as const).map((s) => (
           <button key={s} aria-pressed={lattice.structure === s} onClick={() => L({ structure: s })}>
@@ -62,7 +64,7 @@ function LatticeControls() {
           </button>
         ))}
       </div>
-      <span className="eyebrow">dopant · slide 5</span>
+      <span className="eyebrow lc-head">dopant <SourceButton refs={[T2(5)]} /></span>
       <div className="seg" role="group">
         {(['none', 'P', 'B'] as const).map((d) => (
           <button key={d} aria-pressed={lattice.dopant === d} onClick={() => L({ dopant: d, structure: d === 'none' ? lattice.structure : 'crystal' })}>

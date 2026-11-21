@@ -1,4 +1,5 @@
 import type { Model, Op } from './types'
+import type { SourceRef } from '../sources'
 
 export type StepKind = 'start' | 'oxidise' | 'deposit' | 'spin' | 'expose' | 'develop' | 'etch' | 'strip' | 'implant' | 'sputter'
 
@@ -6,7 +7,7 @@ export interface Step {
   id: string
   title: string
   /** lecture slide this step is drawn on */
-  slide: number
+  source: SourceRef
   /** module / phase, for grouping ticks on the timeline */
   group: string
   kind: StepKind

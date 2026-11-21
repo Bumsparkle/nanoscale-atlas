@@ -1,0 +1,127 @@
+.source-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px 2px;
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  color: var(--ink-2);
+  border: var(--hair);
+  border-radius: var(--radius);
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+.source-btn:hover {
+  color: var(--amber);
+  border-color: var(--amber-dim);
+}
+.source-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--s-5);
+  background: rgba(6, 7, 8, 0.72);
+  animation: source-fade 0.2s ease-out both;
+}
+@keyframes source-fade {
+  from {
+    opacity: 0;
+  }
+}
+.source-modal {
+  margin: 0;
+  width: min(1040px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-1);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  animation: source-rise 0.42s var(--ease-settle) both;
+}
+@keyframes source-rise {
+  from {
+    transform: translateY(14px) scale(0.985);
+    opacity: 0;
+  }
+}
+.source-modal header {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--hair);
+}
+.source-modal figcaption {
+  font-size: var(--t-13);
+  color: var(--ink-0);
+  letter-spacing: 0.02em;
+}
+.source-modal header .tool {
+  margin-left: auto;
+}
+.source-pager {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--t-12);
+  color: var(--ink-2);
+}
+.source-pager button {
+  padding: 0 6px;
+  color: var(--ink-1);
+  border: var(--hair);
+  border-radius: var(--radius);
+}
+.source-pager button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.source-frame {
+  position: relative;
+  min-height: 240px;
+  overflow: auto;
+  background: #000;
+  display: grid;
+  place-items: center;
+}
+.source-frame img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 160px);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.source-frame img.in {
+  opacity: 1;
+}
+.source-note {
+  position: absolute;
+  max-width: 46ch;
+  margin: 0;
+  padding: var(--s-4);
+  text-align: center;
+  font-size: var(--t-13);
+  color: var(--ink-1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .source-scrim,
+  .source-modal {
+    animation: none;
+  }
+}
+.lc-head,
+.lp-eyebrow,
+.legend-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.lp-eyebrow .source-btn,
+.legend-head .source-btn,
+.lc-head .source-btn {
+  text-transform: none;
+  letter-spacing: 0;
+}

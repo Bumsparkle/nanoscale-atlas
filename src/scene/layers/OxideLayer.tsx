@@ -64,9 +64,9 @@ export default function OxideLayer() {
       return { id, text, sub, x: ((v.x + 1) / 2) * size.width, y: ((1 - v.y) / 2) * size.height, group: 'right', visible: v.z < 1 }
     }
     overlay.labels = [
-      lab('o-poly', 'polysilicon', 'many small crystals (slide 37)', [X[1], 30, Z[1]]),
-      lab('o-ox', 'gate oxide SiO₂', '< 20 Å · 6–7 atomic layers (slide 37)', [X[1] + 3, OX_TOP / 2, Z[1]]),
-      lab('o-si', 'single-crystal Si', 'p-type body (slides 3, 11)', [X[1], -11, Z[1]]),
+      lab('o-poly', 'polysilicon', 'many small crystals', [X[1], 30, Z[1]]),
+      lab('o-ox', 'gate oxide SiO₂', '< 20 Å · 6–7 atomic layers', [X[1] + 3, OX_TOP / 2, Z[1]]),
+      lab('o-si', 'single-crystal Si', 'p-type body', [X[1], -11, Z[1]]),
     ]
     overlay.version = 2000
   })

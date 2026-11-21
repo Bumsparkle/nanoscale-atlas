@@ -1,4 +1,6 @@
 import './style-page.css'
+import { SourceButton } from './source/Source'
+import { T2 } from '../sources'
 
 const SURFACES = ['--bg-0', '--bg-1', '--bg-2', '--bg-3', '--line', '--line-strong']
 const INKS = ['--ink-0', '--ink-1', '--ink-2', '--ink-3']
@@ -126,7 +128,7 @@ export function StylePage() {
       <section>
         <h2>Marks</h2>
         <div className="marks">
-          <span className="slide-ref">slide 37</span>
+          <SourceButton refs={[T2(37)]} />
           <span className="beyond">beyond the lecture · Sze, 3rd ed.</span>
           <kbd>Esc</kbd>
           <button className="tool">sound off</button>

@@ -23,3 +23,6 @@ docs/topic2-cmos.pdf
 
 *.log
 .DS_Store
+
+# rendered lecture slides and their upload archive: UCL material, never public
+private/

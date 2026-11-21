@@ -80,7 +80,7 @@ export function ViewBar() {
         ))}
       </nav>
       <p className="viewbar-hint" aria-live="polite">
-        {view === 'section' && locked ? SNAP_TARGETS[locked].label + ` (slide ${SNAP_TARGETS[locked].slide})` : hint}
+        {view === 'section' && locked ? SNAP_TARGETS[locked].label : hint}
       </p>
     </div>
   )

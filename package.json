@@ -5,16 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/fetch-slides.mjs && tsc -b && vite build",
     "preview": "vite preview --port 4173",
-    "test": "vitest run",
+    "test": "vitest run --exclude '**/*.perf.test.ts' && vitest run src/sim/mesh.perf.test.ts",
     "typecheck": "tsc -b",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "slides": "node scripts/render-slides.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "5.3.0",
     "@fontsource/ibm-plex-sans": "5.3.0",
     "@react-three/fiber": "9.8.2",
+    "@vercel/functions": "3.10.5",
     "gsap": "3.15.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",

@@ -1,4 +1,5 @@
 import { defineContent } from '../../content-schema'
+import { T2 } from '../../../sources'
 
 export default defineContent({
   id: 'metal-y',
@@ -7,9 +8,9 @@ export default defineContent({
   layer: 'cell',
   parent: 'cell',
   anchors: [{ key: 'al', x: 22, y: 2 }],
-  slides: [15, 25, 27, 45],
+  sources: [T2(15), T2(25), T2(27), T2(45)],
   fabStep: 'metal-etch',
-  what: 'The middle aluminium wire, joining the nMOS drain and the pMOS drain (slides 25, 27).',
-  made: 'Patterned from the same sputtered aluminium as the rails (slide 45).',
-  does: 'The output Y of the inverter. Exactly one transistor is ON for each input, so Y is driven to either VDD or GND, never both (slides 16–17).',
+  what: 'The middle aluminium wire, joining the nMOS drain and the pMOS drain.',
+  made: 'Patterned from the same sputtered aluminium as the rails.',
+  does: 'The output Y of the inverter. Exactly one transistor is ON for each input, so Y is driven to either VDD or GND, never both.',
 })

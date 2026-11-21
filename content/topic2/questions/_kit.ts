@@ -1,4 +1,5 @@
 import { q, type QuestionInput, type Scene, type Target } from '../../../src/learn/schema'
+import { T2 } from '../../../src/sources'
 
 /**
  * Small builders so each question reads as one line of intent plus its
@@ -10,7 +11,7 @@ export const H = (text: string, highlight?: string): Hint => ({ text, highlight 
 
 const common = (id: string, slide: number, factIds: string[], prompt: string, hints: Hint[], workedSolution: string, o: Opts = {}) => ({
   id,
-  slide,
+  source: T2(slide),
   factIds,
   prompt,
   hints,

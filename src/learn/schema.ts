@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { SourceRefSchema, TOPIC_IDS } from '../sources'
 
 /**
  * Learning content schemas: the fact inventory (content/topic2/facts.json),
@@ -14,10 +15,11 @@ export type Topic = (typeof TOPICS)[number]
 
 export const FactSchema = z.object({
   id: z.string().regex(/^s\d\d-[a-z0-9-]+$/),
-  slide: z.number().int().min(1).max(49),
+  source: SourceRefSchema,
   statement: z.string().min(8),
   kind: z.enum(FACT_KINDS),
-  topic: z.enum(TOPICS),
+  /** subject area, for Revise filters and the coverage screen */
+  area: z.enum(TOPICS),
   /** numbers, truth tables, fab steps and rules: need two question types */
   key: z.boolean(),
   /** content ids of the model objects this fact is about (mastery overlay) */
@@ -27,7 +29,8 @@ export type Fact = z.infer<typeof FactSchema>
 
 export const FactFileSchema = z.object({
   source: z.string(),
-  slides: z.array(z.object({ slide: z.number().int(), title: z.string(), topic: z.enum(TOPICS) })).length(49),
+  topic: z.enum(TOPIC_IDS),
+  slides: z.array(z.object({ slide: z.number().int(), title: z.string(), area: z.enum(TOPICS) })).length(49),
   unreadable: z.array(z.object({ slide: z.number().int(), what: z.string() })),
   facts: z.array(FactSchema),
 })
@@ -88,7 +91,8 @@ const base = {
   factIds: z.array(z.string()).min(1),
   /** the model object the question is about (mastery, "open chunk") */
   objectRef: z.string().nullable().default(null),
-  slide: z.number().int().min(1).max(49),
+  /** the slide it draws on (opened by the Source button) */
+  source: SourceRefSchema,
   hints: z.array(HintSchema).min(1),
   workedSolution: z.string().min(10),
   difficulty: z.union([z.literal(1), z.literal(2), z.literal(3)]),

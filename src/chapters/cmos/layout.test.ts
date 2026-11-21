@@ -91,7 +91,7 @@ describe('the default (slide 27–28) layout', () => {
   })
   it('hover text reads like the slide', () => {
     const polyW = checks.find((c) => c.rule === 'poly.width' && c.measured === 2)!
-    expect(describeCheck(polyW)).toBe('Poly width: 2λ (min 2λ) · slide 47')
+    expect(describeCheck(polyW)).toBe('Poly width: 2λ (min 2λ)')
     expect(polyW.tight).toBe(true)
   })
   it('tight spots include both metal spacings (4λ) and the 2λ gates', () => {
@@ -114,10 +114,10 @@ describe('a deliberately broken layout', () => {
   })
   it('reports how far each one is short', () => {
     const find = (rule: RuleId) => bad.find((c) => c.rule === rule)!
-    expect(describeCheck(find('poly.width'))).toBe('Poly width: 1λ (min 2λ) · short by 1λ · slide 47')
-    expect(describeCheck(find('metal1.spacing'))).toBe('Metal1 spacing: 2λ (min 4λ) · short by 2λ · slide 47')
+    expect(describeCheck(find('poly.width'))).toBe('Poly width: 1λ (min 2λ) · short by 1λ')
+    expect(describeCheck(find('metal1.spacing'))).toBe('Metal1 spacing: 2λ (min 4λ) · short by 2λ')
     expect(find('nwell.diffInside').measured).toBe(3)
-    expect(describeCheck(find('contact.size'))).toBe('Contact size: 3λ (must be 2λ) · off by 1λ · slide 47')
+    expect(describeCheck(find('contact.size'))).toBe('Contact size: 3λ (must be 2λ) · off by 1λ')
   })
   it('reset restores a clean layout', () => {
     layoutState.set(l)

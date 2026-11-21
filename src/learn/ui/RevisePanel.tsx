@@ -22,8 +22,8 @@ export function RevisePanel() {
   const rv = useAtlas((s) => s.revise)
   const set = useAtlas((s) => s.set)
   const pv = useAtlas((s) => s.progressVersion)
-  const filter: Filter = { from: rv.from, to: rv.to, topic: rv.topic }
-  const fkey = `${rv.from}-${rv.to}-${rv.topic}`
+  const filter: Filter = { from: rv.from, to: rv.to, area: rv.area }
+  const fkey = `${rv.from}-${rv.to}-${rv.area}`
   const [ahead, setAhead] = useState(false)
   const [current, setCurrent] = useState<string | null>(null)
   const [answered, setAnswered] = useState(false)
@@ -34,7 +34,7 @@ export function RevisePanel() {
   const list = ahead && due.length === 0 ? queue(filter, Date.now(), true) : due
   const boxes = useMemo(() => boxCounts(filter), [fkey, pv]) // eslint-disable-line react-hooks/exhaustive-deps
   const total = boxes.reduce((a, b) => a + b, 0)
-  const factsIn = FACTS.filter((f) => f.slide >= rv.from && f.slide <= rv.to && (!rv.topic || f.topic === rv.topic))
+  const factsIn = FACTS.filter((f) => f.source.slide >= rv.from && f.source.slide <= rv.to && (!rv.area || f.area === rv.area))
   const mastered = factsIn.filter((f) => factMastered(f.id)).length
 
   // pick the next card whenever the filter changes or a card is finished
@@ -86,15 +86,15 @@ export function RevisePanel() {
                   </option>
                 ))}
               </select>
-              {(rv.from !== 1 || rv.to !== 49 || rv.topic) && (
-                <button className="chip" onClick={() => setRv({ from: 1, to: 49, topic: null })}>
+              {(rv.from !== 1 || rv.to !== 49 || rv.area) && (
+                <button className="chip" onClick={() => setRv({ from: 1, to: 49, area: null })}>
                   all
                 </button>
               )}
             </label>
             <div className="rv-topics" role="group" aria-label="Topic">
               {TOPICS.filter((t) => t !== 'summary').map((t) => (
-                <button key={t} className="chip" aria-pressed={rv.topic === t} onClick={() => setRv({ topic: rv.topic === t ? null : t })}>
+                <button key={t} className="chip" aria-pressed={rv.area === t} onClick={() => setRv({ area: rv.area === t ? null : t })}>
                   {TOPIC_NAME[t]}
                 </button>
               ))}
@@ -143,7 +143,7 @@ export function RevisePanel() {
             ))}
         </div>
       </aside>
-      {rv.tab === 'coverage' && <CoverageSheet onDrill={(slide) => setRv({ tab: 'drill', from: slide, to: slide, topic: null })} onClose={() => setRv({ tab: 'drill' })} />}
+      {rv.tab === 'coverage' && <CoverageSheet onDrill={(slide) => setRv({ tab: 'drill', from: slide, to: slide, area: null })} onClose={() => setRv({ tab: 'drill' })} />}
       {rv.tab === 'exam' && <ExamSheet filter={filter} onClose={() => setRv({ tab: 'drill' })} />}
     </>
   )

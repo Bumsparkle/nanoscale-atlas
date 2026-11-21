@@ -128,8 +128,8 @@ export function Home() {
         <p className="eyebrow">ELEC0031 · Topic 2 · Chapter 1</p>
         <h1>Nanoscale Atlas</h1>
         <p className="home-lede">
-          The CMOS inverter, from a 300 mm wafer to the 5.43 Å silicon lattice. Built from the six masks of slide 28 and the
-          45 fab steps of slides 29–45.
+          The CMOS inverter, from a 300 mm wafer to the 5.43 Å silicon lattice. Built from the lecture's six masks and its
+          45-step fabrication sequence.
         </p>
         {phase === 'door' && (
           <button className="home-cta" onClick={start} autoFocus>

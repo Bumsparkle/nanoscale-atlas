@@ -1,4 +1,5 @@
 import { defineContent } from '../../content-schema'
+import { T2 } from '../../../sources'
 
 export default defineContent({
   id: 'substrate',
@@ -7,11 +8,11 @@ export default defineContent({
   layer: 'cell',
   parent: 'cell',
   anchors: [{ key: 'si:p' }],
-  slides: [10, 12, 25, 26, 29],
+  sources: [T2(10), T2(12), T2(25), T2(26), T2(29)],
   fabStep: 'start',
-  what: 'Single-crystal silicon doped p-type with a group III acceptor such as boron (slide 5). Everything in the inverter is built into or on top of it, from the bottom up (slide 29).',
-  made: 'Arrives as the blank wafer, before any processing (slide 29).',
-  does: 'It is the body of the nMOS transistor: CMOS typically uses a p-type substrate for nMOS (slide 25). The body is tied to GND (slide 12) through the substrate tap, because metal on lightly doped silicon would form a Schottky diode (slide 26).',
+  what: 'Single-crystal silicon doped p-type with a group III acceptor such as boron. Everything in the inverter is built into or on top of it, from the bottom up.',
+  made: 'Arrives as the blank wafer, before any processing.',
+  does: 'It is the body of the nMOS transistor: CMOS typically uses a p-type substrate for nMOS. The body is tied to GND through the substrate tap, because metal on lightly doped silicon would form a Schottky diode.',
   beyond: [
     { text: 'Only the top 2.4 µm are drawn. A real 300 mm wafer is 775 µm thick.', source: 'SEMI M1 wafer standard' },
   ],

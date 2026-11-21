@@ -9,6 +9,8 @@ import { layoutFrame, toLayout, toScreen, LEARN_PANEL_W, type LayoutFrame } from
 import { ContentBody } from './Panel'
 import { sound } from './sound'
 import './layout.css'
+import { SourceButton } from './source/Source'
+import { T2 } from '../sources'
 
 /**
  * Layout view (slides 46–48): the six masks drawn flat on the λ grid, as on
@@ -293,7 +295,7 @@ export function LayoutView() {
                         {t.type === 'nmos' ? 'nMOS' : 'pMOS'} W/L = {t.W}λ / {t.L}λ
                       </text>
                       <text x={lx - 4} y={ly + 4} textAnchor="end" className="fet-s">
-                        {µm(t.W)} µm / {µm(t.L)} µm · slide 48
+                        {µm(t.W)} µm / {µm(t.L)} µm
                       </text>
                     </>
                   )}
@@ -337,13 +339,13 @@ export function LayoutView() {
           </>
         ) : (
           <div className="lp-body">
-            <p className="eyebrow">layout · slides 46–48</p>
+            <p className="eyebrow lp-eyebrow">layout <SourceButton refs={[T2(46), T2(47), T2(48)]} /></p>
             <h2>λ design rules</h2>
             <button className="lp-readout" onClick={() => set({ focus: 'lambda' })}>
               <span>
                 λ = f/2 = <b>{(LAMBDA_NM / 1000).toFixed(1)} µm</b>
               </span>
-              <span>f = 0.6 µm process · slide 46</span>
+              <span>f = 0.6 µm process</span>
               <span>
                 on screen 1λ = <b ref={lamPx}>–</b> px · grid 1λ, bold every 4λ
               </span>
@@ -400,7 +402,7 @@ export function LayoutView() {
             </section>
 
             <section>
-              <h3>Minimum transistor · slide 48</h3>
+              <h3>Minimum transistor</h3>
               <table className="lp-fets">
                 <thead>
                   <tr>
@@ -424,13 +426,13 @@ export function LayoutView() {
                 </tbody>
               </table>
               <p className="lp-note">
-                The slide text says Length / Width = 4λ / 2λ, "0.6 µm wide, 1.2 µm long". The drawn layout gives L = 2λ = 0.6 µm (the source–drain distance f, slide 46) and W = 4λ = 1.2 µm.{' '}
+                The slide text says Length / Width = 4λ / 2λ, "0.6 µm wide, 1.2 µm long". The drawn layout gives L = 2λ = 0.6 µm (the source–drain distance f) and W = 4λ = 1.2 µm.{' '}
                 <button className="lp-link" onClick={() => set({ focus: 'min-transistor' })}>
                   more →
                 </button>
               </p>
             </section>
-            <p className="lp-fine mono">rules: {Object.values(RULE_LABEL).length} in the slide 47 table; metal2 and vias are not used by the inverter</p>
+            <p className="lp-fine mono">rules: {Object.values(RULE_LABEL).length} in the simplified rules table; metal2 and vias are not used by the inverter</p>
           </div>
         )}
       </aside>

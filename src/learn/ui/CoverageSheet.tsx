@@ -30,7 +30,7 @@ export function CoverageSheet({ onDrill, onClose }: { onDrill: (slide: number) =
       </header>
       <div className="cov-body">
         {TOPICS.map((t) => {
-          const slides = SLIDES.filter((s) => s.topic === t)
+          const slides = SLIDES.filter((s) => s.area === t)
           if (!slides.length) return null
           return (
             <section key={t} className="cov-topic">

@@ -38,14 +38,14 @@ const X = {
 
 describe('recipe structure', () => {
   it('has a step for every fab slide 29–45 and every step cites its slide', () => {
-    const slides = new Set(STEPS.map((s) => s.slide))
+    const slides = new Set(STEPS.map((s) => s.source.slide))
     for (let s = 29; s <= 45; s++) {
       if (s === 38 || s === 39 || s === 40 || s === 41 || s === 42 || s === 43 || s === 44 || s === 45 || s <= 37)
         expect(slides.has(s), `slide ${s}`).toBe(true)
     }
     for (const s of STEPS) {
-      expect(s.slide).toBeGreaterThanOrEqual(29)
-      expect(s.slide).toBeLessThanOrEqual(45)
+      expect(s.source.slide).toBeGreaterThanOrEqual(29)
+      expect(s.source.slide).toBeLessThanOrEqual(45)
       expect(s.tool.length).toBeGreaterThan(0)
       expect(s.chemistry.length).toBeGreaterThan(0)
     }
