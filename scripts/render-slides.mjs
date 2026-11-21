@@ -22,5 +22,6 @@ for (const f of readdirSync(out)) {
   if (m) renameSync(join(out, f), join(out, `slide-${String(+m[1]).padStart(2, '0')}.jpg`))
 }
 const n = readdirSync(out).filter((f) => f.startsWith('slide-')).length
-execFileSync('tar', ['-czf', join('private', `slides-${topic}.tar.gz`), '-C', join('private', 'slides'), topic])
+// no macOS extended attributes: Linux tar on the build machine would warn about every file
+execFileSync('tar', ['--no-xattrs', '-czf', join('private', `slides-${topic}.tar.gz`), '-C', join('private', 'slides'), topic], { env: { ...process.env, COPYFILE_DISABLE: '1' } })
 console.log(`${n} slides → ${out}\narchive → private/slides-${topic}.tar.gz (upload this to private storage; never commit it)`)
