@@ -1,20 +1,18 @@
 import * as THREE from 'three/webgpu'
 import { useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
-import { SCENE } from './sceneTheme'
 
 /**
- * A custom environment instead of a stock HDRI: a grey room with long strip
- * lights overhead, like cleanroom ceiling fixtures, and a lit floor so the
- * undersides of parts never go black. Metals reflect the strips as clean
- * bands.
+ * A custom environment instead of a stock HDRI: a dark room with long
+ * strip lights overhead, like cleanroom ceiling fixtures. Metals reflect
+ * these strips as clean bands.
  */
 function buildEnvScene(warm: boolean) {
   const s = new THREE.Scene()
-  s.background = new THREE.Color(SCENE.envBackdrop)
-  const strip = new THREE.MeshBasicMaterial({ color: warm ? 0xffe2a8 : SCENE.envStrip })
-  const soft = new THREE.MeshBasicMaterial({ color: warm ? 0x8a7350 : SCENE.envPanel })
-  const wallMat = new THREE.MeshBasicMaterial({ color: SCENE.envWall })
+  s.background = new THREE.Color(0x1a1d1f)
+  const strip = new THREE.MeshBasicMaterial({ color: warm ? 0xffe2a8 : 0xf2f5f7 })
+  const soft = new THREE.MeshBasicMaterial({ color: warm ? 0x5a4a30 : 0x50565b })
+  const dim = new THREE.MeshBasicMaterial({ color: 0x2c3034 })
   const g = new THREE.BoxGeometry(1, 1, 1)
   // ceiling: a broad soft panel with bright strip fixtures, as in a cleanroom
   const ceiling = new THREE.Mesh(g, soft)
@@ -27,16 +25,14 @@ function buildEnvScene(warm: boolean) {
     m.position.set(i * 1.6, 4.9, 0)
     s.add(m)
   }
-  for (const [x, z, sx, sz] of [[0, -6, 14, 0.1], [0, 6, 14, 0.1], [-6, 0, 0.1, 14], [6, 0, 0.1, 14]]) {
-    const wall = new THREE.Mesh(g, wallMat)
-    wall.scale.set(sx, 4, sz)
-    wall.position.set(x, 0.5, z)
-    s.add(wall)
-  }
-  const floor = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: SCENE.envFloor }))
-  floor.scale.set(20, 0.1, 20)
-  floor.position.set(0, -3, 0)
-  s.add(floor)
+  const wall = new THREE.Mesh(g, dim)
+  wall.scale.set(14, 3, 0.1)
+  wall.position.set(0, 0.5, -6)
+  s.add(wall)
+  const floorGlow = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: 0x15181a }))
+  floorGlow.scale.set(20, 0.1, 20)
+  floorGlow.position.set(0, -3, 0)
+  s.add(floorGlow)
   return s
 }
 
@@ -61,21 +57,14 @@ export function useLabEnvironment(warm = false, intensity = 0.9) {
   }, [gl, scene, warm, intensity])
 }
 
-/**
- * Key / fill / rim, plus a soft hemisphere and the lab environment. The key
- * is warm and high front-right, the fill cool from the left at about half
- * the key, the rim from behind to separate edges from the backdrop, and a
- * weak bounce from below so no face is crushed to black.
- */
 export function StudioLights({ scale = 1 }: { scale?: number }) {
-  useLabEnvironment(false, 1.0)
+  useLabEnvironment(false, 1.25)
   return (
     <>
-      <hemisphereLight args={[SCENE.hemiSky, SCENE.hemiGround, 0.9]} />
-      <directionalLight position={[30 * scale, 60 * scale, 45 * scale]} intensity={2.6} color="#fff1dc" />
-      <directionalLight position={[-55 * scale, 22 * scale, 20 * scale]} intensity={1.25} color="#b9cde0" />
-      <directionalLight position={[-10 * scale, 40 * scale, -70 * scale]} intensity={1.6} color="#ffffff" />
-      <directionalLight position={[0, -40 * scale, 30 * scale]} intensity={0.45} color="#dfe6ea" />
+      <hemisphereLight args={['#cfd6dc', '#0b0c0d', 0.35]} />
+      <directionalLight position={[30 * scale, 60 * scale, 45 * scale]} intensity={2.1} color="#fff3e2" />
+      <directionalLight position={[-45 * scale, 25 * scale, -40 * scale]} intensity={0.9} color="#a9bed0" />
+      <directionalLight position={[0, -30 * scale, 50 * scale]} intensity={0.25} color="#ffffff" />
     </>
   )
 }

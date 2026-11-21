@@ -519,3 +519,5 @@ The old lesson had 1,662 words of narration and 51 questions; the new one has 6,
   - the keys work;
   - the speed is remembered.
 - Before and after screenshots were reviewed at every size; the sheets are in `docs/screenshots/theme/`.
+
+**Revision (2026-11-21).** The models are back to their original dark materials and lighting, on the new grey background. The mastery toggle is at the top left beside "parts". There are still no overlaps at 1440, 1280 or 375 across the 17 review screens, mastery-on included.

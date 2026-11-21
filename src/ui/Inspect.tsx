@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { MasteryToggle } from '../learn/ui/LearnHost'
 import { CONTENT, CONTENT_BY_ID } from '../chapters/cmos/content'
 import { LAYER_BY_ID } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
@@ -57,9 +58,12 @@ export function SceneOutline() {
   const def = LAYER_BY_ID[layer]
   return (
     <nav className="outline-nav" aria-label={`Objects in the ${def.title}`}>
-      <button className="outline-toggle" aria-expanded={open} onClick={() => setOpen(!open)}>
-        parts<span className="count">{items.length}</span>
-      </button>
+      <div className="outline-row">
+        <button className="outline-toggle" aria-expanded={open} onClick={() => setOpen(!open)}>
+          parts<span className="count">{items.length}</span>
+        </button>
+        <MasteryToggle />
+      </div>
       <ul hidden={!open} onMouseLeave={() => set({ hover: null })}>
         {items.map((c) => (
           <li key={c.id}>

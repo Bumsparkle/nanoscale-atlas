@@ -4,7 +4,6 @@ import { cellRuntime as rt } from '../scene/cellRuntime'
 import { PLANE_RANGE } from '../scene/section'
 import './viewbar.css'
 import { SpeedBar } from './SpeedBar'
-import { MasteryToggle } from '../learn/ui/LearnHost'
 
 const VIEWS: { id: View; label: string; key: string; hint: string }[] = [
   { id: 'explore', label: 'Explore', key: 'e', hint: 'Click any part to inspect it' },
@@ -27,7 +26,6 @@ export function ViewBar() {
   const view = useAtlas((s) => s.view)
   const locked = useAtlas((s) => s.section.locked)
   const set = useAtlas((s) => s.set)
-  const mode = useAtlas((s) => s.mode)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -61,7 +59,6 @@ export function ViewBar() {
   }, [set])
 
   const cell = layer === 'cell'
-  const mastery = mode === 'explore'
   const hint = cell ? VIEWS.find((v) => v.id === view)!.hint : (LAYER_HINTS[layer] ?? '')
   return (
     <div className={'scenetools' + (cell && view === 'fab' ? ' scenetools-raised' : '')}>
@@ -84,12 +81,7 @@ export function ViewBar() {
             ))}
           </nav>
         )}
-        {(cell && view === 'fab') || mastery ? (
-          <div className="scenetools-row">
-            {cell && view === 'fab' && <SpeedBar />}
-            <MasteryToggle />
-          </div>
-        ) : null}
+        {cell && view === 'fab' && <SpeedBar />}
       </div>
       {hint && (
         <p className="scenetools-hint" aria-live="polite">

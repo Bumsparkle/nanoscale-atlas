@@ -647,9 +647,9 @@
 /* mastery overlay legend (Explore) */
 .mastery-legend {
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(var(--tools-h) + var(--s-1));
+  /* under the parts / mastery buttons, top left */
+  left: var(--s-5);
+  top: calc(var(--top-h) + 40px);
   padding: var(--s-2) var(--s-3);
   background: var(--glass);
   border: var(--hair);

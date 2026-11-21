@@ -161,6 +161,10 @@
   top: var(--top-h);
   z-index: 14;
 }
+.outline-row {
+  display: flex;
+  gap: var(--s-2);
+}
 .outline-nav .outline-toggle {
   font-family: var(--mono);
   font-size: var(--t-11);

@@ -28,6 +28,7 @@ const ROUTES = [
   ['14-lesson-check', '/cmos/inverter?mode=lesson&at=cross-section-bodies', 6000, async (p) => { await p.locator('[data-testid=start-check]:not([disabled])').click(); await p.waitForTimeout(2000) }],
   ['15-revise', '/cmos/inverter?mode=revise', 4000],
   ['16-coverage', '/cmos/inverter?mode=revise&rv=coverage', 3500],
+  ['17-mastery', '/cmos/inverter', 3500, async (p) => { await p.getByRole('button', { name: 'mastery' }).click(); await p.waitForTimeout(1500) }],
 ]
 const b = await chromium.launch({ args: ['--enable-unsafe-webgpu', '--enable-features=Vulkan,WebGPU', '--use-angle=metal', '--ignore-gpu-blocklist'] })
 const report = []
