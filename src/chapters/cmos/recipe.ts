@@ -2,7 +2,8 @@ import { createWafer } from '../../sim/model'
 import { deposit, develop, etch, expose, identity, implant, oxidise, spinResist, strip } from '../../sim/ops'
 import { Process, type Step } from '../../sim/recipe'
 import type { Mask } from '../../sim/types'
-import { CONTACT, GRID, METAL, NPLUS, NWELL, POLY, PPLUS } from './masks'
+import { GRID } from './masks'
+import { DEFAULT_LAYOUT, layoutState, masksOf, type Layout, type MaskId } from './layout'
 
 /**
  * Film thicknesses and depths (nm). Only the gate oxide (< 20 Å, slide 37)
@@ -62,7 +63,10 @@ function litho(group: string, mask: Mask, slide: number, keep: boolean, target: 
 
 const HF = { tool: 'Wet bench', chem: 'Hydrofluoric acid (HF)' }
 
-export const STEPS: Step[] = [
+/** The recipe for a given mask set: same 45 steps, patterned by these masks. */
+export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
+  const { nwell: NWELL, poly: POLY, nplus: NPLUS, pplus: PPLUS, contact: CONTACT, metal: METAL } = masks
+  return [
   {
     id: 'start', title: 'Blank p-type wafer', slide: 29, group: 'start', kind: 'start',
     tool: '—', chemistry: 'Lightly doped p-type single-crystal silicon',
@@ -161,12 +165,25 @@ export const STEPS: Step[] = [
     note: 'Pattern to remove excess metal, leaving wires.',
     beyond: 'Chlorine plasma is the usual Al etch (Plummer, Deal & Griffin, ch. 10).',
   }),
-]
+  ]
+}
+
+export const STEPS: Step[] = buildSteps(masksOf(DEFAULT_LAYOUT))
 
 export const initialWafer = () => createWafer(GRID, T.substrate, 'p')
 
-let cached: Process | null = null
+const cache = new WeakMap<Layout, Process>()
+/** the fab process for a layout (memoised per layout object) */
+export function processFor(layout: Layout): Process {
+  let p = cache.get(layout)
+  if (!p) {
+    p = new Process(initialWafer(), layout === DEFAULT_LAYOUT ? STEPS : buildSteps(masksOf(layout)))
+    cache.set(layout, p)
+  }
+  return p
+}
+
+/** the process for the current (possibly edited) layout */
 export function inverterProcess(): Process {
-  if (!cached) cached = new Process(initialWafer(), STEPS)
-  return cached
+  return processFor(layoutState.get())
 }

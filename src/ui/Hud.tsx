@@ -11,6 +11,7 @@ import { ViewBar } from './ViewBar'
 import { Timeline } from './Timeline'
 import { LayerControls } from './LayerControls'
 import { LogicBench } from './LogicBench'
+import { LayoutView } from './LayoutView'
 import '../ui/layercontrols.css'
 import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
@@ -100,7 +101,8 @@ function LayerHint() {
 
 function ExaggerationNote() {
   const layer = useAtlas((s) => s.layer)
-  if (layer !== 'cell' && layer !== 'transistor') return null
+  const view = useAtlas((s) => s.view)
+  if ((layer !== 'cell' && layer !== 'transistor') || view === 'layout') return null
   return <p className="exaggeration mono">{EXAGGERATION_NOTE}</p>
 }
 
@@ -119,6 +121,7 @@ export function Hud() {
       <Timeline />
       <LayerControls />
       <LogicBench />
+      <LayoutView />
       <HoverLabel />
       <Panel />
     </>

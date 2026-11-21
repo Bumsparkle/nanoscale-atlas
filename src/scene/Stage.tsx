@@ -33,9 +33,16 @@ function RigDriver() {
     if (!useAtlas.getState().boot.frame && frames.current.n > 8) useAtlas.setState((s) => ({ boot: { ...s.boot, frame: true } }))
     // keep the focused object centred in the space left of the inspect panel
     const st = useAtlas.getState()
-    const panelOpen = !!st.focus && size.width > 720
-    film.current.target = panelOpen ? (35 * 210) / size.width : 0
-    camera.filmOffset = film.current.step(dt, st.reducedMotion)
+    const layoutView = st.view === 'layout' && st.layer === 'cell'
+    const panelOpen = (!!st.focus || layoutView) && size.width > 720
+    // the spring runs on the shift as a fraction of the screen width; three.js applies
+    // filmOffset at the near plane independent of the field of view, so convert it
+    // with tan(fov/2), or the narrow Layout-view lens would throw the cell off-screen
+    film.current.target = panelOpen ? (layoutView ? 220 : 210) / size.width : 0
+    const frac = film.current.step(dt, st.reducedMotion)
+    const aspect = size.width / size.height
+    // left edge shift = frac × frustum width; filmOffset acts as near·offset / (35·min(aspect, 1))
+    camera.filmOffset = 35 * Math.min(aspect, 1) * frac * 2 * Math.tan((camera.fov * Math.PI) / 360) * aspect
     rig.setAspect(size.width / size.height)
     rig.update(dt, camera)
     transition.setViewport(size.height, camera.fov)

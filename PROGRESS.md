@@ -291,10 +291,56 @@ No numeric fact contradicts the slides: < 20 Å / 6–7 layers, 900–1200 °C, 
 - **Lighthouse:** the `valid-source-maps` and `bf-cache` audits fail on mobile (not scored categories).
 
 ## What I'd do next
-1. A λ-grid layout view with hover-to-see-rule on every edge (data already in `checkRules()`).
+1. ~~A λ-grid layout view~~: done (Layout view). Next: keyboard stepping through edges, and saving edited layouts to the URL.
 2. An independent fresh-eyes review against BRIEF.md, and on-device phone fps checks.
 3. A preview deploy (Vercel/Netlify, SPA fallback to `index.html`) once credentials exist.
 4. Playwright visual-regression assertions with tolerances, in CI.
 5. A Blender hero wafer and a packaged die with KTX2 textures, replacing the procedural wafer.
 6. NAND/NOR as real mask sets so they get 3D cells and their own fab replay: the chapter-2 path, exercising "new masks, new recipe".
 7. Put lattice structure/dopant and the bench tab in the URL.
+
+
+### Layout view · slides 46–48 — done (2026-11-21)
+
+Shipped
+- **Layout mode** (`g`, or the Layout tab) on the inverter cell. The camera dolly-zooms to a near-orthographic top view, and the six masks are drawn flat in slide 25 legend colours, as in the slide 27 mask-set image. Switching back reverses it.
+- **λ grid:** 1λ, bold every 4λ. The readout shows λ = f/2 = 0.3 µm for the f = 0.6 µm process (slide 46) and λ in screen pixels, from the same live value as the scale bar.
+- **Layer toggles** for all six masks, plus "all six" / "none". The URL follows: `?view=layout&layers=poly,ndiff`.
+- **Hover:**
+  - Hovering any edge or gap highlights it with a dimension line and shows its rules, e.g. "Poly width: 2λ (min 2λ) · slide 47 · at minimum".
+  - Hovering a shape gives its size.
+  - Rules met at exactly the minimum get an amber dot (62 of 109 checks in the default cell).
+- **Edit mode:**
+  - Drag any edge; it snaps to 1λ, with a tick on each step when sound is on.
+  - The rule check runs live. Violations show in red with the rule and the shortfall, e.g. "Metal1 spacing: 2λ (min 4λ) · short by 2λ · slide 47", and are listed in the panel.
+  - "Reset layout" restores slides 27–28.
+  - Leaving the view rebuilds the 3D cell, sections and fab replay from the edited masks (verified: widening the nMOS gate to 3λ shows up in the slide 27 section, and the transistor table reads L = 3λ = 0.9 µm).
+- **Slide 48 callouts:** a W/L callout on both gates (4λ / 2λ = 1.2 µm / 0.6 µm), recomputed from the layout, plus a table in the panel.
+  - The slide's text gives L = 1.2 µm, W = 0.6 µm. That contradicts slide 46 (f, the source–drain distance, is set by the poly width) and the drawn layout.
+  - The panel quotes the slide and states the correct reading. DECISIONS.md is corrected: an earlier entry wrongly said the slide's own sentences disagreed with each other.
+- **Content:** 8 new content files (six masks, λ rules, minimum transistor) in the usual four-part format with slide citations, shown inline in the layout panel.
+
+Verification
+- 92 tests pass (31 new in `layout.test.ts`):
+  - λ snapping and edge moves (immutability, the 1λ minimum, bounds);
+  - pass and fail cases for every rule in the slide 47 table, metal2 and via spacing included;
+  - every edge of the default layout has at least one rule, and none is violated;
+  - a deliberately broken layout produces exactly five expected violations with the right shortfalls;
+  - W/L read from the layout;
+  - an edited layout regenerates a valid process and mesh (6 contacts, 3 wires, 1 poly node, all with content) with the expected cross-section.
+- Screenshots reviewed and saved in `docs/screenshots/layout/`:
+  - all layers, each single layer, poly + n-diffusion;
+  - hover on an edge and on a gap;
+  - a violation;
+  - the transistor panel;
+  - the transition sequence;
+  - the 3D section after an edit;
+  - mobile.
+- Fixed after review:
+  - the transition threw the cell off-screen (filmOffset vs. a narrow lens);
+  - single-layer views hid every rule (checks now show if they touch any visible layer);
+  - callouts collided on mobile;
+  - the "slide 27" label overlapped the grid;
+  - the inline content panel used different type from the inspect panel.
+
+Open: edited layouts are not saved across reloads or encoded in the URL; hover is mouse-only (keyboard users get the violation list and shape panels, but cannot step through edges).

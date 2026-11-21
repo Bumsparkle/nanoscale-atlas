@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { color, float, mix, uniform, positionWorld, sin, time, vec3 } from 'three/tsl'
 import { inverterProcess } from '../chapters/cmos/recipe'
 import { MESH_OPTS } from '../chapters/cmos/display'
-import { CONTENT_MASKS } from '../chapters/cmos/maskIndex'
+import { currentMasks } from '../chapters/cmos/maskIndex'
 import { displayStack } from '../sim/mesher'
 import { colAt, top } from '../sim/model'
 import type { Model } from '../sim/types'
@@ -46,7 +46,7 @@ function heights(m: Model, x: number, y: number) {
 }
 
 function IonRain() {
-  const process = useMemo(() => inverterProcess(), [])
+  const process = { get steps() { return inverterProcess().steps }, snapshot: (k: number) => inverterProcess().snapshot(k) }
   const mesh = useRef<THREE.InstancedMesh>(null)
   const parts = useMemo(
     () =>
@@ -117,7 +117,7 @@ function IonRain() {
 
 /** clear/opaque rectangles of a mask over the cell, as greedy boxes on the λ grid */
 function maskRects(maskId: string, keep: boolean, clear: boolean) {
-  const mask = CONTENT_MASKS[maskId]
+  const mask = currentMasks()[maskId]
   const out: { x0: number; x1: number; y0: number; y1: number }[] = []
   const nx = 62
   const ny = 28
@@ -180,7 +180,7 @@ function mergeGeos(geos: THREE.BufferGeometry[]) {
 
 /** mask plate (chrome on glass) hovering over the wafer + light through the clear areas */
 function Exposure() {
-  const process = useMemo(() => inverterProcess(), [])
+  const process = { get steps() { return inverterProcess().steps }, snapshot: (k: number) => inverterProcess().snapshot(k) }
   const plate = useRef<THREE.Mesh>(null)
   const glass = useRef<THREE.Mesh>(null)
   const beam = useRef<THREE.Mesh>(null)
@@ -243,7 +243,7 @@ function Exposure() {
 
 /** furnace glow for oxidation and CVD; liquid sheen for wet steps */
 function Ambience() {
-  const process = useMemo(() => inverterProcess(), [])
+  const process = { get steps() { return inverterProcess().steps }, snapshot: (k: number) => inverterProcess().snapshot(k) }
   const light = useRef<THREE.PointLight>(null)
   const sheet = useRef<THREE.Mesh>(null)
   const wet = useMemo(() => uniform(0), [])

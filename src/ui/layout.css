@@ -1,0 +1,396 @@
+/* Layout view: a drafting sheet over the canvas, fading in once the camera has gone top-down */
+.layout-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  background: rgba(11, 12, 13, 0.965);
+  animation: layout-in 0.42s var(--ease-out) 0.5s both;
+  touch-action: none;
+}
+.layout-sheet.instant {
+  animation-duration: 0.01s;
+  animation-delay: 0s;
+}
+@keyframes layout-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.layout-sheet svg {
+  display: block;
+  font-family: var(--mono);
+}
+.grid-minor {
+  fill: none;
+  stroke: rgba(138, 147, 153, 0.11);
+  stroke-width: 1;
+}
+.grid-major {
+  fill: none;
+  stroke: rgba(138, 147, 153, 0.24);
+  stroke-width: 1;
+}
+.grid-field {
+  stroke: var(--line-strong);
+}
+.section-line {
+  stroke: rgba(236, 238, 236, 0.4);
+  stroke-dasharray: 7 5;
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+.mask rect {
+  cursor: pointer;
+}
+.editing .mask rect {
+  cursor: default;
+}
+.lbl {
+  fill: var(--ink-1);
+  font-size: 11px;
+  pointer-events: none;
+}
+.dim-lbl {
+  fill: var(--ink-3);
+  font-size: 10px;
+}
+
+/* hit areas: invisible, wide strokes */
+.hit {
+  stroke: transparent;
+  stroke-width: 11;
+  fill: none;
+  pointer-events: stroke;
+}
+.hit-gap {
+  stroke-width: 13;
+}
+.editing .hit-edge.ew {
+  cursor: ew-resize;
+}
+.editing .hit-edge.ns {
+  cursor: ns-resize;
+}
+.editing .hit-edge:hover {
+  stroke: rgba(240, 180, 60, 0.25);
+  stroke-width: 7;
+}
+
+.edge-hot {
+  stroke: var(--amber);
+  stroke-width: 2.5;
+  pointer-events: none;
+}
+.edge-bad {
+  stroke: var(--warn);
+  stroke-width: 2;
+  pointer-events: none;
+}
+.dim line {
+  stroke-width: 1.2;
+  pointer-events: none;
+}
+.dim-hover line {
+  stroke: var(--amber);
+}
+.dim-bad line {
+  stroke: var(--warn);
+}
+.tight {
+  fill: var(--amber);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.fet {
+  cursor: pointer;
+}
+.fet polyline {
+  fill: none;
+  stroke: rgba(236, 238, 236, 0.55);
+}
+.fet circle {
+  fill: var(--ink-0);
+}
+.fet-t {
+  fill: var(--ink-0);
+  font-size: 11px;
+}
+.fet-s {
+  fill: var(--amber);
+  font-size: 10px;
+}
+.fet:hover .fet-t {
+  fill: var(--amber);
+}
+
+.rule-tip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 13;
+  max-width: 360px;
+  padding: 6px 10px;
+  background: rgba(11, 12, 13, 0.95);
+  border: var(--hair);
+  border-left: 2px solid var(--amber);
+  pointer-events: none;
+}
+.rule-tip p {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--t-12);
+  color: var(--ink-0);
+  white-space: nowrap;
+}
+.rule-tip p + p {
+  margin-top: 3px;
+  color: var(--ink-2);
+}
+.rule-tip p.bad {
+  color: var(--warn);
+}
+.tight-tag {
+  margin-left: 8px;
+  color: var(--amber);
+  font-size: 10px;
+}
+
+/* side panel */
+.layout-panel {
+  position: fixed;
+  top: 64px;
+  right: var(--s-4);
+  bottom: 92px;
+  width: 408px;
+  overflow-y: auto;
+  background: rgba(14, 16, 17, 0.96);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  z-index: 12;
+  scrollbar-width: thin;
+}
+.lp-body {
+  padding: var(--s-4) var(--s-5) var(--s-5);
+}
+.lp-body h2 {
+  margin: 2px 0 var(--s-3);
+  font-size: var(--t-24);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.lp-body section {
+  padding: var(--s-3) 0;
+  border-top: 1px dashed var(--line);
+}
+.lp-body h3 {
+  margin: 0 0 var(--s-2);
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+.lp-readout {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  margin-bottom: var(--s-3);
+  padding: var(--s-3);
+  text-align: left;
+  font-family: var(--mono);
+  font-size: var(--t-12);
+  color: var(--ink-2);
+  border: var(--hair);
+  background: var(--bg-1);
+}
+.lp-readout span:first-child {
+  font-size: var(--t-15);
+  color: var(--ink-0);
+}
+.lp-readout b {
+  color: var(--amber);
+  font-weight: 500;
+}
+.lp-readout:hover {
+  border-color: var(--line-strong);
+}
+.lp-layers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.lp-layers button {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 5px 8px;
+  font-size: var(--t-13);
+  color: var(--ink-2);
+  border: var(--hair);
+  border-radius: var(--radius);
+  text-align: left;
+}
+.lp-layers button[aria-pressed='true'] {
+  color: var(--ink-0);
+  border-color: var(--line-strong);
+  background: var(--bg-2);
+}
+.lp-layers button[aria-pressed='false'] .sw {
+  opacity: 0.25;
+}
+.sw {
+  width: 18px;
+  height: 11px;
+  flex: none;
+  border: 1px solid #555;
+}
+.sw-nwell {
+  background: rgba(227, 227, 227, 0.2);
+  border-color: #c9c9c9;
+}
+.sw-pplus {
+  background: #6a6a6a;
+}
+.sw-nplus {
+  background: #b4b4b4;
+}
+.sw-poly {
+  background: repeating-linear-gradient(45deg, #bdbdbd 0 2px, #f2f2f2 2px 3px);
+}
+.sw-metal {
+  border-color: #7a84ff;
+  background: repeating-linear-gradient(-45deg, rgba(223, 226, 255, 0.15) 0 3px, rgba(122, 132, 255, 0.75) 3px 4px);
+}
+.sw-contact {
+  background: #0b0c0d;
+  border-color: #ececec;
+}
+.lp-row {
+  display: flex;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+.lp-row .chip[disabled] {
+  opacity: 0.35;
+  cursor: default;
+}
+.lp-note {
+  margin: var(--s-2) 0 0;
+  font-size: var(--t-12);
+  color: var(--ink-2);
+}
+.lp-status {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--t-12);
+}
+.lp-status.ok {
+  color: var(--on);
+}
+.lp-status.bad {
+  color: var(--warn);
+}
+.tight-key {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--amber);
+  vertical-align: middle;
+}
+.lp-bad {
+  list-style: none;
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.lp-bad button {
+  width: 100%;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  color: var(--warn);
+  padding: 3px 6px;
+  border-left: 2px solid var(--warn);
+  background: rgba(228, 120, 90, 0.07);
+}
+.lp-fets {
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: var(--t-12);
+  width: 100%;
+}
+.lp-fets th,
+.lp-fets td {
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-weight: 400;
+}
+.lp-fets thead th {
+  color: var(--ink-2);
+}
+.lp-link {
+  color: var(--amber);
+  font-size: var(--t-12);
+}
+.lp-fine {
+  margin: var(--s-3) 0 0;
+  font-size: 10px;
+  color: var(--ink-3);
+}
+@media (max-width: 720px) {
+  .layout-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 104px;
+    width: 100%;
+    max-height: 38vh;
+  }
+}
+
+/* the scale bar stays visible over the drafting sheet: it is linked to the λ readout */
+html[data-view='layout'] .scalebar {
+  z-index: 10;
+}
+
+/* inline content in the layout panel: same type as the inspect panel */
+.layout-panel .panel-head {
+  position: relative;
+  padding: var(--s-4) var(--s-5) var(--s-3);
+  border-bottom: var(--hair);
+}
+.layout-panel .panel-head h2 {
+  margin: 2px 0 0;
+  font-size: var(--t-24);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.layout-panel .panel-body {
+  padding: var(--s-2) var(--s-5) var(--s-5);
+}
+.layout-panel .panel-body section {
+  padding: var(--s-3) 0;
+  border-bottom: 1px dashed var(--line);
+}
+.layout-panel .panel-body h3 {
+  margin: 0 0 4px;
+  font-family: var(--mono);
+  font-size: var(--t-11);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+.layout-panel .panel-body p {
+  margin: 0;
+  font-size: var(--t-15);
+  line-height: 1.55;
+}

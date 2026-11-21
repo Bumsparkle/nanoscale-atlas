@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 import type { Device, LayerId } from '../chapters/cmos/layers'
+import { MASK_IDS, type MaskId } from '../chapters/cmos/layout'
 
 export type Page = 'home' | 'atlas' | 'style' | 'debug'
-export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic'
+export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic' | 'layout'
 export type CutTarget = 'slide27' | 'ngate' | 'pgate'
 export type CutAxis = 'x' | 'y'
 
@@ -29,6 +30,10 @@ export interface AtlasState {
   inputs: { a: 0 | 1; b: 0 | 1 }
   /** gate voltage for the transistor layer, as a fraction of VDD */
   vg: number
+  /** Layout view: visible mask layers, edit mode, and the edited-layout version (mirrors layoutState) */
+  layoutLayers: MaskId[]
+  layoutEdit: boolean
+  layoutVersion: number
   lattice: { structure: 'crystal' | 'poly' | 'amorphous'; dopant: 'none' | 'P' | 'B' }
   sound: boolean
   reducedMotion: boolean
@@ -61,6 +66,9 @@ export const useAtlas = create<AtlasState>((set) => ({
   playing: false,
   inputs: { a: 0, b: 0 },
   vg: 0,
+  layoutLayers: [...MASK_IDS],
+  layoutEdit: false,
+  layoutVersion: 0,
   lattice: { structure: 'crystal', dopant: 'none' },
   sound: false,
   reducedMotion: !!prefersReduced,

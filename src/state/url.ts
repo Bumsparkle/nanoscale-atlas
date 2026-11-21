@@ -1,4 +1,5 @@
 import { LAYERS, type LayerId } from '../chapters/cmos/layers'
+import { FROM_URL_LAYER, MASK_IDS, URL_LAYER } from '../chapters/cmos/layout'
 import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } from './store'
 
 /**
@@ -8,12 +9,12 @@ import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } fr
  * else replaces. Free camera orbiting never touches the URL.
  */
 
-type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg'> & {
+type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers'> & {
   cut: CutTarget | number | null
   cutAxis: 'x' | 'y'
 }
 
-const VIEWS: View[] = ['explore', 'section', 'masks', 'fab', 'logic']
+const VIEWS: View[] = ['explore', 'section', 'masks', 'fab', 'logic', 'layout']
 
 export function parseUrl(loc: { pathname: string; search: string }): Partial<UrlState> {
   const segs = loc.pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean)
@@ -48,6 +49,8 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
   const a = q.get('a')
   const b = q.get('b')
   out.inputs = { a: a === '1' ? 1 : 0, b: b === '1' ? 1 : 0 }
+  const layers = q.get('layers')
+  if (layers != null) out.layoutLayers = layers.split(',').map((l) => FROM_URL_LAYER[l.trim()]).filter(Boolean)
   const vg = q.get('vg')
   if (vg != null && !Number.isNaN(+vg)) out.vg = Math.min(1, Math.max(0, +vg))
   return out
@@ -74,6 +77,8 @@ export function buildUrl(s: AtlasState): string {
     if (s.inputs.b) q.set('b', '1')
   }
   if (s.layer === 'transistor' && s.vg > 0) q.set('vg', s.vg.toFixed(2))
+  if (s.view === 'layout' && s.layer === 'cell' && s.layoutLayers.length !== MASK_IDS.length)
+    q.set('layers', MASK_IDS.filter((m) => s.layoutLayers.includes(m)).map((m) => URL_LAYER[m]).join(','))
   if (s.focus) q.set('focus', s.focus)
   if (BOOT.forceWebGL) q.set('gl', 'webgl')
   if (BOOT.shots) q.set('shots', '1')
@@ -93,6 +98,8 @@ export function applyUrl(loc: { pathname: string; search: string }) {
   if (p.step != null) patch.step = p.step
   if (p.inputs) patch.inputs = p.inputs
   if (p.vg != null) patch.vg = p.vg
+  if (p.layoutLayers) patch.layoutLayers = p.layoutLayers
+  else if (p.page === 'atlas') patch.layoutLayers = [...MASK_IDS]
   st.set(patch)
   if (p.cut != null) {
     if (typeof p.cut === 'string') {

@@ -18,7 +18,7 @@ export const ContentSchema = z.object({
   title: z.string().min(2),
   /** one line for the hover label */
   short: z.string().min(2).max(90),
-  layer: z.enum(['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice']),
+  layer: z.enum(['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice', 'layout']),
   parent: z.string().nullable(),
   /** how this object is found in the generated mesh (cell-layer objects) */
   anchors: z.array(AnchorSchema).default([]),

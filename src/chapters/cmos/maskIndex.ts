@@ -1,5 +1,7 @@
 import type { Mask } from '../../sim/types'
-import { MASKS } from './masks'
+import { layoutState, masksOf } from './layout'
 
-/** masks by id, for scene effects that draw the reticle */
-export const CONTENT_MASKS: Record<string, Mask> = Object.fromEntries(MASKS.map((m) => [m.id, m]))
+/** masks of the current layout by id, for scene effects that draw the reticle */
+export function currentMasks(): Record<string, Mask> {
+  return masksOf(layoutState.get())
+}

@@ -47,6 +47,7 @@ export function SceneOutline() {
   const set = useAtlas((s) => s.set)
   const [open, setOpen] = useState(false)
   const items = CONTENT.filter((c) => c.layer === layer && (view === 'fab' || !FAB_ONLY.has(c.id)))
+  if (view === 'layout') return null
   if (!items.length) return null
   const def = LAYER_BY_ID[layer]
   return (

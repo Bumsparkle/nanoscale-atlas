@@ -11,6 +11,7 @@ const VIEWS: { id: View; label: string; key: string; hint: string }[] = [
   { id: 'masks', label: 'Masks', key: 'm', hint: 'Pull the cell upward to separate the six masks' },
   { id: 'fab', label: 'Fab', key: 'f', hint: 'Replay the 45 fabrication steps' },
   { id: 'logic', label: 'Logic', key: 'l', hint: 'Toggle the input A' },
+  { id: 'layout', label: 'Layout', key: 'g', hint: 'The six masks on the λ grid · hover any edge for its rule' },
 ]
 
 export function lockTo(id: CutTarget) {

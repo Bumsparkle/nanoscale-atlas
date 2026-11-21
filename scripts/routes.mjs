@@ -45,3 +45,50 @@ routes.push({ name: 'M7-junction-fwd', path: '/cmos/inverter?view=logic', wait: 
 routes.push({ name: 'M8-gowning', path: '/', wait: 1500, action: async (p) => { await p.evaluate(() => localStorage.clear()); await p.getByRole('button', { name: 'Enter the cleanroom' }).click(); await p.waitForTimeout(1500) } })
 routes.push({ name: 'M8-opening', path: '/', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'Enter the cleanroom' }).click(); await p.waitForTimeout(400); await p.keyboard.press('Escape'); await p.waitForTimeout(450) } })
 routes.push({ name: 'M8-entered', path: '/', wait: 2500, action: async (p) => { await p.getByRole('button', { name: 'Enter the cleanroom' }).click(); await p.waitForTimeout(400); await p.keyboard.press('Escape'); await p.waitForTimeout(3000) } })
+// Layout view (slides 46–48)
+routes.push({ name: 'LY-all', path: '/cmos/inverter?view=layout', wait: 3500 })
+for (const l of ['nwell', 'poly', 'ndiff', 'pdiff', 'contact', 'metal']) routes.push({ name: 'LY-only-' + l, path: '/cmos/inverter?view=layout&layers=' + l, wait: 3000 })
+routes.push({ name: 'LY-combo-poly-ndiff', path: '/cmos/inverter?view=layout&layers=poly,ndiff', wait: 3000 })
+routes.push({
+  name: 'LY-hover-gate', path: '/cmos/inverter?view=layout&layers=poly,ndiff', wait: 3000,
+  action: async (p) => {
+    // hover the left edge of the nMOS poly leg (x = 9λ, y = 2λ)
+    const pt = await p.evaluate(() => window.__layoutPoint(9, 2))
+    await p.mouse.move(pt[0], pt[1]); await p.waitForTimeout(400)
+  },
+})
+routes.push({
+  name: 'LY-hover-gap', path: '/cmos/inverter?view=layout&layers=metal', wait: 3000,
+  action: async (p) => { const pt = await p.evaluate(() => window.__layoutPoint(10, 2)); await p.mouse.move(pt[0], pt[1]); await p.waitForTimeout(400) },
+})
+routes.push({
+  name: 'LY-violation', path: '/cmos/inverter?view=layout', wait: 3000,
+  action: async (p) => {
+    await p.getByRole('button', { name: 'edit masks' }).click()
+    // drag the Y metal's left edge from 12λ to 10λ: metal spacing to GND drops to 2λ
+    const a = await p.evaluate(() => window.__layoutPoint(12, 1))
+    const b = await p.evaluate(() => window.__layoutPoint(10, 1))
+    await p.mouse.move(a[0], a[1]); await p.mouse.down(); await p.mouse.move(b[0], b[1], { steps: 6 }); await p.mouse.up()
+    await p.mouse.move(b[0], b[1] + 2); await p.waitForTimeout(400)
+  },
+})
+routes.push({ name: 'LY-transistor-panel', path: '/cmos/inverter?view=layout&focus=min-transistor', wait: 3000 })
+routes.push({
+  name: 'LY-transition-mid', path: '/cmos/inverter', wait: 3500,
+  action: async (p) => { await p.getByRole('button', { name: 'Layout', exact: true }).click(); await p.waitForTimeout(330) },
+})
+routes.push({
+  name: 'LY-edited-then-3d', path: '/cmos/inverter?view=layout', wait: 3000,
+  action: async (p) => {
+    await p.getByRole('button', { name: 'edit masks' }).click()
+    // widen the nMOS gate to 3λ (right edge 11 → 12) and keep the drain contact clear
+    const a = await p.evaluate(() => window.__layoutPoint(11, 6))
+    const b = await p.evaluate(() => window.__layoutPoint(12, 6))
+    await p.mouse.move(a[0], a[1]); await p.mouse.down(); await p.mouse.move(b[0], b[1], { steps: 4 }); await p.mouse.up()
+    await p.waitForTimeout(300)
+    await p.getByRole('button', { name: 'Section', exact: true }).click()
+    await p.waitForTimeout(400)
+    await p.keyboard.press('1')
+    await p.waitForTimeout(3200)
+  },
+})

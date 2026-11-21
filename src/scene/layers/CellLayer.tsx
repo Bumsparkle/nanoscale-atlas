@@ -2,6 +2,7 @@ import * as THREE from 'three/webgpu'
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { inverterProcess } from '../../chapters/cmos/recipe'
+import { layoutState } from '../../chapters/cmos/layout'
 import { MESH_OPTS } from '../../chapters/cmos/display'
 import { resolveComponents, CONTENT_BY_ID } from '../../chapters/cmos/content'
 import { mesh } from '../../sim/mesher'
@@ -16,6 +17,7 @@ import { cellRuntime as rt, overlay, TIERS, type ScreenLabel } from '../cellRunt
 import { Spring, SPRINGS, clamp } from '../spring'
 import { cutLabels, PLANE_RANGE, snapFor, type CutLabel } from '../section'
 import { CELL_CENTRE } from '../cellGeometry'
+import { layoutFrame, ORTHO_FOV } from '../../ui/layoutFrame'
 import { sound } from '../../ui/sound'
 import { FabEffects } from '../FabEffects'
 
@@ -57,7 +59,14 @@ let beginDrag: ((mode: DragMode, e: PointerEvent) => void) | null = null
  * fab (timeline), logic (switch-level).
  */
 export default function CellLayer() {
-  const process = useMemo(() => inverterProcess(), [])
+  // always the process for the current (possibly edited) layout
+  const process = useMemo(() => ({
+    get length() { return inverterProcess().length },
+    at: (s: number) => inverterProcess().at(s),
+    final: () => inverterProcess().final(),
+  }), [])
+  /** layout version the geometry was built from: frozen while editing in the Layout view */
+  const builtVer = useRef(layoutState.version())
   const model = useMemo(() => new CellModel(), [])
   const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera
   const size = useThree((s) => s.size)
@@ -84,7 +93,7 @@ export default function CellLayer() {
     const out: ScreenLabel[] = []
     if (view === 'section' && locked && rt.gap > 0.55) {
       const off = SNAP_TARGETS[locked as keyof typeof SNAP_TARGETS].offset
-      const k = `${axis}${off}`
+      const k = `${axis}${off}|${builtVer.current}`
       if (labelCache.current.key !== k) labelCache.current = { key: k, labels: cutLabels(process.final(), axis, off) }
       for (const l of labelCache.current.labels) {
         const s = project(l.p)
@@ -177,9 +186,12 @@ export default function CellLayer() {
     const gap = st.view === 'section' ? rt.gap : 0
     const explode = rt.explode
     const lit = st.view === 'logic' ? logicLit(st.inputs.a) : undefined
-    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? 'L' + st.inputs.a : ''}`
+    // edited masks rebuild the cell when you leave the Layout view, not on every drag
+    const ver = st.view === 'layout' ? builtVer.current : layoutState.version()
+    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? 'L' + st.inputs.a : ''}|v${ver}`
     if (key !== geoKey.current) {
       geoKey.current = key
+      builtVer.current = ver
       const res = mesh(process.at(s), MESH_OPTS)
       const view: CellView = { clip, gap, explode, lit }
       model.update(res, resolveComponents(res), view)
@@ -214,6 +226,17 @@ export default function CellLayer() {
         rig.dist.target = 64
       }
     }
+    /** straight down, near-orthographic, framed to match the SVG drawing */
+    const layoutCamera = () => {
+      const f = layoutFrame(size.width, size.height)
+      const Hworld = size.height / f.s
+      rig.locked = true
+      rig.fov.target = ORTHO_FOV
+      rig.target.setTarget([0, 0, -(size.height / 2 - f.cy) / f.s])
+      rig.polar.target = 0.0008
+      rig.azimuth.target = 0
+      rig.dist.target = Hworld / (2 * Math.tan((ORTHO_FOV * Math.PI) / 360)) / rig.aspectBoost
+    }
     const masksCamera = () => {
       rig.target.setTarget([0, 6, 0])
       rig.polar.target = 1.2
@@ -228,13 +251,19 @@ export default function CellLayer() {
       if (s.hover !== p.hover || s.focus !== p.focus) refreshSelection()
       if (s.focus !== p.focus) {
         if (s.focus && CONTENT_BY_ID[s.focus]?.layer === 'cell') focusOn(s.focus)
-        else if (!s.focus && p.focus) rig.goHome()
+        else if (!s.focus && p.focus && s.view !== 'layout') rig.goHome()
       }
       if (s.section.locked !== p.section.locked || (s.view === 'section' && p.view !== 'section' && s.section.locked)) {
         if (s.view === 'section' && s.section.locked) faceCut(s.section.locked)
         else if (!s.section.locked && p.section.locked && !rt.dragging) rig.goHome()
       }
       if (s.view !== p.view) {
+        if (s.view === 'layout') layoutCamera()
+        else if (p.view === 'layout') {
+          rig.locked = false
+          rig.fov.target = 32
+          rig.goHome()
+        }
         if (s.view === 'logic') {
           rig.target.setTarget([-3, -2, 0])
           rig.polar.target = 0.62
@@ -262,6 +291,7 @@ export default function CellLayer() {
     }, 60)
     if (st0.view === 'section' && st0.section.locked) setTimeout(() => faceCut(st0.section.locked!), 60)
     if (st0.view === 'masks') setTimeout(masksCamera, 60)
+    if (st0.view === 'layout') setTimeout(layoutCamera, 60)
     rig.setHome({ target: [0, -2, 0] })
     rig.goHome()
     rig.handlers = {
@@ -332,6 +362,8 @@ export default function CellLayer() {
 
     return () => {
       unsub()
+      if (useAtlas.getState().view !== 'layout') rig.locked = false
+      rig.fov.target = 32
       beginDrag = null
       rig.handlers = {}
       selection.set('hover', [])

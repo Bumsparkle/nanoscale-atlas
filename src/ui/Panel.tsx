@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CONTENT_BY_ID } from '../chapters/cmos/content'
+import type { Content } from '../chapters/content-schema'
 import { inverterProcess } from '../chapters/cmos/recipe'
 import { useAtlas } from '../state/store'
 import { transition } from '../scene/transition'
@@ -35,22 +36,33 @@ export function Panel() {
     return () => cancelAnimationFrame(raf)
   }, [focus, reduced])
 
+  const inLayout = useAtlas((s) => s.view === 'layout' && s.layer === 'cell')
   const c = shown ? CONTENT_BY_ID[shown] : null
-  if (!c) return null
-  const P = inverterProcess()
-  const stepIndex = c.fabStep ? P.indexOf(c.fabStep) : -1
-  const step = stepIndex >= 0 ? P.steps[stepIndex] : null
+  // in the Layout view the same content renders inline in the layout panel
+  if (!c || inLayout) return null
 
   return (
     <aside ref={el} className="panel" aria-label={c.title} aria-live="polite" data-testid="panel">
       <header className="panel-head">
-        <p className="eyebrow">{c.layer === 'cell' ? 'inverter cell' : c.layer}</p>
+        <p className="eyebrow">{c.layer === 'cell' ? 'inverter cell' : c.layer === 'layout' ? 'layout · design rules' : c.layer}</p>
         <h2>{c.title}</h2>
         <button className="panel-close" onClick={() => set({ focus: null })} aria-label="Close panel">
           <kbd>Esc</kbd>
         </button>
       </header>
-      <div className="panel-body">
+      <ContentBody c={c} />
+    </aside>
+  )
+}
+
+/** the four-part panel body (what / how made / what it does / slides), shared with the Layout view */
+export function ContentBody({ c }: { c: Content }) {
+  const set = useAtlas((s) => s.set)
+  const P = inverterProcess()
+  const stepIndex = c.fabStep ? P.indexOf(c.fabStep) : -1
+  const step = stepIndex >= 0 ? P.steps[stepIndex] : null
+  return (
+    <div className="panel-body">
         <section>
           <h3>What it is</h3>
           <p>{c.what}</p>
@@ -104,6 +116,5 @@ export function Panel() {
           )}
         </footer>
       </div>
-    </aside>
   )
 }

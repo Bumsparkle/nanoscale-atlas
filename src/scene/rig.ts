@@ -20,6 +20,8 @@ class CameraRig {
   polar = new Spring(1, SPRINGS.camera)
   azimuth = new Spring(0, SPRINGS.camera)
   dist = new LogSpring(50, SPRINGS.camera)
+  /** field of view (degrees): the Layout view dolly-zooms to near-orthographic */
+  fov = new LogSpring(32, SPRINGS.camera)
   layer: LayerDef = LAYER_BY_ID.cell
   handlers: DiveHandlers = {}
   reduced = false
@@ -114,6 +116,7 @@ class CameraRig {
     const [tx, ty, tz] = this.target.step(dt, this.reduced)
     const p = this.polar.step(dt, this.reduced)
     const a = this.azimuth.step(dt, this.reduced)
+    cam.fov = this.fov.step(dt, this.reduced)
     const d = this.dist.step(dt, this.reduced) * this.aspectBoost
     cam.position.set(tx + d * Math.sin(p) * Math.sin(a), ty + d * Math.cos(p), tz + d * Math.sin(p) * Math.cos(a))
     cam.lookAt(tx, ty, tz)

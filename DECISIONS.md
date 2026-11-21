@@ -12,7 +12,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 ## Slides vs. the brief vs. physics
 
-- **Slide 48, "Length / Width = 4λ/2λ".** Slide 46 defines f (= 2λ) as the source–drain distance, i.e. the channel *length*. So the minimum transistor has L = 2λ and W = 4λ. The slide's own numbers ("0.6 µm wide, 1.2 µm long") swap the words. The build shows **W/L = 4λ/2λ** and the layout-rules panel notes the slide's wording.
+- **Slide 48, "Length / Width = 4λ/2λ".** The slide's two sentences agree with each other: "Length / Width = 4λ/2λ" and "0.6 µm wide, 1.2 µm long" both give L = 1.2 µm, W = 0.6 µm. They conflict with slide 46, which defines f (= 2λ) as the source–drain distance, i.e. the channel *length*, and with every drawn layout (slides 27, 48), where the poly crossing the diffusion is 2λ wide and the diffusion under it is 4λ. The Atlas shows **L = 2λ = 0.6 µm, W = 4λ = 1.2 µm** (the usual W/L = 4/2 convention). The minimum-transistor panel quotes the slide and states the discrepancy: "the slide text says L = 1.2 µm and W = 0.6 µm; the drawn layout gives L = 0.6 µm and W = 1.2 µm". (Corrected 2026-11-21: an earlier version of this entry said the slide's numbers swapped its own words.)
 - **Diffusion widths.** Slide 28 draws the nMOS and pMOS diffusions the same height; slide 48 sizes the pMOS at 8/2. The mask set (source of truth) follows slides 27–28: both 4λ wide. The pMOS panel mentions the 8/2 sizing on slide 48 and why (hole mobility, slide 10).
 - **Slide 47 contact rules (read from the figure).** Contacts 2λ × 2λ, metal1 surrounds a diffusion contact by 1λ, metal1–poly contact shown with 2λ (read as the contact size), via spacing 3λ. Metal1/metal2/diffusion width and spacing 4λ; poly width 2λ, spacing 3λ; poly extends 2λ past diffusion; diffusion stays 6λ inside / outside the n-well edge. Encoded in `src/chapters/cmos/rules.ts`.
 - **n-well dopant.** Slide 35 says arsenic (diffusion or implant). Kept as on the slide. The panel adds, as beyond the lecture, that phosphorus is the more common n-well dopant in practice.
@@ -42,3 +42,20 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **The lecture PDF is never public.** `docs/topic2-cmos.pdf` (UCL material) had been committed in M1. It was removed from every commit with `git filter-branch --index-filter 'git rm --cached …'`, the old refs and reflog expired, and the repo garbage-collected, before any remote existed. `.gitignore` now excludes it and all `*.pdf`. Content still cites slide numbers only.
 - **Scratch output left history too.** `shots/` (≈ 62 MB of screenshot runs) and the Lighthouse JSON reports were also purged from history and ignored; curated screenshots stay in `docs/screenshots/`. `.git` went from 59 MB to 23 MB.
 - **Build warnings.** The chunk-size warning limit is 2000 kB because the three.js shell is one deliberately lazy chunk (~480 KB gz); the entry chunk is ~75 KB gz. The re-mesh performance test now takes the best of three timed runs after a warm-up, because a single run failed at 8.2 ms against its 8 ms budget while the machine was busy building.
+
+## Layout view (2026-11-21)
+
+- **Masks became layout state.** `chapters/cmos/layout.ts` holds the current layout (the slide 27–28 masks by default). The recipe is now `buildSteps(masks)`, and `processFor(layout)` memoises one `Process` per layout. The 3D cell, cross-sections, fab replay (reticle included) and rule checker all read the current layout. The cell rebuilds when you leave the Layout view rather than on every drag, so dragging stays at frame rate and the 3D model never shows a half-edited state.
+- **Rule checks are per edge.** Every check records the rectangle sides it constrains. That makes hover-an-edge, highlight-the-violation and "every edge has a rule" testable.
+  - Width checks run in both directions: every rectangle side is covered at least by its own layer's width rule.
+  - Touching rectangles of one layer count as one polygon, so no spacing is checked between them (e.g. the metal rail and its arm).
+- **Rule interpretations.**
+  - Contact size is an *exact* rule (2λ × 2λ, slide 47 draws a fixed cut), reported as "must be 2λ · off by …".
+  - The diffusion/poly surround of a contact uses whichever layer sits under it, so a poly contact would also pass.
+  - The n-well rule applies to every diffusion: those inside need 6λ to every well edge, and those outside within 18λ need a 6λ gap.
+- **Metal2 and vias** are in the slide 47 table but not in this cell. They have checker functions and tests, and the Layout panel says they are unused.
+- **Camera.** The Layout transition is a dolly-zoom: field of view 32° → 2.5° (log-space spring) while the camera rises to straight down, so the 3D cell flattens into a near-orthographic plan. The frame is computed to match the SVG drawing (`ui/layoutFrame.ts`), and the flat drawing fades in over the settled view. Leaving reverses it.
+  - A bug found on the way: `camera.filmOffset` (used to keep objects clear of the side panel) works in near-plane units, so at a 2.5° lens it threw the cell 8× off-screen. It is now converted with tan(fov/2).
+- **Drawing.** The flat masks are SVG, not WebGL: crisp at any zoom, exact hit-testing on edges, and accessible. Colours follow the slide 25 legend adapted to the dark surface: hatched poly and metal, contacts as black squares with white outlines, a translucent n-well, plus the slide 27 dashed section line.
+- **Tight spots** (rules met exactly at the minimum) get a small amber dot at the midpoint of the dimension. Exact rules (contact size) are excluded, since every contact is "tight" by definition.
+- **Deep links:** `?view=layout&layers=nwell,poly,ndiff,pdiff,contact,metal` (any subset; omitted = all six) and `&focus=min-transistor` (or `mask-poly`, `lambda`, …). Edited geometry is not put in the URL.
