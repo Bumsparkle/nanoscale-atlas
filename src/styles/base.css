@@ -33,7 +33,7 @@ button {
 }
 
 a {
-  color: var(--amber);
+  color: var(--amber-ink);
   text-decoration: none;
 }
 a:hover {
@@ -87,7 +87,7 @@ kbd {
 
 ::selection {
   background: var(--amber);
-  color: var(--bg-0);
+  color: var(--on-amber);
 }
 
 /* small caps label, used across instruments */
@@ -102,7 +102,7 @@ kbd {
 .slide-ref {
   font-family: var(--mono);
   font-size: var(--t-11);
-  color: var(--amber);
+  color: var(--amber-ink);
   border: 1px solid var(--amber-dim);
   border-radius: var(--radius);
   padding: 0 5px;
@@ -117,4 +117,14 @@ kbd {
   border-radius: var(--radius);
   padding: 0 5px;
   white-space: nowrap;
+}
+
+/* panel prose: a readable measure (~65 characters) */
+.panel p,
+.bench p,
+.stepcard p,
+.layout-panel p,
+.learn-panel p,
+.sheet p {
+  max-width: 65ch;
 }

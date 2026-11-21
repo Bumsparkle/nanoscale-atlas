@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { live, useAtlas } from '../state/store'
 import { LAYER_BY_ID } from '../chapters/cmos/layers'
 import './scalebar.css'
+import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
 
 /** Pick a 1-2-5 length (metres) that is at most `maxM`. */
 export function niceLength(maxM: number) {
@@ -42,7 +43,10 @@ export function ScaleBar() {
   const needle = useRef<HTMLDivElement>(null)
   const fov = useRef<HTMLSpanElement>(null)
   const layer = useAtlas((s) => s.layer)
+  const view = useAtlas((s) => s.view)
   const note = LAYER_BY_ID[layer].scaleNote
+  // drawing exaggerations belong with the scale they distort
+  const exaggerated = (layer === 'cell' || layer === 'transistor') && view !== 'layout'
 
   useEffect(() => {
     let raf = 0
@@ -85,10 +89,11 @@ export function ScaleBar() {
         ))}
         <div className="scalebar-needle" ref={needle} />
       </div>
-      <div className="scalebar-meta">
+      <p className="scalebar-meta">
         <span ref={fov} />
-        <span className="scalebar-note">{note}</span>
-      </div>
+        {note && <span>{note}</span>}
+        {exaggerated && <span>{EXAGGERATION_NOTE}</span>}
+      </p>
     </div>
   )
 }

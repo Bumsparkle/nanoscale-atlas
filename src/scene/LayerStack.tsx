@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
+import { SCENE } from './sceneTheme'
 import * as THREE from 'three/webgpu'
 import { useAtlas } from '../state/store'
 import { LAYER_BY_ID, type LayerId } from '../chapters/cmos/layers'
@@ -38,7 +39,7 @@ export function LayerStack() {
   const Comp = LAYER_COMPONENTS[layer]
 
   useEffect(() => {
-    scene.background = new THREE.Color(0x0b0c0d)
+    scene.background = new THREE.Color(SCENE.background)
     // warm every layer chunk in the background so no dive ever waits on the network
     const ids: LayerId[] = ['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice']
     ids.forEach((id) => prefetchLayers([id]).then(() => useAtlas.setState((s) => ({ boot: { ...s.boot, layers: s.boot.layers + 1 } }))))

@@ -60,8 +60,9 @@ export function LessonPanel() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement)?.closest?.('input, textarea, select')) return
-      if (e.key === ']' && (done || i < reach)) go(i + 1)
-      if (e.key === '[') go(i - 1)
+      // < and > (the [ ] keys belong to the animation speed)
+      if (e.key === '>' && (done || i < reach)) go(i + 1)
+      if (e.key === '<') go(i - 1)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

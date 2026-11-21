@@ -1,3 +1,4 @@
+import { SCENE } from './sceneTheme'
 import * as THREE from 'three/webgpu'
 import { Canvas, extend, useFrame, useThree, type ThreeToJSXElements } from '@react-three/fiber'
 import { Suspense, useEffect, useRef } from 'react'
@@ -168,7 +169,7 @@ export function Stage() {
         setRenderer(isGPU ? 'webgpu' : 'webgl2', isGPU ? 'WebGPU backend' : 'WebGL 2 fallback backend')
         useAtlas.setState((s) => ({ boot: { ...s.boot, gpu: true } }))
         renderer.toneMapping = THREE.AgXToneMapping
-        renderer.toneMappingExposure = 1.0
+        renderer.toneMappingExposure = SCENE.exposure
         renderer.shadowMap.enabled = false
         return renderer as never
       }}

@@ -4,6 +4,8 @@ import { cellRuntime as rt } from '../scene/cellRuntime'
 import { PLANE_RANGE } from '../scene/section'
 import { sound } from './sound'
 import './viewbar.css'
+import { SpeedBar } from './SpeedBar'
+import { MasteryToggle } from '../learn/ui/LearnHost'
 
 const VIEWS: { id: View; label: string; key: string; hint: string }[] = [
   { id: 'explore', label: 'Explore', key: 'e', hint: 'Click any part to inspect it' },
@@ -59,12 +61,12 @@ export function ViewBar() {
     return () => window.removeEventListener('keydown', onKey)
   }, [set])
 
-  if (layer !== 'cell') return null
-  const hint = VIEWS.find((v) => v.id === view)!.hint
+  const cell = layer === 'cell'
+  const hint = cell ? VIEWS.find((v) => v.id === view)!.hint : (LAYER_HINTS[layer] ?? '')
   return (
-    <div className={'viewbar' + (view === 'fab' ? ' viewbar-raised' : '')}>
-      {view === 'section' && (
-        <div className="viewbar-sub" role="group" aria-label="Snap the section plane">
+    <div className={'scenetools' + (cell && view === 'fab' ? ' scenetools-raised' : '')}>
+      {cell && view === 'section' && (
+        <div className="scenetools-sub" role="group" aria-label="Snap the section plane">
           {(Object.keys(SNAP_TARGETS) as CutTarget[]).map((id, i) => (
             <button key={id} className="chip" aria-pressed={locked === id} onClick={() => lockTo(id)} title={SNAP_TARGETS[id].label}>
               <kbd>{i + 1}</kbd> {id === 'slide27' ? 'slide 27 line' : id === 'ngate' ? 'nMOS gate' : 'pMOS gate'}
@@ -72,16 +74,35 @@ export function ViewBar() {
           ))}
         </div>
       )}
-      <nav className="viewbar-main" aria-label="Views of the cell">
-        {VIEWS.map((v) => (
-          <button key={v.id} aria-pressed={view === v.id} onClick={() => set({ view: v.id, focus: null })}>
-            {v.label}
-          </button>
-        ))}
-      </nav>
-      <p className="viewbar-hint" aria-live="polite">
-        {view === 'section' && locked ? SNAP_TARGETS[locked].label : hint}
-      </p>
+      <div className="scenetools-main">
+        {cell && (
+          <nav className="seg views" aria-label="Views of the cell">
+            {VIEWS.map((v) => (
+              <button key={v.id} aria-pressed={view === v.id} onClick={() => set({ view: v.id, focus: null })} title={`${v.label} (${v.key})`}>
+                {v.label}
+              </button>
+            ))}
+          </nav>
+        )}
+        <div className="scenetools-row">
+          <SpeedBar />
+          <MasteryToggle />
+        </div>
+      </div>
+      {hint && (
+        <p className="scenetools-hint" aria-live="polite">
+          {cell && view === 'section' && locked ? SNAP_TARGETS[locked].label : hint}
+        </p>
+      )}
     </div>
   )
+}
+
+/** one-line hints for the layers without a view bar (shown under the scene tools) */
+const LAYER_HINTS: Partial<Record<string, string>> = {
+  wafer: 'Scroll to zoom into the marked die · click anything to inspect',
+  die: 'Scroll toward the beacon to reach the inverter',
+  transistor: 'Drag VG · scroll in to the gate oxide · Esc goes up',
+  oxide: 'Scroll into the crystal for the silicon lattice · Esc goes up',
+  lattice: 'Switch structure and dopant · Esc goes up',
 }

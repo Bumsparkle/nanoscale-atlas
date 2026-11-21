@@ -1,4 +1,6 @@
 import * as THREE from 'three/webgpu'
+import { SCENE } from '../sceneTheme'
+import { frameDt } from '../../state/timescale'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { overlay } from '../cellRuntime'
@@ -120,8 +122,10 @@ function Beacon() {
     return m
   }, [pulse])
   const ref = useRef<THREE.Mesh>(null)
-  useFrame((st) => {
-    const t = (st.clock.elapsedTime * 0.6) % 1
+  const clock = useRef(0)
+  useFrame((_, dt) => {
+    clock.current += frameDt(dt)
+    const t = (clock.current * 0.6) % 1
     pulse.value = t
     const far = Math.min(1, Math.max(0, (rig.dist.value - 40) / 160))
     if (ref.current) {
@@ -206,7 +210,7 @@ export default function DieLayer() {
       </Inspectable>
       <mesh position={[0, -THICK - 2, 0]} rotation-x={-Math.PI / 2}>
         <planeGeometry args={[4000, 4000]} />
-        <meshStandardNodeMaterial color="#0b0c0d" roughness={1} />
+        <meshStandardNodeMaterial color={SCENE.floor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss />

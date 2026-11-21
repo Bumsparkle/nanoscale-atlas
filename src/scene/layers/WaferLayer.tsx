@@ -64,7 +64,7 @@ function waferMaterial() {
 export default function WaferLayer() {
   useLabEnvironment(true, 1.2)
   const wafer = useMemo(() => waferMaterial(), [])
-  const chuck = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#16181a', roughness: 0.55, metalness: 0.4 }), [])
+  const chuck = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#3a3f44', roughness: 0.55, metalness: 0.3 }), [])
   const target = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false })
     m.colorNode = color('#f0b43c')
@@ -84,7 +84,7 @@ export default function WaferLayer() {
   // UV mapping of the top face: cylinder caps map uv to the unit disc
   return (
     <>
-      <hemisphereLight args={['#ffd9a0', '#120c06', 0.5]} />
+      <hemisphereLight args={['#ffe2b4', '#4a3a26', 0.8]} />
       <directionalLight position={[120, 260, 160]} intensity={2.4} color="#ffc76b" />
       <directionalLight position={[-200, 120, -80]} intensity={0.6} color="#ffae4a" />
       <Inspectable node="wafer" fit={1.05}>
@@ -95,7 +95,7 @@ export default function WaferLayer() {
       <Inspectable node="wafer-notch" fit={6} minDist={70}>
         <mesh position={[0, 0.2, R - 0.6]} rotation-y={Math.PI / 4}>
           <boxGeometry args={[2.2, 0.9, 2.2]} />
-          <meshStandardNodeMaterial color="#0b0c0d" roughness={0.9} />
+          <meshStandardNodeMaterial color="#3a4044" roughness={0.9} />
         </mesh>
       </Inspectable>
       <Inspectable node="die-site" fit={8} minDist={70}>

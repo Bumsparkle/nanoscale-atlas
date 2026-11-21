@@ -1,13 +1,28 @@
+/* Scale: bottom left, always. Bar and value, the wafer-to-atom ladder, then
+   one caption per line (field of view, layer note, drawing exaggeration). */
 .scalebar {
   position: fixed;
   left: var(--s-5);
-  bottom: var(--s-5);
-  width: 260px;
+  bottom: var(--s-4);
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
   font-family: var(--mono);
-  font-size: var(--t-11);
+  font-size: var(--t-12);
   color: var(--ink-1);
   pointer-events: none;
   z-index: 5;
+}
+html[data-view='fab'] .scalebar {
+  bottom: calc(var(--s-4) + var(--timeline-h));
+}
+.scalebar::before {
+  content: '';
+  position: absolute;
+  inset: -16px -24px -16px -24px;
+  background: radial-gradient(ellipse at 30% 60%, color-mix(in srgb, var(--scene) 85%, transparent), transparent 72%);
+  z-index: -1;
 }
 .scalebar-row {
   display: flex;
@@ -43,16 +58,16 @@
 }
 .scalebar-ladder {
   position: relative;
-  margin-top: var(--s-3);
-  height: 22px;
-  border-top: 1px solid var(--line-strong);
+  height: 20px;
+  margin-top: var(--s-1);
+  border-top: var(--hair);
 }
 .scalebar-ladder span {
   position: absolute;
   top: 4px;
   transform: translateX(-50%);
-  color: var(--ink-3);
-  font-size: 10px;
+  color: var(--ink-2);
+  font-size: var(--t-12);
 }
 .scalebar-ladder span::before {
   content: '';
@@ -60,7 +75,7 @@
   left: 50%;
   top: -5px;
   height: 4px;
-  border-left: 1px solid var(--line-strong);
+  border-left: var(--hair);
 }
 .scalebar-needle {
   position: absolute;
@@ -71,55 +86,30 @@
   box-shadow: 0 0 6px var(--amber);
 }
 .scalebar-meta {
+  margin: 0;
   display: flex;
-  justify-content: space-between;
-  gap: var(--s-3);
+  flex-direction: column;
+  gap: 2px;
   color: var(--ink-2);
-  font-size: 10px;
+  line-height: 1.35;
 }
-.scalebar-note {
-  color: var(--ink-3);
-  text-align: right;
-}
-@media (max-width: 720px) {
-  .scalebar {
-    left: var(--s-4);
-    bottom: auto;
-    top: 62px;
-    width: 200px;
-  }
-  .scalebar-meta {
-    display: none;
-  }
+.scalebar-meta span:first-child {
+  color: var(--ink-1);
 }
 
-html[data-view='fab'] .scalebar {
-  bottom: 120px;
-}
-html[data-view='fab'] .exaggeration {
-  bottom: 200px;
-}
 @media (max-width: 720px) {
+  /* phones: a compact bar under the top bar, right-aligned; captions dropped */
+  .scalebar,
   html[data-view='fab'] .scalebar {
+    top: var(--top-h);
     bottom: auto;
-  }
-}
-
-@media (max-width: 720px) {
-  .scalebar {
-    top: 72px;
     left: auto;
     right: var(--s-4);
-    width: 150px;
+    width: auto;
+    align-items: flex-end;
   }
-  .scalebar-ladder {
+  .scalebar-ladder,
+  .scalebar-meta {
     display: none;
-  }
-}
-
-/* the top bar now carries the mode switch: keep the scale bar below it on phones */
-@media (max-width: 720px) {
-  .scalebar {
-    top: 142px;
   }
 }

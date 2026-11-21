@@ -2,27 +2,16 @@
   position: fixed;
   left: var(--s-5);
   right: var(--s-5);
-  bottom: var(--s-5);
+  bottom: var(--s-4);
+  height: calc(var(--timeline-h) - var(--s-2));
+  box-sizing: border-box;
   display: flex;
   align-items: flex-end;
   gap: var(--s-4);
   padding: var(--s-3) var(--s-4);
-  background: rgba(14, 16, 17, 0.92);
+  background: var(--glass);
   border: var(--hair);
   z-index: 12;
-}
-.tl-play {
-  width: 36px;
-  height: 36px;
-  flex: none;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--amber-dim);
-  border-radius: 50%;
-  fill: var(--amber);
-}
-.tl-play:hover {
-  background: var(--amber-glow);
 }
 .tl-body {
   flex: 1;
@@ -32,7 +21,7 @@
   position: relative;
   height: 16px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--t-12);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--ink-3);
@@ -40,13 +29,13 @@
 .tl-groups span {
   position: absolute;
   top: 0;
-  border-left: 1px solid var(--line-strong);
+  border-left: var(--hair);
   padding-left: 4px;
   white-space: nowrap;
   overflow: hidden;
 }
 .tl-groups span.on {
-  color: var(--amber);
+  color: var(--amber-ink);
   border-left-color: var(--amber-dim);
 }
 .tl-track {
@@ -113,7 +102,7 @@
   position: absolute;
   bottom: 30px;
   transform: translateX(-50%);
-  padding: 3px 8px;
+  padding: var(--pad-chip);
   white-space: nowrap;
   font-size: var(--t-12);
   background: var(--bg-0);
@@ -137,11 +126,11 @@
 
 .stepcard {
   position: fixed;
-  top: 64px;
+  top: var(--top-h);
   right: var(--s-4);
   width: min(360px, calc(100vw - 32px));
   padding: var(--s-4) var(--s-5);
-  background: rgba(14, 16, 17, 0.92);
+  background: var(--glass);
   border: var(--hair);
   border-top: 2px solid var(--amber);
   z-index: 12;
@@ -189,7 +178,7 @@
   .timeline {
     left: 0;
     right: 0;
-    bottom: 96px;
+    bottom: var(--tools-h);
     border-left: 0;
     border-right: 0;
   }
@@ -198,7 +187,7 @@
   }
   .stepcard {
     top: auto;
-    bottom: 170px;
+    bottom: calc(var(--reserve-b) + var(--s-2));
     left: 0;
     right: 0;
     width: 100%;

@@ -1,4 +1,5 @@
 import * as THREE from 'three/webgpu'
+import { frameDt } from '../../state/timescale'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
@@ -65,8 +66,9 @@ export default function LatticeLayer() {
     const { structure, dopant: dop } = st.lattice
     w.current.amorph.target = structure === 'amorphous' ? 1 : 0
     w.current.poly.target = structure === 'poly' ? 1 : 0
-    const wa = w.current.amorph.step(dt, st.reducedMotion)
-    const wp = w.current.poly.step(dt, st.reducedMotion)
+    const cdt = frameDt(dt)
+    const wa = w.current.amorph.step(cdt, st.reducedMotion)
+    const wp = w.current.poly.step(cdt, st.reducedMotion)
     for (let i = 0; i < b.p0.length; i++)
       for (let k = 0; k < 3; k++) cur[i][k] = b.p0[i][k] + (b.amorph[i][k] - b.p0[i][k]) * wa + (b.poly[i][k] - b.p0[i][k]) * wp
     for (let i = 0; i < cur.length; i++) {

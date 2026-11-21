@@ -3,6 +3,8 @@ import { pass, uniform, color, mix, vec4, float } from 'three/tsl'
 import { outline } from 'three/addons/tsl/display/OutlineNode.js'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo } from 'react'
+import { matUniforms } from './materials'
+import { endFrame, frameDt } from '../state/timescale'
 
 /**
  * Shared selection buffers. Layers push meshes here; the outline pass reads
@@ -49,8 +51,16 @@ export function Pipeline() {
   }, [gl, scene, camera])
 
   useEffect(() => () => pipeline.dispose(), [pipeline])
+  // read-only probe for the speed checks in scripts/speedcheck.mjs
+  useEffect(() => {
+    ;(window as unknown as { __contentTime: () => number }).__contentTime = () => matUniforms.time.value
+  }, [])
 
-  useFrame(() => {
+  // runs after every layer's frame: advance the shared content clock, then let
+  // the step-button beat run down
+  useFrame((_, dt) => {
+    matUniforms.time.value += frameDt(dt)
+    endFrame(dt)
     pipeline.render()
   }, 1)
   return null

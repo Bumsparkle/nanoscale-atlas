@@ -12,7 +12,7 @@
   transition: color 0.2s, border-color 0.2s;
 }
 .source-btn:hover {
-  color: var(--amber);
+  color: var(--amber-ink);
   border-color: var(--amber-dim);
 }
 .source-scrim {
@@ -22,7 +22,7 @@
   display: grid;
   place-items: center;
   padding: var(--s-5);
-  background: rgba(6, 7, 8, 0.72);
+  background: var(--glass);
   animation: source-fade 0.2s ease-out both;
 }
 @keyframes source-fade {

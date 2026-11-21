@@ -3,6 +3,7 @@ import { inverterProcess } from '../chapters/cmos/recipe'
 import { useAtlas } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
 import { sound } from './sound'
+import { fabGoTo } from './play'
 import './timeline.css'
 import { SourceButton } from './source/Source'
 
@@ -70,22 +71,7 @@ export function Timeline() {
   }, [playing, step, view, P, n])
   useEffect(() => () => sound.humStop(), [])
 
-  const goTo = (k: number) => {
-    k = Math.max(0, Math.min(n, k))
-    set({ playing: false, step: k })
-    rt.fab.target = k
-  }
-  const togglePlay = () => {
-    if (playing) {
-      set({ playing: false })
-      rt.fab.target = Math.round(rt.fab.value)
-      return
-    }
-    const from = Math.round(rt.fab.value) >= n ? 0 : Math.round(rt.fab.value)
-    if (from === 0) rt.fab.snap(0)
-    rt.play = { t: 0, from }
-    set({ playing: true, step: from })
-  }
+  const goTo = fabGoTo
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -94,7 +80,6 @@ export function Timeline() {
       if ((e.target as HTMLElement)?.closest?.('input, textarea')) return
       if (e.key === 'ArrowRight') (e.preventDefault(), goTo(Math.round(rt.fab.target) + 1))
       if (e.key === 'ArrowLeft') (e.preventDefault(), goTo(Math.round(rt.fab.target) - 1))
-      if (e.key === ' ') (e.preventDefault(), togglePlay())
       if (e.key === 'Home') goTo(0)
       if (e.key === 'End') goTo(n)
     }
@@ -141,13 +126,6 @@ export function Timeline() {
         {s.beyond && <p className="stepcard-beyond"><span className="beyond">beyond the lecture</span> {s.beyond}</p>}
       </aside>
       <div className="timeline" role="group" aria-label="Fabrication timeline">
-        <button className="tl-play" onClick={togglePlay} aria-label={playing ? 'Pause' : 'Play'}>
-          {playing ? (
-            <svg width="14" height="14" viewBox="0 0 14 14"><rect x="2" y="1" width="3.5" height="12" /><rect x="8.5" y="1" width="3.5" height="12" /></svg>
-          ) : (
-            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1 L13 7 L3 13 Z" /></svg>
-          )}
-        </button>
         <div className="tl-body">
           <div className="tl-groups" aria-hidden>
             {groups.map((g) => (

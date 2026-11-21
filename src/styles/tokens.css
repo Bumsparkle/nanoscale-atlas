@@ -7,30 +7,38 @@
 :root {
   color-scheme: dark;
 
-  /* surfaces: warm-neutral blacks, like anodised instrument fascia */
-  --bg-0: #0b0c0d;
-  --bg-1: #111314;
-  --bg-2: #171a1b;
-  --bg-3: #1f2324;
-  --line: #2b3032;
-  --line-strong: #3a4043;
+  /* surfaces: deep instrument grey (lifted from near-black). The scene sits
+     on --scene; panels float a step lighter so the three planes separate. */
+  --scene: #1d2124;
+  --bg-0: #1d2124;
+  --bg-1: #262a2e;
+  --bg-2: #2e3337;
+  --bg-3: #383e42;
+  --line: #3f464b;
+  --line-strong: #525a60;
+  /* translucent panel surfaces over the 3D scene */
+  --glass: rgba(38, 42, 46, 0.9);
+  --glass-strong: rgba(38, 42, 46, 0.96);
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
 
-  /* text */
-  --ink-0: #eceeec;
-  --ink-1: #b9bfbd;
-  --ink-2: #858c8a;
-  --ink-3: #5b6260;
+  /* text: AA on every surface (see src/styles/contrast.test.ts) */
+  --ink-0: #f2f4f3;
+  --ink-1: #d3d9d7;
+  --ink-2: #aeb6b3;
+  --ink-3: #919a97;
 
   /* the yellow-light bay: the one UI accent */
   --amber: #f0b43c;
-  --amber-dim: #8a6a2a;
+  --amber-ink: #f0b43c;
+  --amber-dim: #9c7a33;
   --amber-glow: rgba(240, 180, 60, 0.16);
+  --on-amber: #1d2124;
 
   /* signal colours for logic states (not decoration) */
   --hi: #f0b43c;      /* logic 1 / VDD: same amber */
-  --lo: #7f8b92;      /* logic 0 / GND: SEM grey */
+  --lo: #9aa6ad;      /* logic 0 / GND: SEM grey */
   --on: #9fd3a2;      /* conducting path */
-  --warn: #e4785a;
+  --warn: #f39477;
 
   /* slide 25 legend, used for every cut face and 2D section */
   --leg-sio2: #ececec;
@@ -51,7 +59,8 @@
   /* type */
   --sans: 'IBM Plex Sans', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --t-11: 11px;
+  /* nothing on screen is smaller than 12px */
+  --t-11: 12px;
   --t-12: 12px;
   --t-13: 13px;
   --t-15: 15px;
@@ -70,8 +79,11 @@
   --s-7: 48px;
   --s-8: 72px;
 
-  --radius: 3px;
+  --radius: 4px;
   --hair: 1px solid var(--line);
+  /* control padding: chips and buttons */
+  --pad-chip: var(--s-1) var(--s-2);
+  --pad-btn: 6px var(--s-3);
 
   /* motion: springs are in JS; these are for CSS-only state changes */
   --ease-out: cubic-bezier(0.2, 0.9, 0.25, 1.05);

@@ -6,13 +6,12 @@ import { navigate } from '../state/url'
 import { ScaleBar } from './ScaleBar'
 import { Panel } from './Panel'
 import { HoverLabel, SceneOutline } from './Inspect'
-import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
 import { ViewBar } from './ViewBar'
 import { Timeline } from './Timeline'
 import { LayerControls } from './LayerControls'
 import { LogicBench } from './LogicBench'
 import { LayoutView } from './LayoutView'
-import { LearnHost, MasteryToggle, ModeSwitch } from '../learn/ui/LearnHost'
+import { LearnHost, ModeSwitch } from '../learn/ui/LearnHost'
 import { SourceModal } from './source/Source'
 import '../ui/layercontrols.css'
 import { LabelOverlay, SectionLegend } from './Overlay'
@@ -57,7 +56,6 @@ export function TopBar() {
       <Breadcrumbs />
       <ModeSwitch />
       <div className="topbar-tools">
-        <MasteryToggle />
         <button className="tool" aria-pressed={reduced} onClick={() => set({ reducedMotion: !reduced })} title="Reduce motion: no camera flights, springs settle instantly">
           {reduced ? 'motion reduced' : 'motion full'}
         </button>
@@ -87,30 +85,6 @@ export function useGlobalKeys() {
   }, [])
 }
 
-const HINTS: Partial<Record<string, string>> = {
-  wafer: 'Scroll to zoom into the marked die · click anything to inspect',
-  die: 'Scroll toward the beacon to reach the inverter',
-  transistor: 'Drag VG · scroll in to the gate oxide · Esc goes up',
-  oxide: 'Scroll into the crystal for the silicon lattice · Esc goes up',
-  lattice: 'Switch structure and dopant · Esc goes up',
-}
-
-function LayerHint() {
-  const layer = useAtlas((s) => s.layer)
-  const focus = useAtlas((s) => s.focus)
-  const h = HINTS[layer]
-  const mode = useAtlas((s) => s.mode)
-  if (!h || focus || mode !== 'explore') return null
-  return <p className="layer-hint mono">{h}</p>
-}
-
-function ExaggerationNote() {
-  const layer = useAtlas((s) => s.layer)
-  const view = useAtlas((s) => s.view)
-  if ((layer !== 'cell' && layer !== 'transistor') || view === 'layout') return null
-  return <p className="exaggeration mono">{EXAGGERATION_NOTE}</p>
-}
-
 export function Hud() {
   useGlobalKeys()
   return (
@@ -118,8 +92,6 @@ export function Hud() {
       <TopBar />
       <SceneOutline />
       <ScaleBar />
-      <ExaggerationNote />
-      <LayerHint />
       <LabelOverlay />
       <SectionLegend />
       <ViewBar />

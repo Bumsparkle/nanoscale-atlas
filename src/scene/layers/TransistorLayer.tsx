@@ -1,7 +1,8 @@
 import * as THREE from 'three/webgpu'
+import { frameDt } from '../../state/timescale'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
-import { color, positionWorld, sin, time, uniform } from 'three/tsl'
+import { color, positionWorld, sin, uniform } from 'three/tsl'
 import { inverterProcess } from '../../chapters/cmos/recipe'
 import { MESH_OPTS } from '../../chapters/cmos/display'
 import { resolveComponents } from '../../chapters/cmos/content'
@@ -46,7 +47,7 @@ export default function TransistorLayer() {
   const tint = useMemo(() => uniform(new THREE.Color(d.carrier)), [d])
   const sheet = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })
-    const flow = sin(positionWorld.x.mul(device === 'nmos' ? -5 : 5).add(time.mul(9))).mul(0.25).add(0.75)
+    const flow = sin(positionWorld.x.mul(device === 'nmos' ? -5 : 5).add(matUniforms.time.mul(9))).mul(0.25).add(0.75)
     m.colorNode = tint
     m.opacityNode = on.mul(flow).mul(0.9)
     return m
@@ -69,10 +70,11 @@ export default function TransistorLayer() {
   useFrame((_, dt) => {
     const st = useAtlas.getState()
     strength.current.target = channelStrength(device, st.vg)
-    const s = strength.current.step(dt, st.reducedMotion)
+    const cdt = frameDt(dt)
+    const s = strength.current.step(cdt, st.reducedMotion)
     on.value = s
     matUniforms.xray.value = 0.55
-    clock.current += dt * (0.25 + 1.6 * s)
+    clock.current += cdt * (0.25 + 1.6 * s)
     const im = carriers.current
     if (im) {
       for (let i = 0; i < N; i++) {
@@ -101,7 +103,7 @@ export default function TransistorLayer() {
       lab('t-g', 'gate', `A · VG = ${(st.vg * 1.0).toFixed(2)} V`, [d.gate - 25, 2.2, 0], 'top'),
       lab('t-s', 'source', vdd ? 'VDD' : 'GND', [d.src - 25, -0.4, 0], 'bottom'),
       lab('t-d', 'drain', 'Y', [d.drn - 25, -0.4, 0], 'bottom'),
-      lab('t-b', 'body', vdd ? 'n-well → VDD' : 'p substrate → GND', [d.gate - 25 + (vdd ? -4.5 : 4.5), -4.5, 0], 'bottom'),
+      lab('t-b', 'body', vdd ? 'n-well → VDD' : 'p substrate → GND', [d.gate - 25, -4.5, 0], 'bottom'),
     ]
     overlay.version = 1000 + (device === 'pmos' ? 1 : 0)
   })

@@ -1,12 +1,12 @@
 .bench {
   position: fixed;
-  top: 64px;
+  top: var(--top-h);
   right: var(--s-4);
-  bottom: 92px;
+  bottom: var(--reserve-b);
   width: min(420px, calc(100vw - 32px));
   overflow-y: auto;
   padding: var(--s-3) var(--s-4) var(--s-4);
-  background: rgba(14, 16, 17, 0.94);
+  background: var(--glass-strong);
   border: var(--hair);
   border-top: 2px solid var(--amber);
   z-index: 12;
@@ -18,15 +18,15 @@
 .bench-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
+  gap: var(--s-1);
   border-bottom: var(--hair);
   padding-bottom: var(--s-2);
 }
 .bench-tabs button {
-  padding: 4px 9px;
+  padding: var(--pad-chip);
   font-size: var(--t-12);
   color: var(--ink-2);
-  border-radius: 2px;
+  border-radius: var(--radius);
 }
 .bench-tabs button[aria-selected='true'] {
   color: var(--ink-0);
@@ -43,8 +43,8 @@
 .bit {
   font-family: var(--mono);
   font-size: var(--t-15);
-  padding: 6px 14px;
-  border: 1px solid var(--line-strong);
+  padding: var(--pad-btn);
+  border: var(--hair);
   border-radius: var(--radius);
   color: var(--ink-1);
   min-width: 78px;
@@ -77,18 +77,18 @@
 }
 .sw-t {
   fill: var(--ink-2);
-  font-size: 10px;
+  font-size: var(--t-12);
 }
 .sw-s {
   fill: var(--ink-3);
-  font-size: 10px;
+  font-size: var(--t-12);
 }
 .sw-s.on {
   fill: var(--on);
 }
 .rail {
   fill: var(--ink-2);
-  font-size: 10px;
+  font-size: var(--t-12);
 }
 .rail.hi {
   fill: var(--hi);
@@ -108,8 +108,8 @@
 }
 .tt th,
 .tt td {
-  border: 1px solid var(--line-strong);
-  padding: 3px 10px;
+  border: var(--hair);
+  padding: var(--pad-chip);
   text-align: center;
 }
 .tt th {
@@ -117,7 +117,7 @@
   font-weight: 400;
 }
 .tt tr.cur td {
-  color: var(--bg-0);
+  color: var(--on-amber);
   background: var(--amber);
 }
 .bench-note {
@@ -136,7 +136,7 @@
   opacity: 0.13;
 }
 .ion {
-  font-size: 9px;
+  font-size: var(--t-12);
   text-anchor: middle;
 }
 .ion.pos {
@@ -150,9 +150,9 @@
     top: auto;
     left: 0;
     right: 0;
-    bottom: 64px;
+    bottom: var(--reserve-b);
     width: 100%;
-    max-height: 55vh;
+    max-height: 45vh;
   }
 }
 

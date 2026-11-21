@@ -14,6 +14,8 @@ import { StudioLights } from '../Lighting'
 import { selection } from '../Pipeline'
 import { rig } from '../rig'
 import { transition } from '../transition'
+import { advancePlayback } from '../playback'
+import { frameDt } from '../../state/timescale'
 import { cellRuntime as rt, overlay, TIERS, type ScreenLabel } from '../cellRuntime'
 import { Spring, SPRINGS, clamp } from '../spring'
 import { cutLabels, PLANE_RANGE, snapFor, type CutLabel } from '../section'
@@ -129,24 +131,18 @@ export default function CellLayer() {
   useFrame((_, dt) => {
     const st = useAtlas.getState()
     const reduced = st.reducedMotion
+    const cdt = frameDt(dt)
 
     // fab timeline: playback eases through each step and dwells briefly on it
     if (st.view === 'fab') {
       if (st.playing) {
-        const SEG = 1.75
-        const MOVE = 1.3
-        rt.play.t += dt
-        const seg = Math.floor(rt.play.t / SEG)
-        const local = rt.play.t - seg * SEG
-        const e = Math.min(1, local / MOVE)
-        const eased = e < 0.5 ? 2 * e * e : 1 - Math.pow(-2 * e + 2, 2) / 2
-        const target = rt.play.from + seg + eased
-        if (target >= process.length - 1) {
-          rt.fab.target = process.length - 1
-          st.set({ playing: false, step: process.length - 1 })
-        } else rt.fab.target = target
+        const { target, done } = advancePlayback(rt.play, cdt, process.length - 1)
+        rt.fab.target = target
+        if (done) st.set({ playing: false, step: process.length - 1 })
       }
-      rt.fab.step(dt, reduced)
+      // the fab spring is content too: it runs on the shared time scale (a paused
+      // scene still answers a click on the timeline, at the chosen speed)
+      rt.fab.step(cdt || (st.paused ? dt * st.speed : 0), reduced)
       const k = Math.round(rt.fab.value)
       if (Math.abs(rt.fab.value - k) < 0.02 && k !== st.step) st.set({ step: k })
     }

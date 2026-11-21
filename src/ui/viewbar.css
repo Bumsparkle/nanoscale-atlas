@@ -1,7 +1,10 @@
-.viewbar {
+/* Scene tools: the one place for controls that act on the scene, bottom centre.
+   Row 1: the cell's views. Row 2: animation speed, play/pause, step, mastery.
+   Row 3: a one-line hint. Section snap chips sit above when cutting. */
+.scenetools {
   position: fixed;
   left: 50%;
-  bottom: var(--s-5);
+  bottom: var(--s-4);
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
@@ -10,44 +13,157 @@
   z-index: 11;
   pointer-events: none;
 }
-.viewbar > * {
+.scenetools > * {
   pointer-events: auto;
 }
-.viewbar-raised {
-  bottom: 116px;
+.scenetools-raised {
+  bottom: calc(var(--s-4) + var(--timeline-h));
 }
-.viewbar-main {
+.scenetools-main {
   display: flex;
-  padding: 3px;
-  background: rgba(17, 19, 20, 0.86);
-  border: var(--hair);
-  border-radius: 4px;
-}
-.viewbar-main button {
-  padding: 6px 14px;
-  font-size: var(--t-13);
-  color: var(--ink-1);
-  border-radius: 2px;
-}
-.viewbar-main button:hover {
-  color: var(--ink-0);
-}
-.viewbar-main button[aria-pressed='true'] {
-  color: var(--bg-0);
-  background: var(--amber);
-}
-.viewbar-sub {
-  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: var(--s-2);
 }
+.scenetools-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.scenetools-row .tool {
+  height: 36px;
+}
+.scenetools-sub {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-2);
+}
+.scenetools-hint {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--t-12);
+  color: var(--ink-2);
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 0 8px var(--scene);
+}
+
+/* segmented control: views here, modes in the top bar */
+.seg {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--glass);
+  border: var(--hair);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.seg button {
+  padding: var(--pad-btn);
+  font-size: var(--t-13);
+  color: var(--ink-1);
+  border-radius: var(--radius);
+  transition: background 0.15s, color 0.15s;
+}
+.seg button:hover {
+  color: var(--ink-0);
+  background: var(--bg-3);
+}
+.seg button[aria-pressed='true'] {
+  color: var(--on-amber);
+  background: var(--amber);
+}
+
+/* speed */
+.speedbar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: 3px var(--s-3) 3px 3px;
+  background: var(--glass);
+  border: var(--hair);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.sb-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  fill: var(--ink-1);
+  stroke: var(--ink-1);
+  stroke-width: 1.4;
+  transition: background 0.15s;
+}
+.sb-btn:hover {
+  background: var(--bg-3);
+  fill: var(--ink-0);
+  stroke: var(--ink-0);
+}
+.sb-play[aria-pressed='true'] {
+  fill: var(--amber-ink);
+}
+.sb-speed {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-left: var(--s-2);
+}
+.sb-track {
+  position: relative;
+  width: 132px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+.sb-track input {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--amber);
+  position: relative;
+  z-index: 1;
+}
+.sb-ticks {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 5px;
+  pointer-events: none;
+}
+.sb-ticks i {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 5px;
+  background: var(--ink-3);
+}
+.sb-ticks i.on {
+  background: var(--amber);
+}
+.sb-val {
+  min-width: 3.2em;
+  font-size: var(--t-12);
+  color: var(--ink-0);
+  font-variant-numeric: tabular-nums;
+}
+
+/* chips (section snaps, sources, small toggles) */
 .chip {
   font-family: var(--mono);
-  font-size: var(--t-11);
+  font-size: var(--t-12);
   color: var(--ink-1);
   border: var(--hair);
-  padding: 3px 8px;
+  padding: var(--pad-chip);
   border-radius: var(--radius);
-  background: rgba(17, 19, 20, 0.86);
+  background: var(--glass);
+  transition: border-color 0.15s, color 0.15s;
+}
+.chip:hover {
+  color: var(--ink-0);
+  border-color: var(--line-strong);
 }
 .chip kbd {
   padding: 0 4px;
@@ -55,31 +171,37 @@
   border-width: 1px;
 }
 .chip[aria-pressed='true'] {
-  color: var(--amber);
+  color: var(--amber-ink);
   border-color: var(--amber-dim);
 }
-.viewbar-hint {
-  margin: 0;
-  font-family: var(--mono);
-  font-size: var(--t-11);
-  color: var(--ink-2);
-  pointer-events: none;
-}
+
 @media (max-width: 720px) {
-  .viewbar {
-    bottom: var(--s-3);
-    width: calc(100% - 24px);
+  .scenetools {
+    bottom: var(--s-2);
+    width: calc(100% - 2 * var(--s-3));
   }
-  .viewbar-main {
+  .scenetools-main,
+  .seg.views {
     width: 100%;
+  }
+  .seg.views {
     justify-content: space-between;
   }
-  .viewbar-main button {
-    padding: 8px 6px;
+  .seg.views button {
+    padding: var(--s-2) var(--s-1);
     font-size: var(--t-12);
+    flex: 1;
   }
-  .viewbar-sub {
-    flex-wrap: wrap;
-    justify-content: center;
+  .scenetools-hint {
+    display: none;
+  }
+  .sb-track {
+    width: 96px;
+  }
+  .scenetools-sub {
+    flex-wrap: nowrap;
+  }
+  .scenetools-sub .chip kbd {
+    display: none;
   }
 }

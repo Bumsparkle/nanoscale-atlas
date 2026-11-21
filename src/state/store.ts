@@ -60,6 +60,10 @@ export interface AtlasState {
   progressVersion: number
   sound: boolean
   reducedMotion: boolean
+  /** global content-animation speed, 0.25–2× (see state/timescale.ts) */
+  speed: number
+  /** all content animation frozen (step buttons advance it) */
+  paused: boolean
   explode: number
   renderer: { backend: 'webgpu' | 'webgl2' | 'pending' | 'failed'; detail?: string }
   /** real loading milestones, used by the gowning sequence */
@@ -73,6 +77,15 @@ export const SNAP_TARGETS: Record<CutTarget, { axis: CutAxis; offset: number; la
   slide27: { axis: 'y', offset: 2, label: 'Slide 27 line: both transistors and both taps', slide: 27 },
   ngate: { axis: 'x', offset: 10, label: 'Along the nMOS gate', slide: 25 },
   pgate: { axis: 'x', offset: 34, label: 'Along the pMOS gate', slide: 25 },
+}
+
+function initialSpeed() {
+  try {
+    const v = Number(localStorage.getItem('atlas.speed.v1'))
+    return v >= 0.25 && v <= 2 ? v : 1
+  } catch {
+    return 1
+  }
 }
 
 const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -105,6 +118,9 @@ export const useAtlas = create<AtlasState>((set) => ({
   progressVersion: 0,
   sound: false,
   reducedMotion: !!prefersReduced,
+  speed: initialSpeed(),
+  // reduced motion: start paused, with step buttons
+  paused: !!prefersReduced,
   explode: 0,
   renderer: { backend: 'pending' },
   boot: { shell: false, gpu: false, frame: false, layers: 0 },

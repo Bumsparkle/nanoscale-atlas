@@ -1,7 +1,8 @@
+import { SCENE } from './sceneTheme'
 import * as THREE from 'three/webgpu'
 import {
   attribute, clamp, color, cos, dot, float, mix, mx_worley_noise_float, normalWorld, positionWorld,
-  cameraPosition, sqrt, step, fract, vec3, uniform, smoothstep, abs, max, sin, time,
+  cameraPosition, sqrt, step, fract, vec3, uniform, smoothstep, abs, max, sin,
 } from 'three/tsl'
 
 /**
@@ -28,10 +29,12 @@ export const LEGEND: Record<string, string> = {
 }
 
 const PHYS: Record<string, string> = {
-  'si:p': '#4b555e',
-  'si:nwell': '#3f5a6c',
-  'si:n+': '#5b88ad',
-  'si:p+': '#a07a55',
+  // lifted albedo; the pairs that must never be confused differ in hue, not just value:
+  // p-substrate cool grey vs n-well steel blue, n+ sky blue vs p+ copper
+  'si:p': '#6f7b86',
+  'si:nwell': '#5f93b8',
+  'si:n+': '#8cc6ec',
+  'si:p+': '#d99a5c',
 }
 
 /** shared uniforms the scene animates */
@@ -58,16 +61,16 @@ function withCap(m: THREE.MeshStandardNodeMaterial, key: string, phys: N, hatche
   const leg = color(LEGEND[key] ?? '#cccccc')
   const edge = key.startsWith('al') ? color('#3a46d8') : color('#5a5a5a')
   const legendCol: N = hatched ? mix(leg as N, edge as N, hatch(2.6, 0.16).mul(0.75)) : leg
-  m.colorNode = mix(phys as N, legendCol.mul(0.62), cap())
+  m.colorNode = mix(phys as N, legendCol.mul(0.68), cap())
   m.emissiveNode = legendCol.mul(cap()).mul(0.2)
   return m
 }
 
 function silicon(key: string) {
-  const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.42, metalness: 0.32 })
+  const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.48, metalness: 0.08 })
   withCap(m, key, color(PHYS[key]))
-  m.roughnessNode = mix(float(0.42), float(1), cap())
-  m.metalnessNode = mix(float(0.32), float(0), cap())
+  m.roughnessNode = mix(float(0.48), float(1), cap())
+  m.metalnessNode = mix(float(0.08), float(0), cap())
   return m
 }
 
@@ -96,7 +99,8 @@ function oxide(key: string) {
   // desaturate: interference colours are real but should read as a sheen, not paint
   const lum = dot(film, vec3(0.3, 0.55, 0.15))
   const sheen = mix(film, vec3(lum, lum, lum), 0.35)
-  const phys = mix(vec3(0.03, 0.035, 0.04), sheen, 0.55)
+  // pale glass, so oxide never reads as a dark hole next to the brown poly
+  const phys = mix(vec3(0.2, 0.22, 0.24), sheen, 0.55)
   withCap(m, key, phys as never, true)
   const base = float(key === 'gox' ? 0.75 : 0.16).add(fres.mul(0.45))
   const faded = key === 'fox' ? base.mul(float(1).sub(max(matUniforms.xray, matUniforms.foxFade).mul(0.8))) : base
@@ -107,16 +111,16 @@ function oxide(key: string) {
 }
 
 function poly() {
-  const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.55, metalness: 0.25 })
+  const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.55, metalness: 0.1 })
   // grains: polysilicon is many small crystals (slides 3, 37)
   // F2 − F1 of a Worley field: cells are grains, small values are grain boundaries
   const f1 = mx_worley_noise_float(positionWorld.mul(1.7), 1, 0)
   const f2 = mx_worley_noise_float(positionWorld.mul(1.7), 1, 1)
   const edge = f2.sub(f1)
   const facet = mx_worley_noise_float(positionWorld.mul(1.7).add(31.7))
-  const base = mix(color('#7a6d61'), color('#a29483'), facet)
+  const base = mix(color('#957f69'), color('#c0a98e'), facet)
   const boundary = smoothstep(0.12, 0.02, edge)
-  withCap(m, 'poly', mix(base, color('#4a423b'), boundary.mul(0.55)) as never)
+  withCap(m, 'poly', mix(base, color('#5e5246'), boundary.mul(0.5)) as never)
   m.roughnessNode = mix(mix(float(0.35), float(0.7), facet), float(1), cap())
   return m
 }
@@ -172,7 +176,7 @@ function litOf(base: THREE.Material, kind: Lit): THREE.Material {
   const m = base.clone() as THREE.MeshStandardNodeMaterial
   const b = base as THREE.MeshStandardNodeMaterial
   for (const k of ['colorNode', 'roughnessNode', 'metalnessNode', 'opacityNode'] as const) (m as N)[k] = (b as N)[k]
-  const pulse = sin(time.mul(3.2)).mul(0.25).add(0.75)
+  const pulse = sin(matUniforms.time.mul(3.2)).mul(0.25).add(0.75)
   const tint = MASTERY_TINT[kind]
   const glow: N = tint ? color(tint[0]).mul(tint[1]) : color(kind === 'on' ? '#9fd3a2' : '#f0b43c').mul(pulse).mul(kind === 'on' ? 0.55 : 0.45)
   m.emissiveNode = ((b as N).emissiveNode ?? vec3(0)).add(glow.mul(float(1).sub(cap())))
@@ -232,7 +236,7 @@ export function gridMaterial() {
   }
   const fade = smoothstep(90, 25, p.length())
   const a = max(line(1, 0.025).mul(0.035), line(10, 0.05).mul(0.09)).mul(fade)
-  m.colorNode = color('#8a9399')
-  m.opacityNode = a
+  m.colorNode = color(SCENE.grid)
+  m.opacityNode = a.mul(SCENE.gridAlpha)
   return m
 }

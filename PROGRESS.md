@@ -486,3 +486,42 @@ The old lesson had 1,662 words of narration and 51 questions; the new one has 6,
   - a review and the section summary;
   - coverage, exam and mastery.
 - The Source-modal screenshot is kept out of the repo because it shows a lecture slide.
+
+### Visibility, UI clean-up, animation speed — done (2026-11-21)
+
+**Theme.** The lifted dark theme ships, after a full trial of a light "cleanroom" theme at every layer; the comparison sheets are in `docs/screenshots/theme/` and the reasoning in DECISIONS.md. The changes:
+- the background is now a deep grey (#1d2124), with panels a step lighter;
+- every layer has key, fill and rim lights, a hemisphere light and a brighter lab environment, with exposure at 1.18;
+- material albedo is raised;
+- the confusable pairs differ in hue: n-well blue vs p-substrate grey, n+ sky vs p+ copper, pale oxide vs brown poly.
+
+**Contrast.** Body text is AA (4.5:1 or better) on every surface. Labels, readouts and signal colours are 3:1 or better. Nothing is below 12px. These are enforced by `src/styles/contrast.test.ts`.
+
+**UI clean-up.**
+- One place per kind of control: modes at the top, scene tools at the bottom centre (views, speed, mastery, hint), info on the right, scale at the bottom left.
+- One spacing scale, border and radius; most dividers replaced by spacing; panel prose capped at 65ch; quiet hover and selected states.
+- The scale captions no longer crowd the bar.
+- The phone top bar is a two-row grid.
+- The transistor's "body" label no longer collides with "drain".
+
+**Overlaps.** `scripts/themeshots.mjs` finds none at 1440×900, 1280×800 or 375×812 across 16 screens (every layer, the section, masks, fab, logic, layout, a lesson step and check, Revise and Coverage). Before, it found 14.
+
+**Animation speed.**
+- A speed slider from 0.25× to 2×, snapping at ¼, ½, 1 and 2×, with play/pause and step buttons in the scene tools.
+- Keys: `[` and `]` step the speed, and space plays or pauses. The lesson's previous/next keys moved to `<` and `>`.
+- The speed is remembered across reloads.
+- Under reduced motion the scene starts paused, with step buttons.
+- It is one shared time scale in the store, read by every content animation.
+
+**Verification.**
+- 305 tests pass, including `timescale.test.ts`: a fab step at 0.5× takes 2.0× as long, and 2×, ¼×, paused and stepping are covered.
+- The build is clean.
+- `scripts/speedcheck.mjs` passed all seven checks in the browser:
+  - device-physics clock: 1.00 at 1×, 0.50 at 0.5×, 2.00 at 2×, 0 when paused;
+  - fab step: 1.45 s at 1×, 3.05 s at 0.5×;
+  - logic switch, fraction swung after 0.35 s: 0.86 at 1×, 0.07 at 0.25×;
+  - lattice morph follows the speed;
+  - the keys work;
+  - the speed is remembered;
+  - reduced motion starts paused.
+- Before and after screenshots were reviewed at every size; the sheets are in `docs/screenshots/theme/`.

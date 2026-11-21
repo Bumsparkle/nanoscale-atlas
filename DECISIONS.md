@@ -139,3 +139,59 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **Peek.** During a check the step text folds into a bar. Opening it marks the current question as peeked, and a right answer then records as `'peeked'`: the card keeps its box and is due again at once, so it never counts towards mastery.
 - **Gating.** A step is done once all its checks are answered or solved. The review is done when finished. Next and the section menu follow `POSITIONS` (steps, then review, per section). Deep links (`?mode=lesson&at=<step id>` or `at=review:<section>`) open any position; the old `chunk` parameter is gone. Lesson progress moved to `atlas.lesson.v2`, since old chunk ids mean nothing in the new structure. Leitner cards are kept.
 - **The slide 48 wording trap** is taught explicitly in the "minimum transistor" step, as the Layout view already shows it.
+
+## Visibility, UI clean-up and animation speed (2026-11-21)
+
+- **One theme ships: the lifted dark.** A light "cleanroom" theme (pale grey and white, like the bay itself) was built as a full trial: page tokens, scene backdrop, environment and lights. Both themes were screenshotted at every layer, the section view, a lesson step and check, and Revise (`docs/screenshots/theme/trial-dark-vs-light-*.jpg`). The dark theme won, for three reasons:
+  - **Backdrop contrast.** The slide 25 legend paints cut faces in near-whites (p substrate #fafafa, n-well #e3e3e3, SiO₂ #ececec). On a pale backdrop the section, the transistor and the cell's sides merge into the background. On deep grey they stand out.
+  - **Signals.** Amber lithography light, the --on conducting-path glow, implant ions and the logic-1 node are emissive. They read as light on grey and as stains on white.
+  - **Identity.** The dark instrument-panel look and the amber accent survive intact.
+  
+  The light tokens, the `?theme=` switch and the scene branch were removed, so nothing toggles.
+- **Lifted, not just brightened.**
+  - **Background:** the scene sits on #1d2124 instead of #0b0c0d. Panels float a step lighter (#262a2e, translucent `--glass`, a soft shadow), so the background, panels and model are three distinct planes.
+  - **Lights:** every layer uses one key / fill / rim set. The key is warm, high and front-right; the fill is cool from the left at half the key; the rim comes from behind to separate edges; a weak bounce from below means no face goes black. A stronger hemisphere light and a brighter lab environment (strip ceiling, lit walls and floor) complete it. Exposure is 1.18 (AgX).
+  - **Albedo:** silicon albedo is raised and metalness cut (0.32 → 0.08). The pairs that must never be confused now differ in hue, not only value: p-substrate cool grey vs n-well steel blue, n+ sky blue vs p+ copper. Oxide moved from a dark glass to a pale one, so it no longer reads as a hole next to the brown poly. Legend cut faces are lit at 0.68 of the legend colour, up from 0.62; at 0.8 the transistor's faces washed out to white.
+- **Contrast is tested, not eyeballed.** `src/styles/contrast.test.ts` checks two things:
+  - **Body text and accents:** `--ink-0`, `--ink-1`, `--ink-2`, `--amber-ink` and `--warn` must be AA (≥ 4.5:1) on the scene, on every panel surface and on the translucent glass as rendered over the scene. `--warn` was lightened to pass on `--bg-3`.
+  - **Labels and signals:** `--ink-3`, `--on`, `--lo` and `--hi` must be ≥ 3:1.
+  
+  It also fails if any stylesheet sets a font size under 12px. `--t-11` is now 12px, and the 9–11px literals became `--t-12`.
+- **Screen regions.** There is one place for each kind of control:
+  - **Top:** the brand, zoom path, mode switch and the two preferences (motion, sound).
+  - **Bottom centre:** the scene tools (views, speed, mastery, one hint line).
+  - **Right:** info panels.
+  - **Bottom left:** the scale, with its captions (field of view, layer note, drawing exaggeration) on separate lines instead of crowding the bar.
+  
+  Changes this made:
+  - The layer hint and exaggeration note no longer float on their own.
+  - The fab timeline lost its own play button (the speed bar's play drives it).
+  - Mastery moved from the top bar to the scene tools.
+  - Panels size themselves from `--top-h`, `--tools-h` and `--timeline-h` instead of a dozen hand-tuned offsets.
+  
+  `scripts/themeshots.mjs` reports any overlap between HUD regions at 1440×900, 1280×800 and 375×812; it reports none. The full-screen coverage and exam sheets cover the left panel on phones by design and are excluded.
+- **One spacing scale, one border, one radius.**
+  - **Spacing:** the 4px-based `--s-*` scale, plus two control paddings (`--pad-chip`, `--pad-btn`).
+  - **Border:** `--hair` for every neutral border. The 2px amber top rule on panels stays as the accent.
+  - **Radius:** a single `--radius` of 4px.
+  - **Dividers:** dashed dividers inside panels, review boxes and solutions are gone, and sections are grouped by spacing.
+  - **Line length:** panel prose is capped at 65ch.
+  - **Hover and selected states:** quiet `--bg-3` fills, with amber only for the selected state.
+- **Animation speed is one shared time scale.** The store holds `speed` (0.25–2×, snapping at ¼, ½, 1 and 2) and `paused`. Every content animation advances by `frameDt(dt)` from `state/timescale.ts`, never by raw dt:
+  - fab playback (`scene/playback.ts`) and the fab spring;
+  - implant, deposit and exposure effects;
+  - the content clock behind the conducting-path pulse, carrier flow and die beacon (`matUniforms.time`, which replaced TSL's wall-clock `time`);
+  - the transistor inversion spring;
+  - the lattice morph.
+  
+  DOM animations use `useContentTween`: the logic switch blades and the output node charging, and the junction's response to bias and doping, which were instant before. Lesson demonstrations run through the same fab spring and scene. UI micro-interactions and camera moves triggered by clicks deliberately ignore the speed. While paused, a click on the timeline still moves at the chosen speed; only autoplay and ambient motion freeze.
+- **Speed controls and keys.**
+  - **Play / pause:** one button. In the Fab view it runs the process timeline; elsewhere it freezes or unfreezes the ambient content animation.
+  - **Step buttons:** next and previous fab step in the Fab view; elsewhere a ½ s beat of content time.
+  - **`[` and `]`:** step the speed. The lesson's previous/next keys moved from `[`/`]` to `<`/`>` to make room.
+  - **Space:** plays or pauses when the scene, not a control, has focus.
+  - **Remembered:** the speed is kept in localStorage (`atlas.speed.v1`).
+  - **Reduced motion:** under `prefers-reduced-motion` the scene starts paused, with step buttons.
+- **How the speed control was tested.**
+  - **Unit test:** `src/state/timescale.test.ts` runs a fab step at 0.5× and checks it takes 2× as long (within 2.5 %), plus 2×, ¼×, paused and stepping.
+  - **Browser check:** `scripts/speedcheck.mjs` covers every animation type: the physics clock, a fab step, the logic switch, the lattice morph, the keys, persistence and reduced motion.
