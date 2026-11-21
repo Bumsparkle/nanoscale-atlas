@@ -41,7 +41,7 @@ export function DebugPanel() {
       <ul>
         {LAYERS.map((l) => (
           <li key={l.id}>
-            <button className="tool" onClick={() => navigate('/cmos/' + l.path.join('/'))}>
+            <button className="tool" onClick={() => navigate('/' + l.path.join('/'))}>
               {l.id}
             </button>
           </li>

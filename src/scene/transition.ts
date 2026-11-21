@@ -1,4 +1,4 @@
-import { LAYERS, LAYER_BY_ID, layerIndex, type Device, type LayerId } from '../chapters/cmos/layers'
+import { defaultTab, LAYERS, LAYER_BY_ID, layerIndex, type Device, type LayerId } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
 import { post } from './Pipeline'
 import { rig } from './rig'
@@ -58,8 +58,9 @@ export const transition = {
    * Fly to another layer. `via` is the point (in current-layer units) the
    * camera dives into; defaults to the current orbit target.
    */
-  async go(to: LayerId, opts: { via?: [number, number, number]; device?: Device; focus?: string | null } = {}) {
+  async go(to: LayerId, opts: { via?: [number, number, number]; device?: Device; focus?: string | null; tab?: string } = {}) {
     const st = useAtlas.getState()
+    if (to === st.layer && opts.tab && opts.tab !== st.tab) useAtlas.getState().set({ tab: opts.tab, focus: null })
     if (busy || (to === st.layer && (!opts.device || opts.device === st.device))) return
     busy = true
     const from = LAYER_BY_ID[st.layer]
@@ -97,6 +98,7 @@ export const transition = {
       focus: opts.focus ?? null,
       hover: null,
       view: 'explore',
+      tab: opts.tab ?? defaultTab(to),
       playing: false,
     })
     await wait(60)

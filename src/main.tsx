@@ -21,3 +21,10 @@ import { useAtlas, live } from './state/store'
 ;(window as unknown as { __live: unknown }).__live = live
 ;(window as unknown as { __atlas_set: unknown }).__atlas_set = (p: object) => useAtlas.getState().set(p)
 ;(window as unknown as { __atlas: unknown }).__atlas = new Proxy({}, { get: (_, k) => (useAtlas.getState() as never)[k] })
+// screenshot scripts: merge a patch, with shorthands for the process lab
+;(window as unknown as { __atlasSet: unknown }).__atlasSet = (p: Record<string, unknown>) => {
+  const st = useAtlas.getState()
+  const { procOp, tone, ...rest } = p
+  if (procOp || tone) st.set({ proc: { ...st.proc, ...(procOp ? { op: procOp as never } : {}), ...(tone ? { tone: tone as never } : {}) } })
+  if (Object.keys(rest).length) st.set(rest as never)
+}

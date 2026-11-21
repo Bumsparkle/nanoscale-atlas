@@ -4,6 +4,7 @@ import { cellRuntime as rt } from '../scene/cellRuntime'
 import { PLANE_RANGE } from '../scene/section'
 import './viewbar.css'
 import { SpeedBar } from './SpeedBar'
+import { LAYER_BY_ID } from '../chapters/cmos/layers'
 
 const VIEWS: { id: View; label: string; key: string; hint: string }[] = [
   { id: 'explore', label: 'Explore', key: 'e', hint: 'Click any part to inspect it' },
@@ -59,7 +60,9 @@ export function ViewBar() {
   }, [set])
 
   const cell = layer === 'cell'
-  const hint = cell ? VIEWS.find((v) => v.id === view)!.hint : (LAYER_HINTS[layer] ?? '')
+  const tab = useAtlas((s) => s.tab)
+  const tabs = LAYER_BY_ID[layer].tabs
+  const hint = cell ? VIEWS.find((v) => v.id === view)!.hint : (tabs?.find((t) => t.id === tab)?.hint ?? LAYER_HINTS[layer] ?? '')
   return (
     <div className={'scenetools' + (cell && view === 'fab' ? ' scenetools-raised' : '')}>
       {cell && view === 'section' && (
@@ -82,6 +85,16 @@ export function ViewBar() {
           </nav>
         )}
         {cell && view === 'fab' && <SpeedBar />}
+        {tabs && (
+          <nav className="seg views" aria-label={`Views of the ${LAYER_BY_ID[layer].title}`}>
+            {tabs.map((t) => (
+              <button key={t.id} aria-pressed={tab === t.id} onClick={() => set({ tab: t.id, focus: null })} title={t.hint}>
+                {t.label}
+                {t.chapter !== LAYER_BY_ID[layer].chapter && <span className="tab-ch mono">ch{t.chapter.slice(2)}</span>}
+              </button>
+            ))}
+          </nav>
+        )}
       </div>
       {hint && (
         <p className="scenetools-hint" aria-live="polite">
@@ -94,6 +107,10 @@ export function ViewBar() {
 
 /** one-line hints for the layers without a view bar (shown under the scene tools) */
 const LAYER_HINTS: Partial<Record<string, string>> = {
+  sand: 'Click the sand or the silicon · scroll in to refine it',
+  polysilicon: 'The Siemens reactor and the crucible charge · scroll in to grow a crystal',
+  ingot: 'Seed end to tail: the colour is the doping · scroll in to slice it',
+  wafers: 'The ID saw slices the ingot · scroll in to enter the fab',
   wafer: 'Scroll to zoom into the marked die · click anything to inspect',
   die: 'Scroll toward the beacon to reach the inverter',
   transistor: 'Drag VG · scroll in to the gate oxide · Esc goes up',

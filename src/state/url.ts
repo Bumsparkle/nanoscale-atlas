@@ -1,5 +1,6 @@
-import { LAYERS, type LayerId } from '../chapters/cmos/layers'
+import { defaultTab, LAYER_BY_ID, LAYERS, type LayerId } from '../chapters/cmos/layers'
 import { FROM_URL_LAYER, MASK_IDS, URL_LAYER } from '../chapters/cmos/layout'
+import { K0_TABLE } from '../chapters/growth/physics'
 import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } from './store'
 
 /**
@@ -9,7 +10,10 @@ import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } fr
  * else replaces. Free camera orbiting never touches the URL.
  */
 
-type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers' | 'mode' | 'lessonAt'> & {
+type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers' | 'mode' | 'lessonAt' | 'tab'> & {
+  hkl: [number, number, number]
+  k0: number
+  frac: number
   rv: 'drill' | 'coverage' | 'exam'
   cut: CutTarget | number | null
   cutAxis: 'x' | 'y'
@@ -24,17 +28,26 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
 
   if (segs[0] === 'style') return { page: 'style' }
   if (segs[0] === 'debug') return { page: 'debug' }
-  if (segs.length === 0) return { page: 'home', layer: 'wafer' }
-  if (segs[0] !== 'cmos') return { page: 'home' }
+  // the door opens onto the cleanroom, which renders behind it
+  if (segs.length === 0) return { page: 'home', layer: 'cleanroom' }
+  if (!['cmos', 'growth', 'clean'].includes(segs[0])) return { page: 'home' }
 
   out.page = 'atlas'
-  const rest = segs.slice(1)
   // device variant lives in the path at the transistor level
-  const device = rest[1] === 'pmos' ? 'pmos' : 'nmos'
-  const norm = rest.map((s, i) => (i === 1 && (s === 'pmos' || s === 'nmos') ? 'nmos' : s))
-  const match = [...LAYERS].reverse().find((l) => l.path.join('/') === norm.slice(0, l.path.length).join('/') && l.path.length === norm.length)
-  out.layer = (match?.id ?? 'cell') as LayerId
+  const device = segs[0] === 'cmos' && segs[2] === 'pmos' ? 'pmos' : 'nmos'
+  const norm = segs.map((s, i) => (i === 2 && segs[0] === 'cmos' && (s === 'pmos' || s === 'nmos') ? 'nmos' : s))
+  const match = LAYERS.find((l) => l.path.join('/') === norm.join('/'))
+  const fallback: Record<string, LayerId> = { cmos: 'cell', growth: 'sand', clean: 'cleanroom' }
+  out.layer = (match?.id ?? fallback[segs[0]]) as LayerId
   out.device = device
+  const tab = q.get('tab')
+  out.tab = tab && LAYER_BY_ID[out.layer].tabs?.some((t) => t.id === tab) ? tab : defaultTab(out.layer)
+  const hkl = q.get('hkl')?.match(/^(-?\d)[, ]?(-?\d)[, ]?(-?\d)$/)
+  if (hkl) out.hkl = [+hkl[1], +hkl[2], +hkl[3]]
+  const k0 = q.get('k0')
+  if (k0 != null && +k0 > 0 && +k0 <= 2) out.k0 = +k0
+  const frac = q.get('f')
+  if (frac != null && +frac >= 0 && +frac <= 0.95) out.frac = +frac
 
   const v = q.get('view') as View | null
   out.view = v && VIEWS.includes(v) ? v : 'explore'
@@ -67,8 +80,10 @@ export function buildUrl(s: AtlasState): string {
   if (s.page === 'style') return '/style'
   if (s.page === 'debug') return '/debug' + (BOOT.forceWebGL ? '?gl=webgl' : '')
   const layer = LAYERS.find((l) => l.id === s.layer)!
-  const path = layer.path.map((seg, i) => (i === 1 && seg === 'nmos' ? s.device : seg))
+  const path = layer.path.map((seg, i) => (i === 2 && seg === 'nmos' ? s.device : seg))
   const q = new URLSearchParams()
+  if (s.tab && s.tab !== defaultTab(s.layer)) q.set('tab', s.tab)
+  if (s.layer === 'lattice' && s.tab === 'miller') q.set('hkl', s.crystal.hkl.join(','))
   if (s.view !== 'explore' && (s.layer === 'cell')) q.set('view', s.view)
   if (s.view === 'section' && s.layer === 'cell') {
     if (s.section.locked) q.set('cut', s.section.locked)
@@ -92,7 +107,7 @@ export function buildUrl(s: AtlasState): string {
   if (BOOT.forceWebGL) q.set('gl', 'webgl')
   if (BOOT.shots) q.set('shots', '1')
   const qs = q.toString()
-  return '/cmos/' + path.join('/') + (qs ? '?' + qs : '')
+  return '/' + path.join('/') + (qs ? '?' + qs : '')
 }
 
 export function applyUrl(loc: { pathname: string; search: string }) {
@@ -102,6 +117,9 @@ export function applyUrl(loc: { pathname: string; search: string }) {
   if (p.page) patch.page = p.page
   if (p.layer) patch.layer = p.layer
   if (p.device) patch.device = p.device
+  if (p.tab != null) patch.tab = p.tab
+  if (p.hkl) patch.crystal = { ...st.crystal, hkl: p.hkl }
+  if (p.k0 != null || p.frac != null) patch.growth = { ...st.growth, k0: p.k0 ?? st.growth.k0, frac: p.frac ?? st.growth.frac, dopant: p.k0 != null ? (K0_TABLE.find((d) => d.k0 === p.k0)?.el ?? '') : st.growth.dopant }
   if (p.view) patch.view = p.view
   if (p.page === 'atlas') patch.focus = p.focus ?? null
   if (p.step != null) patch.step = p.step

@@ -28,6 +28,10 @@ export interface Interval {
   dose?: number
   /** aluminium sitting in a contact cut */
   plug?: boolean
+  /** silicon: implant damage (amorphised), cleared by an anneal (Topic 3 slide 31) */
+  dmg?: boolean
+  /** silicon: grown by epitaxy (Topic 3 slides 25–26) */
+  epi?: boolean
 }
 
 export type Column = readonly Interval[]

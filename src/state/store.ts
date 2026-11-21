@@ -19,11 +19,72 @@ export interface SectionState {
   gap: number
 }
 
+/** Chapter 2: the process-lab experiment (a step of the slide 24 flow) */
+export type ProcOp = 'wafer' | 'epitaxy' | 'oxidation' | 'litho' | 'etch' | 'diffusion' | 'implant' | 'metal' | 'packaging'
+export type CellKind = 'sc' | 'bcc' | 'fcc' | 'diamond'
+export type Solution = 'water' | 'h2o2' | 'o3'
+
+export interface ProcState {
+  op: ProcOp
+  /** oxidation */
+  ambient: 'dry' | 'wet'
+  oxT: number
+  oxHours: number
+  /** lithography */
+  tone: 'positive' | 'negative'
+  /** etch */
+  iso: boolean
+  lineUm: number
+  /** diffusion: predeposition and drive-in */
+  dopant: 'B' | 'P'
+  preT: number
+  preMin: number
+  driveT: number
+  driveMin: number
+  /** implantation */
+  species: 'B' | 'P' | 'As'
+  keV: number
+  annealed: boolean
+  /** epitaxy */
+  epi: 'cvd' | 'mbe'
+  epiMin: number
+  /** metallization: evaporated thickness, nm */
+  metalNm: number
+}
+
 export interface AtlasState {
   page: Page
   layer: LayerId
   device: Device
   view: View
+  /** sub-view (tab) of the current layer, '' when it has none (see LayerDef.tabs) */
+  tab: string
+  /** Chapter 2: crystal growth (slides 16–20); Czochralski or float zone is the puller's tab */
+  growth: { k0: number; frac: number; dopant: string; passes: number }
+  /** Chapter 2: lattice tabs (slides 4–11, 21–22); r is the spacing in units of the crystal spacing a */
+  crystal: { cell: CellKind; offset: number; hkl: [number, number, number]; r: number; T: number }
+  /** Chapter 2: process lab (slides 24–32) */
+  proc: ProcState
+  /** Chapter 3 (Topic 4) */
+  clean: {
+    /** cleanroom class shown (particles ≥ 0.5 µm per ft³) */
+    cls: number
+    /** contamination sources switched on */
+    sources: { person: boolean; book: boolean; gloves: boolean }
+    /** wet bench: number of RCA steps done (0 … RCA_STEPS.length) */
+    rca: number
+    /** redox: chosen metal couple and solution */
+    metal: string
+    solution: Solution
+    /** gettering: temperature-cycle stage (0–3) and gettering step (0–3) */
+    cycle: number
+    getter: number
+    /** yield model: defect density (cm⁻²), die area (cm²), clustering factor, particle seed */
+    D0: number
+    A: number
+    C: number
+    seed: number
+  }
   focus: string | null
   hover: string | null
   section: SectionState
@@ -87,11 +148,26 @@ function initialSpeed() {
 
 const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
+export const PROC_DEFAULT: ProcState = {
+  op: 'oxidation', ambient: 'dry', oxT: 1000, oxHours: 1, tone: 'positive', iso: true, lineUm: 2,
+  dopant: 'B', preT: 950, preMin: 30, driveT: 1100, driveMin: 60, species: 'B', keV: 50, annealed: false,
+  epi: 'cvd', epiMin: 30, metalNm: 500,
+}
+export const CLEAN_DEFAULT: AtlasState['clean'] = {
+  cls: 100, sources: { person: false, book: false, gloves: false }, rca: 0, metal: 'Fe', solution: 'water',
+  cycle: 0, getter: 0, D0: 0.5, A: 1, C: 2, seed: 1,
+}
+
 export const useAtlas = create<AtlasState>((set) => ({
   page: 'home',
   layer: 'cell',
   device: 'nmos',
   view: 'explore',
+  tab: '',
+  growth: { k0: 0.35, frac: 0.5, dopant: 'P', passes: 1 },
+  crystal: { cell: 'diamond', offset: 1, hkl: [1, 0, 0], r: 1, T: 1000 },
+  proc: PROC_DEFAULT,
+  clean: CLEAN_DEFAULT,
   focus: null,
   hover: null,
   section: { axis: 'y', offset: -4, locked: null, gap: 0 },

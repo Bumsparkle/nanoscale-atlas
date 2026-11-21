@@ -9,6 +9,7 @@ import { atomsMesh, bondsMesh, diamond, neighbours, rng, setBonds, A_SI, BOND_SI
 import { overlay, type ScreenLabel } from '../cellRuntime'
 import { Spring, SPRINGS } from '../spring'
 import { useAtlas } from '../../state/store'
+import { CrystalTabs } from './CrystalTabs'
 
 /**
  * Layer 6: the silicon lattice (1 unit = 1 Å). Diamond cubic, a = 5.43 Å.
@@ -44,7 +45,7 @@ function build() {
   return { p0, amorph, poly, pairs, centre }
 }
 
-export default function LatticeLayer() {
+function StructureView() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
   const b = useMemo(() => build(), [])
@@ -176,4 +177,10 @@ export default function LatticeLayer() {
       <ClearOnMiss radius={400} />
     </>
   )
+}
+
+/** the Chapter 1 structure view, or one of the Chapter 2 crystal tabs */
+export default function LatticeLayer() {
+  const tab = useAtlas((s) => s.tab)
+  return !tab || tab === 'structure' ? <StructureView /> : <CrystalTabs tab={tab} />
 }

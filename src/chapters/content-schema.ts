@@ -19,12 +19,14 @@ export const ContentSchema = z.object({
   title: z.string().min(2),
   /** one line for the hover label */
   short: z.string().min(2).max(90),
-  layer: z.enum(['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice', 'layout']),
+  layer: z.enum(['sand', 'polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice', 'layout']),
   parent: z.string().nullable(),
   /** how this object is found in the generated mesh (cell-layer objects) */
   anchors: z.array(AnchorSchema).default([]),
   /** named scene object (non-generated layers) */
   node: z.string().optional(),
+  /** the layer tabs it is visible in (omit: every tab) */
+  tabs: z.array(z.string()).optional(),
   /** lecture slides this panel draws on, as {topic, slide} */
   sources: z.array(SourceRefSchema).min(1),
   /** recipe step id where it is made */
@@ -34,7 +36,7 @@ export const ContentSchema = z.object({
   does: z.string().min(10),
   beyond: z.array(z.object({ text: z.string(), source: z.string().min(3) })).default([]),
   /** optional dive target */
-  dive: z.object({ layer: z.enum(['die', 'cell', 'transistor', 'oxide', 'lattice']), device: z.enum(['nmos', 'pmos']).optional() }).optional(),
+  dive: z.object({ layer: z.enum(['polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice']), device: z.enum(['nmos', 'pmos']).optional() }).optional(),
 })
 
 export type Content = z.infer<typeof ContentSchema>

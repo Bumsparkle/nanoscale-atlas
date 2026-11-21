@@ -1,7 +1,7 @@
 import type { Model, Op } from './types'
 import type { SourceRef } from '../sources'
 
-export type StepKind = 'start' | 'oxidise' | 'deposit' | 'spin' | 'expose' | 'develop' | 'etch' | 'strip' | 'implant' | 'sputter'
+export type StepKind = 'start' | 'oxidise' | 'deposit' | 'spin' | 'expose' | 'develop' | 'etch' | 'strip' | 'implant' | 'sputter' | 'anneal' | 'diffuse' | 'epitaxy' | 'evaporate'
 
 export interface Step {
   id: string

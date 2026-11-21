@@ -1,8 +1,8 @@
 import { ContentSchema, type Content } from '../content-schema'
 import type { MeshResult } from '../../sim/mesher'
 
-/** Every content file in ./content, validated. One file per object. */
-const modules = import.meta.glob('./content/*.ts', { eager: true }) as Record<string, { default: unknown }>
+/** Every content file of every chapter (chapters/<chapter>/content/*.ts), validated. One file per object. */
+const modules = import.meta.glob('../*/content/*.ts', { eager: true }) as Record<string, { default: unknown }>
 
 export const CONTENT: Content[] = Object.entries(modules)
   .map(([path, m]) => {

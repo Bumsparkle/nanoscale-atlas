@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { IS_APP } from '../platform'
-import { LAYERS, layerIndex } from '../chapters/cmos/layers'
+import { CHAPTER_BY_ID, CHAPTERS, chapterOf, LAYER_BY_ID, LAYERS, layerIndex } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
 import { transition } from '../scene/transition'
 import { navigate } from '../state/url'
@@ -22,10 +22,14 @@ export function Breadcrumbs() {
   const layer = useAtlas((s) => s.layer)
   const device = useAtlas((s) => s.device)
   const idx = layerIndex(layer)
+  // the zoom path within this layer's chapter, plus the layer just above it
+  const ch = LAYER_BY_ID[layer].chapter
+  const first = Math.max(0, LAYERS.findIndex((l) => l.chapter === ch) - 1)
   return (
     <nav className="crumbs" aria-label="Zoom path">
       <ol>
-        {LAYERS.slice(0, idx + 1).map((l, i) => {
+        {LAYERS.slice(first, idx + 1).map((l, j) => {
+          const i = first + j
           const name = l.id === 'transistor' ? (device === 'pmos' ? 'pMOS' : 'nMOS') : l.crumb
           const current = i === idx
           return (
@@ -43,6 +47,39 @@ export function Breadcrumbs() {
   )
 }
 
+/** the three chapters: where you are, and a jump to the start of each */
+export function ChapterMenu() {
+  const layer = useAtlas((s) => s.layer)
+  const tab = useAtlas((s) => s.tab)
+  const [open, setOpen] = useState(false)
+  const cur = CHAPTER_BY_ID[chapterOf(layer, tab)]
+  useEffect(() => {
+    if (!open) return
+    const close = (e: MouseEvent) => !(e.target as HTMLElement).closest?.('.chapters') && setOpen(false)
+    window.addEventListener('pointerdown', close)
+    return () => window.removeEventListener('pointerdown', close)
+  }, [open])
+  return (
+    <div className="chapters">
+      <button className="brand-ch" aria-expanded={open} aria-haspopup="menu" onClick={() => setOpen(!open)}>
+        Ch.{cur.n} · {cur.title} ▾
+      </button>
+      {open && (
+        <ul className="chapters-menu" role="menu">
+          {CHAPTERS.map((c) => (
+            <li key={c.id} role="none">
+              <button role="menuitem" aria-current={c.id === cur.id} onClick={() => (setOpen(false), void transition.go(c.entry.layer, { tab: c.entry.tab }))}>
+                <span className="mono">Ch.{c.n}</span> <b>{c.title}</b>
+                <span className="chapters-blurb">Topic {c.topic.slice(5)} · {c.blurb}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 export function TopBar() {
   const reduced = useAtlas((s) => s.reducedMotion)
   const set = useAtlas((s) => s.set)
@@ -51,8 +88,8 @@ export function TopBar() {
       <a className="brand" href="/" onClick={(e) => { e.preventDefault(); navigate('/') }}>
         <span className="brand-mark" aria-hidden />
         <span>Nanoscale Atlas</span>
-        <span className="brand-ch">Ch.1 · CMOS inverter</span>
       </a>
+      <ChapterMenu />
       <Breadcrumbs />
       <ModeSwitch />
       <div className="topbar-tools">

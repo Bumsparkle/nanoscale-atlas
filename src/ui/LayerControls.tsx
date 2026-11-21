@@ -4,6 +4,9 @@ import { transition } from '../scene/transition'
 import './layercontrols.css'
 import { SourceButton } from './source/Source'
 import { T2 } from '../sources'
+import { BandsPanel, CellsPanel, DefectsPanel, IngotPanel, MillerPanel, PolyPanel, PullerPanel, SandPanel, WafersPanel } from './growth/GrowthPanels'
+import { ProcessLab } from './growth/ProcessLab'
+import { CleanroomPanels, CleanWaferPanels } from './clean/CleanPanels'
 
 /** gate voltage for the transistor layer (slides 12–14) */
 function TransistorControls() {
@@ -78,9 +81,32 @@ function LatticeControls() {
 
 export function LayerControls() {
   const layer = useAtlas((s) => s.layer)
+  const tab = useAtlas((s) => s.tab)
   const focus = useAtlas((s) => s.focus)
   if (focus) return null
-  if (layer === 'transistor') return <TransistorControls />
-  if (layer === 'lattice') return <LatticeControls />
+  switch (layer) {
+    case 'transistor':
+      return <TransistorControls />
+    case 'lattice':
+      if (tab === 'cells') return <CellsPanel />
+      if (tab === 'miller') return <MillerPanel />
+      if (tab === 'bands') return <BandsPanel />
+      if (tab === 'defects') return <DefectsPanel />
+      return <LatticeControls />
+    case 'sand':
+      return <SandPanel />
+    case 'polysilicon':
+      return <PolyPanel />
+    case 'puller':
+      return <PullerPanel />
+    case 'ingot':
+      return <IngotPanel />
+    case 'wafers':
+      return <WafersPanel />
+    case 'wafer':
+      return tab === 'process' ? <ProcessLab /> : <CleanWaferPanels />
+    case 'cleanroom':
+      return <CleanroomPanels />
+  }
   return null
 }

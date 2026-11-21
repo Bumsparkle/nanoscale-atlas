@@ -201,3 +201,61 @@ html[data-view='fab'] {
     top: var(--top-h);
   }
 }
+
+/* chapter menu, next to the brand */
+.chapters {
+  position: relative;
+}
+.chapters .brand-ch {
+  padding: var(--pad-chip);
+  border-radius: var(--radius);
+}
+.chapters .brand-ch:hover,
+.chapters .brand-ch[aria-expanded='true'] {
+  color: var(--ink-0);
+  background: var(--bg-3);
+}
+.chapters-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  list-style: none;
+  margin: 0;
+  padding: var(--s-1);
+  width: 320px;
+  background: var(--glass-strong);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  box-shadow: var(--shadow);
+  z-index: 30;
+}
+.chapters-menu button {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--radius);
+  color: var(--ink-1);
+  font-size: var(--t-13);
+}
+.chapters-menu button b {
+  color: var(--ink-0);
+  font-weight: 500;
+}
+.chapters-menu button:hover,
+.chapters-menu button[aria-current='true'] {
+  background: var(--bg-3);
+}
+.chapters-menu button[aria-current='true'] {
+  box-shadow: inset 2px 0 0 var(--amber);
+}
+.chapters-blurb {
+  font-size: var(--t-12);
+  color: var(--ink-2);
+}
+@media (max-width: 720px) {
+  .chapters {
+    display: none;
+  }
+}

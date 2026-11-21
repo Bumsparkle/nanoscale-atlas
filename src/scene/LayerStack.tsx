@@ -12,26 +12,25 @@ import { transition } from './transition'
  * One persistent canvas, one active layer. Each layer is a lazy chunk with
  * its own scene graph in its own units; only the active one is mounted.
  */
-const LAYER_COMPONENTS: Record<LayerId, React.LazyExoticComponent<() => React.JSX.Element>> = {
-  wafer: lazy(() => import('./layers/WaferLayer')),
-  die: lazy(() => import('./layers/DieLayer')),
-  cell: lazy(() => import('./layers/CellLayer')),
-  transistor: lazy(() => import('./layers/TransistorLayer')),
-  oxide: lazy(() => import('./layers/OxideLayer')),
-  lattice: lazy(() => import('./layers/LatticeLayer')),
+const IMPORTS: Record<LayerId, () => Promise<{ default: () => React.JSX.Element }>> = {
+  sand: () => import('./layers/SandLayer'),
+  polysilicon: () => import('./layers/PolysiliconLayer'),
+  puller: () => import('./layers/PullerLayer'),
+  ingot: () => import('./layers/IngotLayer'),
+  wafers: () => import('./layers/WafersLayer'),
+  cleanroom: () => import('./layers/CleanroomLayer'),
+  wafer: () => import('./layers/WaferLayer'),
+  die: () => import('./layers/DieLayer'),
+  cell: () => import('./layers/CellLayer'),
+  transistor: () => import('./layers/TransistorLayer'),
+  oxide: () => import('./layers/OxideLayer'),
+  lattice: () => import('./layers/LatticeLayer'),
 }
+const LAYER_COMPONENTS = Object.fromEntries(Object.entries(IMPORTS).map(([k, f]) => [k, lazy(f)])) as Record<LayerId, React.LazyExoticComponent<() => React.JSX.Element>>
 
 /** Warm the chunks of neighbouring layers so dives never stall. */
 export function prefetchLayers(ids: LayerId[]) {
-  const map: Record<LayerId, () => Promise<unknown>> = {
-    wafer: () => import('./layers/WaferLayer'),
-    die: () => import('./layers/DieLayer'),
-    cell: () => import('./layers/CellLayer'),
-    transistor: () => import('./layers/TransistorLayer'),
-    oxide: () => import('./layers/OxideLayer'),
-    lattice: () => import('./layers/LatticeLayer'),
-  }
-  return Promise.all(ids.map((id) => map[id]()))
+  return Promise.all(ids.map((id) => IMPORTS[id]()))
 }
 
 export function LayerStack() {
@@ -42,7 +41,7 @@ export function LayerStack() {
   useEffect(() => {
     scene.background = IS_APP ? null : new THREE.Color(SCENE.background)
     // warm every layer chunk in the background so no dive ever waits on the network
-    const ids: LayerId[] = ['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice']
+    const ids = Object.keys(IMPORTS) as LayerId[]
     ids.forEach((id) => prefetchLayers([id]).then(() => useAtlas.setState((s) => ({ boot: { ...s.boot, layers: s.boot.layers + 1 } }))))
   }, [scene])
 
