@@ -546,3 +546,12 @@ The old lesson had 1,662 words of narration and 51 questions; the new one has 6,
 - **Download link.** The home page's "Download for Mac" link always resolves to the newest .dmg, and is hidden in the app.
 - **Docs.** The README covers releasing (bump the three versions, tag, push) and the key setup.
 - **Verified locally.** The universal build with updater signing produces the .dmg, `.app.tar.gz` and `.sig`. `latest.json` generates. The slide/PDF guard passes the real bundle and fails a planted slide and PDF.
+
+**v0.2.0 released (2026-11-21).** Run 44950491285 passed every step, including the bundle check, and published https://github.com/Bumsparkle/nanoscale-atlas/releases/tag/v0.2.0. The release holds the universal .dmg (12 MB, also under a fixed "latest" name), the signed updater bundle and `latest.json`. Its notes list the commits since the start of the history.
+
+Checked after publishing:
+- `releases/latest/download/Nanoscale-Atlas-macOS.dmg` and `latest.json` resolve publicly;
+- the downloaded .dmg contains a universal binary (x86_64 and arm64) at version 0.2.0;
+- it has no slide or PDF paths.
+
+The in-app update offer can only be seen once a v0.2.1 or later exists.

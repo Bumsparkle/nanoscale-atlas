@@ -47,7 +47,8 @@ function checkApp(app, label) {
   }
 }
 
-checkTree('dist', 'dist/')
+// dist/ is checked when guarding an app build; checking a given .app or .dmg looks only at that
+if (!arg('--bundle') && !arg('--dmg')) checkTree('dist', 'dist/')
 if (args.includes('--binary')) checkApp('src-tauri/target/release/bundle/macos/Nanoscale Atlas.app', 'local app')
 if (arg('--bundle')) checkApp(arg('--bundle'), 'bundle')
 if (arg('--dmg')) {
