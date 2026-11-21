@@ -31,11 +31,14 @@ mkdirSync(dir, { recursive: true })
 const tgz = join('private', 'slides.tar.gz')
 writeFileSync(tgz, Buffer.from(await res.arrayBuffer()))
 // refuse archives with paths outside <topic>/slide-NN.jpg
+// (archives made on a Mac may also carry AppleDouble "._name" metadata entries: Linux tar
+// lists them as files, so they are allowed in the check and left out on extraction)
+const APPLEDOUBLE = /^(?:[a-z0-9]+\/)?\._[a-z0-9.-]+$/
 const entries = execFileSync('tar', ['-tzf', tgz]).toString().trim().split('\n')
-const bad = entries.filter((e) => !/^[a-z0-9]+\/?$|^[a-z0-9]+\/slide-\d{2}\.jpg$/.test(e))
+const bad = entries.filter((e) => !/^[a-z0-9]+\/?$|^[a-z0-9]+\/slide-\d{2}\.jpg$/.test(e) && !APPLEDOUBLE.test(e))
 if (bad.length) {
   console.error('slides: archive contains unexpected paths, refusing it:', bad.slice(0, 5))
   process.exit(1)
 }
-execFileSync('tar', ['-xzf', tgz, '-C', dir])
+execFileSync('tar', ['-xzf', tgz, '--exclude=._*', '-C', dir])
 console.log(`slides: fetched ${count()} images`)
