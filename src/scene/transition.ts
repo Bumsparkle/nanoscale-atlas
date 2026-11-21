@@ -2,7 +2,6 @@ import { LAYERS, LAYER_BY_ID, layerIndex, type Device, type LayerId } from '../c
 import { useAtlas } from '../state/store'
 import { post } from './Pipeline'
 import { rig } from './rig'
-import { sound } from '../ui/sound'
 
 /**
  * Shared-element dive between scale layers.
@@ -68,7 +67,6 @@ export const transition = {
     const down = layerIndex(to) > layerIndex(st.layer)
     const reduced = st.reducedMotion
     rig.locked = true
-    sound.whoosh(down)
 
     if (!reduced) {
       if (opts.via) rig.target.setTarget(opts.via)

@@ -1,6 +1,5 @@
 import * as THREE from 'three/webgpu'
 import { SCENE } from '../sceneTheme'
-import { frameDt } from '../../state/timescale'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { overlay } from '../cellRuntime'
@@ -124,7 +123,7 @@ function Beacon() {
   const ref = useRef<THREE.Mesh>(null)
   const clock = useRef(0)
   useFrame((_, dt) => {
-    clock.current += frameDt(dt)
+    clock.current += dt
     const t = (clock.current * 0.6) % 1
     pulse.value = t
     const far = Math.min(1, Math.max(0, (rig.dist.value - 40) / 160))

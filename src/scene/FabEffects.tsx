@@ -1,5 +1,5 @@
 import * as THREE from 'three/webgpu'
-import { frameDt } from '../state/timescale'
+import { fabDt } from '../state/timescale'
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import { color, float, mix, uniform, positionWorld, sin, time, vec3 } from 'three/tsl'
@@ -83,7 +83,7 @@ function IonRain() {
     const on = kind === 'implant' || kind === 'deposit' || kind === 'sputter'
     im.visible = on
     if (!on) return
-    clock.current += frameDt(dt)
+    clock.current += fabDt(dt)
     if (lastK.current !== k) {
       // ion stopping points come from the model *before* this step
       const before = process.snapshot(Math.max(0, k - 1))
@@ -209,7 +209,7 @@ function Exposure() {
     const step = process.steps[k]
     const on = st.view === 'fab' && step.kind === 'expose'
     fade.current.target = on ? 1 : 0
-    const f = fade.current.step(frameDt(dt), st.reducedMotion)
+    const f = fade.current.step(fabDt(dt), st.reducedMotion)
     const show = f > 0.01
     for (const r of [plate, glass, beam]) if (r.current) r.current.visible = show
     if (!show) return

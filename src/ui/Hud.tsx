@@ -43,7 +43,6 @@ export function Breadcrumbs() {
 }
 
 export function TopBar() {
-  const sound = useAtlas((s) => s.sound)
   const reduced = useAtlas((s) => s.reducedMotion)
   const set = useAtlas((s) => s.set)
   return (
@@ -58,9 +57,6 @@ export function TopBar() {
       <div className="topbar-tools">
         <button className="tool" aria-pressed={reduced} onClick={() => set({ reducedMotion: !reduced })} title="Reduce motion: no camera flights, springs settle instantly">
           {reduced ? 'motion reduced' : 'motion full'}
-        </button>
-        <button className="tool" aria-pressed={sound} onClick={() => set({ sound: !sound })} title="Sound: snaps click, fab tools hum">
-          {sound ? 'sound on' : 'sound off'}
         </button>
       </div>
     </header>

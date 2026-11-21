@@ -158,7 +158,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
   
   It also fails if any stylesheet sets a font size under 12px. `--t-11` is now 12px, and the 9–11px literals became `--t-12`.
 - **Screen regions.** There is one place for each kind of control:
-  - **Top:** the brand, zoom path, mode switch and the two preferences (motion, sound).
+  - **Top:** the brand, zoom path, mode switch and the motion preference.
   - **Bottom centre:** the scene tools (views, speed, mastery, one hint line).
   - **Right:** info panels.
   - **Bottom left:** the scale, with its captions (field of view, layer note, drawing exaggeration) on separate lines instead of crowding the bar.
@@ -177,21 +177,11 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
   - **Dividers:** dashed dividers inside panels, review boxes and solutions are gone, and sections are grouped by spacing.
   - **Line length:** panel prose is capped at 65ch.
   - **Hover and selected states:** quiet `--bg-3` fills, with amber only for the selected state.
-- **Animation speed is one shared time scale.** The store holds `speed` (0.25–2×, snapping at ¼, ½, 1 and 2) and `paused`. Every content animation advances by `frameDt(dt)` from `state/timescale.ts`, never by raw dt:
-  - fab playback (`scene/playback.ts`) and the fab spring;
-  - implant, deposit and exposure effects;
-  - the content clock behind the conducting-path pulse, carrier flow and die beacon (`matUniforms.time`, which replaced TSL's wall-clock `time`);
-  - the transistor inversion spring;
-  - the lattice morph.
-  
-  DOM animations use `useContentTween`: the logic switch blades and the output node charging, and the junction's response to bias and doping, which were instant before. Lesson demonstrations run through the same fab spring and scene. UI micro-interactions and camera moves triggered by clicks deliberately ignore the speed. While paused, a click on the timeline still moves at the chosen speed; only autoplay and ambient motion freeze.
-- **Speed controls and keys.**
-  - **Play / pause:** one button. In the Fab view it runs the process timeline; elsewhere it freezes or unfreezes the ambient content animation.
-  - **Step buttons:** next and previous fab step in the Fab view; elsewhere a ½ s beat of content time.
-  - **`[` and `]`:** step the speed. The lesson's previous/next keys moved from `[`/`]` to `<`/`>` to make room.
-  - **Space:** plays or pauses when the scene, not a control, has focus.
+- **The speed control is for the fab replay only** (revised the same day at the user's request). A first version scaled every content animation from one shared time scale. In use, only the fabrication replay benefits from slowing down, and everything else reads best at its natural speed.
+  - **What follows the speed:** fab playback (`scene/playback.ts`), the step spring, and the fab effects (resist spin, exposure, etch, implant ions, deposition), all through `fabDt(dt)` in `state/timescale.ts`.
+  - **What stays at 1×:** device physics, logic and junction transitions, the lattice, the die beacon and camera moves. The logic switches and the junction now ease into place rather than jumping; that came from the first version and was kept at 1×.
+  - **Where the controls are:** previous / play-pause / next and the speed slider (0.25–2×, snapping at ¼, ½, 1 and 2) pop up in the scene tools only in the Fab view. They replace the timeline's own play button.
+  - **Keys:** `[` and `]` step the speed and space plays or pauses, in the Fab view only. The lesson's previous/next keys stay on `<` and `>`.
   - **Remembered:** the speed is kept in localStorage (`atlas.speed.v1`).
-  - **Reduced motion:** under `prefers-reduced-motion` the scene starts paused, with step buttons.
-- **How the speed control was tested.**
-  - **Unit test:** `src/state/timescale.test.ts` runs a fab step at 0.5× and checks it takes 2× as long (within 2.5 %), plus 2×, ¼×, paused and stepping.
-  - **Browser check:** `scripts/speedcheck.mjs` covers every animation type: the physics clock, a fab step, the logic switch, the lattice morph, the keys, persistence and reduced motion.
+  - **Tests:** `src/state/timescale.test.ts` checks that a fab step at 0.5× takes 2× as long. `scripts/speedcheck.mjs` checks the same in the browser, and that device physics and logic transitions ignore the speed.
+- **No sound.** The optional sound (snap clicks, fab tool hum, dive whoosh) and its top-bar toggle were removed at the user's request. The top bar's preferences are now just reduced motion.

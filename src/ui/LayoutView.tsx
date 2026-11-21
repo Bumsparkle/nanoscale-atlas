@@ -7,7 +7,6 @@ import { checkLayout, checksForEdge, describe, RULE_LABEL, type EdgeRef, type Ru
 import { LAMBDA_NM } from '../chapters/cmos/masks'
 import { layoutFrame, toLayout, toScreen, LEARN_PANEL_W, type LayoutFrame } from './layoutFrame'
 import { ContentBody } from './Panel'
-import { sound } from './sound'
 import './layout.css'
 import { SourceButton } from './source/Source'
 import { T2 } from '../sources'
@@ -131,7 +130,6 @@ export function LayoutView() {
     if (next !== layoutState.get()) {
       layoutState.set(next)
       const nv = next[d.edge.mask][d.edge.index][d.edge.side]
-      if (nv !== d.last) sound.click(0.3)
       d.last = nv
     }
   }

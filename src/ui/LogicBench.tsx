@@ -4,7 +4,7 @@ import { junction, V0 } from '../chapters/cmos/junction'
 import './logic.css'
 import { SourceButton } from './source/Source'
 import { T2 } from '../sources'
-import { useContentTween } from '../state/timescale'
+import { useTween } from '../state/timescale'
 
 type Tab = BenchTab
 const TABS: { id: Tab; label: string; slides: number[] }[] = [
@@ -21,8 +21,8 @@ function Switch({ x, y0, y1, on, kind, label, input }: { x: number; y0: number; 
   const c = on ? 'var(--on)' : 'var(--ink-3)'
   const top = y0 + 8
   const bot = y1 - 8
-  // the blade swings on content time (global speed / pause)
-  const open = useContentTween(on ? 0 : 1, 0.45)
+  // the blade swings rather than jumps
+  const open = useTween(on ? 0 : 1, 0.45)
   const tipX = x + (bot - top) * 0.45 * open
   return (
     <g className={'sw ' + (on ? 'sw-on' : 'sw-off')}>
@@ -61,8 +61,8 @@ function Rails({ w, vddY, gndY }: { w: number; vddY: number; gndY: number }) {
 function Schematic({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bit> }) {
   const W = 300
   const y = evaluate(gate, inputs)
-  // the output node charges or discharges on content time
-  const yv = useContentTween(y === 1 ? 1 : 0, 0.7)
+  // the output node charges or discharges
+  const yv = useTween(y === 1 ? 1 : 0, 0.7)
   const yc = `color-mix(in srgb, var(--hi) ${Math.round(yv * 100)}%, var(--lo))`
   const on = (k: 'n' | 'p', i: 'A' | 'B') => (k === 'n' ? nmosOn(inputs[i]) : pmosOn(inputs[i]))
   const cx = W / 2
@@ -199,8 +199,8 @@ function Junction() {
   const ratio = useAtlas((s) => s.bench.ratio)
   const setV = (x: number) => useAtlas.setState((s) => ({ bench: { ...s.bench, v: x } }))
   const setRatio = (x: number) => useAtlas.setState((s) => ({ bench: { ...s.bench, ratio: x } }))
-  // the junction responds on content time
-  const j = junction(useContentTween(v, 0.4), 10 ** useContentTween(Math.log10(ratio), 0.4))
+  // the junction eases to the new bias
+  const j = junction(useTween(v, 0.4), 10 ** useTween(Math.log10(ratio), 0.4))
   const W = 300
   const cx = W / 2
   const scale = 70 // px for W at zero bias

@@ -1,5 +1,4 @@
 import * as THREE from 'three/webgpu'
-import { frameDt } from '../../state/timescale'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { color, positionWorld, sin, uniform } from 'three/tsl'
@@ -70,7 +69,7 @@ export default function TransistorLayer() {
   useFrame((_, dt) => {
     const st = useAtlas.getState()
     strength.current.target = channelStrength(device, st.vg)
-    const cdt = frameDt(dt)
+    const cdt = dt
     const s = strength.current.step(cdt, st.reducedMotion)
     on.value = s
     matUniforms.xray.value = 0.55

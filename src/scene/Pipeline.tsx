@@ -4,7 +4,6 @@ import { outline } from 'three/addons/tsl/display/OutlineNode.js'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo } from 'react'
 import { matUniforms } from './materials'
-import { endFrame, frameDt } from '../state/timescale'
 
 /**
  * Shared selection buffers. Layers push meshes here; the outline pass reads
@@ -56,11 +55,9 @@ export function Pipeline() {
     ;(window as unknown as { __contentTime: () => number }).__contentTime = () => matUniforms.time.value
   }, [])
 
-  // runs after every layer's frame: advance the shared content clock, then let
-  // the step-button beat run down
+  // runs after every layer's frame: advance the clock behind glows and carrier flow
   useFrame((_, dt) => {
-    matUniforms.time.value += frameDt(dt)
-    endFrame(dt)
+    matUniforms.time.value += dt
     pipeline.render()
   }, 1)
   return null

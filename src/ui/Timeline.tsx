@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { inverterProcess } from '../chapters/cmos/recipe'
 import { useAtlas } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
-import { sound } from './sound'
 import { fabGoTo } from './play'
 import './timeline.css'
 import { SourceButton } from './source/Source'
@@ -17,10 +16,6 @@ const GROUP_LABEL: Record<string, string> = {
   metal: 'metal',
 }
 
-const HUM: Record<string, Parameters<typeof sound.humStart>[0]> = {
-  oxidise: 'furnace', deposit: 'furnace', spin: 'spinner', expose: 'litho', develop: 'wet',
-  etch: 'wet', strip: 'wet', implant: 'implanter', sputter: 'sputter', start: 'wet',
-}
 
 /**
  * Fab timeline: a scrubber with a named tick per recipe step, play/pause,
@@ -33,7 +28,6 @@ export function Timeline() {
   const view = useAtlas((s) => s.view)
   const layer = useAtlas((s) => s.layer)
   const step = useAtlas((s) => s.step)
-  const playing = useAtlas((s) => s.playing)
   const set = useAtlas((s) => s.set)
   const track = useRef<HTMLDivElement>(null)
   const thumb = useRef<HTMLDivElement>(null)
@@ -64,12 +58,6 @@ export function Timeline() {
     return () => cancelAnimationFrame(raf)
   }, [n])
 
-  // tool hum while playing
-  useEffect(() => {
-    if (playing && view === 'fab') sound.humStart(HUM[P.steps[Math.min(n, step + 1)].kind])
-    else sound.humStop()
-  }, [playing, step, view, P, n])
-  useEffect(() => () => sound.humStop(), [])
 
   const goTo = fabGoTo
 

@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { SNAP_TARGETS, useAtlas, type CutTarget, type View } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
 import { PLANE_RANGE } from '../scene/section'
-import { sound } from './sound'
 import './viewbar.css'
 import { SpeedBar } from './SpeedBar'
 import { MasteryToggle } from '../learn/ui/LearnHost'
@@ -21,7 +20,6 @@ export function lockTo(id: CutTarget) {
   const t = SNAP_TARGETS[id]
   if (st.section.axis !== t.axis) rt.plane.snap(t.offset + (t.axis === 'y' ? -6 : -6))
   st.setSection({ axis: t.axis, locked: id, offset: t.offset })
-  sound.click(1)
 }
 
 export function ViewBar() {
@@ -29,6 +27,7 @@ export function ViewBar() {
   const view = useAtlas((s) => s.view)
   const locked = useAtlas((s) => s.section.locked)
   const set = useAtlas((s) => s.set)
+  const mode = useAtlas((s) => s.mode)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -62,6 +61,7 @@ export function ViewBar() {
   }, [set])
 
   const cell = layer === 'cell'
+  const mastery = mode === 'explore'
   const hint = cell ? VIEWS.find((v) => v.id === view)!.hint : (LAYER_HINTS[layer] ?? '')
   return (
     <div className={'scenetools' + (cell && view === 'fab' ? ' scenetools-raised' : '')}>
@@ -84,10 +84,12 @@ export function ViewBar() {
             ))}
           </nav>
         )}
-        <div className="scenetools-row">
-          <SpeedBar />
-          <MasteryToggle />
-        </div>
+        {(cell && view === 'fab') || mastery ? (
+          <div className="scenetools-row">
+            {cell && view === 'fab' && <SpeedBar />}
+            <MasteryToggle />
+          </div>
+        ) : null}
       </div>
       {hint && (
         <p className="scenetools-hint" aria-live="polite">

@@ -506,22 +506,16 @@ The old lesson had 1,662 words of narration and 51 questions; the new one has 6,
 
 **Overlaps.** `scripts/themeshots.mjs` finds none at 1440×900, 1280×800 or 375×812 across 16 screens (every layer, the section, masks, fab, logic, layout, a lesson step and check, Revise and Coverage). Before, it found 14.
 
-**Animation speed.**
-- A speed slider from 0.25× to 2×, snapping at ¼, ½, 1 and 2×, with play/pause and step buttons in the scene tools.
-- Keys: `[` and `]` step the speed, and space plays or pauses. The lesson's previous/next keys moved to `<` and `>`.
-- The speed is remembered across reloads.
-- Under reduced motion the scene starts paused, with step buttons.
-- It is one shared time scale in the store, read by every content animation.
+**Fab replay speed** (revised: the fab replay only). The previous / play-pause / next controls and a 0.25–2× speed slider (snapping at ¼, ½, 1 and 2×) pop up in the scene tools in the Fab view. They drive playback and every fab effect. Everything else runs at its natural 1×. In the Fab view, `[` and `]` step the speed and space plays or pauses. The speed is remembered. Sound has been removed.
 
 **Verification.**
-- 305 tests pass, including `timescale.test.ts`: a fab step at 0.5× takes 2.0× as long, and 2×, ¼×, paused and stepping are covered.
+- All tests pass, including `timescale.test.ts`: a fab step at 0.5× takes 2.0× as long, and 2× and ¼× are covered.
 - The build is clean.
 - `scripts/speedcheck.mjs` passed all seven checks in the browser:
-  - device-physics clock: 1.00 at 1×, 0.50 at 0.5×, 2.00 at 2×, 0 when paused;
-  - fab step: 1.45 s at 1×, 3.05 s at 0.5×;
-  - logic switch, fraction swung after 0.35 s: 0.86 at 1×, 0.07 at 0.25×;
-  - lattice morph follows the speed;
+  - a fab step takes 1.43 s at 1× and 3.05 s at 0.5×;
+  - device physics runs at 1.00 while the fab speed is 0.25×;
+  - logic transitions are identical at any fab speed;
+  - the controls appear only in the Fab view;
   - the keys work;
-  - the speed is remembered;
-  - reduced motion starts paused.
+  - the speed is remembered.
 - Before and after screenshots were reviewed at every size; the sheets are in `docs/screenshots/theme/`.

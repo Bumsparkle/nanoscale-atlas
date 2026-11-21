@@ -15,13 +15,12 @@ import { selection } from '../Pipeline'
 import { rig } from '../rig'
 import { transition } from '../transition'
 import { advancePlayback } from '../playback'
-import { frameDt } from '../../state/timescale'
+import { fabDt } from '../../state/timescale'
 import { cellRuntime as rt, overlay, TIERS, type ScreenLabel } from '../cellRuntime'
 import { Spring, SPRINGS, clamp } from '../spring'
 import { cutLabels, PLANE_RANGE, snapFor, type CutLabel } from '../section'
 import { CELL_CENTRE } from '../cellGeometry'
 import { layoutFrame, ORTHO_FOV, LEARN_PANEL_W } from '../../ui/layoutFrame'
-import { sound } from '../../ui/sound'
 import { FabEffects } from '../FabEffects'
 
 /**
@@ -88,7 +87,6 @@ export default function CellLayer() {
   const geoKey = useRef('')
   const xray = useRef(new Spring(0, SPRINGS.ui))
   const labelCache = useRef<{ key: string; labels: CutLabel[] }>({ key: '', labels: [] })
-  const tierSettled = useRef<boolean[]>(Array(TIERS).fill(true))
   const tmp = useMemo(() => new THREE.Vector3(), [])
 
   const refreshSelection = () => {
@@ -131,18 +129,17 @@ export default function CellLayer() {
   useFrame((_, dt) => {
     const st = useAtlas.getState()
     const reduced = st.reducedMotion
-    const cdt = frameDt(dt)
+    const fdt = fabDt(dt)
 
     // fab timeline: playback eases through each step and dwells briefly on it
     if (st.view === 'fab') {
       if (st.playing) {
-        const { target, done } = advancePlayback(rt.play, cdt, process.length - 1)
+        const { target, done } = advancePlayback(rt.play, fdt, process.length - 1)
         rt.fab.target = target
         if (done) st.set({ playing: false, step: process.length - 1 })
       }
-      // the fab spring is content too: it runs on the shared time scale (a paused
-      // scene still answers a click on the timeline, at the chosen speed)
-      rt.fab.step(cdt || (st.paused ? dt * st.speed : 0), reduced)
+      // the step spring is part of the fab animation, so it follows the speed too
+      rt.fab.step(fdt, reduced)
       const k = Math.round(rt.fab.value)
       if (Math.abs(rt.fab.value - k) < 0.02 && k !== st.step) st.set({ step: k })
     }
@@ -166,7 +163,6 @@ export default function CellLayer() {
           rt.plane.target = SNAP_TARGETS[snap].offset
           if (sec.locked !== snap) {
             st.setSection({ locked: snap, offset: SNAP_TARGETS[snap].offset })
-            sound.click(1)
           }
         } else {
           rt.plane.cfg = SPRINGS.part
@@ -182,14 +178,8 @@ export default function CellLayer() {
     rt.plane.step(dt, reduced)
     rt.gapS.step(dt, reduced)
 
-    // mask explode tiers: each returns on its own spring, with its own click
-    for (let i = 0; i < TIERS; i++) {
-      const t = rt.tiers[i]
-      t.step(dt, reduced)
-      const settled = Math.abs(t.value - t.target) < 0.02 && Math.abs(t.velocity) < 0.3
-      if (settled && !tierSettled.current[i] && t.target === 0) sound.click(0.55)
-      tierSettled.current[i] = settled
-    }
+    // mask explode tiers: each returns on its own spring
+    for (let i = 0; i < TIERS; i++) rt.tiers[i].step(dt, reduced)
 
     // rebuild geometry only when shape-defining inputs change
     const s = st.view === 'fab' ? rt.fab.value : process.length - 1

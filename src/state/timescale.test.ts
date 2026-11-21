@@ -1,28 +1,24 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useAtlas } from './store'
-import { frameDt, endFrame, nextSpeed, snapSpeed, stepper, STEP_BEAT } from './timescale'
+import { fabDt, nextSpeed, snapSpeed } from './timescale'
 import { advancePlayback, PLAY } from '../scene/playback'
 
 const FRAME = 1 / 60
-/** real seconds for fab playback to finish easing into the next step at the current speed */
+/** real seconds for fab playback to ease into the next step at the current speed */
 function secondsForOneStep() {
   const play = { t: 0, from: 7 }
   let real = 0
   for (;;) {
-    const { target } = advancePlayback(play, frameDt(FRAME), 44)
-    endFrame(FRAME)
+    const { target } = advancePlayback(play, fabDt(FRAME), 44)
     real += FRAME
     if (target >= 8 - 1e-9) return real
     if (real > 60) throw new Error('never arrived')
   }
 }
 
-beforeEach(() => {
-  useAtlas.setState({ speed: 1, paused: false })
-  stepper.pending = 0
-})
+beforeEach(() => useAtlas.setState({ speed: 1 }))
 
-describe('shared time scale', () => {
+describe('fab replay speed', () => {
   it('a fab step at 0.5× takes about twice as long as at 1×', () => {
     const t1 = secondsForOneStep()
     useAtlas.setState({ speed: 0.5 })
@@ -37,15 +33,6 @@ describe('shared time scale', () => {
     expect(secondsForOneStep() / t1).toBeCloseTo(0.5, 1)
     useAtlas.setState({ speed: 0.25 })
     expect(secondsForOneStep() / t1).toBeCloseTo(4, 0)
-  })
-  it('paused content does not advance; a step button plays one short beat', () => {
-    useAtlas.setState({ paused: true })
-    const play = { t: 0, from: 0 }
-    for (let i = 0; i < 120; i++) advancePlayback(play, frameDt(FRAME), 44), endFrame(FRAME)
-    expect(play.t).toBe(0)
-    stepper.pending = STEP_BEAT
-    for (let i = 0; i < 120; i++) advancePlayback(play, frameDt(FRAME), 44), endFrame(FRAME)
-    expect(play.t).toBeCloseTo(STEP_BEAT, 5)
   })
   it('snaps to ¼, ½, 1 and 2× and steps between them', () => {
     expect(snapSpeed(0.97)).toBe(1)

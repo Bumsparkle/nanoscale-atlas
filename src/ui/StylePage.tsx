@@ -131,7 +131,6 @@ export function StylePage() {
           <SourceButton refs={[T2(37)]} />
           <span className="beyond">beyond the lecture · Sze, 3rd ed.</span>
           <kbd>Esc</kbd>
-          <button className="tool">sound off</button>
           <button className="tool" aria-pressed="true">
             section
           </button>

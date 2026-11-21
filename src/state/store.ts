@@ -58,12 +58,9 @@ export interface AtlasState {
   mastery: boolean
   /** bumps when learning progress changes (localStorage is not reactive) */
   progressVersion: number
-  sound: boolean
   reducedMotion: boolean
-  /** global content-animation speed, 0.25–2× (see state/timescale.ts) */
+  /** fab animation speed, 0.25–2× (see state/timescale.ts) */
   speed: number
-  /** all content animation frozen (step buttons advance it) */
-  paused: boolean
   explode: number
   renderer: { backend: 'webgpu' | 'webgl2' | 'pending' | 'failed'; detail?: string }
   /** real loading milestones, used by the gowning sequence */
@@ -116,11 +113,8 @@ export const useAtlas = create<AtlasState>((set) => ({
   source: null,
   mastery: false,
   progressVersion: 0,
-  sound: false,
   reducedMotion: !!prefersReduced,
   speed: initialSpeed(),
-  // reduced motion: start paused, with step buttons
-  paused: !!prefersReduced,
   explode: 0,
   renderer: { backend: 'pending' },
   boot: { shell: false, gpu: false, frame: false, layers: 0 },

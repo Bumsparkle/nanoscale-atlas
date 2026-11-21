@@ -5,7 +5,6 @@ import { driveScene } from '../drive'
 import { useAtlas } from '../../state/store'
 import { layoutState } from '../../chapters/cmos/layout'
 import { CONTENT_BY_ID } from '../../chapters/cmos/content'
-import { sound } from '../../ui/sound'
 import { SourceButton } from '../../ui/source/Source'
 
 /**
@@ -83,7 +82,6 @@ export function QuestionCard({
     report(true)
     setStatus('right')
     st().set({ hint: null, quiz: false })
-    sound.click(0.8)
     finish()
   }
   // point at the model: the hint's own highlight, or the object the question is about (never a label answer)
