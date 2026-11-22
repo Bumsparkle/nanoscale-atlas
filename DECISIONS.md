@@ -311,3 +311,5 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **Topic 3:** 142 facts (81 key), 222 questions: 142 recall, 31 do, 27 calc (8 parameterised), 16 predict, 6 label. The lesson has 10 sections, 39 steps and 48 checks, 3,109 words, about 74 minutes (sections 5.7–8.7 min).
 - **Topic 4:** 96 facts (63 key), 147 questions: 96 recall, 15 do, 13 calc (2 parameterised), 13 predict, 10 label. The lesson has 7 sections, 28 steps and 33 checks, 1,883 words, about 50 minutes (sections 6.1–8.4 min).
 - **Whole bank:** 696 questions. Every fact has a question, and every key fact has at least two question types (tested).
+
+- **Slide archive for all three decks (2026-11-22).** `private/slides-all.tar.gz` (102 slides) is uploaded to the same private release, `topic2-slides`, as the asset `slides-all.tar.gz`. Its API URL is `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/778978728`. To serve Topics 3 and 4 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it and redeploy. The old Topic 2 asset is kept, so the current deployment keeps working until then.

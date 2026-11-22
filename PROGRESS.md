@@ -617,4 +617,4 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
   - unformatted numeric answers.
   
   The screenshots stay in the gitignored `shots/`.
-- **Not done:** the deployed site's private slide archive still holds Topic 2 only. Re-upload `private/slides-all.tar.gz` to show Topic 3 and 4 slides there. Locally, the Source buttons show all three decks.
+- **Slides:** the three-deck archive is uploaded to the private release (asset 778978728). To show Topics 3 and 4 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it (see DECISIONS.md).
