@@ -12,12 +12,15 @@ import './home.css'
  * onto the yellow-lit lithography bay, where the wafer is already on the
  * chuck: the wafer layer, rendering behind the doors all along.
  */
+// Topic 4 slide 8, in order; the air shower is beyond the lecture (Whyte, Cleanroom Technology)
 const STEPS = [
-  { id: 'suit', label: 'Suit', note: 'Coverall, hood and boots: people shed ~10⁶ particles a minute.' },
-  { id: 'gloves', label: 'Gloves', note: 'Nitrile, taped at the cuff. Skin oils are contamination.' },
-  { id: 'shower', label: 'Air shower', note: 'HEPA-filtered jets blow off what is left.' },
+  { id: 'wash', label: 'Wash', note: 'Pre-entry: wash face and hands with lots of water; rinse your mouth, no smoking; no muddy shoes.' },
+  { id: 'gloves', label: 'Gloves', note: 'Latex gloves on before you suit up.' },
+  { id: 'suit', label: 'Suit', note: 'Bunny suit with mask and overshoes, never dragged on the floor.' },
+  { id: 'vinyl', label: 'Vinyl', note: 'Vinyl gloves over the latex. Inside: never touch your face.' },
+  { id: 'shower', label: 'Air shower', note: 'HEPA-filtered jets blow off what is left (beyond the lecture).' },
 ]
-const MIN_STEP_MS = 650
+const MIN_STEP_MS = 520
 const KEY = 'atlas.gowned'
 
 function seen() {
@@ -71,12 +74,13 @@ export function Home() {
     } catch {
       /* private mode: fine */
     }
-    navigate('/cmos/wafer' + (location.search.includes('gl=webgl') ? '?gl=webgl' : ''))
+    navigate('/clean/cleanroom' + (location.search.includes('gl=webgl') ? '?gl=webgl' : ''))
   }
   const doors = useDoorSpring(phase === 'opening', reduced, enter)
 
   // real milestones gate each gowning step
-  const ready = [boot.shell, boot.gpu, boot.frame && boot.layers >= 6]
+  const loaded = boot.frame && boot.layers >= 6
+  const ready = [true, boot.shell, boot.gpu, boot.gpu, loaded]
   useEffect(() => {
     if (phase !== 'gowning') return
     const t = setInterval(() => {
@@ -126,11 +130,11 @@ export function Home() {
       <div className="door-seam" aria-hidden />
 
       <section className="home-card">
-        <p className="eyebrow">ELEC0031 · Topic 2 · Chapter 1</p>
+        <p className="eyebrow">ELEC0031 · Topics 2–4 · three chapters</p>
         <h1>Nanoscale Atlas</h1>
         <p className="home-lede">
-          The CMOS inverter, from a 300 mm wafer to the 5.43 Å silicon lattice. Built from the lecture's six masks and its
-          45-step fabrication sequence.
+          From quartz sand to the 5.43 Å silicon lattice: growing the crystal, keeping the wafer clean, and building a CMOS
+          inverter from the lecture's six masks and 45 fabrication steps.
         </p>
         {phase === 'door' && (
           <button className="home-cta" onClick={start} autoFocus>
@@ -156,7 +160,8 @@ export function Home() {
           </button>
         )}
         <nav className="home-links" aria-label="Shortcuts">
-          <a href="/cmos/inverter" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter'))}>inverter cell</a>
+          <a href="/growth/sand" onClick={(e) => (e.preventDefault(), navigate('/growth/sand'))}>ch.2 sand to wafer</a>
+          <a href="/cmos/inverter" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter'))}>ch.1 inverter cell</a>
           <a href="/cmos/inverter?view=section&cut=slide27" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter?view=section&cut=slide27'))}>slide 27 section</a>
           <a href="/cmos/inverter?view=fab&step=0" onClick={(e) => (e.preventDefault(), navigate('/cmos/inverter?view=fab&step=0'))}>fab sequence</a>
           {!IS_APP && (
@@ -166,7 +171,7 @@ export function Home() {
           )}
         </nav>
       </section>
-      {phase === 'gowning' && step === 2 && <div className="air" aria-hidden />}
+      {phase === 'gowning' && step === 4 && <div className="air" aria-hidden />}
     </main>
   )
 }

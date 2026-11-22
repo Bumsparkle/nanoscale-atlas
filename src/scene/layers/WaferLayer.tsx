@@ -5,6 +5,8 @@ import { useLabEnvironment } from '../Lighting'
 import { Inspectable, InspectSync, ClearOnMiss } from '../Inspectable'
 import { rig } from '../rig'
 import { transition } from '../transition'
+import { Gettering, YieldDies } from './WaferTabs'
+import { useAtlas } from '../../state/store'
 
 /**
  * Layer 1: a 300 mm wafer on the chuck under yellow light (1 unit = 1 mm).
@@ -61,9 +63,11 @@ function waferMaterial() {
   return m
 }
 
-export default function WaferLayer() {
+function WaferScene() {
   useLabEnvironment(true, 1.2)
+  const tab = useAtlas((s) => s.tab)
   const wafer = useMemo(() => waferMaterial(), [])
+  const plain = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#3a434a', metalness: 0.8, roughness: 0.2 }), [])
   const chuck = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#16181a', roughness: 0.55, metalness: 0.4 }), [])
   const target = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false })
@@ -77,6 +81,7 @@ export default function WaferLayer() {
     rig.goHome()
     rig.handlers = {
       onDiveIn: () => void transition.go('die', { via: [TARGET_DIE[0], 0.4, TARGET_DIE[1]] }),
+      onSurface: () => void transition.go('cleanroom'),
     }
     return () => void (rig.handlers = {})
   }, [])
@@ -88,7 +93,7 @@ export default function WaferLayer() {
       <directionalLight position={[120, 260, 160]} intensity={2.4} color="#ffc76b" />
       <directionalLight position={[-200, 120, -80]} intensity={0.6} color="#ffae4a" />
       <Inspectable node="wafer" fit={1.05}>
-        <mesh material={wafer} position={[0, 0, 0]}>
+        <mesh material={tab === 'yield' ? plain : wafer} position={[0, 0, 0]}>
           <cylinderGeometry args={[R, R, 0.775, 160, 1]} />
         </mesh>
       </Inspectable>
@@ -98,7 +103,8 @@ export default function WaferLayer() {
           <meshStandardNodeMaterial color="#0b0c0d" roughness={0.9} />
         </mesh>
       </Inspectable>
-      <Inspectable node="die-site" fit={8} minDist={70}>
+      {tab === 'yield' && <YieldDies />}
+      {tab !== 'yield' && <Inspectable node="die-site" fit={8} minDist={70}>
         <mesh material={target} position={[TARGET_DIE[0], 0.41, TARGET_DIE[1]]} rotation-x={-Math.PI / 2}>
           <ringGeometry args={[2.6, 3.1, 4, 1, Math.PI / 4]} />
         </mesh>
@@ -106,7 +112,7 @@ export default function WaferLayer() {
           <planeGeometry args={[DIE - 0.3, DIE - 0.3]} />
           <meshBasicNodeMaterial transparent opacity={0.0} depthWrite={false} />
         </mesh>
-      </Inspectable>
+      </Inspectable>}
       {/* vacuum chuck */}
       <mesh material={chuck} position={[0, -2.5, 0]}>
         <cylinderGeometry args={[158, 162, 4.2, 128]} />
@@ -114,5 +120,25 @@ export default function WaferLayer() {
       <InspectSync />
       <ClearOnMiss />
     </>
+  )
+}
+
+export default function WaferLayer() {
+  const tab = useAtlas((s) => s.tab)
+  useEffect(() => {
+    if (tab !== 'gettering') return
+    rig.setHome({ target: [40, 0, 0], polar: 1.38, azimuth: 0.25, dist: 620 })
+    rig.goHome()
+    rig.handlers = { onSurface: () => void transition.go('cleanroom') }
+    return () => void (rig.handlers = {})
+  }, [tab])
+  return tab === 'gettering' ? (
+    <>
+      <Gettering />
+      <InspectSync />
+      <ClearOnMiss />
+    </>
+  ) : (
+    <WaferScene />
   )
 }

@@ -3,7 +3,7 @@ import { T2 } from '../../../sources'
 
 export default defineContent({
   id: 'wafer-notch', title: 'Orientation notch', short: 'Marks the crystal orientation of the wafer',
-  layer: 'wafer', parent: 'wafer', node: 'wafer-notch', sources: [T2(3), T2(24)],
+  layer: 'wafer', parent: 'wafer', node: 'wafer-notch', tabs: ['explore', 'process', 'yield'], sources: [T2(3), T2(24)],
   what: 'A small notch cut into the wafer edge.',
   made: 'Not covered in the lecture; see below. Slide 3 shows why the crystal order matters.',
   does: 'Each mask must line up with the layers already on the wafer (show six masks in registration).',

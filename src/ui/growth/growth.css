@@ -331,3 +331,7 @@
     max-height: 46vh;
   }
 }
+.bench.lab > *,
+.gp > * {
+  flex-shrink: 0;
+}

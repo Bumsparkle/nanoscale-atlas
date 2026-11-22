@@ -3,7 +3,7 @@ import { T2 } from '../../../sources'
 
 export default defineContent({
   id: 'die-site', title: 'The inverter’s die', short: 'One die of many; zoom in to reach the inverter',
-  layer: 'wafer', parent: 'wafer', node: 'die-site', sources: [T2(2), T2(24)],
+  layer: 'wafer', parent: 'wafer', node: 'die-site', tabs: ['explore', 'process'], sources: [T2(2), T2(24)],
   what: 'One rectangle of the die grid: a complete chip, with many transistors on one chip.',
   made: 'Every die gets the same masks and process steps at the same time.',
   does: 'Contains the inverter cell this chapter follows down to the atoms.',
