@@ -2,7 +2,12 @@
 
 **Live site:** _(add the Vercel URL here)_
 
-A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation). Chapter 1 is the CMOS inverter from Topic 2, followed from a 300 mm wafer down to the 5.43 Å silicon lattice. Every 3D structure inside the chip is **generated** from the six masks of slide 28 and the fabrication recipe of slides 29–45. Every panel cites its slide.
+A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation), in three chapters:
+- **Ch.1 CMOS inverter** (Topic 2): from a 300 mm wafer down to the 5.43 Å silicon lattice.
+- **Ch.2 From sand to wafer** (Topic 3): refining, Czochralski and float-zone growth, crystal structure and Miller planes, bands, defects, and the process flow with a process lab.
+- **Ch.3 Keeping it clean** (Topic 4): the cleanroom, the RCA wet bench, redox, gettering and yield.
+
+In Chapter 1, Every 3D structure inside the chip is **generated** from the six masks of slide 28 and the fabrication recipe of slides 29–45. Every panel cites its slide.
 
 - Spec: [BRIEF.md](BRIEF.md)
 - Progress and self-review: [PROGRESS.md](PROGRESS.md)
@@ -22,7 +27,11 @@ Useful URLs:
 
 | URL | What it opens |
 |---|---|
-| `/` | Cleanroom door |
+| `/` | Cleanroom door (gowning, then the cleanroom) |
+| `/growth/sand` … `/growth/wafers` | Chapter 2's layers (`/growth/czochralski?tab=fz`, `?k0=0.8&f=0.9`) |
+| `/clean/cleanroom?tab=wetbench` | Chapter 3 (`tab=room`, `wetbench`, `redox`) |
+| `/cmos/wafer?tab=process` | Process flow and lab (`tab=gettering`, `tab=yield`) |
+| `/cmos/inverter/nmos/gate-oxide/lattice?tab=miller&hkl=111` | Lattice tabs: `cells`, `miller`, `bands`, `defects` |
 | `/cmos/wafer` … `/cmos/inverter/nmos/gate-oxide/lattice` | The six zoom layers |
 | `/cmos/inverter?view=section&cut=slide27` | Locked section on the slide 27 line (`cut` can also be `ngate`, `pgate`, or `<λ>&axis=x\|y`) |
 | `/cmos/inverter?view=fab&step=23` | Fab timeline at a given step |
@@ -34,10 +43,10 @@ Useful URLs:
 
 Modes (top bar):
 - **Explore** is the sandbox. Its "mastery" toggle tints the model by how well you know each part.
-- **Lesson** (`?mode=lesson&at=<step id>`) teaches Topic 2 in 15 sections. Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
-- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 261 questions, per-slide coverage and a timed paper.
+- **Lesson** (`?mode=lesson&at=<step id>`): one lesson per chapter (Topic 2 in 15 sections, Topic 3 in 10, Topic 4 in 7). Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
+- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 696 questions (filter by topic), a skill map and per-slide coverage, and a timed paper.
 
-The fact inventory is `content/topic2/facts.json`, the question bank is `content/topic2/questions/`, and the lesson is `content/topic2/lesson.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
+Each topic has `content/topicN/facts.json` (the fact inventory), `content/topicN/questions/` and `content/topicN/lesson/`. Topics 3 and 4 use the shared builders in `content/kit.ts`. Parameterised calculations are generated in `src/learn/calcs.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
 
 Keys:
 - **Global:** `Esc` goes up a level (it closes a panel first).
@@ -66,6 +75,10 @@ scripts/            Playwright: shots.mjs (screenshots), tour.mjs (recorded tour
 The scene core is imperative (`CellModel`, `rig`, `transition`, `cellRuntime`): React only mounts layers and owns the DOM UI. So moving the render loop to vanilla three would mean replacing `Stage.tsx` and the thin layer components, not the simulator or the camera.
 
 ## How to add a chapter
+
+Chapters 2 and 3 show the second pattern: hand-built layers and tabs instead of masks. Add layers (or `tabs` on an existing layer) to `chapters/cmos/layers.ts`, put the physics in `chapters/<chapter>/physics.ts` with tests, write one content file per object in `chapters/<chapter>/content/` (with `tabs` if it appears on only some tabs), register the nodes in `nodes.ts`, and add the facts, questions and lesson under `content/topicN/`. "do" questions can target any store value with a `state` target.
+
+For a chapter built from masks:
 
 A chapter is masks + a recipe + content. No 3D modelling.
 
@@ -174,7 +187,7 @@ None of this is set up yet, and no credentials are in the repository.
 
 ## Facts and sources
 
-The lecture PDF is UCL course material and is **not** included in this repository. To work on the content, put your own copy at `docs/topic2-cmos.pdf` (gitignored).
+The lecture PDFs are UCL course material and are **not** included in this repository. To work on the content, put your own copies at `docs/topic2-cmos.pdf`, `docs/topic3-silicon-growth.pdf` and `docs/topic4-cleaning-cleanrooms.pdf` (all gitignored), then `npm run slides`.
 
 On-slide facts cite the Topic 2 slide numbers (PDF page = slide). Anything beyond the lecture is marked "beyond the lecture" with a named source. The main ones are:
 - Plummer, Deal & Griffin, *Silicon VLSI Technology*

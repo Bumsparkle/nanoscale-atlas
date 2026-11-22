@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { realise, sci } from '../calcs'
 import type { Question } from '../schema'
 import { checkTarget, grade, type Response } from '../engine'
 import { driveScene } from '../drive'
@@ -34,7 +35,14 @@ export function parseNumber(s: string): number {
 
 type Status = 'setup' | 'open' | 'revealing' | 'right' | 'wrong' | 'failed'
 
-export function QuestionCard({
+/** a parameterised calculation gets fresh numbers each time the card opens */
+export function QuestionCard(props: Parameters<typeof QuestionCardInner>[0]) {
+  const [seed] = useState(() => 1 + Math.floor(Math.random() * 1e9))
+  const q = useMemo(() => realise(props.q, seed), [props.q, seed])
+  return <QuestionCardInner {...props} q={q} />
+}
+
+function QuestionCardInner({
   q,
   onFirst,
   onDone,
@@ -285,7 +293,7 @@ export function QuestionCard({
           <p>{q.workedSolution}</p>
           {q.type === 'calc' && (
             <p className="mono qanswer">
-              = {q.answer.value} {q.answer.unit}
+              = {sci(q.answer.value, 4)} {q.answer.unit}
             </p>
           )}
           {(q.type === 'do' || q.type === 'predict') && solution && (

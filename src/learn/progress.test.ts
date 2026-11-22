@@ -25,8 +25,8 @@ describe('Leitner boxes', () => {
     expect(queue(ALL, 1000, true).some((x) => x.id === 'q-s37-nm')).toBe(true)
   })
   it('filters by slide range and topic', () => {
-    expect(queue({ from: 47, to: 47, area: null }).every((q) => q.source.slide === 47)).toBe(true)
-    const fab = queue({ from: 1, to: 49, area: 'fabrication' })
+    expect(queue({ topic: 'topic2', from: 47, to: 47, area: null }).every((q) => q.source.slide === 47)).toBe(true)
+    const fab = queue({ topic: 'topic2', from: 1, to: 49, area: 'fabrication' })
     expect(fab.length).toBeGreaterThan(20)
     expect(fab.every((q) => q.source.slide >= 24 && q.source.slide <= 45)).toBe(true)
     expect(boxCounts(ALL)[0]).toBe(QUESTIONS.length)

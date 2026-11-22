@@ -876,3 +876,77 @@ html[data-mode='revise'] .layout-panel {
 .lp-steplist.done {
   margin: var(--s-2) 0 var(--s-4);
 }
+.lp-chapters {
+  flex-wrap: wrap;
+  margin-top: var(--s-2);
+}
+.lp-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  align-items: center;
+  margin: var(--s-2) 0 0;
+}
+.cov-skills {
+  padding: 0 var(--s-5) var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.cov-skill-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--s-3);
+  align-items: start;
+}
+.cov-ch {
+  text-align: left;
+  font-size: var(--t-13);
+  color: var(--ink-1);
+  padding: var(--pad-chip);
+  border-radius: var(--radius);
+}
+.cov-ch.on,
+.cov-ch:hover {
+  background: var(--bg-3);
+  color: var(--ink-0);
+}
+.cov-skill-cells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+.cov-skill {
+  position: relative;
+  min-width: 112px;
+  padding: 4px 8px;
+  border: var(--hair);
+  border-radius: var(--radius);
+  font-size: var(--t-12);
+  color: var(--ink-1);
+  overflow: hidden;
+}
+.cov-skill i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: rgba(159, 211, 162, 0.22);
+}
+.cov-skill b {
+  position: relative;
+  font-weight: 400;
+}
+.cov-skill.seen {
+  border-color: var(--amber-dim);
+}
+.cov-skill.full {
+  border-color: var(--on);
+}
+.cov-decks {
+  padding: 0 var(--s-5);
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .cov-skill-row {
+    grid-template-columns: 1fr;
+  }
+}

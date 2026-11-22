@@ -3,13 +3,25 @@ import { useAtlas, type Mode } from '../../state/store'
 import { LessonPanel } from './LessonPanel'
 import { RevisePanel } from './RevisePanel'
 import { progress } from '../progress'
+import { chapterOfPosition, positionsOf } from '../lesson'
+import { chapterOf } from '../../chapters/cmos/layers'
 import '../learn.css'
 
 const MODES: { id: Mode; label: string; hint: string }[] = [
   { id: 'explore', label: 'Explore', hint: 'The sandbox: every view, no questions' },
-  { id: 'lesson', label: 'Lesson', hint: 'Topic 2 in lecture order, a question after each part' },
+  { id: 'lesson', label: 'Lesson', hint: 'This chapter’s lesson, a question after each part' },
   { id: 'revise', label: 'Revise', hint: 'Spaced repetition, coverage by slide, timed paper' },
 ]
+
+/** resume the lesson of the chapter you are looking at */
+function lessonStart() {
+  const st = useAtlas.getState()
+  const ch = chapterOf(st.layer, st.tab)
+  const at = progress.lesson().at
+  if (chapterOfPosition(at) === ch) return at
+  const list = positionsOf(ch)
+  return list.find((p) => !progress.lesson().done.includes(p)) ?? list[0]
+}
 
 export function ModeSwitch() {
   const mode = useAtlas((s) => s.mode)
@@ -24,7 +36,7 @@ export function ModeSwitch() {
           onClick={() =>
             set({
               mode: m.id,
-              lessonAt: m.id === 'lesson' ? progress.lesson().at : useAtlas.getState().lessonAt,
+              lessonAt: m.id === 'lesson' ? lessonStart() : useAtlas.getState().lessonAt,
               hint: null,
               look: null,
               quiz: false,

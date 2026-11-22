@@ -1,5 +1,7 @@
 import { FACTS, QUESTIONS, QUESTIONS_FOR_FACT, FACT_BY_ID } from './bank'
-import { POSITIONS, STEPS } from './lesson'
+import { chapterOfPosition, POSITIONS, positionsOf, STEPS } from './lesson'
+import { factsOfSlide, FACT_FILES } from './bank'
+import type { TopicId } from '../sources'
 import type { Question } from './schema'
 
 /**
@@ -90,13 +92,18 @@ export const progress = {
     write(KEY_LESSON, lesson)
     emit()
   },
-  /** furthest position you may open (index into POSITIONS): one past the last finished in sequence */
-  reachable(): number {
+  /**
+   * Furthest position you may open (index into POSITIONS): one past the last
+   * finished in sequence, within the chapter of `pos` (each chapter's lesson
+   * can be started on its own).
+   */
+  reachable(pos: string = lesson.at): number {
+    const list = positionsOf(chapterOfPosition(pos))
     let i = 0
-    while (i < POSITIONS.length && lesson.done.includes(POSITIONS[i])) i++
-    return Math.min(i, POSITIONS.length - 1)
+    while (i < list.length && lesson.done.includes(list[i])) i++
+    return POSITIONS.indexOf(list[Math.min(i, list.length - 1)])
   },
-  canOpen: (pos: string) => POSITIONS.indexOf(pos) <= progress.reachable(),
+  canOpen: (pos: string) => POSITIONS.indexOf(pos) <= progress.reachable(pos),
 
   reset() {
     cards = {}
@@ -134,10 +141,9 @@ export interface SlideCoverage {
   seen: number
   pct: number
 }
-export function slideCoverage(): SlideCoverage[] {
-  return Array.from({ length: 49 }, (_, i) => {
-    const slide = i + 1
-    const fs = FACTS.filter((f) => f.source.slide === slide)
+export function slideCoverage(topic: TopicId = 'topic2'): SlideCoverage[] {
+  return FACT_FILES[topic].slides.map(({ slide }) => {
+    const fs = factsOfSlide(topic, slide)
     const mastered = fs.filter((f) => factMastered(f.id)).length
     return { slide, facts: fs.length, mastered, seen: fs.filter((f) => factSeen(f.id)).length, pct: fs.length ? mastered / fs.length : 0 }
   })
@@ -166,12 +172,15 @@ export function stepForObject(contentId: string): string | null {
 }
 
 export interface Filter {
+  /** null: every topic */
+  topic?: TopicId | null
   from: number
   to: number
   area: string | null
 }
 export const inFilter = (q: Question, f: Filter) => {
-  if (q.source.slide < f.from || q.source.slide > f.to) return false
+  // a topic narrows to its deck and slide range; no topic means every deck
+  if (f.topic && (q.source.topic !== f.topic || q.source.slide < f.from || q.source.slide > f.to)) return false
   if (f.area && !q.factIds.some((id) => FACT_BY_ID[id].area === f.area)) return false
   return true
 }
@@ -208,6 +217,6 @@ export function examPaper(seed: number, f: Filter, n = 14): Question[] {
   const calcs = pool.filter((q) => q.type === 'calc')
   const recalls = pool.filter((q) => q.type === 'recall')
   const nc = Math.min(calcs.length, Math.round(n * 0.4))
-  return [...pick(calcs, nc), ...pick(recalls, n - nc)].sort((a, b) => a.source.slide - b.source.slide)
+  return [...pick(calcs, nc), ...pick(recalls, n - nc)].sort((a, b) => a.source.topic.localeCompare(b.source.topic) || a.source.slide - b.source.slide)
 }
 export const EXAM_MINUTES = 20

@@ -563,3 +563,58 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
 - Every slide was read in full, including the images (Topic 4's periodic table on slide 12 and the redox table on slide 19, the k0 table, the yield graphs). The corrections and the partly unreadable figures are listed in DECISIONS.md.
 - The schema now accepts `t3-`/`t4-` ids, a `corrects` field, `links` and `noFacts`. `src/learn/facts.test.ts` checks slide coverage, ids, key rules, links and that no corrected error is taught.
 - `npm run slides` renders all three decks into the gitignored `private/slides/`.
+
+### Topics 3 and 4 · Steps 2–4: Chapters 2 and 3, lessons and Revise — done (2026-11-22)
+
+**Chapter 2, From sand to wafer (Topic 3)**
+- New layers: sand (with metallurgical-grade Si), the Siemens reactor and the crucible charge, the Czochralski puller, a float-zone tab, the ingot and the ID saw.
+- The puller: drag k0 (with dopant presets from slide 17's table) and the pulled fraction. The ingot is coloured by Cs/C0 from the segregation equation, and the linked graph reproduces slide 19's curves.
+- Float zone: zone position and 1–3 refining passes.
+- Lattice tabs:
+  - unit cells, with SC, BCC and FCC, and diamond as a second FCC cell sliding in by a/4;
+  - Miller planes: type h k l to see the plane, its lit atoms, the normal and the sheet density; there is also an intercepts tool;
+  - bands: a spacing slider drives the atom clouds and a slide 9 chart, plus a metal / semiconductor / insulator strip;
+  - defects: a vacancy and an interstitial, with C_V* and C_I* against temperature.
+- Wafer "Process flow" tab: slide 24 as a clickable flow chart. Each step runs in the process lab, which shows:
+  - oxidation, with dry/wet, T, t, Deal–Grove and the interface moving into the Si;
+  - positive vs negative resist;
+  - isotropic undercut vs anisotropic etch against line width;
+  - predeposition and drive-in, with D = D0·exp(−Q/kT) and the profile chart;
+  - implantation and the anneal;
+  - CVD and MBE epitaxy;
+  - thermal evaporation.
+  
+  Each step links to the matching step of the inverter fab.
+
+**Chapter 3, Keeping it clean (Topic 4)**
+- The home sequence is real content: gowning follows slide 8, and the doors open onto the cleanroom.
+- Cleanroom room tab: ceiling HEPA filters with the RAH above, airflow tracers looping through the bay, floor and service chase, a 1 ft³ box showing the class count, and switchable people, book and gloves as particle sources.
+- Wet bench: the RCA sequence with ratios, temperatures and times. Contaminants disappear from the wafer close-up step by step, and a chemical oxide is left by the H₂O₂.
+- Redox ladder: slide 19's potentials. Pick a metal and water / H₂O₂ / O₃ to see whether it dissolves or plates out.
+- Gettering (wafer tab): PSG, devices, denuded zone, intrinsic gettering bulk and backside. Run the temperature cycle, then kick out, migrate and trap the metal atoms.
+- Yield (wafer tab): a live die grid. D0, chip area and C sliders scatter clustered killer particles; Poisson and negative binomial are compared on a slide 16-style chart.
+
+**Lessons and Revise.** The lessons, question counts and engine changes are listed in DECISIONS.md.
+- Every lesson check passes the rules the Topic 2 lesson had: interactive at least half the time, no matching words, reviews mixing sections, completable against live state.
+- Revise filters by topic.
+- Coverage has a skill map per chapter.
+- Exam papers draw from any topic, with fresh numbers in the parameterised calculations.
+
+**Verification**
+- 483 tests pass, all the original Topic 2 tests included. New tests:
+  - the Topic 3 simulator upgrades: 0.44 consumption, resist polarity, isotropic undercut, lateral diffusion, implant damage and anneal, epitaxy, evaporation;
+  - growth physics: segregation conservation, defects at 1000 °C, bands, Miller indices and sheet densities, Deal–Grove, diffusion and dose conservation, zone refining;
+  - cleaning physics: RCA, redox, Poisson and NB yields against slide 16's graph, and the sampled yield matching both formulas;
+  - the inventories, the parameterised calculations and both new lessons.
+- `scripts/zoomcheck.mjs` scrolled from sand to the lattice through all 12 layers with no page errors. The scale read 13 mm, 2.4 m, 3 m, 1.9 m, 1.7 m, 8.6 m, 247 mm, 4.4 mm, 19 µm, 5.2 µm, 6.8 nm and 2.5 nm.
+- Screenshots of every new scene and tab (`scripts/chaptershots.mjs`) and of every lesson question type and Revise screen (`scripts/learnshots3.mjs`) were reviewed. Fixes found that way:
+  - shard-like sand grains;
+  - a puller cut-away facing away from the camera;
+  - black metals on the saw and wafers;
+  - too-close cameras on the polysilicon, wafers and gettering scenes;
+  - process-lab panels collapsing;
+  - labels under panels;
+  - unformatted numeric answers.
+  
+  The screenshots stay in the gitignored `shots/`.
+- **Not done:** the deployed site's private slide archive still holds Topic 2 only. Re-upload `private/slides-all.tar.gz` to show Topic 3 and 4 slides there. Locally, the Source buttons show all three decks.

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAtlas } from '../../state/store'
 import { examPaper, EXAM_MINUTES, progress, type Filter } from '../progress'
 import { grade } from '../engine'
+import { realise, sci } from '../calcs'
 import { layoutState } from '../../chapters/cmos/layout'
 import { parseNumber } from './QuestionCard'
 import type { Question } from '../schema'
@@ -19,7 +20,7 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
   const [left, setLeft] = useState(EXAM_MINUTES * 60)
   const [marked, setMarked] = useState(false)
   const set = useAtlas((s) => s.set)
-  const paper = useMemo(() => (seed == null ? [] : examPaper(seed, filter)), [seed]) // eslint-disable-line react-hooks/exhaustive-deps
+  const paper = useMemo(() => (seed == null ? [] : examPaper(seed, filter).map((q, i) => realise(q, seed + i + 1))), [seed]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const respond = (q: Question, a: Ans) => {
     if (q.type === 'calc') return grade(q, { kind: 'number', value: parseNumber(a.text ?? '') }, useAtlas.getState(), layoutState.get())
@@ -128,7 +129,7 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
                     <p>{q.workedSolution}</p>
                     {q.type === 'calc' && (
                       <p className="mono qanswer">
-                        = {q.answer.value} {q.answer.unit}
+                        = {sci(q.answer.value, 4)} {q.answer.unit}
                       </p>
                     )}
                   </div>

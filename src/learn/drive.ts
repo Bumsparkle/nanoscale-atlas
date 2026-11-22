@@ -16,7 +16,7 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 export async function driveScene(sc: Scene, opts: { animate?: boolean } = {}) {
   const st = useAtlas.getState()
   if ((sc.layer && sc.layer !== st.layer) || (sc.device && sc.device !== st.device && (sc.layer ?? st.layer) === 'transistor')) {
-    await transition.go(sc.layer ?? st.layer, { device: sc.device })
+    await transition.go(sc.layer ?? st.layer, { device: sc.device, tab: sc.tab })
     // let the new layer mount and subscribe before changing its view
     await wait(80)
   }

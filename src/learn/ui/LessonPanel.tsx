@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
-import { POSITIONS, reviewKey, SECTION_BY_ID, SECTIONS, sectionMinutes, STEP_BY_ID, type FlatStep } from '../lesson'
+import { POSITIONS, positionsOf, reviewKey, SECTION_BY_ID, sectionMinutes, sectionsOf, STEP_BY_ID, type FlatStep, type Section } from '../lesson'
 import { QUESTION_BY_ID } from '../bank'
 import { driveScene } from '../drive'
 import { progress } from '../progress'
-import type { LessonSection } from '../schema'
+import { CHAPTER_BY_ID, CHAPTERS } from '../../chapters/cmos/layers'
 import { useAtlas } from '../../state/store'
 import { QuestionCard, type Outcome } from './QuestionCard'
 import { CollapseToggle, useCollapsed } from './Collapse'
@@ -46,8 +46,12 @@ export function LessonPanel() {
   const at = storeAt && parse(storeAt) ? storeAt : lp.at
   const { section, step } = parse(at) ?? parse(POSITIONS[0])!
   const i = POSITIONS.indexOf(at)
+  const SECTIONS = sectionsOf(section.chapter)
+  const chapter = CHAPTER_BY_ID[section.chapter]
+  const chapterPositions = positionsOf(section.chapter)
+  const lastPos = chapterPositions[chapterPositions.length - 1]
   const si = SECTIONS.indexOf(section)
-  const reach = useMemo(() => progress.reachable(), [lp])
+  const reach = useMemo(() => progress.reachable(at), [lp, at]) // eslint-disable-line react-hooks/exhaustive-deps
   const done = lp.done.includes(at)
 
   const go = (j: number) => {
@@ -68,8 +72,8 @@ export function LessonPanel() {
     return () => window.removeEventListener('keydown', onKey)
   })
 
-  const sectionDone = (s: LessonSection) => lp.done.includes(reviewKey(s.id))
-  const firstOpen = (s: LessonSection) => {
+  const sectionDone = (s: Section) => lp.done.includes(reviewKey(s.id))
+  const firstOpen = (s: Section) => {
     const ps = [...s.steps.map((st) => st.id), reviewKey(s.id)]
     return ps.find((p) => !lp.done.includes(p)) ?? ps[0]
   }
@@ -79,7 +83,7 @@ export function LessonPanel() {
       <header className="lp-top">
         <div className="lp-row1">
           <CollapseToggle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
-          <p className="eyebrow">lesson · topic 2</p>
+          <p className="eyebrow">lesson · ch.{chapter.n} · {chapter.title}</p>
           <button className="lp-menu-btn mono" aria-expanded={menu} onClick={() => setMenu(!menu)}>
             § {String(si + 1).padStart(2, '0')} / {SECTIONS.length} ▾
           </button>
@@ -89,6 +93,15 @@ export function LessonPanel() {
             <i key={s.id} className={(sectionDone(s) ? 'done ' : '') + (k === si ? 'here' : '')} />
           ))}
         </div>
+        {menu && (
+          <div className="lp-chapters seg" role="group" aria-label="Chapter">
+            {CHAPTERS.map((c) => (
+              <button key={c.id} aria-pressed={c.id === section.chapter} onClick={() => set({ lessonAt: firstOpen(sectionsOf(c.id).find((x) => !sectionDone(x)) ?? sectionsOf(c.id)[0]) })}>
+                ch.{c.n} {c.title}
+              </button>
+            ))}
+          </div>
+        )}
         {menu && (
           <ol className="lp-menu">
             {SECTIONS.map((s, k) => {
@@ -116,9 +129,9 @@ export function LessonPanel() {
       </header>
 
       {step ? (
-        <StepView key={step.id} section={section} step={step} done={done} onNext={next} last={i === POSITIONS.length - 1} />
+        <StepView key={step.id} section={section} step={step} done={done} onNext={next} last={at === lastPos} />
       ) : (
-        <ReviewView key={section.id} section={section} index={si} done={done} onNext={next} last={i === POSITIONS.length - 1} />
+        <ReviewView key={section.id} section={section} index={si} done={done} onNext={next} last={at === lastPos} />
       )}
 
       <footer className="lp-foot">
@@ -145,7 +158,7 @@ const record = (id: string, o: Outcome) => {
 }
 
 /** one teaching step: teach, then its checks one at a time */
-function StepView({ section, step, done, onNext, last }: { section: LessonSection; step: FlatStep; done: boolean; onNext: () => void; last: boolean }) {
+function StepView({ section, step, done, onNext, last }: { section: Section; step: FlatStep; done: boolean; onNext: () => void; last: boolean }) {
   const set = useAtlas((s) => s.set)
   const [phase, setPhase] = useState<'teach' | 'check'>('teach')
   const [ready, setReady] = useState(false)
@@ -190,6 +203,14 @@ function StepView({ section, step, done, onNext, last }: { section: LessonSectio
           <p>{step.example.text}</p>
         </div>
       )}
+      {step.related.length > 0 && (
+        <p className="lp-related">
+          <span className="eyebrow">also taught in chapter 1</span>
+          {step.related.map((id) => (
+            <button key={id} className="chip" onClick={() => set({ lessonAt: id })}>{STEP_BY_ID[id]?.title ?? id} →</button>
+          ))}
+        </p>
+      )}
     </>
   )
 
@@ -198,7 +219,7 @@ function StepView({ section, step, done, onNext, last }: { section: LessonSectio
       {phase === 'teach' && n === 0 && <SectionIntro section={section} />}
       <div className="lc-head lp-step-head">
         <p className="eyebrow lp-eyebrow">
-          § {SECTIONS.indexOf(section) + 1} · {section.title}
+          § {sectionsOf(section.chapter).indexOf(section) + 1} · {section.title}
         </p>
         <SourceButton refs={step.sources} />
       </div>
@@ -282,11 +303,11 @@ function StepView({ section, step, done, onNext, last }: { section: LessonSectio
   )
 }
 
-function SectionIntro({ section }: { section: LessonSection }) {
+function SectionIntro({ section }: { section: Section }) {
   return (
     <div className="lp-intro" data-testid="section-intro">
       <p className="eyebrow">
-        section {SECTIONS.indexOf(section) + 1} of {SECTIONS.length} · about {Math.round(sectionMinutes(section))} min
+        section {sectionsOf(section.chapter).indexOf(section) + 1} of {sectionsOf(section.chapter).length} · about {Math.round(sectionMinutes(section))} min
       </p>
       <h1 className="lp-section-title">{section.title}</h1>
       <p>{section.intro}</p>
@@ -301,7 +322,7 @@ function SectionIntro({ section }: { section: LessonSection }) {
 }
 
 /** the mixed mini-review, one question at a time, then a summary */
-function ReviewView({ section, index, done, onNext, last }: { section: LessonSection; index: number; done: boolean; onNext: () => void; last: boolean }) {
+function ReviewView({ section, index, done, onNext, last }: { section: Section; index: number; done: boolean; onNext: () => void; last: boolean }) {
   const set = useAtlas((s) => s.set)
   const [k, setK] = useState(0)
   const [answered, setAnswered] = useState<boolean[]>([])
@@ -361,7 +382,7 @@ function ReviewView({ section, index, done, onNext, last }: { section: LessonSec
   )
 }
 
-function SectionSummary({ section, index, onNext, last, onRetake }: { section: LessonSection; index: number; onNext: () => void; last: boolean; onRetake: () => void }) {
+function SectionSummary({ section, index, onNext, last, onRetake }: { section: Section; index: number; onNext: () => void; last: boolean; onRetake: () => void }) {
   const ids = [...section.steps.flatMap((s) => s.checks), ...section.review]
   const seen = ids.filter((id) => id in outcomes)
   const right = seen.filter((id) => outcomes[id] === 'right').length
@@ -393,7 +414,7 @@ function SectionSummary({ section, index, onNext, last, onRetake }: { section: L
       )}
       <div className="lp-actions">
         <button className="lp-next" onClick={onNext} disabled={last}>
-          {last ? 'lesson complete' : `next: ${SECTIONS[index + 1].title} →`}
+          {last ? 'lesson complete' : `next: ${sectionsOf(section.chapter)[index + 1]?.title ?? 'next chapter'} →`}
         </button>
         <button className="chip" onClick={onRetake}>
           redo the review

@@ -263,3 +263,51 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **T4 slide 19 potentials.** Some values differ from modern standard tables by up to ~0.2 V (Fe³⁺/Fe 0.17, Mn²⁺/Mn 1.05). The ordering, which is what the slide argues from, is the same, so the lecture's numbers are taught.
 - **Cleanroom classes.** Slide 2 says particles per cubic metre, slide 7 per cubic foot ≥ 0.5 µm. Both are used: the class number is the US FED-STD-209 per-ft³ count (slide 7).
 - **Slide images.** `npm run slides` now renders every deck found in `docs/` (gitignored) into `private/slides/<topic>/` (gitignored) and packs `private/slides-all.tar.gz`. To show Topic 3 and 4 slides on the deployed site, that archive replaces the Topic 2 one in the private release.
+
+## Chapters 2 and 3 (Topics 3 and 4, 2026-11-22)
+
+### Structure
+- **One zoom ladder, three chapters.** The ladder now runs sand → polysilicon → Czochralski puller → ingot → wafers (Chapter 2) → cleanroom (Chapter 3) → wafer → die → cell → transistor → gate oxide → lattice (Chapter 1). Each layer keeps its own unit: 0.1 mm, 1 mm, 1 cm, 1 cm, 1 mm, 10 cm, then as before. `scripts/zoomcheck.mjs` scrolls from sand to the lattice and prints the scale at every stop. The scale ladder now starts at 16 m.
+- **URLs.** A layer's `path` is now its full URL: `/growth/{sand,polysilicon,czochralski,ingot,wafers}`, `/clean/cleanroom`, and the unchanged `/cmos/...` paths. `?tab=` selects a tab; `?hkl=111`, `?k0=` and `?f=` deep-link the Miller and segregation tools.
+- **Tabs, not new layers, for views of the same object.** Puller: Czochralski / Float zone. Lattice: Structure (Ch.1) / Unit cells / Miller planes / Bands / Defects (Ch.2). Wafer: Wafer / Process flow (Ch.2) / Gettering / Yield (Ch.3). Cleanroom: Room / Wet bench / Redox. Each tab is tagged with its chapter. The chapter menu in the top bar and the breadcrumbs follow the tab, not only the layer.
+- **Content `tabs`.** A content file can list the tabs where its object appears, so the parts list and the mastery dots only show what is on screen.
+- **The door opens onto the cleanroom**, which renders behind it, and the gowning loader follows slide 8: wash, gloves, suit with mask and overshoes, vinyl over latex, then the air shower. The air shower is beyond the lecture.
+
+### Physics and the simulator
+- `chapters/growth/physics.ts` and `chapters/clean/physics.ts` hold every number the scenes show. The worked solutions use the same functions. Beyond-the-lecture constants are named with their source:
+  - Deal–Grove constants for 〈100〉 Si, from Plummer Table 6-2;
+  - D0 and Q for B, P, As and Sb, from Plummer Table 7-5;
+  - an LSS range fit for implantation, good to about ±20 %;
+  - the FED-STD-209E −2.2 slope for the class lines.
+- **The bands chart is qualitative.** Energies are in units of the 3s–3p separation, and the spacings b, c and d are placed for legibility. Only the regimes, the 8N/4N state counts and the opening of the gap are claimed.
+- **Simulator upgrades are opt-in, so the Topic 2 recipe is untouched.** The new ops are:
+  - `thermalOxide`: consumes 0.44 of the new growth from the silicon and regrows through existing oxide;
+  - `develop({tone})`: positive or negative resist;
+  - `etch(mat, {isotropic})`: a quarter-circle undercut, leaving a gap under the mask. This is the "void" the M2 decision deferred; the column model allows gaps without a new material;
+  - `implant(..., {damage})` with `anneal()`;
+  - `diffuse`: lateral reach about 0.8·xj under the oxide edge;
+  - `epitaxy` and `evaporate`.
+  
+  They are tested in `src/sim/ops3.test.ts`. All 87 Topic 2 simulator and recipe tests still pass.
+- **The process lab** runs each slide 24 flow step as a short recipe on a 2D cross-section. It uses the same `Process` class as the inverter's fab timeline. Each step links to the matching step of the Chapter 1 fab.
+- **Yield.** The die grid draws defects from a gamma–Poisson mixture with shape C, which is exactly what gives the negative binomial. Neighbouring 3×3 blocks of die share a cluster factor so the failures visibly bunch up. The tests check that the counted yield matches both formulas.
+- **Gettering** is drawn ×200, with the denuded zone ×3 again, and the scene says so. The scale bar reads the wafer layer's true scale.
+
+### Learning engine
+- **Three topics in one bank.** `bank.ts` loads all three fact files and every `content/topic*/questions` and `lesson` folder. Coverage of a slide includes the Topic 2 facts it links to.
+- **Lessons per chapter.** Sections carry their chapter. Gating, the section menu and the "next" button work within a chapter, so Chapter 3 can be started before Chapter 1 is finished. Choosing Lesson opens the current view's chapter. Steps can link to the Chapter 1 step that already teaches an overlapping fact (`related`).
+- **Generic state targets.** A `do` question can now target `{kind: 'state', layer, tab, checks: [{path, eq|min|max}]}`, read from the store. One target kind covers every Chapter 2–3 control.
+- **Parameterised calculations.** A calc question can carry `answer.gen = {fn, vars}`. `learn/calcs.ts` picks values from a seed, fills in `{var}` in the prompt, and computes the answer and a full worked solution. The question card draws a new seed each time it opens, and the exam draws one per paper. Generators cover segregation, vacancies and interstitials, Si consumed by oxidation (both directions), diffusivity, the Poisson and negative-binomial yields, and Miller indices from intercepts. For Miller, the answer is the three indices typed as one number, e.g. 210, because the bank's answers are numeric.
+- **Topic 2 tests kept, scoped explicitly.** The tests that count Topic 2's slides, lesson sections and old lesson length now filter to Topic 2 / Chapter 1. Their assertions are unchanged. The same lesson rules run separately for Chapters 2 and 3:
+  - every fact is taught;
+  - sections take 5–10 minutes;
+  - at least half the checks are interactive;
+  - no answer can be matched from the step's text;
+  - reviews mix in earlier sections;
+  - each lesson can be completed against live state.
+- **Revise.** It filters by topic: all, T2, T3 or T4, plus a slide range within a topic and the areas of that topic. Coverage has a skill map (mastery per area for each chapter) above the per-slide grid of the chosen deck.
+
+### Counts
+- **Topic 3:** 142 facts (81 key), 222 questions: 142 recall, 31 do, 27 calc (8 parameterised), 16 predict, 6 label. The lesson has 10 sections, 39 steps and 48 checks, 3,109 words, about 74 minutes (sections 5.7–8.7 min).
+- **Topic 4:** 96 facts (63 key), 147 questions: 96 recall, 15 do, 13 calc (2 parameterised), 13 predict, 10 label. The lesson has 7 sections, 28 steps and 33 checks, 1,883 words, about 50 minutes (sections 6.1–8.4 min).
+- **Whole bank:** 696 questions. Every fact has a question, and every key fact has at least two question types (tested).

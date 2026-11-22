@@ -24,13 +24,14 @@ export function formatLength(m: number): string {
 }
 
 const DECADES = [
+  { m: 1, label: 'm' },
   { m: 1e-1, label: '10 cm' },
   { m: 1e-3, label: 'mm' },
   { m: 1e-6, label: 'µm' },
   { m: 1e-9, label: 'nm' },
   { m: 1e-10, label: 'Å' },
 ]
-const LOG_MAX = -0.5 // log10 metres at left end (≈ 30 cm)
+const LOG_MAX = 1.2 // log10 metres at left end (≈ 16 m: the cleanroom bay)
 const LOG_MIN = -11 // ≈ 0.1 Å
 
 /**

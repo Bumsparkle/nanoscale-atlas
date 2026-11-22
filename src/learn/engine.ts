@@ -4,6 +4,7 @@ import { DEFAULT_LAYOUT, layoutState, moveEdge, transistors, type Layout, type M
 import { checkLayout } from '../chapters/cmos/rules'
 import { STEPS } from '../chapters/cmos/recipe'
 import { SNAP_TARGETS, type AtlasState } from '../state/store'
+import { defaultTab } from '../chapters/cmos/layers'
 import type { Question, Scene, Target } from './schema'
 
 /**
@@ -38,7 +39,18 @@ export function scenePatch(sc: Scene, st: AtlasState): Partial<AtlasState> {
   if (sc.layers) p.layoutLayers = sc.layers
   if (sc.editMode != null) p.layoutEdit = sc.editMode
   if (sc.look !== undefined) p.look = sc.look
+  if (sc.tab != null) p.tab = sc.tab
+  else if (sc.layer && sc.layer !== st.layer) p.tab = defaultTab(sc.layer)
+  if (sc.growth) p.growth = { ...st.growth, ...sc.growth } as AtlasState['growth']
+  if (sc.crystal) p.crystal = { ...st.crystal, ...sc.crystal } as AtlasState['crystal']
+  if (sc.proc) p.proc = { ...st.proc, ...sc.proc } as AtlasState['proc']
+  if (sc.clean) p.clean = { ...st.clean, ...sc.clean } as AtlasState['clean']
   return p
+}
+
+/** read a dotted path from the store */
+export function readPath(st: AtlasState, path: string): unknown {
+  return path.split('.').reduce<unknown>((o, k) => (o == null ? undefined : (o as Record<string, unknown>)[k]), st)
 }
 
 /** layout part of a scene */
@@ -107,6 +119,15 @@ export function checkTarget(t: Target, st: AtlasState, layout: Layout): boolean 
     }
     case 'layer':
       return st.layer === t.layer && (t.device == null || st.device === t.device)
+    case 'state': {
+      if (st.layer !== t.layer || (t.tab != null && st.tab !== t.tab)) return false
+      return t.checks.every((c) => {
+        const v = readPath(st, c.path)
+        if (c.eq !== undefined) return JSON.stringify(v) === JSON.stringify(c.eq)
+        if (typeof v !== 'number') return false
+        return (c.min == null || v >= c.min - 1e-9) && (c.max == null || v <= c.max + 1e-9)
+      })
+    }
   }
 }
 

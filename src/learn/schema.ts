@@ -49,7 +49,7 @@ export const FactFileSchema = z.object({
   facts: z.array(FactSchema),
 })
 
-const LAYER = z.enum(['wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice'])
+const LAYER = z.enum(['sand', 'polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice'])
 const VIEW = z.enum(['explore', 'section', 'masks', 'fab', 'logic', 'layout'])
 const CUT = z.enum(['slide27', 'ngate', 'pgate'])
 const MASK = z.enum(['nwell', 'poly', 'nplus', 'pplus', 'contact', 'metal'])
@@ -78,6 +78,12 @@ export const SceneSchema = z.object({
   edits: z.array(z.object({ mask: MASK, index: z.number().int(), side: SIDE, value: z.number() })).optional(),
   /** glide the camera to this object (no panel) */
   look: z.string().optional(),
+  /** Chapters 2–3: the layer's tab, and partial patches of the chapter state */
+  tab: z.string().optional(),
+  growth: z.record(z.string(), z.unknown()).optional(),
+  crystal: z.record(z.string(), z.unknown()).optional(),
+  proc: z.record(z.string(), z.unknown()).optional(),
+  clean: z.record(z.string(), z.unknown()).optional(),
 })
 export type Scene = z.infer<typeof SceneSchema>
 
@@ -94,6 +100,16 @@ export const TargetSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('lattice'), structure: z.enum(['crystal', 'poly', 'amorphous']).optional(), dopant: z.enum(['none', 'P', 'B']).optional() }),
   z.object({ kind: z.literal('junction'), regime: z.enum(['forward', 'reverse', 'zero']), minWidth: z.number().optional(), maxWidth: z.number().optional(), wpOverWn: z.enum(['>1', '<1']).optional() }),
   z.object({ kind: z.literal('layer'), layer: LAYER, device: z.enum(['nmos', 'pmos']).optional() }),
+  /**
+   * Chapters 2–3: be on a layer (and tab) with state values in range. `path`
+   * is a dotted store path, e.g. growth.k0, crystal.hkl, clean.rca.
+   */
+  z.object({
+    kind: z.literal('state'),
+    layer: LAYER,
+    tab: z.string().optional(),
+    checks: z.array(z.object({ path: z.string(), eq: z.unknown().optional(), min: z.number().optional(), max: z.number().optional() })).default([]),
+  }),
 ])
 export type Target = z.infer<typeof TargetSchema>
 
@@ -124,7 +140,13 @@ export const QuestionSchema = z.discriminatedUnion('type', [
   z.object({
     ...base,
     type: z.literal('calc'),
-    answer: z.object({ value: z.number(), tol: z.number().positive(), unit: z.string() }),
+    answer: z.object({
+      value: z.number(),
+      tol: z.number().positive(),
+      unit: z.string(),
+      /** parameterised: a generator in learn/calcs.ts and the values each {var} in the prompt may take (first = the stored answer) */
+      gen: z.object({ fn: z.string(), vars: z.record(z.string(), z.array(z.number()).min(1)) }).optional(),
+    }),
   }),
   z.object({ ...base, type: z.literal('label'), answer: z.object({ objects: z.array(z.string()).min(1) }), scene: SceneSchema }),
   z.object({
@@ -153,6 +175,8 @@ export const LessonStepSchema = z.object({
   factIds: z.array(z.string()).min(1),
   /** one check, or two when the step includes a calculation */
   checks: z.array(z.string()).min(1).max(2),
+  /** lesson steps in another chapter that already teach this (shown as links) */
+  related: z.array(z.string()).default([]),
 })
 export type LessonStep = z.infer<typeof LessonStepSchema>
 

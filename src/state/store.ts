@@ -106,7 +106,7 @@ export interface AtlasState {
   /** current lesson position: a step id or review:<section> */
   lessonAt: string | null
   /** Revise sub-view */
-  revise: { tab: 'drill' | 'coverage' | 'exam'; from: number; to: number; area: string | null }
+  revise: { tab: 'drill' | 'coverage' | 'exam'; topic: 'topic2' | 'topic3' | 'topic4' | null; from: number; to: number; area: string | null }
   /** camera target set by the lesson (does not open a panel) */
   look: string | null
   /** object outlined by a hint after a wrong answer */
@@ -182,7 +182,7 @@ export const useAtlas = create<AtlasState>((set) => ({
   bench: { tab: 'inverter', g: 1, v: 0, ratio: 1 },
   mode: 'explore',
   lessonAt: null,
-  revise: { tab: 'drill', from: 1, to: 49, area: null },
+  revise: { tab: 'drill', topic: null, from: 1, to: 49, area: null },
   look: null,
   hint: null,
   quiz: false,
