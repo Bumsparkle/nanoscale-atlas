@@ -236,23 +236,30 @@ export function SmartCut() {
   const size = useThree((s) => s.size)
   const step = useAtlas((s) => s.epi.soi)
   const cur = useRef({ flip: 0, lift: 0, handle: 0 })
+  const donor = useRef<THREE.Group>(null)
+  const bulk = useRef<THREE.Group>(null)
+  const handle = useRef<THREE.Mesh>(null)
   useFrame((_, dt) => {
     const st = useAtlas.getState()
     const k = st.reducedMotion ? 1 : Math.min(1, dt * 3)
-    // targets: the donor flips face down at bonding (3); after the cut (4) its bulk lifts away; at 5 the pair flips back
-    const flipT = step >= 3 && step < 5 ? 1 : 0
+    // targets: the donor flips face down onto the handle at bonding (3); after the cut (4) its bulk lifts away and
+    // what stays on the handle is already SOI the right way up: handle, oxide, thin Si
+    const flipT = step >= 3 ? 1 : 0
     const liftT = step >= 4 ? 1 : 0
     const handleT = step >= 3 ? 1 : 0
     cur.current.flip += (flipT - cur.current.flip) * k
     cur.current.lift += (liftT - cur.current.lift) * k
     cur.current.handle += (handleT - cur.current.handle) * k
+    // animate through refs: the ref values do not re-render the component
+    if (donor.current) donor.current.rotation.x = Math.PI * cur.current.flip
+    if (bulk.current) bulk.current.position.y = -cur.current.lift * 24
+    if (handle.current) handle.current.position.y = -14 - (1 - cur.current.handle) * 30
     if (st.quiz) return publish([])
     const names = ['Si donor wafer', 'thermal oxidation', 'H implantation', 'wafer bonding', 'smart cut: split along the H layer', 'flip, H out-diffusion, polish: SOI']
     publish([label(camera, size, 'soi-step', `${step + 1} · ${names[step]}`, step === 5 ? '205 nm Si on 400 nm SiO₂ (Soitec TEM)' : undefined, [0, 46, 0], 'top')])
   })
   const W = 120
   const D = 50
-  const c = cur.current
   // positions (units: mm-scale drawing; the layers are exaggerated)
   const oxideOn = step >= 1
   const hOn = step >= 2 && step < 5
@@ -260,11 +267,11 @@ export function SmartCut() {
     <>
       <StudioLights scale={10} />
       {/* donor wafer (Si substrate) with its oxide and H plane; at bonding it flips onto the handle */}
-      <group position={[0, step >= 5 ? -14 : 0, 0]} rotation-x={Math.PI * (step >= 5 ? 0 : c.flip)}>
-        <group position={[0, -c.lift * 24, 0]}>
-          <mesh position={[0, -12, 0]}>
+      <group ref={donor}>
+        <group ref={bulk} visible={step < 5}>
+          <mesh position={[0, -13, 0]}>
             <boxGeometry args={[W, 20, D]} />
-            <meshStandardNodeMaterial color="#9fc0d8" roughness={0.6} transparent opacity={step >= 5 ? 0 : 1} />
+            <meshStandardNodeMaterial color="#9fc0d8" roughness={0.6} />
           </mesh>
         </group>
         <Inspectable node="soi-si" fit={1.4}>
@@ -287,9 +294,9 @@ export function SmartCut() {
         </Inspectable>
       </group>
       <Inspectable node="soi-handle" fit={1.4}>
-        <mesh position={[0, step >= 5 ? -26 : 4 + 12 + (1 - c.handle) * 30, 0]} visible={step >= 3}>
+        <mesh ref={handle} position={[0, -44, 0]} visible={step >= 3}>
           <boxGeometry args={[W, 20, D]} />
-          <meshStandardNodeMaterial color="#e6a9c8" roughness={0.6} />
+          <meshStandardNodeMaterial color="#6f8496" roughness={0.6} />
         </mesh>
       </Inspectable>
     </>

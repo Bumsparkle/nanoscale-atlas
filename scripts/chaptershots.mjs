@@ -1,4 +1,4 @@
-// Screenshots of the Chapter 2 and 3 scenes, tabs and panels.
+// Screenshots of the Chapter 2–5 scenes, tabs and panels.
 // usage: node scripts/chaptershots.mjs [baseUrl] [filter] [--mobile]
 // writes shots/chapters/<name>.png and prints page errors
 import { chromium } from '@playwright/test'
@@ -12,6 +12,8 @@ const set = (patch) => async (page) => {
   await page.evaluate((p) => window.__atlasSet?.(p), patch)
   await page.waitForTimeout(1200)
 }
+const FD = { T: 900, P: 760, Y: 0.01, plasma: 'pecvd', logP: -6, ebeam: false, method: 'cvd', aspect: 2, Sc: 0.1 }
+const ED = { T: 1100, rate: 1, sub: 'As', seal: false, rp: false, logGa: -3.5, shutter: true, ml: 0, mode: 'fvdm', coverage: 1.5, film: 'InAs', substrate: 'GaAs', thick: 1, soi: 0 }
 const ROUTES = [
   { name: 'c2-01-sand', path: '/growth/sand' },
   { name: 'c2-02-polysilicon', path: '/growth/polysilicon' },
@@ -39,6 +41,23 @@ const ROUTES = [
   { name: 'c3-03-redox', path: '/clean/cleanroom?tab=redox' },
   { name: 'c3-04-gettering', path: '/cmos/wafer?tab=gettering' },
   { name: 'c3-05-yield', path: '/cmos/wafer?tab=yield' },
+  { name: 'c4-01-cvd', path: '/films/deposition' },
+  { name: 'c4-02-lpcvd', path: '/films/deposition', action: set({ films: { ...FD, P: 0.5, T: 620, Y: 1 } }) },
+  { name: 'c4-03-plasma', path: '/films/deposition?tab=plasma' },
+  { name: 'c4-04-magnetron', path: '/films/deposition?tab=plasma', action: set({ films: { ...FD, plasma: 'magnetron' } }) },
+  { name: 'c4-05-evap', path: '/films/deposition?tab=pvd' },
+  { name: 'c4-06-evap-rough', path: '/films/deposition?tab=pvd', action: set({ films: { ...FD, logP: -2, ebeam: true } }) },
+  { name: 'c4-07-coverage', path: '/films/deposition?tab=coverage' },
+  { name: 'c4-08-coverage-sputter', path: '/films/deposition?tab=coverage', action: set({ films: { ...FD, method: 'sputter', aspect: 3 } }) },
+  { name: 'c5-01-siepi', path: '/films/deposition?tab=siepi' },
+  { name: 'c5-02-mbe', path: '/epi/mbe', wait: 6000 },
+  { name: 'c5-03-modes', path: '/epi/surface' },
+  { name: 'c5-04-modes-sk', path: '/epi/surface', action: set({ epi: { ...ED, mode: 'sk', coverage: 3 } }) },
+  { name: 'c5-05-strain', path: '/epi/surface?tab=strain' },
+  { name: 'c5-06-strain-relaxed', path: '/epi/surface?tab=strain', action: set({ epi: { ...ED, thick: 15 } }) },
+  { name: 'c5-07-soi', path: '/cmos/wafer?tab=soi', action: set({ epi: { ...ED, soi: 4 } }) },
+  { name: 'c5-08-soi-done', path: '/cmos/wafer?tab=soi', action: set({ epi: { ...ED, soi: 5 } }) },
+  { name: 'c5-09-soi-implant', path: '/cmos/wafer?tab=soi', action: set({ epi: { ...ED, soi: 2 } }) },
   { name: 'c3-06-home', path: '/' },
 ]
 

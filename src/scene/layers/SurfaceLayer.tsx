@@ -5,6 +5,7 @@ import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
 import { useAtlas } from '../../state/store'
+import { rig } from '../rig'
 import { SEMI_BY_ID, strainState } from '../../chapters/films/physics'
 
 /**
@@ -19,6 +20,7 @@ import { SEMI_BY_ID, strainState } from '../../chapters/films/physics'
 const N = 14
 const A = 3
 const PER_ML = N * N
+const HEIGHT_COLOURS = ['#f0b43c', '#e8902c', '#d8682a', '#c04a2a', '#a8352a'].map((c) => new THREE.Color(c))
 
 function order(mode: 'fvdm' | 'sk' | 'vw') {
   const r = rand(mode === 'vw' ? 5 : mode === 'sk' ? 7 : 9)
@@ -55,7 +57,7 @@ function Modes() {
   const mode = useAtlas((s) => s.epi.mode)
   const coverage = useAtlas((s) => s.epi.coverage)
   const seq = useMemo(() => order(mode), [mode])
-  const film = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: '#f0b43c', roughness: 0.4 }), PER_ML * 5), [])
+  const film = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: '#ffffff', roughness: 0.4 }), PER_ML * 5), [])
   const subst = useMemo(() => {
     const im = new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: '#6f8aa0', roughness: 0.4 }), PER_ML * 2)
     const o = new THREE.Object3D()
@@ -77,9 +79,12 @@ function Modes() {
       o.position.set((s.x - N / 2) * A, s.h * A, (s.z - N / 2) * A)
       o.updateMatrix()
       film.setMatrixAt(k, o.matrix)
+      // shade by height so islands stand out from the layer beneath
+      film.setColorAt(k, HEIGHT_COLOURS[Math.min(s.h, HEIGHT_COLOURS.length - 1)])
     }
     film.count = n
     film.instanceMatrix.needsUpdate = true
+    if (film.instanceColor) film.instanceColor.needsUpdate = true
     film.computeBoundingSphere()
   }, [seq, coverage, film])
   const ad = useRef<THREE.Mesh>(null)
@@ -183,6 +188,11 @@ function Strain() {
 export default function SurfaceLayer() {
   const tab = useAtlas((s) => s.tab)
   useDive('mbe', null, { home: [0, tab === 'strain' ? 6 : 2, 0] })
+  // the strain view is a side-on cross-section; the modes view looks down on the terrace
+  useEffect(() => {
+    rig.setHome(tab === 'strain' ? { target: [0, 12, 0], polar: 1.42, azimuth: 0.12, dist: 200 } : { target: [0, 2, 0], polar: 0.95, azimuth: 0.6, dist: 105 })
+    rig.goHome()
+  }, [tab])
   return (
     <>
       <StudioLights scale={1} />

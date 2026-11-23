@@ -5,7 +5,7 @@ import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
 import { useAtlas } from '../../state/store'
-import { cvdRate, meanFreePath, stepCoverage } from '../../chapters/films/physics'
+import { cvdRate, meanFreePath, pow10, stepCoverage } from '../../chapters/films/physics'
 
 /**
  * Chapter 4 (Topic 5): the deposition bay, 1 unit = 1 cm.
@@ -56,7 +56,7 @@ function Cvd() {
     if (st.quiz) return publish([])
     publish([
       label(camera, size, 'c-reg', r.regime === 'reaction' ? 'reaction-rate limited' : r.regime === 'transport' ? 'mass-transport limited' : 'mixed control', `kS ${r.ks.toPrecision(2)} · hG ${r.hg.toPrecision(2)} cm/s`, [0, 26, 0], 'top'),
-      label(camera, size, 'c-rate', `growth ${r.nmPerMin < 10 ? r.nmPerMin.toFixed(2) : r.nmPerMin.toFixed(0)} nm/min`, lp ? 'LPCVD · wafers standing' : 'APCVD · tilted susceptor', [60, 4, 12], 'right'),
+      label(camera, size, 'c-rate', `growth ${r.nmPerMin < 10 ? r.nmPerMin.toFixed(2) : r.nmPerMin.toFixed(0)} nm/min`, lp ? 'LPCVD · wafers standing' : 'APCVD · tilted susceptor', [10, -12, 12], 'bottom'),
       label(camera, size, 'c-in', 'gas in', `${f.P >= 100 ? f.P.toFixed(0) : f.P.toPrecision(2)} torr`, [-78, 10, 0], 'side'),
     ])
   })
@@ -229,7 +229,7 @@ function Evaporator() {
   useFrame(() => {
     if (useAtlas.getState().quiz) return publish([])
     publish([
-      label(camera, size, 'e-p', `P = 10^${logP} Torr`, `mean free path ${mfp >= 100 ? (mfp / 100).toPrecision(2) + ' m' : mfp.toPrecision(2) + ' cm'}`, [30, 40, 0], 'right'),
+      label(camera, size, 'e-p', `P = ${pow10(logP)} Torr`, `mean free path ${mfp >= 100 ? (mfp / 100).toPrecision(2) + ' m' : mfp.toPrecision(2) + ' cm'}`, [30, 40, 0], 'right'),
       label(camera, size, 'e-s', ebeam ? 'e-beam hearth' : 'hot W boat', ballistic ? 'atoms fly straight: a point source' : 'atoms scatter off the gas', [0, 4, 0], 'bottom'),
     ])
   })
@@ -317,18 +317,18 @@ function Coverage() {
   useFrame(() => {
     if (useAtlas.getState().quiz) return publish([])
     publish([
-      label(camera, size, 'v-side', `sidewall ${Math.round(cov.side * 100)} %`, 'of the top thickness', [W / 2, -D / 2, 20], 'right'),
-      label(camera, size, 'v-bot', `bottom ${Math.round(cov.bottom * 100)} %`, cov.overhang > 0.4 ? 'overhang may seal a void' : undefined, [0, -D, 20], 'bottom'),
+      label(camera, size, 'v-side', `sidewall ${Math.round(cov.side * 100)} %`, 'of the top thickness', [W / 2, 0, 10], 'right'),
+      label(camera, size, 'v-bot', `bottom ${Math.round(cov.bottom * 100)} %`, cov.overhang > 0.4 ? 'overhang may seal a void' : undefined, [0, -D / 2, 10], 'bottom'),
     ])
   })
   return (
     <group position={[0, D / 2, -10]}>
       <mesh geometry={shapes.sub} raycast={() => null}>
-        <meshStandardNodeMaterial color="#9fb3c4" roughness={0.6} />
+        <meshStandardNodeMaterial color="#5f7486" roughness={0.7} />
       </mesh>
       <Inspectable node="trench-film" fit={1.3}>
         <mesh geometry={shapes.film}>
-          <meshStandardNodeMaterial color={f.method === 'cvd' ? '#e8b65a' : f.method === 'sputter' ? '#c9ced2' : '#d88a4a'} roughness={0.35} metalness={0.4} />
+          <meshStandardNodeMaterial color="#f0b43c" roughness={0.4} metalness={0.2} />
         </mesh>
       </Inspectable>
     </group>

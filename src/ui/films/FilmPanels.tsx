@@ -3,7 +3,7 @@ import { useAtlas } from '../../state/store'
 import { SourceButton } from '../source/Source'
 import { T5, T6 } from '../../sources'
 import { transition } from '../../scene/transition'
-import { csOverCg, cvdRate, epiProfile, flux, gasDensity, hG, kS, meanFreePath, mlPerSecond, monolayerTime, SEMI_BY_ID, SEMIS, stepCoverage, strainState, vacuumClass } from '../../chapters/films/physics'
+import { csOverCg, cvdRate, epiProfile, flux, gasDensity, hG, kS, meanFreePath, mlPerSecond, monolayerTime, pow10, SEMI_BY_ID, SEMIS, stepCoverage, strainState, vacuumClass } from '../../chapters/films/physics'
 import { mbeLive } from '../../chapters/films/live'
 import { sci } from '../../chapters/growth/lab'
 import '../growth/growth.css'
@@ -71,11 +71,12 @@ function CvdPanel() {
   return (
     <section className="lc gp" aria-label="CVD kinetics">
       <span className="eyebrow lc-head">CVD growth kinetics <SourceButton refs={[T5(17), T5(18), T5(19), T5(22)]} /></span>
-      <Seg label="Reactor" items={[['apcvd', 'APCVD · 760 torr'], ['lpcvd', 'LPCVD · 0.5 torr']]} value={f.P >= 100 ? 'apcvd' : 'lpcvd'} on={(v) => set({ P: v === 'apcvd' ? 760 : 0.5 })} />
+      <Seg label="Reactor" items={[['apcvd', 'APCVD · 760 torr'], ['lpcvd', 'LPCVD · 0.5 torr']]} value={f.P >= 100 ? 'apcvd' : 'lpcvd'} on={(v) => set(v === 'apcvd' ? { P: 760, Y: 0.01 } : { P: 0.5, Y: 1 })} />
       <Slider label="temperature" value={f.T} min={500} max={1250} step={10} unit="°C" on={(T) => set({ T })} />
       <Slider label="pressure (log)" value={Math.log10(f.P)} min={-1} max={2.88} step={0.01} unit="torr" fmt={(v) => (10 ** v >= 10 ? (10 ** v).toFixed(0) : (10 ** v).toPrecision(2))} on={(v) => set({ P: +(10 ** v).toPrecision(3) })} />
       <p className="gp-eq mono">v = kS·hG/(kS + hG) · CT·Y/N1</p>
       <dl className="gp-read mono">
+        <dt>reactant Y</dt><dd>{f.Y >= 1 ? '100 % silane' : `${(f.Y * 100).toPrecision(2)} % in H₂`}</dd>
         <dt>kS</dt><dd>{r.ks.toPrecision(3)} cm/s (Ea 1.6 eV)</dd>
         <dt>hG</dt><dd>{r.hg.toPrecision(3)} cm/s</dd>
         <dt>CS/CG</dt><dd>{csOverCg(r.ks, r.hg).toFixed(2)}</dd>
@@ -117,7 +118,7 @@ function PvdPanel() {
   return (
     <section className="lc gp" aria-label="Evaporation and vacuum">
       <span className="eyebrow lc-head">evaporation and vacuum <SourceButton refs={[T5(38), T5(39), T5(40)]} /></span>
-      <Slider label="chamber pressure (log)" value={f.logP} min={-10} max={0} step={0.5} unit="Torr" fmt={(v) => `10^${v}`} on={(logP) => set({ logP })} />
+      <Slider label="chamber pressure (log)" value={f.logP} min={-10} max={0} step={0.5} unit="Torr" fmt={pow10} on={(logP) => set({ logP })} />
       <label className="gp-check"><input type="checkbox" checked={f.ebeam} onChange={(e) => set({ ebeam: e.target.checked })} /> electron-beam source (high-melting metals)</label>
       <dl className="gp-read mono">
         <dt>vacuum</dt><dd>{vacuumClass(P)}</dd>
@@ -131,7 +132,7 @@ function PvdPanel() {
         <tbody>
           {VAC_ROWS.map((p) => (
             <tr key={p} className={Math.abs(Math.log10(p) - f.logP) < 0.6 ? 'on' : ''}>
-              <td>{p >= 1 ? p : `10^${Math.log10(p)}`}</td><td>{sci(gasDensity(p), 1)}</td><td>{sci(meanFreePath(p), 1)}</td><td>{sci(monolayerTime(p), 1)}</td>
+              <td>{p >= 1 ? p : pow10(Math.log10(p))}</td><td>{sci(gasDensity(p), 1)}</td><td>{sci(meanFreePath(p), 1)}</td><td>{sci(monolayerTime(p), 1)}</td>
             </tr>
           ))}
         </tbody>
@@ -215,7 +216,7 @@ function MbePanel() {
   return (
     <section className="lc gp" aria-label="MBE">
       <span className="eyebrow lc-head">MBE and RHEED <SourceButton refs={[T6(21), T6(23), T6(25)]} /></span>
-      <Slider label="Ga beam pressure at the substrate (log)" value={e.logGa} min={-4.5} max={-2.8} step={0.05} unit="Pa" fmt={(v) => `10^${v.toFixed(2)}`} on={(logGa) => set({ logGa })} />
+      <Slider label="Ga beam pressure at the substrate (log)" value={e.logGa} min={-4.5} max={-2.8} step={0.05} unit="Pa" fmt={pow10} on={(logGa) => set({ logGa })} />
       <div className="lc-quick">
         <button className="chip" aria-pressed={e.shutter} onClick={() => set({ shutter: !e.shutter })}>{e.shutter ? 'close the Ga shutter' : 'open the Ga shutter'}</button>
         <button className="chip" onClick={() => { mbeLive.ml = 0; mbeLive.trace = [] }}>new wafer</button>
@@ -228,7 +229,7 @@ function MbePanel() {
       <svg className="chart" viewBox="0 0 300 130" role="img" aria-label="RHEED specular intensity against time">
         <line x1={10} x2={290} y1={110} y2={110} className="grid" />
         <path ref={svg} className="cur" />
-        <text x={150} y={126} className="axis" textAnchor="middle">RHEED intensity: one oscillation per monolayer</text>
+        <text x={150} y={126} className="axis" textAnchor="middle">RHEED intensity · one period = one monolayer</text>
       </svg>
       <button className="chip gp-next" onClick={() => void transition.go('surface')}>the growing surface →</button>
     </section>

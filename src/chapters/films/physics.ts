@@ -174,3 +174,7 @@ export function epiProfile(o: EpiOpts) {
   for (let x = 0; x <= o.thickness; x += o.thickness / 2000) if (at(x) > 2 * o.cEpi) w = x
   return { at, D, outDiffusionUm: L2, tailUm: L, transitionUm: w, cStar }
 }
+
+const SUP: Record<string, string> = { '-': '⁻', '.': '·', 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' }
+/** 10 to a power, written with superscripts: pow10(-6) → 10⁻⁶ */
+export const pow10 = (e: number) => `10${String(+e.toFixed(2)).split('').map((c) => SUP[c] ?? c).join('')}`

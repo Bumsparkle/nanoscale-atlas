@@ -55,11 +55,12 @@ export default function MbeLayer() {
     <>
       <StudioLights scale={5} />
       <Inspectable node="mbe-chamber" fit={1.1}>
-        <mesh>
+        {/* the cut-away opens towards the default camera */}
+        <mesh rotation-y={Math.PI / 2}>
           <sphereGeometry args={[40, 48, 24, Math.PI * 0.35, Math.PI * 1.3]} />
           <meshStandardNodeMaterial color="#9aa3aa" metalness={0.8} roughness={0.3} side={THREE.DoubleSide} />
         </mesh>
-        <mesh>
+        <mesh rotation-y={Math.PI / 2}>
           <sphereGeometry args={[36, 40, 20, Math.PI * 0.35, Math.PI * 1.3]} />
           <meshStandardNodeMaterial color="#3f5566" metalness={0.4} roughness={0.6} side={THREE.DoubleSide} />
         </mesh>
