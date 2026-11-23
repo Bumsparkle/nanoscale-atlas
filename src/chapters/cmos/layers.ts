@@ -9,10 +9,10 @@
  */
 export type LayerId =
   | 'sand' | 'polysilicon' | 'puller' | 'ingot' | 'wafers'
-  | 'cleanroom'
+  | 'cleanroom' | 'deposition' | 'mbe' | 'surface'
   | 'wafer' | 'die' | 'cell' | 'transistor' | 'oxide' | 'lattice'
 
-export type ChapterId = 'ch1' | 'ch2' | 'ch3'
+export type ChapterId = 'ch1' | 'ch2' | 'ch3' | 'ch4' | 'ch5'
 
 export interface LayerDef {
   id: LayerId
@@ -34,6 +34,8 @@ export interface LayerDef {
   far: number
   /** short scale note shown with the scale bar */
   scaleNote: string
+  /** the layer above it for breadcrumbs and Esc (default: the previous layer in the list) */
+  up?: LayerId
   /** sub-views (tabs) of this layer, first is the default */
   tabs?: { id: string; label: string; chapter: ChapterId; hint: string }[]
 }
@@ -79,7 +81,33 @@ export const LAYERS: LayerDef[] = [
     ],
   },
   {
-    id: 'wafer', chapter: 'ch1', path: ['cmos', 'wafer'], crumb: 'wafer', title: '300 mm wafer',
+    id: 'deposition', chapter: 'ch4', path: ['films', 'deposition'], crumb: 'deposition bay', title: 'Deposition bay', up: 'cleanroom',
+    metresPerUnit: 1e-2, minDist: 30, maxDist: 900, restDist: 300, restPolar: 1.15, restAzimuth: 0.55,
+    near: 0.2, far: 10000, scaleNote: 'reactors ~1–2 m · 1 unit = 1 cm',
+    tabs: [
+      { id: 'cvd', label: 'CVD', chapter: 'ch4', hint: 'Change temperature and pressure: who limits the growth, the gas or the surface?' },
+      { id: 'plasma', label: 'Plasma', chapter: 'ch4', hint: 'PECVD, DC, RF and magnetron sputtering in one chamber' },
+      { id: 'pvd', label: 'Evaporation', chapter: 'ch4', hint: 'Pump down: the mean free path outgrows the chamber' },
+      { id: 'coverage', label: 'Step coverage', chapter: 'ch4', hint: 'Coat a trench by CVD, sputtering or evaporation' },
+      { id: 'siepi', label: 'Si epitaxy', chapter: 'ch5', hint: 'Grow an epi layer and fight autodoping' },
+    ],
+  },
+  {
+    id: 'mbe', chapter: 'ch5', path: ['epi', 'mbe'], crumb: 'MBE', title: 'Molecular beam epitaxy', up: 'cleanroom',
+    metresPerUnit: 1e-2, minDist: 25, maxDist: 700, restDist: 230, restPolar: 1.12, restAzimuth: 0.7,
+    near: 0.2, far: 8000, scaleNote: 'growth chamber ~1 m · 1 unit = 1 cm',
+  },
+  {
+    id: 'surface', chapter: 'ch5', path: ['epi', 'surface'], crumb: 'growth surface', title: 'The growing surface', up: 'mbe',
+    metresPerUnit: 1e-10, minDist: 12, maxDist: 200, restDist: 80, restPolar: 0.95, restAzimuth: 0.6,
+    near: 0.05, far: 1000, scaleNote: '1 unit = 1 Å · atoms drawn on a simple cubic grid',
+    tabs: [
+      { id: 'modes', label: 'Growth modes', chapter: 'ch5', hint: 'Islands, layers, or layers then islands' },
+      { id: 'strain', label: 'Lattice mismatch', chapter: 'ch5', hint: 'Pick a film and a substrate; grow it thicker until it relaxes' },
+    ],
+  },
+  {
+    id: 'wafer', chapter: 'ch1', path: ['cmos', 'wafer'], up: 'cleanroom', crumb: 'wafer', title: '300 mm wafer',
     metresPerUnit: 1e-3, minDist: 60, maxDist: 900, restDist: 430, restPolar: 0.95, restAzimuth: 0.35,
     near: 1, far: 5000, scaleNote: '300 mm wafer · beyond the lecture',
     tabs: [
@@ -87,6 +115,7 @@ export const LAYERS: LayerDef[] = [
       { id: 'process', label: 'Process flow', chapter: 'ch2', hint: 'Click a step of the wafer-fab flow to run it on a cross-section' },
       { id: 'gettering', label: 'Gettering', chapter: 'ch3', hint: 'Grow the precipitates, then getter the metal atoms' },
       { id: 'yield', label: 'Yield', chapter: 'ch3', hint: 'Scatter particles: every die a particle lands on fails' },
+      { id: 'soi', label: 'SOI', chapter: 'ch5', hint: 'Step through smart cut: oxidise, implant H, bond, split, polish' },
     ],
   },
   {
@@ -125,6 +154,20 @@ export const LAYERS: LayerDef[] = [
 
 export const LAYER_BY_ID = Object.fromEntries(LAYERS.map((l) => [l.id, l])) as Record<LayerId, LayerDef>
 
+/** the layer above (breadcrumbs, Esc, surfacing) */
+export function parentOf(id: LayerId): LayerId | null {
+  const def = LAYER_BY_ID[id]
+  if (def.up) return def.up
+  const i = LAYERS.findIndex((l) => l.id === id)
+  return i > 0 ? LAYERS[i - 1].id : null
+}
+/** the chain from the top of this layer's ancestry down to it */
+export function ancestry(id: LayerId): LayerId[] {
+  const out: LayerId[] = [id]
+  for (let p = parentOf(id); p && out.length < 20; p = parentOf(p)) out.unshift(p)
+  return out
+}
+
 export function layerIndex(id: LayerId) {
   return LAYERS.findIndex((l) => l.id === id)
 }
@@ -139,7 +182,7 @@ export interface ChapterDef {
   id: ChapterId
   n: number
   title: string
-  topic: 'topic2' | 'topic3' | 'topic4'
+  topic: 'topic2' | 'topic3' | 'topic4' | 'topic5' | 'topic6'
   /** where the chapter starts */
   entry: { layer: LayerId; tab?: string }
   blurb: string
@@ -148,6 +191,8 @@ export const CHAPTERS: ChapterDef[] = [
   { id: 'ch1', n: 1, title: 'CMOS inverter', topic: 'topic2', entry: { layer: 'cell' }, blurb: 'From the wafer to the 5.43 Å lattice, built from six masks and 45 steps.' },
   { id: 'ch2', n: 2, title: 'From sand to wafer', topic: 'topic3', entry: { layer: 'sand' }, blurb: 'Refining, Czochralski growth, crystal structure, bands, defects and the process flow.' },
   { id: 'ch3', n: 3, title: 'Keeping it clean', topic: 'topic4', entry: { layer: 'cleanroom' }, blurb: 'Clean factories, wafer cleaning, gettering and yield.' },
+  { id: 'ch4', n: 4, title: 'Laying down films', topic: 'topic5', entry: { layer: 'deposition' }, blurb: 'CVD kinetics, plasma, evaporation and sputtering, and how films fill a trench.' },
+  { id: 'ch5', n: 5, title: 'Atom by atom', topic: 'topic6', entry: { layer: 'mbe' }, blurb: 'Epitaxy: lattice matching, growth modes, Si epi, MBE with RHEED, and SOI.' },
 ]
 export const CHAPTER_BY_ID = Object.fromEntries(CHAPTERS.map((c) => [c.id, c])) as Record<ChapterId, ChapterDef>
 

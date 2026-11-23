@@ -45,6 +45,8 @@ export function scenePatch(sc: Scene, st: AtlasState): Partial<AtlasState> {
   if (sc.crystal) p.crystal = { ...st.crystal, ...sc.crystal } as AtlasState['crystal']
   if (sc.proc) p.proc = { ...st.proc, ...sc.proc } as AtlasState['proc']
   if (sc.clean) p.clean = { ...st.clean, ...sc.clean } as AtlasState['clean']
+  if (sc.films) p.films = { ...st.films, ...sc.films } as AtlasState['films']
+  if (sc.epi) p.epi = { ...st.epi, ...sc.epi } as AtlasState['epi']
   return p
 }
 

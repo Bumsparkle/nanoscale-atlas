@@ -1,4 +1,4 @@
-import { defaultTab, LAYERS, LAYER_BY_ID, layerIndex, type Device, type LayerId } from '../chapters/cmos/layers'
+import { defaultTab, LAYER_BY_ID, layerIndex, parentOf, type Device, type LayerId } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
 import { post } from './Pipeline'
 import { rig } from './rig'
@@ -108,8 +108,7 @@ export const transition = {
     busy = false
   },
   up() {
-    const st = useAtlas.getState()
-    const i = layerIndex(st.layer)
-    if (i > 0) return this.go(LAYERS[i - 1].id)
+    const p = parentOf(useAtlas.getState().layer)
+    if (p) return this.go(p)
   },
 }

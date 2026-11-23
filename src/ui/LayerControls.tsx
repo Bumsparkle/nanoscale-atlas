@@ -7,6 +7,7 @@ import { T2 } from '../sources'
 import { BandsPanel, CellsPanel, DefectsPanel, IngotPanel, MillerPanel, PolyPanel, PullerPanel, SandPanel, WafersPanel } from './growth/GrowthPanels'
 import { ProcessLab } from './growth/ProcessLab'
 import { CleanroomPanels, CleanWaferPanels } from './clean/CleanPanels'
+import { DepositionPanels, MbePanels, SoiPanels, SurfacePanels } from './films/FilmPanels'
 
 /** gate voltage for the transistor layer (slides 12–14) */
 function TransistorControls() {
@@ -104,7 +105,13 @@ export function LayerControls() {
     case 'wafers':
       return <WafersPanel />
     case 'wafer':
-      return tab === 'process' ? <ProcessLab /> : <CleanWaferPanels />
+      return tab === 'process' ? <ProcessLab /> : tab === 'soi' ? <SoiPanels /> : <CleanWaferPanels />
+    case 'deposition':
+      return <DepositionPanels />
+    case 'mbe':
+      return <MbePanels />
+    case 'surface':
+      return <SurfacePanels />
     case 'cleanroom':
       return <CleanroomPanels />
   }

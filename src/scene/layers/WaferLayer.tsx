@@ -5,7 +5,7 @@ import { useLabEnvironment } from '../Lighting'
 import { Inspectable, InspectSync, ClearOnMiss } from '../Inspectable'
 import { rig } from '../rig'
 import { transition } from '../transition'
-import { Gettering, YieldDies } from './WaferTabs'
+import { Gettering, SmartCut, YieldDies } from './WaferTabs'
 import { useAtlas } from '../../state/store'
 
 /**
@@ -126,12 +126,20 @@ function WaferScene() {
 export default function WaferLayer() {
   const tab = useAtlas((s) => s.tab)
   useEffect(() => {
-    if (tab !== 'gettering') return
-    rig.setHome({ target: [40, 0, 0], polar: 1.38, azimuth: 0.25, dist: 620 })
+    if (tab !== 'gettering' && tab !== 'soi') return
+    rig.setHome(tab === 'soi' ? { target: [0, 6, 0], polar: 1.2, azimuth: 0.5, dist: 300 } : { target: [40, 0, 0], polar: 1.38, azimuth: 0.25, dist: 620 })
     rig.goHome()
     rig.handlers = { onSurface: () => void transition.go('cleanroom') }
     return () => void (rig.handlers = {})
   }, [tab])
+  if (tab === 'soi')
+    return (
+      <>
+        <SmartCut />
+        <InspectSync />
+        <ClearOnMiss />
+      </>
+    )
   return tab === 'gettering' ? (
     <>
       <Gettering />

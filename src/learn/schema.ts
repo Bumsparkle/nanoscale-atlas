@@ -16,13 +16,17 @@ export const TOPICS = [
   'crystal', 'bands', 'growth', 'defects', 'process',
   // Topic 4
   'cleanroom', 'cleaning', 'gettering', 'yield',
+  // Topic 5
+  'deposition', 'cvd', 'safety', 'plasma', 'pvd',
+  // Topic 6
+  'epitaxy', 'heteroepitaxy', 'siepi', 'mbe', 'soi',
   'summary',
 ] as const
 export type Topic = (typeof TOPICS)[number]
 
 export const FactSchema = z.object({
   /** s07-… for Topic 2; t3-s07-… and t4-s07-… for the later decks */
-  id: z.string().regex(/^(t[34]-)?s\d\d-[a-z0-9-]+$/),
+  id: z.string().regex(/^(t[3-6]-)?s\d\d-[a-z0-9-]+$/),
   source: SourceRefSchema,
   statement: z.string().min(8),
   kind: z.enum(FACT_KINDS),
@@ -49,7 +53,7 @@ export const FactFileSchema = z.object({
   facts: z.array(FactSchema),
 })
 
-const LAYER = z.enum(['sand', 'polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice'])
+const LAYER = z.enum(['sand', 'polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'deposition', 'mbe', 'surface', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice'])
 const VIEW = z.enum(['explore', 'section', 'masks', 'fab', 'logic', 'layout'])
 const CUT = z.enum(['slide27', 'ngate', 'pgate'])
 const MASK = z.enum(['nwell', 'poly', 'nplus', 'pplus', 'contact', 'metal'])
@@ -84,6 +88,8 @@ export const SceneSchema = z.object({
   crystal: z.record(z.string(), z.unknown()).optional(),
   proc: z.record(z.string(), z.unknown()).optional(),
   clean: z.record(z.string(), z.unknown()).optional(),
+  films: z.record(z.string(), z.unknown()).optional(),
+  epi: z.record(z.string(), z.unknown()).optional(),
 })
 export type Scene = z.infer<typeof SceneSchema>
 

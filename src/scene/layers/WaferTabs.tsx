@@ -224,3 +224,74 @@ export function YieldDies() {
     </>
   )
 }
+
+/**
+ * Smart cut (Topic 6 slide 29), drawn as a block cross-section (thicknesses
+ * exaggerated): oxidise a donor wafer, implant H, bond it face down to a
+ * handle wafer, split along the H layer, and the SOI wafer is the handle
+ * with the oxide and a thin Si layer on top.
+ */
+export function SmartCut() {
+  const camera = useThree((s) => s.camera)
+  const size = useThree((s) => s.size)
+  const step = useAtlas((s) => s.epi.soi)
+  const cur = useRef({ flip: 0, lift: 0, handle: 0 })
+  useFrame((_, dt) => {
+    const st = useAtlas.getState()
+    const k = st.reducedMotion ? 1 : Math.min(1, dt * 3)
+    // targets: the donor flips face down at bonding (3); after the cut (4) its bulk lifts away; at 5 the pair flips back
+    const flipT = step >= 3 && step < 5 ? 1 : 0
+    const liftT = step >= 4 ? 1 : 0
+    const handleT = step >= 3 ? 1 : 0
+    cur.current.flip += (flipT - cur.current.flip) * k
+    cur.current.lift += (liftT - cur.current.lift) * k
+    cur.current.handle += (handleT - cur.current.handle) * k
+    if (st.quiz) return publish([])
+    const names = ['Si donor wafer', 'thermal oxidation', 'H implantation', 'wafer bonding', 'smart cut: split along the H layer', 'flip, H out-diffusion, polish: SOI']
+    publish([label(camera, size, 'soi-step', `${step + 1} · ${names[step]}`, step === 5 ? '205 nm Si on 400 nm SiO₂ (Soitec TEM)' : undefined, [0, 46, 0], 'top')])
+  })
+  const W = 120
+  const D = 50
+  const c = cur.current
+  // positions (units: mm-scale drawing; the layers are exaggerated)
+  const oxideOn = step >= 1
+  const hOn = step >= 2 && step < 5
+  return (
+    <>
+      <StudioLights scale={10} />
+      {/* donor wafer (Si substrate) with its oxide and H plane; at bonding it flips onto the handle */}
+      <group position={[0, step >= 5 ? -14 : 0, 0]} rotation-x={Math.PI * (step >= 5 ? 0 : c.flip)}>
+        <group position={[0, -c.lift * 24, 0]}>
+          <mesh position={[0, -12, 0]}>
+            <boxGeometry args={[W, 20, D]} />
+            <meshStandardNodeMaterial color="#9fc0d8" roughness={0.6} transparent opacity={step >= 5 ? 0 : 1} />
+          </mesh>
+        </group>
+        <Inspectable node="soi-si" fit={1.4}>
+          <mesh position={[0, -1.5, 0]}>
+            <boxGeometry args={[W, 3, D]} />
+            <meshStandardNodeMaterial color="#7fb0d0" roughness={0.5} />
+          </mesh>
+        </Inspectable>
+        <Inspectable node="soi-box" fit={1.4}>
+          <mesh position={[0, 2, 0]} visible={oxideOn}>
+            <boxGeometry args={[W, 4, D]} />
+            <meshStandardNodeMaterial color="#e6e8ea" roughness={0.5} />
+          </mesh>
+        </Inspectable>
+        <Inspectable node="soi-split" fit={1.4}>
+          <mesh position={[0, -3.2, 0]} visible={hOn}>
+            <boxGeometry args={[W + 0.2, 0.6, D + 0.2]} />
+            <meshStandardNodeMaterial color="#e070b0" emissive="#801860" emissiveIntensity={0.5} />
+          </mesh>
+        </Inspectable>
+      </group>
+      <Inspectable node="soi-handle" fit={1.4}>
+        <mesh position={[0, step >= 5 ? -26 : 4 + 12 + (1 - c.handle) * 30, 0]} visible={step >= 3}>
+          <boxGeometry args={[W, 20, D]} />
+          <meshStandardNodeMaterial color="#e6a9c8" roughness={0.6} />
+        </mesh>
+      </Inspectable>
+    </>
+  )
+}

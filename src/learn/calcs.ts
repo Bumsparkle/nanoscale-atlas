@@ -79,6 +79,56 @@ export const GENS: Record<string, Gen> = {
     value: ({ A, D0, C }) => 100 * nbYield(A, D0, C),
     solution: ({ A, D0, C }, a) => `Y = 1/(1 + Ac·D0/C)^C = 1/(1 + ${A} × ${D0}/${C})^${C} = 1/${g3(1 + (A * D0) / C)}^${C} = ${g3(a / 100)}, i.e. ${g3(a)} %. Poisson would give ${g3(100 * poissonYield(A, D0))} %: clustering raises the yield.`,
   },
+  /** Topic 5 slide 15/19: how many times faster the surface reaction runs at T2 than T1 */
+  arrhenius: {
+    unit: '×', rel: 0.03,
+    value: ({ Ea, T1, T2 }) => Math.exp((Ea / 8.617e-5) * (1 / (T1 + 273) - 1 / (T2 + 273))),
+    solution: ({ Ea, T1, T2 }, a) => `kS(T2)/kS(T1) = exp[(Ea/k)(1/T1 − 1/T2)] with T in kelvin: Ea/k = ${Ea}/8.617 × 10⁻⁵ = ${g3(Ea / 8.617e-5)} K; 1/${T1 + 273} − 1/${T2 + 273} = ${sci(1 / (T1 + 273) - 1 / (T2 + 273))} K⁻¹; so the ratio is exp(${g3((Ea / 8.617e-5) * (1 / (T1 + 273) - 1 / (T2 + 273)))}) = ${g3(a)}.`,
+  },
+  /** Topic 5 slide 17 */
+  'cs-ratio': {
+    unit: 'CS/CG', rel: 0.01,
+    value: ({ ks, hg }) => 1 / (1 + ks / hg),
+    solution: ({ ks, hg }, a) => `In steady state F1 = F2: hG(CG − CS) = kS·CS, so CS/CG = 1/(1 + kS/hG) = 1/(1 + ${ks}/${hg}) = ${g3(a)}.${ks > hg ? ' kS > hG: the surface is starved, mass transfer limits.' : ' kS < hG: the gas keeps up, the surface reaction limits.'}`,
+  },
+  /** Topic 5 slide 18, in nm/min */
+  'cvd-v': {
+    unit: 'nm/min', rel: 0.02,
+    value: ({ ks, hg, Y }) => ((ks * hg) / (ks + hg)) * (2.5e19 / 5e22) * Y * 1e7 * 60,
+    solution: ({ ks, hg, Y }, a) => `v = [kS·hG/(kS + hG)]·(CT/N1)·Y. kS·hG/(kS + hG) = ${ks} × ${hg}/${g3(ks + hg)} = ${g3((ks * hg) / (ks + hg))} cm/s; CT/N1 = 2.5 × 10¹⁹/5.0 × 10²² = 5 × 10⁻⁴; × Y = ${Y}: v = ${sci(((ks * hg) / (ks + hg)) * 5e-4 * Y)} cm/s = ${g3(a)} nm/min (× 10⁷ nm/cm × 60 s/min).`,
+  },
+  /** Topic 5 slide 40: λ ≈ 5 × 10⁻⁵ m at 1 Torr, ∝ 1/P */
+  mfp: {
+    unit: 'm', rel: 0.02,
+    value: ({ p }) => 5e-5 / 10 ** p,
+    solution: ({ p }, a) => `The mean free path scales as 1/P: λ = 5 × 10⁻⁵ m × (1 Torr / 10^${p} Torr) = ${sci(a)} m.`,
+    fmt: { p: (n) => `10^${n}` },
+  },
+  'ml-time': {
+    unit: 's', rel: 0.02,
+    value: ({ p }) => 1e-6 / 10 ** p,
+    solution: ({ p }, a) => `The time to collect a monolayer scales as 1/P: 1 s at 10⁻⁶ Torr, so at 10^${p} Torr it is 10⁻⁶/10^${p} = ${sci(a)} s.`,
+    fmt: { p: (n) => `10^${n}` },
+  },
+  /** Topic 6 slide 23 */
+  flux: {
+    unit: 'cm⁻² s⁻¹', rel: 0.02,
+    value: ({ P, M, T }) => (2.64e20 * P) / Math.sqrt(M * T),
+    solution: ({ P, M, T }, a) => `φ = 2.64 × 10²⁰ · P/√(MT) = 2.64 × 10²⁰ × ${sci(P)}/√(${M} × ${T}) = 2.64 × 10²⁰ × ${sci(P)}/${g3(Math.sqrt(M * T))} = ${sci(a)} cm⁻² s⁻¹.`,
+    fmt: { P: sci },
+  },
+  /** Topic 6 slide 25: one RHEED period per monolayer (a/2 for a zinc-blende (001) surface) */
+  rheed: {
+    unit: 'µm/h', rel: 0.02,
+    value: ({ per, a }) => (a / 2 / 10 / per) * 3.6,
+    solution: ({ per, a }, a2) => `One oscillation is one monolayer, a/2 = ${a}/2 = ${g3(a / 2)} Å = ${g3(a / 20)} nm thick, grown in ${per} s: ${g3(a / 20 / per)} nm/s × 3600 s/h = ${g3(a2)} µm/h.`,
+  },
+  /** Topic 6 slides 5–6, in % */
+  mismatch: {
+    unit: '%', rel: 0.02,
+    value: ({ af, as }) => (100 * (af - as)) / as,
+    solution: ({ af, as }, a) => `f = (a_film − a_sub)/a_sub = (${af} − ${as})/${as} = ${g3(a / 100)}, i.e. ${g3(a)} %. ${a > 0 ? 'Positive: the film is compressed in the plane to fit.' : 'Negative: the film is stretched in the plane to fit.'}`,
+  },
   /** Topic 3 slide 6: the answer is the three indices written as one number, e.g. 632 for (632) */
   miller: {
     unit: '(hkl)', rel: 1e-9,

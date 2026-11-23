@@ -69,7 +69,7 @@ describe('parameterised calculations', () => {
   const gen = QUESTIONS.filter((q) => q.type === 'calc' && q.answer.gen)
   it('exist for every required kind', () => {
     const fns = new Set(gen.map((q) => (q.type === 'calc' ? q.answer.gen!.fn : '')))
-    for (const f of ['segregation', 'vacancies', 'interstitials', 'si-consumed', 'diffusivity', 'poisson', 'negbin', 'miller']) expect(fns.has(f), f).toBe(true)
+    for (const f of ['segregation', 'vacancies', 'interstitials', 'si-consumed', 'diffusivity', 'poisson', 'negbin', 'miller', 'arrhenius', 'cs-ratio', 'cvd-v', 'mfp', 'ml-time', 'flux', 'rheed', 'mismatch']) expect(fns.has(f), f).toBe(true)
   })
   it('the stored answer is the generator at the first values', () => {
     for (const q of gen) {

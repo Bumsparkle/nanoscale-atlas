@@ -6,11 +6,11 @@ import { z } from 'zod'
  * cite their own decks. The slide image is served from /slides/<topic>/,
  * which is not in the repository and sits behind the site password.
  */
-export const TOPIC_IDS = ['topic2', 'topic3', 'topic4'] as const
+export const TOPIC_IDS = ['topic2', 'topic3', 'topic4', 'topic5', 'topic6'] as const
 export type TopicId = (typeof TOPIC_IDS)[number]
-export const TOPIC_NAME: Record<TopicId, string> = { topic2: 'Topic 2', topic3: 'Topic 3', topic4: 'Topic 4' }
+export const TOPIC_NAME: Record<TopicId, string> = { topic2: 'Topic 2', topic3: 'Topic 3', topic4: 'Topic 4', topic5: 'Topic 5', topic6: 'Topic 6' }
 /** slides per deck (PDF page = slide) */
-export const TOPIC_SLIDES: Record<TopicId, number> = { topic2: 49, topic3: 32, topic4: 21 }
+export const TOPIC_SLIDES: Record<TopicId, number> = { topic2: 49, topic3: 32, topic4: 21, topic5: 53, topic6: 31 }
 
 export const SourceRefSchema = z.object({ topic: z.enum(TOPIC_IDS), slide: z.number().int().min(1) })
 export type SourceRef = z.infer<typeof SourceRefSchema>
@@ -18,6 +18,8 @@ export type SourceRef = z.infer<typeof SourceRefSchema>
 export const T2 = (slide: number): SourceRef => ({ topic: 'topic2', slide })
 export const T3 = (slide: number): SourceRef => ({ topic: 'topic3', slide })
 export const T4 = (slide: number): SourceRef => ({ topic: 'topic4', slide })
+export const T5 = (slide: number): SourceRef => ({ topic: 'topic5', slide })
+export const T6 = (slide: number): SourceRef => ({ topic: 'topic6', slide })
 export const slideUrl = (r: SourceRef) => `/slides/${r.topic}/slide-${String(r.slide).padStart(2, '0')}.jpg`
 export const sourceLabel = (r: SourceRef) => `${TOPIC_NAME[r.topic]} · slide ${r.slide}`
 

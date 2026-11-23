@@ -143,7 +143,7 @@ describe('the Topic 2 lesson', () => {
 })
 
 /** the same rules for the Chapter 2 (Topic 3) and Chapter 3 (Topic 4) lessons */
-for (const [ch, topic] of [['ch2', 'topic3'], ['ch3', 'topic4']] as const) {
+for (const [ch, topic] of [['ch2', 'topic3'], ['ch3', 'topic4'], ['ch4', 'topic5'], ['ch5', 'topic6']] as const) {
   describe(`the ${topic} lesson (${ch})`, () => {
     const secs = ALL_SECTIONS.filter((s) => s.chapter === ch)
     const steps = ALL_STEPS.filter((s) => s.chapter === ch)

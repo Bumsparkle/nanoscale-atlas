@@ -1,0 +1,810 @@
+{
+ "source": "ELEC0031 Topic 6, Epitaxy (31 slides). Facts are paraphrased from the slides; slide = PDF page. Where a slide is wrong the fact teaches the correct statement and records the slide wording in \"corrects\".",
+ "topic": "topic6",
+ "slides": [
+  {
+   "slide": 1,
+   "title": "Title",
+   "area": "intro"
+  },
+  {
+   "slide": 2,
+   "title": "Epitaxial materials",
+   "area": "epitaxy"
+  },
+  {
+   "slide": 3,
+   "title": "Epi Si in microelectronics",
+   "area": "epitaxy"
+  },
+  {
+   "slide": 4,
+   "title": "Definition of epitaxy",
+   "area": "epitaxy"
+  },
+  {
+   "slide": 5,
+   "title": "Lattice constants",
+   "area": "heteroepitaxy"
+  },
+  {
+   "slide": 6,
+   "title": "Bandgap vs lattice constant",
+   "area": "heteroepitaxy"
+  },
+  {
+   "slide": 7,
+   "title": "Key steps in growth",
+   "area": "epitaxy"
+  },
+  {
+   "slide": 8,
+   "title": "Stages of film growth",
+   "area": "epitaxy"
+  },
+  {
+   "slide": 9,
+   "title": "Modes of film growth",
+   "area": "epitaxy"
+  },
+  {
+   "slide": 10,
+   "title": "Gases for Si epi",
+   "area": "siepi"
+  },
+  {
+   "slide": 11,
+   "title": "Silicon epitaxy",
+   "area": "siepi"
+  },
+  {
+   "slide": 12,
+   "title": "Dopant profiles",
+   "area": "siepi"
+  },
+  {
+   "slide": 13,
+   "title": "Doping control",
+   "area": "siepi"
+  },
+  {
+   "slide": 14,
+   "title": "Minimising autodoping",
+   "area": "siepi"
+  },
+  {
+   "slide": 15,
+   "title": "Growth of SiGe",
+   "area": "heteroepitaxy"
+  },
+  {
+   "slide": 16,
+   "title": "Strained Si/SiGe/Si",
+   "area": "heteroepitaxy"
+  },
+  {
+   "slide": 17,
+   "title": "MBE system",
+   "area": "mbe"
+  },
+  {
+   "slide": 18,
+   "title": "MBE ultra-high vacuum",
+   "area": "mbe"
+  },
+  {
+   "slide": 19,
+   "title": "MBE growth chamber",
+   "area": "mbe"
+  },
+  {
+   "slide": 20,
+   "title": "Commercial MBE",
+   "area": "mbe"
+  },
+  {
+   "slide": 21,
+   "title": "MBE principles",
+   "area": "mbe"
+  },
+  {
+   "slide": 22,
+   "title": "MBE characteristics",
+   "area": "mbe"
+  },
+  {
+   "slide": 23,
+   "title": "MBE growth rate",
+   "area": "mbe"
+  },
+  {
+   "slide": 24,
+   "title": "RHEED",
+   "area": "mbe"
+  },
+  {
+   "slide": 25,
+   "title": "RHEED oscillations",
+   "area": "mbe"
+  },
+  {
+   "slide": 26,
+   "title": "Commercial MBE (Veeco)",
+   "area": "mbe"
+  },
+  {
+   "slide": 27,
+   "title": "Superlattice",
+   "area": "mbe"
+  },
+  {
+   "slide": 28,
+   "title": "SOI technology",
+   "area": "soi"
+  },
+  {
+   "slide": 29,
+   "title": "Smart cut",
+   "area": "soi"
+  },
+  {
+   "slide": 30,
+   "title": "SOI TEM",
+   "area": "soi"
+  },
+  {
+   "slide": 31,
+   "title": "SOI CMOS",
+   "area": "soi"
+  }
+ ],
+ "unreadable": [
+  {
+   "slide": 6,
+   "what": "Bandgap and lattice-constant values are read off the chart to about ±0.02 Å and ±0.05 eV."
+  },
+  {
+   "slide": 15,
+   "what": "Mobilities are read off the chart (InSb ~80 000, InAs ~33 000 cm²/V·s); the inset’s values are approximate."
+  },
+  {
+   "slide": 31,
+   "what": "The micrograph’s caption is in Korean; only the English labels and the two cross-section sketches are used."
+  }
+ ],
+ "links": [
+  {
+   "slide": 4,
+   "facts": [
+    "t3-s25-cvd",
+    "t3-s25-use"
+   ],
+   "note": "Topic 3 introduced CVD epitaxy and its use."
+  },
+  {
+   "slide": 17,
+   "facts": [
+    "t3-s26-mbe",
+    "t3-s26-rheed",
+    "t3-s26-rate"
+   ],
+   "note": "Topic 3 introduced MBE, its vacuum, RHEED and growth rate."
+  },
+  {
+   "slide": 18,
+   "facts": [
+    "t5-s40-table"
+   ],
+   "note": "The same vacuum table as Topic 5 slide 40."
+  }
+ ],
+ "noFacts": [
+  {
+   "slide": 26,
+   "why": "Photographs of commercial Veeco MBE systems."
+  }
+ ],
+ "facts": [
+  {
+   "id": "t6-s01-topic",
+   "source": {
+    "topic": "topic6",
+    "slide": 1
+   },
+   "statement": "ELEC0031 Topic 6 is \"Epitaxy\".",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t6-s02-materials",
+   "source": {
+    "topic": "topic6",
+    "slide": 2
+   },
+   "statement": "Epitaxial films include Si; III–V arsenides, phosphides, nitrides and antimonides (GaAs, AlGaAs, InP, GaInAsP, GaP, GaN, InGaN, InAs, InSb, GaSb…); II–VI ZnSe, ZnS and HgCdTe; and oxides, nitrides and metals.",
+   "kind": "definition",
+   "area": "epitaxy",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t6-s03-uses",
+   "source": {
+    "topic": "topic6",
+    "slide": 3
+   },
+   "statement": "Epitaxial Si in microelectronics: a bipolar transistor sits in an n epi layer over an n⁺ buried layer; CMOS p- and n-tubs sit in a p epi layer on a p⁺ substrate.",
+   "kind": "diagram",
+   "area": "epitaxy",
+   "key": true,
+   "objects": [
+    "epi-layer"
+   ]
+  },
+  {
+   "id": "t6-s04-def",
+   "source": {
+    "topic": "topic6",
+    "slide": 4
+   },
+   "statement": "Epitaxial means \"arranged upon\": a crystalline film whose lattice continues the substrate’s.",
+   "kind": "definition",
+   "area": "epitaxy",
+   "key": true,
+   "objects": [
+    "epi-layer"
+   ]
+  },
+  {
+   "id": "t6-s04-homo",
+   "source": {
+    "topic": "topic6",
+    "slide": 4
+   },
+   "statement": "Homoepitaxy: film and substrate are the same material (Si on Si, GaAs on GaAs).",
+   "kind": "definition",
+   "area": "epitaxy",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s04-hetero",
+   "source": {
+    "topic": "topic6",
+    "slide": 4
+   },
+   "statement": "Heteroepitaxy: film and substrate differ (silicon on sapphire, Si on SiGe for HBTs and strained Si).",
+   "kind": "definition",
+   "area": "epitaxy",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s04-fig",
+   "source": {
+    "topic": "topic6",
+    "slide": 4
+   },
+   "statement": "The three sketches: (a) a matched epi layer, (b) a relaxed layer with misfit dislocations at the interface, (c) a strained layer.",
+   "kind": "diagram",
+   "area": "heteroepitaxy",
+   "key": false,
+   "objects": [
+    "misfit"
+   ]
+  },
+  {
+   "id": "t6-s05-mismatch",
+   "source": {
+    "topic": "topic6",
+    "slide": 5
+   },
+   "statement": "The epi layer’s lattice constant must be close to the substrate’s, otherwise the bonds cannot stretch far enough and dislocations form.",
+   "kind": "cause-effect",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": [
+    "misfit"
+   ]
+  },
+  {
+   "id": "t6-s05-modes",
+   "source": {
+    "topic": "topic6",
+    "slide": 5
+   },
+   "statement": "Metamorphic growth relaxes through dislocations; pseudomorphic growth keeps every bond unbroken by straining the film: compressed in the plane and elongated vertically (for a larger film lattice).",
+   "kind": "definition",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": [
+    "misfit",
+    "surface-film"
+   ]
+  },
+  {
+   "id": "t6-s06-chart",
+   "source": {
+    "topic": "topic6",
+    "slide": 6
+   },
+   "statement": "Bandgap against lattice constant: Si 5.43 Å, 1.1 eV; GaAs 5.65 Å, 1.42 eV; Ge ≈ 5.66 Å, 0.66 eV; InP 5.87 Å, 1.35 eV; InAs 6.06 Å, 0.36 eV; InSb 6.48 Å, 0.17 eV; AlAs almost matches GaAs at 2.2 eV.",
+   "kind": "number",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s06-matched",
+   "source": {
+    "topic": "topic6",
+    "slide": 6
+   },
+   "statement": "On the chart, AlAs/AlGaAs sit on GaAs’s lattice constant, and In₀.₅₃Ga₀.₄₇As and In₀.₅₂Al₀.₄₈As are lattice-matched to InP; solid lines mark direct gaps, dashed indirect.",
+   "kind": "diagram",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s07-steps",
+   "source": {
+    "topic": "topic6",
+    "slide": 7
+   },
+   "statement": "Deposition and growth: thermodynamics (supersaturation, μS < μG) drives it; then mass transport (gas-phase diffusion), reaction kinetics (homogeneous and heterogeneous reactions, radical desorption) and surface incorporation kinetics (surface diffusion of reactants and adatoms, incorporation at kinks).",
+   "kind": "process-step",
+   "area": "epitaxy",
+   "key": true,
+   "objects": [
+    "adatom"
+   ]
+  },
+  {
+   "id": "t6-s08-stages",
+   "source": {
+    "topic": "topic6",
+    "slide": 8
+   },
+   "statement": "Stages of film growth: (a) deposition on a terrace, (b) diffusion on the terrace, (c) island nucleation, (d) attachment at islands, (e) detachment from islands, (f) deposition on an island, (g) attachment at a step, (h) desorption.",
+   "kind": "diagram",
+   "area": "epitaxy",
+   "key": true,
+   "objects": [
+    "adatom"
+   ]
+  },
+  {
+   "id": "t6-s09-modes",
+   "source": {
+    "topic": "topic6",
+    "slide": 9
+   },
+   "statement": "Growth modes: Volmer–Weber (islands), Stranski–Krastanov (a wetting layer, then islands) and Frank–van der Merwe (layer by layer: ideal epitaxy).",
+   "kind": "definition",
+   "area": "epitaxy",
+   "key": true,
+   "objects": [
+    "surface-film"
+   ]
+  },
+  {
+   "id": "t6-s10-gases",
+   "source": {
+    "topic": "topic6",
+    "slide": 10
+   },
+   "statement": "Si epi sources: silane by pyrolysis (SiH₄ → Si + 2H₂); dichlorosilane, trichlorosilane and silicon tetrachloride by H₂ reduction; disilane. Dopant gases: diborane, phosphine, arsine.",
+   "kind": "definition",
+   "area": "siepi",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s11-tcs",
+   "source": {
+    "topic": "topic6",
+    "slide": 11
+   },
+   "statement": "Silicon deposition from trichlorosilane: HSiCl₃ + H₂ → Si + 3HCl.",
+   "kind": "rule",
+   "area": "siepi",
+   "key": true,
+   "objects": [
+    "barrel"
+   ]
+  },
+  {
+   "id": "t6-s11-conditions",
+   "source": {
+    "topic": "topic6",
+    "slide": 11
+   },
+   "statement": "Si epi conditions: 5–50 litres/min of gas, 900–1100 °C, 100 Torr to atmospheric.",
+   "kind": "number",
+   "area": "siepi",
+   "key": true,
+   "objects": [
+    "barrel"
+   ]
+  },
+  {
+   "id": "t6-s11-reactor",
+   "source": {
+    "topic": "topic6",
+    "slide": 11
+   },
+   "statement": "A barrel epi reactor: wafers on a faceted susceptor heated by quartz lamps, gas in at the top and out at the bottom; HCl is the etchant; Ar, H₂ and N₂ are carriers.",
+   "kind": "diagram",
+   "area": "siepi",
+   "key": false,
+   "objects": [
+    "barrel"
+   ]
+  },
+  {
+   "id": "t6-s12-profile",
+   "source": {
+    "topic": "topic6",
+    "slide": 12
+   },
+   "statement": "Epitaxy is needed when the surface region must be more resistive than the bulk (e.g. a 3 Ω·cm layer on a 0.01 Ω·cm substrate): diffusion can lower resistivity or change type, but cannot realistically raise it.",
+   "kind": "cause-effect",
+   "area": "siepi",
+   "key": true,
+   "objects": [
+    "epi-layer"
+   ]
+  },
+  {
+   "id": "t6-s13-intentional",
+   "source": {
+    "topic": "topic6",
+    "slide": 13
+   },
+   "statement": "Intentional doping uses PH₃, AsH₃ or B₂H₆; incorporation is not linear in the gas-phase dopant, and dopants change the growth rate.",
+   "kind": "cause-effect",
+   "area": "siepi",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s13-ranges",
+   "source": {
+    "topic": "topic6",
+    "slide": 13
+   },
+   "statement": "Epi doping ranges: B 10¹⁶–10¹⁹ cm⁻³; As and P 10¹⁶–10²⁰ cm⁻³.",
+   "kind": "number",
+   "area": "siepi",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s13-autodoping",
+   "source": {
+    "topic": "topic6",
+    "slide": 13
+   },
+   "statement": "Autodoping: dopant reaching the epi layer by out-diffusion from the heavily doped substrate and by incorporation from dopant in the gas phase.",
+   "kind": "definition",
+   "area": "siepi",
+   "key": true,
+   "objects": [
+    "epi-layer"
+   ]
+  },
+  {
+   "id": "t6-s13-graph",
+   "source": {
+    "topic": "topic6",
+    "slide": 13
+   },
+   "statement": "The profile falls from the substrate by solid-state out-diffusion, then flattens through a gas-phase autodoping tail to the intentional level.",
+   "kind": "diagram",
+   "area": "siepi",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t6-s14-minimise",
+   "source": {
+    "topic": "topic6",
+    "slide": 14
+   },
+   "statement": "Minimising autodoping: grow fast; low temperature (reduces boron autodoping, not As); seal the substrate back with lightly doped poly or LT oxide; avoid HCl etching; cap–purge–grow; reduced-pressure epitaxy (thinner boundary layer, dopants swept to the exhaust).",
+   "kind": "process-step",
+   "area": "siepi",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s14-diffusivity",
+   "source": {
+    "topic": "topic6",
+    "slide": 14
+   },
+   "statement": "On the diffusivity plot As and Sb are the slowest diffusers and B, P and In the fastest.",
+   "kind": "diagram",
+   "area": "siepi",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t6-s15-sige",
+   "source": {
+    "topic": "topic6",
+    "slide": 15
+   },
+   "statement": "Putting Ge into the Si lattice strains it, which increases electron mobility: NMOS effective mobility rises with substrate Ge content (x = 0.10 to 0.29).",
+   "kind": "cause-effect",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": [
+    "misfit"
+   ]
+  },
+  {
+   "id": "t6-s15-mobility",
+   "source": {
+    "topic": "topic6",
+    "slide": 15
+   },
+   "statement": "Electron mobility at 300 K (chart): InSb about 80 000 cm²/V·s, InAs about 33 000, GaAs about 8 500, Si about 1 400.",
+   "kind": "number",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s16-strained",
+   "source": {
+    "topic": "topic6",
+    "slide": 16
+   },
+   "statement": "Intel’s strained-Si transistor: gate length 0.05 µm, 1.2 nm SiO₂ gate oxide, and a silicide layer contacting the poly-Si gate.",
+   "kind": "number",
+   "area": "heteroepitaxy",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s17-mbe",
+   "source": {
+    "topic": "topic6",
+    "slide": 17
+   },
+   "statement": "MBE is ultra-high vacuum (base pressure < 1 × 10⁻¹³ bar): ultra-pure elements (Ga and As, 7N) are sublimated and condense on the wafer; \"beam\" means the atoms do not meet until they reach it, because the mean free path is so long.",
+   "kind": "number",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "mbe-chamber",
+    "mbe-cell"
+   ]
+  },
+  {
+   "id": "t6-s17-cake",
+   "source": {
+    "topic": "topic6",
+    "slide": 17
+   },
+   "statement": "MBE builds layers of different materials, each a few atoms thick, \"much like a many-layered cake\"; cryopumps and LN₂ cryopanels maintain the vacuum.",
+   "kind": "definition",
+   "area": "mbe",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t6-s18-req",
+   "source": {
+    "topic": "topic6",
+    "slide": 18
+   },
+   "statement": "Collision-free beams need P < 10⁻⁴ Torr; keeping the surface clean needs P < 10⁻⁹ Torr.",
+   "kind": "number",
+   "area": "mbe",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s19-chamber",
+   "source": {
+    "topic": "topic6",
+    "slide": 19
+   },
+   "statement": "An MBE growth chamber: effusion cells with shutters aimed at a heated, rotating sample block (CAR assembly), a RHEED gun and fluorescent screen, an ionisation/BEP gauge, cryopanels, and a port to the buffer chamber.",
+   "kind": "diagram",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "mbe-cell",
+    "mbe-shutter",
+    "rheed-gun",
+    "rheed-screen"
+   ]
+  },
+  {
+   "id": "t6-s20-system",
+   "source": {
+    "topic": "topic6",
+    "slide": 20
+   },
+   "statement": "A commercial MBE system joins a substrate introduction chamber, an analysis chamber and the growth chamber, with substrates moved between them on a trolley.",
+   "kind": "diagram",
+   "area": "mbe",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t6-s21-principles",
+   "source": {
+    "topic": "topic6",
+    "slide": 21
+   },
+   "statement": "On the substrate the atoms move around until they find a site to bond to; shutters turn each beam on and off; the flux is set by the effusion-cell temperature.",
+   "kind": "rule",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "mbe-cell",
+    "mbe-shutter"
+   ]
+  },
+  {
+   "id": "t6-s22-chars",
+   "source": {
+    "topic": "topic6",
+    "slide": 22
+   },
+   "statement": "MBE: well-controlled UHV evaporation; low growth rate and low temperature give good thickness control, sharp (monoatomic) interfaces and negligible dopant diffusion; growth is kinetically controlled; in-situ cleaning (not etching) by low-energy inert-ion sputtering or heating; in-situ RHEED; phosphorus compounds are difficult.",
+   "kind": "rule",
+   "area": "mbe",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s23-flux",
+   "source": {
+    "topic": "topic6",
+    "slide": 23
+   },
+   "statement": "The impingement rate is φ = P(2πmkT)^(−1/2) = 2.64 × 10²⁰ · P/√(MT) molecules cm⁻² s⁻¹, with P in Pa, M the molecular weight and T in K.",
+   "kind": "rule",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "mbe-cell"
+   ]
+  },
+  {
+   "id": "t6-s23-rate",
+   "source": {
+    "topic": "topic6",
+    "slide": 23
+   },
+   "statement": "Growth rate = φ·(A/πL²)·(monolayer thickness)/(surface density of growth-controlling atoms), with A the crucible aperture and L its distance to the substrate.",
+   "kind": "rule",
+   "area": "mbe",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t6-s24-rheed",
+   "source": {
+    "topic": "topic6",
+    "slide": 24
+   },
+   "statement": "RHEED: high-energy electrons strike the surface at a grazing angle and diffract onto a phosphor screen as streaks; grazing incidence makes it surface-specific; an atomically flat surface gives sharp streaks, a rough one a diffuse pattern.",
+   "kind": "definition",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "rheed-gun",
+    "rheed-screen"
+   ]
+  },
+  {
+   "id": "t6-s25-osc",
+   "source": {
+    "topic": "topic6",
+    "slide": 25
+   },
+   "statement": "The RHEED intensity oscillates as layers form: highest at a complete monolayer (θ = 0, 1), lowest at half coverage (θ = 0.5), so one period is one monolayer; it recovers when the shutter closes.",
+   "kind": "rule",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "rheed-screen"
+   ]
+  },
+  {
+   "id": "t6-s27-superlattice",
+   "source": {
+    "topic": "topic6",
+    "slide": 27
+   },
+   "statement": "A TEM image of an MBE superlattice shows alternating AlGaAs and GaAs layers 15 monolayers thick.",
+   "kind": "number",
+   "area": "mbe",
+   "key": true,
+   "objects": [
+    "surface-film"
+   ]
+  },
+  {
+   "id": "t6-s28-soi",
+   "source": {
+    "topic": "topic6",
+    "slide": 28
+   },
+   "statement": "SOI: a thin Si active layer on SiO₂; the n⁺ \"bathtubs\" reach down to the oxide, cutting junction capacitance to the body, so devices are faster.",
+   "kind": "cause-effect",
+   "area": "soi",
+   "key": true,
+   "objects": [
+    "soi-si",
+    "soi-box"
+   ]
+  },
+  {
+   "id": "t6-s28-makers",
+   "source": {
+    "topic": "topic6",
+    "slide": 28
+   },
+   "statement": "Soitec makes SOI wafers by \"smart cut\"; IBM’s alternative is SIMOX, separation by implantation of oxygen.",
+   "kind": "definition",
+   "area": "soi",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide expands SIMOX as \"silicon implantation with oxide\"; it stands for separation by implantation of oxygen: oxygen is implanted and annealed into a buried oxide."
+  },
+  {
+   "id": "t6-s29-smartcut",
+   "source": {
+    "topic": "topic6",
+    "slide": 29
+   },
+   "statement": "Smart cut: thermally oxidise a Si wafer, implant hydrogen below the surface, bond it to a second substrate, split it along the hydrogen layer (mechanical strain from the implant), then flip, out-diffuse the H and polish; the Si/SiO₂ interface is high quality because the oxide is thermal.",
+   "kind": "process-step",
+   "area": "soi",
+   "key": true,
+   "objects": [
+    "soi-split",
+    "soi-box"
+   ]
+  },
+  {
+   "id": "t6-s30-tem",
+   "source": {
+    "topic": "topic6",
+    "slide": 30
+   },
+   "statement": "A cross-sectional TEM of a Soitec SOI wafer: a 205 nm Si layer on 400 nm of SiO₂ over the Si bulk.",
+   "kind": "number",
+   "area": "soi",
+   "key": true,
+   "objects": [
+    "soi-si",
+    "soi-box"
+   ]
+  },
+  {
+   "id": "t6-s31-cmos",
+   "source": {
+    "topic": "topic6",
+    "slide": 31
+   },
+   "statement": "SOI CMOS isolates each transistor on the buried oxide; bulk CMOS needs p- and n-wells over a p⁺ buried layer in a p substrate.",
+   "kind": "diagram",
+   "area": "soi",
+   "key": false,
+   "objects": [
+    "soi-box"
+   ]
+  }
+ ]
+}

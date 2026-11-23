@@ -13,9 +13,11 @@ export const AREA_NAME: Record<string, string> = {
   structure: 'cross-section', fabrication: 'fabrication', layout: 'layout & rules', summary: 'summary',
   crystal: 'crystal', bands: 'bands', growth: 'crystal growth', defects: 'defects', process: 'process flow',
   cleanroom: 'cleanroom', cleaning: 'cleaning', gettering: 'gettering', yield: 'yield',
+  deposition: 'deposition', cvd: 'CVD', safety: 'gas safety', plasma: 'plasma', pvd: 'PVD',
+  epitaxy: 'epitaxy', heteroepitaxy: 'strain & lattice', siepi: 'Si epi', mbe: 'MBE', soi: 'SOI',
 }
 const TOPIC_NAME = AREA_NAME
-const DECK: Record<TopicId, string> = { topic2: 'T2 · CMOS', topic3: 'T3 · growth', topic4: 'T4 · cleaning' }
+const DECK: Record<TopicId, string> = { topic2: 'T2 · CMOS', topic3: 'T3 · growth', topic4: 'T4 · cleaning', topic5: 'T5 · films', topic6: 'T6 · epitaxy' }
 
 /**
  * Revise mode. Drill: spaced repetition (Leitner boxes) over the whole bank,

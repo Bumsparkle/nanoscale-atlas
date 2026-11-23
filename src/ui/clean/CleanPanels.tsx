@@ -43,6 +43,10 @@ function RoomPanel() {
         <button className="chip" onClick={() => (set({ rca: 0 }), useAtlas.getState().set({ tab: 'wetbench' }))}>level 2 · wafer cleaning →</button>
         <button className="chip" onClick={() => void transition.go('wafer', { tab: 'gettering' })}>level 3 · gettering →</button>
       </div>
+      <div className="lc-quick">
+        <button className="chip" onClick={() => void transition.go('deposition')}>deposition bay (ch.4) →</button>
+        <button className="chip" onClick={() => void transition.go('mbe')}>MBE (ch.5) →</button>
+      </div>
     </section>
   )
 }

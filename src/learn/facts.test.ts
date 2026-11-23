@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import t2 from '../../content/topic2/facts.json'
 import t3 from '../../content/topic3/facts.json'
 import t4 from '../../content/topic4/facts.json'
+import t5 from '../../content/topic5/facts.json'
+import t6 from '../../content/topic6/facts.json'
 import { FactFileSchema } from './schema'
 import { TOPIC_SLIDES, type TopicId } from '../sources'
 
@@ -11,19 +13,26 @@ import { TOPIC_SLIDES, type TopicId } from '../sources'
  * examinable), consistent, and honest about the slides they correct.
  */
 const T2 = FactFileSchema.parse(t2)
-const T2_IDS = new Set(T2.facts.map((f) => f.id))
+const EARLIER: Record<string, Set<string>> = {}
+{
+  const acc = new Set(T2.facts.map((f) => f.id))
+  for (const [t, raw] of [['topic3', t3], ['topic4', t4], ['topic5', t5], ['topic6', t6]] as [string, unknown][]) {
+    EARLIER[t] = new Set(acc)
+    FactFileSchema.parse(raw).facts.forEach((f) => acc.add(f.id))
+  }
+}
 
-for (const [topic, raw] of [['topic3', t3], ['topic4', t4]] as [TopicId, unknown][]) {
+for (const [topic, raw] of [['topic3', t3], ['topic4', t4], ['topic5', t5], ['topic6', t6]] as [TopicId, unknown][]) {
   describe(`${topic} fact inventory`, () => {
     const file = FactFileSchema.parse(raw)
     const n = TOPIC_SLIDES[topic]
-    const prefix = topic === 'topic3' ? 't3-' : 't4-'
+    const prefix = `t${topic.slice(5)}-`
 
     it('lists every slide once, in order', () => {
       expect(file.topic).toBe(topic)
       expect(file.slides.map((s) => s.slide)).toEqual(Array.from({ length: n }, (_, i) => i + 1))
     })
-    it('every slide has a fact, a link to Topic 2, or a reason it has none', () => {
+    it('every slide has a fact, a link to an earlier topic, or a reason it has none', () => {
       for (let s = 1; s <= n; s++) {
         const has = file.facts.some((f) => f.source.slide === s) || file.links.some((l) => l.slide === s) || file.noFacts.some((x) => x.slide === s)
         expect(has, `slide ${s}`).toBe(true)
@@ -40,8 +49,8 @@ for (const [topic, raw] of [['topic3', t3], ['topic4', t4]] as [TopicId, unknown
     it('numbers, process steps and rules are key', () => {
       for (const f of file.facts) if (f.kind === 'number' || f.kind === 'process-step' || f.kind === 'rule') expect(f.key, f.id).toBe(true)
     })
-    it('links point at real Topic 2 facts instead of duplicating them', () => {
-      for (const l of file.links) for (const id of l.facts) expect(T2_IDS.has(id), `${topic} slide ${l.slide} → ${id}`).toBe(true)
+    it('links point at real facts of earlier topics instead of duplicating them', () => {
+      for (const l of file.links) for (const id of l.facts) expect(EARLIER[topic].has(id), `${topic} slide ${l.slide} → ${id}`).toBe(true)
     })
     it('slides with no facts are not also given facts', () => {
       for (const x of file.noFacts) expect(file.facts.some((f) => f.source.slide === x.slide), `slide ${x.slide}`).toBe(false)
@@ -74,4 +83,16 @@ describe('known slide errors are corrected, never taught', () => {
     expect(all).not.toMatch(/k0M0|K0M0/)
     expect(all).not.toMatch(/Mg³⁺/)
   })
+})
+
+describe('Topic 5 and 6 slide errors are corrected', () => {
+  const F5 = FactFileSchema.parse(t5).facts
+  const F6 = FactFileSchema.parse(t6).facts
+  const all = [...F5, ...F6].map((f) => f.statement).join('\n')
+  it('trimethyl groups are CH₃', () => expect(all).not.toMatch(/\(CH₄\)₃/))
+  it('nitride reactions balance', () => {
+    expect(all).not.toMatch(/NH₄ →/)
+    expect(F5.find((f) => f.id === 't5-s25-nitrides')!.statement).toMatch(/6HCl \+ 6H₂/)
+  })
+  it('SIMOX is separation by implantation of oxygen', () => expect(F6.find((f) => f.id === 't6-s28-makers')!.statement).toMatch(/separation by implantation of oxygen/))
 })

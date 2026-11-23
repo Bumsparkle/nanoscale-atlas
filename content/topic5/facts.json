@@ -1,0 +1,1545 @@
+{
+ "source": "ELEC0031 Topic 5, Thin Film Deposition (53 slides). Facts are paraphrased from the slides; slide = PDF page. Where a slide is wrong the fact teaches the correct statement and records the slide wording in \"corrects\".",
+ "topic": "topic5",
+ "slides": [
+  {
+   "slide": 1,
+   "title": "Title",
+   "area": "intro"
+  },
+  {
+   "slide": 2,
+   "title": "Film requirements",
+   "area": "deposition"
+  },
+  {
+   "slide": 3,
+   "title": "Three types of deposition",
+   "area": "deposition"
+  },
+  {
+   "slide": 4,
+   "title": "Source to film",
+   "area": "deposition"
+  },
+  {
+   "slide": 5,
+   "title": "CVD",
+   "area": "cvd"
+  },
+  {
+   "slide": 6,
+   "title": "CVD picture",
+   "area": "cvd"
+  },
+  {
+   "slide": 7,
+   "title": "Source molecules",
+   "area": "safety"
+  },
+  {
+   "slide": 8,
+   "title": "CVD safety",
+   "area": "safety"
+  },
+  {
+   "slide": 9,
+   "title": "Safety: arsine, phosphine",
+   "area": "safety"
+  },
+  {
+   "slide": 10,
+   "title": "Gas hazards table",
+   "area": "safety"
+  },
+  {
+   "slide": 11,
+   "title": "Four CVD reactors",
+   "area": "cvd"
+  },
+  {
+   "slide": 12,
+   "title": "AP/LP CVD systems",
+   "area": "cvd"
+  },
+  {
+   "slide": 13,
+   "title": "MOCVD systems",
+   "area": "cvd"
+  },
+  {
+   "slide": 14,
+   "title": "Deposition mechanisms",
+   "area": "cvd"
+  },
+  {
+   "slide": 15,
+   "title": "Growth kinetics",
+   "area": "cvd"
+  },
+  {
+   "slide": 16,
+   "title": "Seven CVD steps",
+   "area": "cvd"
+  },
+  {
+   "slide": 17,
+   "title": "CVD flux model",
+   "area": "cvd"
+  },
+  {
+   "slide": 18,
+   "title": "CVD growth rate",
+   "area": "cvd"
+  },
+  {
+   "slide": 19,
+   "title": "kS and hG regimes",
+   "area": "cvd"
+  },
+  {
+   "slide": 20,
+   "title": "CVD of poly-Si",
+   "area": "cvd"
+  },
+  {
+   "slide": 21,
+   "title": "Auto-doping",
+   "area": "cvd"
+  },
+  {
+   "slide": 22,
+   "title": "LPCVD",
+   "area": "cvd"
+  },
+  {
+   "slide": 23,
+   "title": "LPCVD for Si",
+   "area": "cvd"
+  },
+  {
+   "slide": 24,
+   "title": "LPCVD process menus",
+   "area": "cvd"
+  },
+  {
+   "slide": 25,
+   "title": "LPCVD oxides and nitrides",
+   "area": "cvd"
+  },
+  {
+   "slide": 26,
+   "title": "MOVPE",
+   "area": "cvd"
+  },
+  {
+   "slide": 27,
+   "title": "MOCVD gas system",
+   "area": "cvd"
+  },
+  {
+   "slide": 28,
+   "title": "MOCVD photos",
+   "area": "cvd"
+  },
+  {
+   "slide": 29,
+   "title": "PECVD",
+   "area": "plasma"
+  },
+  {
+   "slide": 30,
+   "title": "Plasma content",
+   "area": "plasma"
+  },
+  {
+   "slide": 31,
+   "title": "Plasma reactions",
+   "area": "plasma"
+  },
+  {
+   "slide": 32,
+   "title": "Plasma parameters",
+   "area": "plasma"
+  },
+  {
+   "slide": 33,
+   "title": "Uses of plasma",
+   "area": "plasma"
+  },
+  {
+   "slide": 34,
+   "title": "PECVD vs LPCVD",
+   "area": "plasma"
+  },
+  {
+   "slide": 35,
+   "title": "HDP CVD",
+   "area": "plasma"
+  },
+  {
+   "slide": 36,
+   "title": "Uses of PECVD",
+   "area": "plasma"
+  },
+  {
+   "slide": 37,
+   "title": "PECVD reactions table",
+   "area": "plasma"
+  },
+  {
+   "slide": 38,
+   "title": "Thermal evaporation",
+   "area": "pvd"
+  },
+  {
+   "slide": 39,
+   "title": "E-beam evaporation",
+   "area": "pvd"
+  },
+  {
+   "slide": 40,
+   "title": "Vacuum",
+   "area": "pvd"
+  },
+  {
+   "slide": 41,
+   "title": "Evaporation rates",
+   "area": "pvd"
+  },
+  {
+   "slide": 42,
+   "title": "Contact-hole filling",
+   "area": "pvd"
+  },
+  {
+   "slide": 43,
+   "title": "Contact-hole filling (repeat)",
+   "area": "pvd"
+  },
+  {
+   "slide": 44,
+   "title": "Sputtering",
+   "area": "pvd"
+  },
+  {
+   "slide": 45,
+   "title": "DC sputtering",
+   "area": "pvd"
+  },
+  {
+   "slide": 46,
+   "title": "RF sputtering",
+   "area": "pvd"
+  },
+  {
+   "slide": 47,
+   "title": "Reactive sputtering",
+   "area": "pvd"
+  },
+  {
+   "slide": 48,
+   "title": "Magnetron sputtering",
+   "area": "pvd"
+  },
+  {
+   "slide": 49,
+   "title": "Comparing metal deposition",
+   "area": "pvd"
+  },
+  {
+   "slide": 50,
+   "title": "PLD",
+   "area": "pvd"
+  },
+  {
+   "slide": 51,
+   "title": "ALD",
+   "area": "pvd"
+  },
+  {
+   "slide": 52,
+   "title": "Film methods (1)",
+   "area": "deposition"
+  },
+  {
+   "slide": 53,
+   "title": "Film methods (2)",
+   "area": "deposition"
+  }
+ ],
+ "unreadable": [
+  {
+   "slide": 13,
+   "what": "Photographs of MOCVD fabs and gas cabinets around a labelled reactor cutaway; only the labels are used."
+  },
+  {
+   "slide": 20,
+   "what": "The growth-rate curves are read as an ordering by temperature, not as values."
+  },
+  {
+   "slide": 24,
+   "what": "The nitride conditions (600 °C, 100 mTorr) are one process menu; slide 25 gives the general 700–900 °C range. Both are kept, as an example and as the range."
+  },
+  {
+   "slide": 41,
+   "what": "The vapour-pressure curves are read only approximately (temperatures to the nearest few hundred °C)."
+  }
+ ],
+ "links": [
+  {
+   "slide": 2,
+   "facts": [
+    "t3-s29-size"
+   ],
+   "note": "Undercut and feature size are Topic 3; this slide is about the deposited film."
+  }
+ ],
+ "noFacts": [
+  {
+   "slide": 28,
+   "why": "Photographs of a commercial MOCVD system (Thomas Swan) and its reactor."
+  },
+  {
+   "slide": 43,
+   "why": "Repeats slide 42 word for word."
+  }
+ ],
+ "facts": [
+  {
+   "id": "t5-s01-topic",
+   "source": {
+    "topic": "topic5",
+    "slide": 1
+   },
+   "statement": "ELEC0031 Topic 5 is \"Thin Film Deposition\".",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s02-req",
+   "source": {
+    "topic": "topic5",
+    "slide": 2
+   },
+   "statement": "A deposited film needs the right composition, low contamination, good electrical, optical or mechanical properties, uniform thickness across and between wafers, good step coverage and gap filling, planarity, no pinholes or cracks, low stress with good adhesion, and chemical compatibility with the layers around it.",
+   "kind": "definition",
+   "area": "deposition",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s02-coverage",
+   "source": {
+    "topic": "topic5",
+    "slide": 2
+   },
+   "statement": "The step-coverage figure contrasts uniform (conformal) metal with poor coverage that thins at the step; the filling figure shows good filling, void formation between closely spaced lines, and poor bottom filling of a deep hole.",
+   "kind": "diagram",
+   "area": "deposition",
+   "key": true,
+   "objects": [
+    "trench-film"
+   ]
+  },
+  {
+   "id": "t5-s02-planar",
+   "source": {
+    "topic": "topic5",
+    "slide": 2
+   },
+   "statement": "Planarisation can be none (the oxide follows every step), local (small gaps smoothed) or global (a flat top surface across the wafer).",
+   "kind": "diagram",
+   "area": "deposition",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s03-types",
+   "source": {
+    "topic": "topic5",
+    "slide": 3
+   },
+   "statement": "The three main types of deposition: spin-on (photoresist, spin-on glass), chemical vapour deposition (APCVD, LPCVD, MOCVD/MOVPE, PECVD…) and physical vapour deposition (evaporation, sputtering, MBE, PLD…).",
+   "kind": "definition",
+   "area": "deposition",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s03-spin",
+   "source": {
+    "topic": "topic5",
+    "slide": 3
+   },
+   "statement": "Spin-on: the solution is dispensed on the substrate, the wafer is spun to spread it thin, then it is dried.",
+   "kind": "process-step",
+   "area": "deposition",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s03-pvd-cycle",
+   "source": {
+    "topic": "topic5",
+    "slide": 3
+   },
+   "statement": "In physical vapour deposition a condensed phase is evaporated into the gas phase, transported, and condensed again on the substrate.",
+   "kind": "diagram",
+   "area": "deposition",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s04-energy",
+   "source": {
+    "topic": "topic5",
+    "slide": 4
+   },
+   "statement": "Deposition converts a source (gas, liquid or solid) into a solid thin film by supplying energy, through a physical or a chemical conversion.",
+   "kind": "definition",
+   "area": "deposition",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s05-cvd",
+   "source": {
+    "topic": "topic5",
+    "slide": 5
+   },
+   "statement": "CVD forms a non-volatile solid film by the reaction of vapour-phase precursors (reactants) containing the required elements; the gases decompose at the heated substrate surface and form the film.",
+   "kind": "definition",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-wafers"
+   ]
+  },
+  {
+   "id": "t5-s05-mo",
+   "source": {
+    "topic": "topic5",
+    "slide": 5
+   },
+   "statement": "Metals such as Ga, Al and Cu have very low vapour pressures, so they are attached to organic compounds with high vapour pressure to be carried as gases (MOCVD, MOVPE); at the hot substrate they release the metal and are pumped away, ideally leaving no C or H.",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "mbe-cell"
+   ]
+  },
+  {
+   "id": "t5-s05-examples",
+   "source": {
+    "topic": "topic5",
+    "slide": 5
+   },
+   "statement": "CVD deposits dielectrics (SiO₂, Si₃N₄), metals (W, Al, Cu, Ti) and semiconductors (epitaxial Si and GaAs, polysilicon, doped polysilicon).",
+   "kind": "definition",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s06-diagram",
+   "source": {
+    "topic": "topic5",
+    "slide": 6
+   },
+   "statement": "In the CVD picture a precursor carried by high- or low-pressure carrier gas breaks into fragments and clusters that land on the hot substrate and join the growing film.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": [
+    "cvd-flow"
+   ]
+  },
+  {
+   "id": "t5-s07-source",
+   "source": {
+    "topic": "topic5",
+    "slide": 7
+   },
+   "statement": "A good source molecule is stable at room temperature, unstable at growth conditions, as pure as possible and leaves no memory effect; safety comes first.",
+   "kind": "rule",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s07-examples",
+   "source": {
+    "topic": "topic5",
+    "slide": 7
+   },
+   "statement": "Typical sources: AsH₃ or TBAs, PH₃, TMGa (CH₃)₃Ga, TEGa (C₂H₅)₃Ga, TMAl (CH₃)₃Al, DMZn, Cp₂Mg, CBr₄, SiH₄, Si₂H₆ and H₂Se.",
+   "kind": "definition",
+   "area": "safety",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide writes TMGa and TMAl as \"(CH₄)₃Ga\" and \"(CH₄)₃Al\": the trimethyl groups are CH₃."
+  },
+  {
+   "id": "t5-s08-organic",
+   "source": {
+    "topic": "topic5",
+    "slide": 8
+   },
+   "statement": "Flesh absorbs organic compounds easily, so metal organics enter the body; the weak metal–organic bonds then break and release the metal, which the body cannot remove (in extreme cases only a timely blood transfusion helps).",
+   "kind": "cause-effect",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s08-hazards",
+   "source": {
+    "topic": "topic5",
+    "slide": 8
+   },
+   "statement": "CVD gases are often toxic, corrosive (attacking stainless steel), flammable, and explosive or pyrophoric (igniting spontaneously in air).",
+   "kind": "definition",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s09-arsine",
+   "source": {
+    "topic": "topic5",
+    "slide": 9
+   },
+   "statement": "Arsine (stored at 15 bar) is extremely toxic and flammable: LC50 5–50 ppm, IDLH 2 ppm, TLV 50 ppb.",
+   "kind": "number",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s09-phosphine",
+   "source": {
+    "topic": "topic5",
+    "slide": 9
+   },
+   "statement": "Phosphine (40 bar) is toxic, flammable and possibly pyrophoric: LC50 11–50 ppm, IDLH 7 ppm, TLV 300 ppb.",
+   "kind": "number",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s09-tbas",
+   "source": {
+    "topic": "topic5",
+    "slide": 9
+   },
+   "statement": "Tertiarybutylarsine (TBAs), a liquid alternative to arsine, has LC50 70 ppm and TLV 500 ppb.",
+   "kind": "number",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s09-others",
+   "source": {
+    "topic": "topic5",
+    "slide": 9
+   },
+   "statement": "Organometallics are pyrophoric with toxic fumes, H₂ is an explosion hazard, the exhaust holds large amounts of toxic gas, GaAs and InP dust and oxides are carcinogenic, and servicing contaminated parts is hazardous.",
+   "kind": "cause-effect",
+   "area": "safety",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s09-terms",
+   "source": {
+    "topic": "topic5",
+    "slide": 9
+   },
+   "statement": "LC50 is the median lethal concentration; IDLH is immediately dangerous to life or health; TLV is the threshold limit value (A1: confirmed human carcinogen).",
+   "kind": "definition",
+   "area": "safety",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s10-table",
+   "source": {
+    "topic": "topic5",
+    "slide": 10
+   },
+   "statement": "From the gas table: silane and phosphine are pyrophoric (exposure limits 0.5 and 0.3 ppm), arsine’s limit is 0.05 ppm, ammonia’s 25 ppm, hydrogen is flammable at 4–74 vol% in air, HF causes severe burns, and N₂ and Ar are inert.",
+   "kind": "number",
+   "area": "safety",
+   "key": true,
+   "objects": [],
+   "corrects": "In the slide’s table \"anemia, kidney damage, death\" sits on the argon row; argon is inert (an asphyxiant). Those effects belong to arsine, which destroys red blood cells."
+  },
+  {
+   "id": "t5-s11-apcvd",
+   "source": {
+    "topic": "topic5",
+    "slide": 11
+   },
+   "statement": "APCVD (atmospheric pressure): high deposition rate, simple, high throughput; but poor uniformity and lower purity than LPCVD; used mainly for thick oxides.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-tube"
+   ]
+  },
+  {
+   "id": "t5-s11-lpcvd",
+   "source": {
+    "topic": "topic5",
+    "slide": 11
+   },
+   "statement": "LPCVD (about 0.2–20 torr): excellent uniformity and purity, a lower but reasonable rate; used for polysilicon, dielectrics and doped dielectrics.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-tube"
+   ]
+  },
+  {
+   "id": "t5-s11-mocvd",
+   "source": {
+    "topic": "topic5",
+    "slide": 11
+   },
+   "statement": "MOCVD: highly flexible (semiconductors, metals, dielectrics) but highly toxic, with expensive sources and high disposal costs; it dominates optical III–V technology and some metallisation (W plugs, Cu).",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s11-pecvd",
+   "source": {
+    "topic": "topic5",
+    "slide": 11
+   },
+   "statement": "PECVD: a plasma forces reactions that would not happen at low temperature, so it suits back-end processing; it causes plasma damage; used for dielectric coatings.",
+   "kind": "rule",
+   "area": "plasma",
+   "key": true,
+   "objects": [
+    "plasma-glow"
+   ]
+  },
+  {
+   "id": "t5-s12-systems",
+   "source": {
+    "topic": "topic5",
+    "slide": 12
+   },
+   "statement": "A horizontal APCVD reactor has a quartz chamber, RF induction coils and wafers on a tilted graphite susceptor fed by HCl, H₂+B₂H₆, H₂+PH₃, Ar, H₂ and bubbled SiCl₄; a horizontal LPCVD reactor is a resistance-heated furnace tube of standing wafers, pumped through a trap, with an exhaust scrubber.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-tube",
+    "cvd-heater"
+   ]
+  },
+  {
+   "id": "t5-s13-mocvd-sys",
+   "source": {
+    "topic": "topic5",
+    "slide": 13
+   },
+   "statement": "An MOCVD reactor has a showerhead gas inlet, a rotating susceptor over a three-zone heater, a water-cooled chamber with quartz liner, optical probes and an exhaust.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s14-mech",
+   "source": {
+    "topic": "topic5",
+    "slide": 14
+   },
+   "statement": "Deposition mechanisms: 1 mass transport of the reactive species, 2 in-diffusion across the boundary layer, 3 surface events (adsorption, surface diffusion and reaction, site incorporation, desorption of by-products), 4 out-diffusion of by-products.",
+   "kind": "process-step",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s14-limits",
+   "source": {
+    "topic": "topic5",
+    "slide": 14
+   },
+   "statement": "Which step limits growth: thermodynamics for VPE and LPE, diffusion for MOVPE, surface kinetics for MBE.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s15-arrhenius",
+   "source": {
+    "topic": "topic5",
+    "slide": 15
+   },
+   "statement": "Simple growth kinetics: R = R0·exp(−Ea/kT), with Ea the activation energy in eV and T in kelvin.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s15-regimes",
+   "source": {
+    "topic": "topic5",
+    "slide": 15
+   },
+   "statement": "At high temperature the surface reaction outpaces the arrival of reactants: growth is mass-transport limited. At low temperature the reaction is slower than arrival: growth is reaction-rate limited.",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-flow"
+   ]
+  },
+  {
+   "id": "t5-s16-steps",
+   "source": {
+    "topic": "topic5",
+    "slide": 16
+   },
+   "statement": "The seven CVD steps: forced convection to the deposition region; diffusion through the boundary layer to the wafer; adsorption; surface processes (reaction, migration to ledges and kinks, incorporation); desorption of by-products; their diffusion back through the boundary layer; and forced convection away.",
+   "kind": "process-step",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-flow"
+   ]
+  },
+  {
+   "id": "t5-s17-f1",
+   "source": {
+    "topic": "topic5",
+    "slide": 17
+   },
+   "statement": "The diffusion flux to the wafer is F1 = hG(CG − CS), with hG the gas-phase mass-transfer coefficient (cm/s) and CG, CS the concentrations in the gas and at the surface.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s17-f2",
+   "source": {
+    "topic": "topic5",
+    "slide": 17
+   },
+   "statement": "The flux consumed by the surface reaction is F2 = kS·CS, with kS the surface-reaction rate constant.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s17-cs",
+   "source": {
+    "topic": "topic5",
+    "slide": 17
+   },
+   "statement": "In steady state F1 = F2, which gives CS = CG/(1 + kS/hG).",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s18-v",
+   "source": {
+    "topic": "topic5",
+    "slide": 18
+   },
+   "statement": "The growth rate is v = F/N1 = [kS·hG/(kS + hG)]·(CT/N1)·Y, with N1 = 5.0 × 10²² cm⁻³ for silicon, CT the total gas molecules per cm³ and Y the mole fraction of the incorporating species.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s18-limits",
+   "source": {
+    "topic": "topic5",
+    "slide": 18
+   },
+   "statement": "The smaller of kS and hG controls the rate: v ≈ (CT/N1)·kS·Y when surface-reaction controlled, v ≈ (CT/N1)·hG·Y when mass-transfer (gas-diffusion) controlled.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s19-graph",
+   "source": {
+    "topic": "topic5",
+    "slide": 19
+   },
+   "statement": "kS = k0·exp(−Ea/kT) is Arrhenius, with Ea ≈ 1.6 eV for single-crystal silicon, while hG is roughly constant; on a log v against 1/T plot growth is mass-transfer controlled at high T, mixed, then reaction controlled at low T.",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s20-sensitive",
+   "source": {
+    "topic": "topic5",
+    "slide": 20
+   },
+   "statement": "kS-limited deposition is very temperature sensitive; hG-limited deposition is very sensitive to geometry (the boundary layer).",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s20-epi",
+   "source": {
+    "topic": "topic5",
+    "slide": 20
+   },
+   "statement": "Silicon epitaxy is often done at high temperature for crystal quality, so it is hG controlled, which is why it uses a horizontal reactor.",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-tube"
+   ]
+  },
+  {
+   "id": "t5-s20-hg",
+   "source": {
+    "topic": "topic5",
+    "slide": 20
+   },
+   "statement": "hG = DG/δS: diffusion through a boundary layer of thickness δS.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s20-tilt",
+   "source": {
+    "topic": "topic5",
+    "slide": 20
+   },
+   "statement": "δS grows as the gas flows along, so the susceptor is tilted: the narrowing channel speeds the gas up, keeping δS (and the deposition) uniform.",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-tube"
+   ]
+  },
+  {
+   "id": "t5-s20-graph",
+   "source": {
+    "topic": "topic5",
+    "slide": 20
+   },
+   "statement": "On the poly-Si growth-rate plot SiH₄ deposits at the lowest temperature, then SiH₂Cl₂, SiHCl₃ and SiCl₄, each flattening into a mass-transfer-limited plateau at high temperature.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s21-autodoping",
+   "source": {
+    "topic": "topic5",
+    "slide": 21
+   },
+   "statement": "Auto-doping has four mechanisms; the profile shows out-diffusion from the heavily doped wafer (an erfc), a front-side autodoping tail C*·e^(−x/L) into the epilayer, and a floor set by backside autodoping.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s22-why",
+   "source": {
+    "topic": "topic5",
+    "slide": 22
+   },
+   "statement": "APCVD’s drawbacks: at high T a horizontal system is needed (only a few wafers at a time); at low T the rate and throughput are low.",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s22-hg100",
+   "source": {
+    "topic": "topic5",
+    "slide": 22
+   },
+   "statement": "At low pressure DG ∝ 1/P rises about 760 times while δS rises about 7 times, so hG rises about 100 times and gas transport stops limiting the rate.",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s22-graph",
+   "source": {
+    "topic": "topic5",
+    "slide": 22
+   },
+   "statement": "With hG at 1 torr far above hG at 760 torr, the surface-reaction-controlled region extends to much higher temperature.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s23-uses",
+   "source": {
+    "topic": "topic5",
+    "slide": 23
+   },
+   "statement": "LPCVD deposits polysilicon for gates, thick oxides between interconnects, doped oxides for planarisation, nitrides and other dielectrics, and metal seed layers for vias and lines.",
+   "kind": "definition",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s23-poly",
+   "source": {
+    "topic": "topic5",
+    "slide": 23
+   },
+   "statement": "LPCVD polysilicon uses SiH₄ (100 %, or 20–30 % in inert gas) at about 0.2–1 torr and 575–650 °C.",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": [
+    "cvd-wafers"
+   ]
+  },
+  {
+   "id": "t5-s23-limits",
+   "source": {
+    "topic": "topic5",
+    "slide": 23
+   },
+   "statement": "The temperature window is limited by a low rate at the cool end and by gas-phase particle formation and poor adhesion at the hot end.",
+   "kind": "cause-effect",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s24-reactions",
+   "source": {
+    "topic": "topic5",
+    "slide": 24
+   },
+   "statement": "Process menu reactions: Si + O₂ → SiO₂; 3SiH₄ + 4NH₃ → Si₃N₄ + 12H₂; SiH₄ → Si + 2H₂.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s24-conditions",
+   "source": {
+    "topic": "topic5",
+    "slide": 24
+   },
+   "statement": "Example LPCVD nitride conditions: 10–300 sccm, 600 °C, 100 mTorr.",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s24-furnace",
+   "source": {
+    "topic": "topic5",
+    "slide": 24
+   },
+   "statement": "A vertical LPCVD furnace: a quartz tube of stacked wafers with three-zone temperature control, gas in at the bottom and exhaust via the vacuum pumps and scrubber.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": [
+    "cvd-heater"
+   ]
+  },
+  {
+   "id": "t5-s25-undoped",
+   "source": {
+    "topic": "topic5",
+    "slide": 25
+   },
+   "statement": "Undoped CVD oxides insulate between metal levels, act as implant or diffusion masks, and thicken the oxide for high-voltage devices.",
+   "kind": "definition",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s25-oxides",
+   "source": {
+    "topic": "topic5",
+    "slide": 25
+   },
+   "statement": "Oxide reactions: SiH₄ + O₂ at 350–500 °C (H₂O, SiH, SiOH impurities); SiCl₂H₂ + 2N₂O at 900 °C (contains Cl); TEOS at 650–750 °C; TEOS + O₃ at 400 °C.",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s25-doped",
+   "source": {
+    "topic": "topic5",
+    "slide": 25
+   },
+   "statement": "Doped oxides serve as final passivation and gettering source and can reflow smooth at 950–1100 °C; phosphorus comes from 4PH₃ + 5O₂ → 2P₂O₅ + 6H₂.",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s25-nitrides",
+   "source": {
+    "topic": "topic5",
+    "slide": 25
+   },
+   "statement": "Nitrides (encapsulation, isolation, oxynitride for flash): 3SiH₄ + 4NH₃ → Si₃N₄ + 12H₂ at 700–900 °C, or 3SiCl₂H₂ + 4NH₃ → Si₃N₄ + 6HCl + 6H₂ at 700–800 °C (up to 8 % hydrogen).",
+   "kind": "number",
+   "area": "cvd",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide writes the dichlorosilane reaction without the 6H₂, so its hydrogen does not balance."
+  },
+  {
+   "id": "t5-s26-movpe",
+   "source": {
+    "topic": "topic5",
+    "slide": 26
+   },
+   "statement": "MOVPE uses metal-organic group III sources with group V hydrides (or alkyls) in a cold-wall reactor, which has fewer parasitic reactions; it is diffusion controlled with a low growth rate, suiting nanostructures.",
+   "kind": "rule",
+   "area": "cvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s27-gas",
+   "source": {
+    "topic": "topic5",
+    "slide": 27
+   },
+   "statement": "The MOCVD gas system carries TMA, TMG, TMI and DEZ from bubblers with H₂ through mass-flow controllers, plus SiH₄ and AsH₃, into an RF-heated graphite-susceptor reactor.",
+   "kind": "diagram",
+   "area": "cvd",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s29-pecvd",
+   "source": {
+    "topic": "topic5",
+    "slide": 29
+   },
+   "statement": "In PECVD RF power (13.56 MHz) between two electrodes makes a plasma of electrons, ions, neutrals, fragments, excited molecules and free radicals, charge neutral overall; non-thermal energy drives the reactions.",
+   "kind": "definition",
+   "area": "plasma",
+   "key": true,
+   "objects": [
+    "plasma-glow",
+    "rf-electrode"
+   ]
+  },
+  {
+   "id": "t5-s29-radicals",
+   "source": {
+    "topic": "topic5",
+    "slide": 29
+   },
+   "statement": "Free radicals (e.g. SiO, SiH₃, F) are neutral, incompletely bonded and extremely reactive; with fragmentation and ion bombardment they let deposition happen at much lower temperature.",
+   "kind": "cause-effect",
+   "area": "plasma",
+   "key": true,
+   "objects": [
+    "plasma-glow"
+   ]
+  },
+  {
+   "id": "t5-s30-ion",
+   "source": {
+    "topic": "topic5",
+    "slide": 30
+   },
+   "statement": "The degree of ionisation is small, typically 10⁻⁴, so neutrals dominate the population.",
+   "kind": "number",
+   "area": "plasma",
+   "key": true,
+   "objects": [
+    "plasma-glow"
+   ]
+  },
+  {
+   "id": "t5-s30-electrons",
+   "source": {
+    "topic": "topic5",
+    "slide": 30
+   },
+   "statement": "Electrons take energy from the field, averaging 1–10 eV, against 25 meV for neutral gas at 300 K.",
+   "kind": "number",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s30-glow",
+   "source": {
+    "topic": "topic5",
+    "slide": 30
+   },
+   "statement": "Collisions excite species that emit light as they decay: the glow discharge.",
+   "kind": "cause-effect",
+   "area": "plasma",
+   "key": false,
+   "objects": [
+    "plasma-glow"
+   ]
+  },
+  {
+   "id": "t5-s30-ionise",
+   "source": {
+    "topic": "topic5",
+    "slide": 30
+   },
+   "statement": "Ionisation typically needs more than 8 eV (13.6 eV for H); collisions also dissociate molecules into radicals, which can far outnumber the charged species: a non-equilibrium environment.",
+   "kind": "number",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s31-reactions",
+   "source": {
+    "topic": "topic5",
+    "slide": 31
+   },
+   "statement": "Plasma reactions: dissociation e* + AB → A + B + e; ionisation e* + A → A⁺ + 2e; excitation e* + A → A* + e; recombination e + A⁺ → A; relaxation A* → A + hν.",
+   "kind": "rule",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s31-sheath",
+   "source": {
+    "topic": "topic5",
+    "slide": 31
+   },
+   "statement": "Ions accelerated across the sheath bombard the surface, which also makes plasma etching directional (anisotropic).",
+   "kind": "cause-effect",
+   "area": "plasma",
+   "key": true,
+   "objects": [
+    "rf-electrode"
+   ]
+  },
+  {
+   "id": "t5-s32-params",
+   "source": {
+    "topic": "topic5",
+    "slide": 32
+   },
+   "statement": "Plasma parameters: excitation frequency (13.56 MHz rf, kHz, dual, microwave), power, magnetic field, feed chemistry, gas flow, reactor geometry and pressure set the electron density, energy distribution and residence time.",
+   "kind": "diagram",
+   "area": "plasma",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t5-s33-uses",
+   "source": {
+    "topic": "topic5",
+    "slide": 33
+   },
+   "statement": "Plasmas are used for CVD, chamber cleaning (removing wall build-up, fewer particles), anisotropic etching and dry cleaning.",
+   "kind": "definition",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s34-temps",
+   "source": {
+    "topic": "topic5",
+    "slide": 34
+   },
+   "statement": "LPCVD vs PECVD temperatures: Si₃N₄ 850 vs 200–400 °C; SiO₂ from N₂O 800 vs 200–400 °C; TEOS oxide 720 vs 350 °C.",
+   "kind": "number",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s34-stoich",
+   "source": {
+    "topic": "topic5",
+    "slide": 34
+   },
+   "statement": "PECVD films are not stoichiometric (SiNₓ, SiOₓ), deposit fast but are porous with lower density; annealing in O₂ or NH₃ densifies them but needs high temperature.",
+   "kind": "cause-effect",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s34-stress",
+   "source": {
+    "topic": "topic5",
+    "slide": 34
+   },
+   "statement": "Any dissimilar layer stresses the wafer, which limits film thickness before bowing or cracking.",
+   "kind": "cause-effect",
+   "area": "deposition",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s35-hdp",
+   "source": {
+    "topic": "topic5",
+    "slide": 35
+   },
+   "statement": "HDP CVD: a remote high-density microwave plasma (2.45 GHz, with magnetic coils) and an independent 13.56 MHz substrate bias deposit and sputter at once, giving planarised, void-free SiO₂ in the back end.",
+   "kind": "definition",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s36-when",
+   "source": {
+    "topic": "topic5",
+    "slide": 36
+   },
+   "statement": "PECVD is used when the process must stay below about 400 °C (less for GaAs), with fast-diffusing metals such as Cu, for dielectric on Al (the Si–Al eutectic is 577 °C), and for SiNₓ die protection.",
+   "kind": "number",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s36-remote",
+   "source": {
+    "topic": "topic5",
+    "slide": 36
+   },
+   "statement": "Early PECVD ran above 1 Torr, randomising gas delivery for better coverage; modern remote-plasma systems run near 0.1 Torr, which is more directional (poorer step coverage) but keeps the wafer away from damaging ion bombardment.",
+   "kind": "cause-effect",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s37-w",
+   "source": {
+    "topic": "topic5",
+    "slide": 37
+   },
+   "statement": "Tungsten deposits selectively by 2WF₆ + 3Si → 2W + 3SiF₄ (300 °C) or as a blanket by WF₆ + SiH₄ → W + SiF₄ + 2HF + H₂ (400–450 °C).",
+   "kind": "rule",
+   "area": "plasma",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s37-nitride",
+   "source": {
+    "topic": "topic5",
+    "slide": 37
+   },
+   "statement": "PECVD nitride at 200–400 °C comes from SiH₄ + NH₃; the dichlorosilane reaction is a thermal LPCVD one at 700–800 °C.",
+   "kind": "rule",
+   "area": "plasma",
+   "key": true,
+   "objects": [],
+   "corrects": "Slide 37, titled \"PECVD reactions\", pairs the dichlorosilane nitride reaction with 200–400 °C and lists thermal (LTO, TEOS, HTO, poly) conditions; those are LPCVD values (compare slides 25 and 34)."
+  },
+  {
+   "id": "t5-s38-evap",
+   "source": {
+    "topic": "topic5",
+    "slide": 38
+   },
+   "statement": "Thermal evaporation: the metal sits in a W crucible or spiral, a current heats it (it must melt below W), it evaporates at P < 10⁻⁵ Torr, essentially from a point source; higher-melting metals need an electron beam.",
+   "kind": "number",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "evap-source",
+    "bell-jar"
+   ]
+  },
+  {
+   "id": "t5-s39-ebeam",
+   "source": {
+    "topic": "topic5",
+    "slide": 39
+   },
+   "statement": "In electron-beam evaporation electrons from a hot filament are bent by a magnet onto the source in a water-cooled hearth, melting it locally.",
+   "kind": "process-step",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "evap-source"
+   ]
+  },
+  {
+   "id": "t5-s39-table",
+   "source": {
+    "topic": "topic5",
+    "slide": 39
+   },
+   "statement": "E-beam: high-temperature materials, good for lift-off, highest purity, but radiation, alloys hard, poor step coverage. Filament: simple, lift-off, but limited sources. Sputtering: better step coverage, alloys, high-T materials, less radiation, but grainy, porous films and plasma damage.",
+   "kind": "rule",
+   "area": "pvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s40-gauges",
+   "source": {
+    "topic": "topic5",
+    "slide": 40
+   },
+   "statement": "Gauges: manometer 760–1 torr (near atmosphere), thermocouple 1–10⁻³ torr (mechanical pumps), ionisation gauge 10⁻³–10⁻⁹ torr (high vacuum).",
+   "kind": "number",
+   "area": "pvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s40-table",
+   "source": {
+    "topic": "topic5",
+    "slide": 40
+   },
+   "statement": "Vacuum: 760 Torr: 2×10²⁵ m⁻³, mean free path 7×10⁻⁸ m, 10⁻⁹ s per monolayer; 1 Torr: 5×10⁻⁵ m; 10⁻³: 5 cm; 10⁻⁶ (high): 50 m, 1 s; 10⁻¹⁰ (ultra-high): 5×10⁵ m, 10⁴ s.",
+   "kind": "number",
+   "area": "pvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s41-vapour",
+   "source": {
+    "topic": "topic5",
+    "slide": 41
+   },
+   "statement": "Vapour pressure rises steeply with temperature: Na evaporates near 300 °C, Al, In, Ag and Ga around 1000 °C, while refractory Mo and W need about 2000–3000 °C.",
+   "kind": "diagram",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "evap-source"
+   ]
+  },
+  {
+   "id": "t5-s42-point",
+   "source": {
+    "topic": "topic5",
+    "slide": 42
+   },
+   "statement": "Evaporation is not used in present-day Si technology because atoms arrive in straight lines from a point source, nearly perpendicular, so contact holes cannot be filled: no sidewall coverage.",
+   "kind": "cause-effect",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "trench-film"
+   ]
+  },
+  {
+   "id": "t5-s42-sc",
+   "source": {
+    "topic": "topic5",
+    "slide": 42
+   },
+   "statement": "The sticking coefficient Sc = F_reacted/F_incident; Sc < 1 helps coverage slightly, but not dramatically.",
+   "kind": "rule",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "trench-film"
+   ]
+  },
+  {
+   "id": "t5-s44-sputter",
+   "source": {
+    "topic": "topic5",
+    "slide": 44
+   },
+   "statement": "Sputtering: Ar plasma ions bombard a target, knocking atoms off; the large source area makes conformal coating possible; the material must be made into a target; works for metals and insulators; good adhesion.",
+   "kind": "definition",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "sputter-target",
+    "plasma-glow"
+   ]
+  },
+  {
+   "id": "t5-s44-voltage",
+   "source": {
+    "topic": "topic5",
+    "slide": 44
+   },
+   "statement": "Across a DC sputter discharge most of the voltage drops in the cathode dark space (sheath) next to the target; the plasma sits at a small positive Vp.",
+   "kind": "diagram",
+   "area": "pvd",
+   "key": false,
+   "objects": [
+    "sputter-target"
+   ]
+  },
+  {
+   "id": "t5-s45-dc",
+   "source": {
+    "topic": "topic5",
+    "slide": 45
+   },
+   "statement": "DC sputtering: −(100–300) V on the target accelerates Ar⁺ into it; it deposits Al, W, Ti and silicides but not dielectrics, which charge up with positive ions and kill the current.",
+   "kind": "number",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "sputter-target"
+   ]
+  },
+  {
+   "id": "t5-s46-rf",
+   "source": {
+    "topic": "topic5",
+    "slide": 46
+   },
+   "statement": "RF sputtering is not used much commercially: large RF supplies are costly, and the high self-bias heats insulating materials.",
+   "kind": "cause-effect",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "rf-electrode"
+   ]
+  },
+  {
+   "id": "t5-s47-reactive",
+   "source": {
+    "topic": "topic5",
+    "slide": 47
+   },
+   "statement": "Reactive sputtering adds a reactive gas to the inert one (Ar–N₂, Ar–O₂): a Ti target in N₂ plasma gives TiN.",
+   "kind": "definition",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "sputter-target"
+   ]
+  },
+  {
+   "id": "t5-s48-magnetron",
+   "source": {
+    "topic": "topic5",
+    "slide": 48
+   },
+   "statement": "In a magnetron a magnetic field traps electrons near the target on helical paths, so they ionise more gas there: higher sputter rate and a plasma sustained at lower pressure (~10⁻³ Torr Ar); the neutral sputtered atoms are unaffected.",
+   "kind": "cause-effect",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "magnetron"
+   ]
+  },
+  {
+   "id": "t5-s49-compare",
+   "source": {
+    "topic": "topic5",
+    "slide": 49
+   },
+   "statement": "In a trench CVD (and spin-on) coats conformally, sputtering overhangs the top corners and can leave a void, and evaporation coats only top and bottom.",
+   "kind": "diagram",
+   "area": "pvd",
+   "key": true,
+   "objects": [
+    "trench-film"
+   ]
+  },
+  {
+   "id": "t5-s50-pld",
+   "source": {
+    "topic": "topic5",
+    "slide": 50
+   },
+   "statement": "Pulsed laser deposition: photons vaporise (ablate) a target and the plume condenses on the substrate; simple, clean and fast, near-stoichiometric transfer, high purity, layer-by-layer control, multi-target (high-Tc superconductors), but not good for metals.",
+   "kind": "definition",
+   "area": "pvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s51-ald",
+   "source": {
+    "topic": "topic5",
+    "slide": 51
+   },
+   "statement": "Atomic layer deposition (first used for ZnS): its self-limiting surface reactions allow pulsed sources and large-area scale-up, and coat pores of aspect ratio 140:1 conformally.",
+   "kind": "number",
+   "area": "pvd",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t5-s52-table",
+   "source": {
+    "topic": "topic5",
+    "slide": 52
+   },
+   "statement": "Film menu: epitaxial Si by APCVD/LPCVD at 1000–1250 °C; polysilicon by LPCVD at 575–650 °C; Si₃N₄ (3SiH₄ + 4NH₃ → Si₃N₄ + 12H₂) at 650–800 °C for oxidation masks or 200–400 °C by PECVD; SiO₂ 200–800 °C; Al by magnetron sputtering at 25–300 °C.",
+   "kind": "number",
+   "area": "deposition",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide writes the nitride reaction as \"3SiH₄ + NH₄ → Si₃N₄ + 12H₂\": it needs 4NH₃."
+  },
+  {
+   "id": "t5-s53-table",
+   "source": {
+    "topic": "topic5",
+    "slide": 53
+   },
+   "statement": "W by LPCVD (2WF₆ + 3SiH₄ → 2W + 3SiF₄ + 6H₂, or WF₆ + 3H₂ → W + 6HF) at 250–500 °C; TiSi₂ as a self-aligned silicide from sputtered Ti; TiN by reactive sputtering or 6TiCl₄ + 8NH₃ → 6TiN + 24HCl + N₂; Cu mostly by electroplating.",
+   "kind": "rule",
+   "area": "deposition",
+   "key": true,
+   "objects": []
+  }
+ ]
+}

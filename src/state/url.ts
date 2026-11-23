@@ -30,14 +30,14 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
   if (segs[0] === 'debug') return { page: 'debug' }
   // the door opens onto the cleanroom, which renders behind it
   if (segs.length === 0) return { page: 'home', layer: 'cleanroom' }
-  if (!['cmos', 'growth', 'clean'].includes(segs[0])) return { page: 'home' }
+  if (!['cmos', 'growth', 'clean', 'films', 'epi'].includes(segs[0])) return { page: 'home' }
 
   out.page = 'atlas'
   // device variant lives in the path at the transistor level
   const device = segs[0] === 'cmos' && segs[2] === 'pmos' ? 'pmos' : 'nmos'
   const norm = segs.map((s, i) => (i === 2 && segs[0] === 'cmos' && (s === 'pmos' || s === 'nmos') ? 'nmos' : s))
   const match = LAYERS.find((l) => l.path.join('/') === norm.join('/'))
-  const fallback: Record<string, LayerId> = { cmos: 'cell', growth: 'sand', clean: 'cleanroom' }
+  const fallback: Record<string, LayerId> = { cmos: 'cell', growth: 'sand', clean: 'cleanroom', films: 'deposition', epi: 'mbe' }
   out.layer = (match?.id ?? fallback[segs[0]]) as LayerId
   out.device = device
   const tab = q.get('tab')

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { IS_APP } from '../platform'
-import { CHAPTER_BY_ID, CHAPTERS, chapterOf, LAYER_BY_ID, LAYERS, layerIndex } from '../chapters/cmos/layers'
+import { ancestry, CHAPTER_BY_ID, CHAPTERS, chapterOf, LAYER_BY_ID, layerIndex } from '../chapters/cmos/layers'
 import { useAtlas } from '../state/store'
 import { transition } from '../scene/transition'
 import { navigate } from '../state/url'
@@ -24,12 +24,14 @@ export function Breadcrumbs() {
   const idx = layerIndex(layer)
   // the zoom path within this layer's chapter, plus the layer just above it
   const ch = LAYER_BY_ID[layer].chapter
-  const first = Math.max(0, LAYERS.findIndex((l) => l.chapter === ch) - 1)
+  const chain = ancestry(layer).map((id) => LAYER_BY_ID[id])
+  const start = Math.max(0, chain.findIndex((l) => l.chapter === ch) - 1)
+  const shown = chain.slice(start)
   return (
     <nav className="crumbs" aria-label="Zoom path">
       <ol>
-        {LAYERS.slice(first, idx + 1).map((l, j) => {
-          const i = first + j
+        {shown.map((l) => {
+          const i = layerIndex(l.id)
           const name = l.id === 'transistor' ? (device === 'pmos' ? 'pMOS' : 'nMOS') : l.crumb
           const current = i === idx
           return (

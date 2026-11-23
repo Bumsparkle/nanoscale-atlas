@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import type { Device, LayerId } from '../chapters/cmos/layers'
 import { MASK_IDS, type MaskId } from '../chapters/cmos/layout'
-import type { SourceRef } from '../sources'
+import type { SourceRef, TopicId } from '../sources'
 
 export type Page = 'home' | 'atlas' | 'style' | 'debug'
 export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic' | 'layout'
@@ -65,6 +65,44 @@ export interface AtlasState {
   crystal: { cell: CellKind; offset: number; hkl: [number, number, number]; r: number; T: number }
   /** Chapter 2: process lab (slides 24–32) */
   proc: ProcState
+  /** Chapter 4 (Topic 5): deposition bay controls */
+  films: {
+    /** CVD: temperature (°C), pressure (torr), mole fraction */
+    T: number
+    P: number
+    Y: number
+    /** plasma chamber mode */
+    plasma: 'pecvd' | 'dc' | 'rf' | 'magnetron'
+    /** evaporator: log10 of pressure (torr), e-beam source */
+    logP: number
+    ebeam: boolean
+    /** step coverage */
+    method: 'cvd' | 'sputter' | 'evaporation'
+    aspect: number
+    Sc: number
+  }
+  /** Chapter 5 (Topic 6): epitaxy controls */
+  epi: {
+    /** Si epi: temperature, growth rate (µm/min), substrate dopant, backside seal, reduced pressure */
+    T: number
+    rate: number
+    sub: 'As' | 'Sb' | 'B'
+    seal: boolean
+    rp: boolean
+    /** MBE: Ga beam pressure at the substrate (log10 Pa), Ga shutter, monolayers grown */
+    logGa: number
+    shutter: boolean
+    ml: number
+    /** surface: growth mode and coverage (monolayers) */
+    mode: 'fvdm' | 'sk' | 'vw'
+    coverage: number
+    /** strain: film, substrate and thickness (nm) */
+    film: string
+    substrate: string
+    thick: number
+    /** SOI smart-cut step (0–5) */
+    soi: number
+  }
   /** Chapter 3 (Topic 4) */
   clean: {
     /** cleanroom class shown (particles ≥ 0.5 µm per ft³) */
@@ -106,7 +144,7 @@ export interface AtlasState {
   /** current lesson position: a step id or review:<section> */
   lessonAt: string | null
   /** Revise sub-view */
-  revise: { tab: 'drill' | 'coverage' | 'exam'; topic: 'topic2' | 'topic3' | 'topic4' | null; from: number; to: number; area: string | null }
+  revise: { tab: 'drill' | 'coverage' | 'exam'; topic: TopicId | null; from: number; to: number; area: string | null }
   /** camera target set by the lesson (does not open a panel) */
   look: string | null
   /** object outlined by a hint after a wrong answer */
@@ -153,6 +191,11 @@ export const PROC_DEFAULT: ProcState = {
   dopant: 'B', preT: 950, preMin: 30, driveT: 1100, driveMin: 60, species: 'B', keV: 50, annealed: false,
   epi: 'cvd', epiMin: 30, metalNm: 500,
 }
+export const FILMS_DEFAULT: AtlasState['films'] = { T: 900, P: 760, Y: 0.01, plasma: 'pecvd', logP: -6, ebeam: false, method: 'cvd', aspect: 2, Sc: 0.1 }
+export const EPI_DEFAULT: AtlasState['epi'] = {
+  T: 1100, rate: 1, sub: 'As', seal: false, rp: false, logGa: -3.5, shutter: true, ml: 0, mode: 'fvdm', coverage: 1.5,
+  film: 'InAs', substrate: 'GaAs', thick: 1, soi: 0,
+}
 export const CLEAN_DEFAULT: AtlasState['clean'] = {
   cls: 100, sources: { person: false, book: false, gloves: false }, rca: 0, metal: 'Fe', solution: 'water',
   cycle: 0, getter: 0, D0: 0.5, A: 1, C: 2, seed: 1,
@@ -168,6 +211,8 @@ export const useAtlas = create<AtlasState>((set) => ({
   crystal: { cell: 'diamond', offset: 1, hkl: [1, 0, 0], r: 1, T: 1000 },
   proc: PROC_DEFAULT,
   clean: CLEAN_DEFAULT,
+  films: FILMS_DEFAULT,
+  epi: EPI_DEFAULT,
   focus: null,
   hover: null,
   section: { axis: 'y', offset: -4, locked: null, gap: 0 },

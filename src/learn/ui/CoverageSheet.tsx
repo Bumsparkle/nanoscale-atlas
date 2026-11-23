@@ -11,6 +11,8 @@ const AREA_TITLE: Record<string, string> = {
   structure: 'Cross-section and masks', fabrication: 'Fabrication', layout: 'Layout and design rules', summary: 'Summary',
   crystal: 'Crystal structure', bands: 'Energy bands', growth: 'Crystal growth', defects: 'Defects', process: 'The process flow',
   cleanroom: 'The clean factory', cleaning: 'Wafer cleaning', gettering: 'Gettering', yield: 'Yield',
+  deposition: 'Film deposition', cvd: 'Chemical vapour deposition', safety: 'Gas safety', plasma: 'Plasma processes', pvd: 'Evaporation and sputtering',
+  epitaxy: 'Epitaxial growth', heteroepitaxy: 'Strain and lattice matching', siepi: 'Silicon epitaxy', mbe: 'Molecular beam epitaxy', soi: 'Silicon on insulator',
 }
 
 /**
