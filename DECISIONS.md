@@ -313,3 +313,43 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **Whole bank:** 696 questions. Every fact has a question, and every key fact has at least two question types (tested).
 
 - **Slide archive for all three decks (2026-11-22).** `private/slides-all.tar.gz` (102 slides) is uploaded to the same private release, `topic2-slides`, as the asset `slides-all.tar.gz`. Its API URL is `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/778978728`. To serve Topics 3 and 4 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it and redeploy. The old Topic 2 asset is kept, so the current deployment keeps working until then.
+
+## Chapters 4 and 5 (Topics 5 and 6, 2026-11-23)
+
+### Inventories
+- `content/topic5/facts.json` (*Thin Film Deposition*, 53 slides): **97 facts, 79 key**. `content/topic6/facts.json` (*Epitaxy*, 31 slides): **45 facts, 36 key**. Areas: intro, deposition, cvd, safety, plasma, pvd; and epitaxy, heteroepitaxy, siepi, mbe, soi.
+- **Linked, not duplicated.** Topic 5 slide 2 links to the Topic 3 oxide-thickness fact. Topic 6 slides 4 and 17 link to the Topic 3 epitaxy and evaporation facts, and slide 18 to Topic 5's vacuum table. Links may now point at any earlier topic (`facts.test.ts`).
+- **No facts:** T5 slide 28 (MOCVD photographs), T5 slide 43 (repeats slide 42 word for word), T6 slide 26 (MBE photographs).
+
+### Slide errors corrected
+
+| Deck · slide | The slide says | The Atlas teaches |
+|---|---|---|
+| T5 · 7 | TMGa and TMAl as "(CH₄)₃Ga", "(CH₄)₃Al" | Methyl groups are CH₃: (CH₃)₃Ga, (CH₃)₃Al |
+| T5 · 10 | "anemia, kidney damage, death" on the argon row | Argon is inert (an asphyxiant); those effects are arsine's |
+| T5 · 25 | 3SiCl₂H₂ + 4NH₃ → Si₃N₄ + 6HCl | Balanced: … + 6HCl + 6H₂ |
+| T5 · 37 | "PECVD reactions" pairs the dichlorosilane nitride with 200–400 °C | That is a thermal LPCVD reaction at 700–800 °C; PECVD nitride is SiH₄ + NH₃ at 200–400 °C |
+| T5 · 52 | 3SiH₄ + NH₄ → Si₃N₄ + 12H₂ | 3SiH₄ + 4NH₃ → Si₃N₄ + 12H₂ |
+| T6 · 28 | SIMOX = "silicon implantation with oxide" | Separation by implantation of oxygen |
+
+### Structure
+- **Two layers inserted after the cleanroom**, with `up: 'cleanroom'`: the **deposition bay** (`/films/deposition`, Ch.4, 1 unit = 1 cm) with tabs CVD, Plasma, Evaporation, Step coverage and Si epitaxy (tagged Ch.5), and the **MBE chamber** (`/epi/mbe`, Ch.5). Scrolling into MBE reaches the **growing surface** (`/epi/surface`, 1 unit = 1 Å) with tabs Growth modes and Lattice mismatch. SOI is a new **wafer tab** (`/cmos/wafer?tab=soi`, Ch.5).
+- **The ladder is now a tree.** Layers can name a parent (`up`); Esc, surfacing and the breadcrumbs follow `parentOf` / `ancestry`, trimmed to the chapter plus one layer above. The main sand-to-lattice scroll is unchanged (zoomcheck still walks the same 12 layers); the new layers are reached from the cleanroom panel, the chapter menu or their URLs.
+- **One physics module.** `chapters/films/physics.ts` holds CVD kinetics, the vacuum table, MBE flux, RHEED, the lattice/bandgap data, step coverage and the autodoping profile; every scene, panel and worked solution calls it. Tested in `physics.test.ts`.
+
+### Modelling choices (stated in the panels)
+- **CVD kinetics** use the slide 18 formula exactly. k0 (10⁷ cm/s) and hG at 760 torr (3 cm/s) are illustrative, chosen so the crossover sits near 1000 °C as slide 20 draws it. hG(P) follows slide 22: DG ∝ 1/P and δS ∝ P^(−0.29), so ×~100 at 1 torr. Absolute LPCVD rates come out low (≈0.6 nm/min for poly at 620 °C with pure silane); the regimes and ratios are what is taught.
+- **Vacuum** reproduces slide 40's rows (λ = 5 × 10⁻⁵ m/P, 10⁻⁶/P s per monolayer).
+- **MBE flux** is slide 23's 2.64 × 10²⁰ P/√(MT), checked against P(2πmkT)^−½. One RHEED period = one monolayer = a/2 on (001).
+- **Critical thickness** uses hc ≈ a/(2|f|), a rough estimate beyond the lecture, only to switch between pseudomorphic and metamorphic.
+- **Step coverage** is illustrative geometry, not a feature-scale simulation. Evaporation leaves bare sidewalls, sputtering coats them thinly with overhang, CVD with low Sc is nearly conformal.
+- **Autodoping** is an erfc out-diffusion plus an exponential gas-phase tail; the tail scale is illustrative. Sealing, reduced pressure and faster growth each sharpen it (tested).
+
+### Learning
+- **Eight new parameterised calculations:** Arrhenius rate ratio, CS/CG, the CVD growth rate, mean free path, monolayer time, MBE flux, growth rate from the RHEED period, and lattice mismatch.
+- **Counts.** Topic 5: 155 questions (97 recall, 35 predict, 12 do, 8 calc of which 5 parameterised, 3 label); lesson of 10 sections, 39 steps. Topic 6: 78 questions (45 recall, 17 predict, 8 do, 4 calc of which 3 parameterised, 4 label); lesson of 6 sections, 21 steps. Whole bank: 553 facts, 929 questions.
+- The Chapter 2–3 lesson rules now run for Chapters 4 and 5 too (`lesson.test.ts`).
+- Revise filters T5 and T6; the skill map has the new areas.
+
+### Slides
+`npm run slides` renders all five decks (137 slides with Topic 2) into `private/slides/` and packs `private/slides-all.tar.gz` (28.7 MB). Both stay gitignored. To show Topics 5 and 6 on the deployed site, that archive replaces asset 778978728 in the private release, then Vercel's `SLIDES_ARCHIVE_URL` points at the new asset.

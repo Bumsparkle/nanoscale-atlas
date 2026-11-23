@@ -618,3 +618,23 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
   
   The screenshots stay in the gitignored `shots/`.
 - **Slides:** the three-deck archive is uploaded to the private release (asset 778978728). To show Topics 3 and 4 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it (see DECISIONS.md).
+
+### Topics 5 and 6 · Chapters 4 and 5 — done (2026-11-23)
+
+**Chapter 4, Laying down films (Topic 5).** The deposition bay, reached from the cleanroom:
+- CVD tab: a hot-wall tube whose wafers lie on a tilted susceptor at atmospheric pressure and stand in a boat at low pressure. Gas tracers, the regime label and a log-rate vs 1/T chart with the kS and hG lines (slides 15–22).
+- Plasma tab: PECVD, DC, RF and magnetron in one chamber, with glow, sheath, target and magnets.
+- Evaporation tab: a bell jar whose vapour rays go straight below 10⁻⁵ Torr and scatter above it; e-beam source; slide 40's vacuum table highlights the current row.
+- Step coverage tab: a trench coated by CVD, sputtering or evaporation, with aspect ratio and sticking coefficient.
+
+**Chapter 5, Atom by atom (Topic 6).**
+- Si epitaxy tab: a barrel reactor and the autodoping profile, with temperature, rate, substrate dopant, backside seal and reduced pressure.
+- MBE chamber: four cells with shutters, beams, rotating substrate, RHEED gun and screen. The screen pulses once per monolayer and the panel plots the RHEED trace live.
+- Growing surface: the three growth modes (islands shaded by height) and lattice mismatch, with a clickable bandgap–lattice-constant chart, substrate choice and thickness: strained until it relaxes with misfit dislocations.
+- SOI (wafer tab): smart cut in six steps.
+
+**Verification**
+- 611 tests pass (128 new): the films physics, the inventories and their corrections, 233 new questions with eight new parameterised calcs, and the Chapter 4 and 5 lessons under the same rules as Chapters 2–3.
+- `scripts/zoomcheck.mjs` still walks sand → lattice through 12 layers with no page errors; MBE → surface and back out to the sand also works.
+- Screenshots of every new tab were reviewed (`scripts/chaptershots.mjs c4|c5`). Fixes found that way: the smart-cut stack was upside down (refs not re-rendering), the MBE cut-away faced away from the camera, the surface cameras were too close, islands were indistinguishable from the wetting layer, the trench film matched the substrate, a CVD label hid under the panel, and LPCVD used the APCVD silane fraction.
+- **Slides:** all five decks render; the 137-slide archive is local and gitignored. It is not uploaded yet.

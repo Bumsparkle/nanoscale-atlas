@@ -30,7 +30,9 @@ Useful URLs:
 | `/` | Cleanroom door (gowning, then the cleanroom) |
 | `/growth/sand` … `/growth/wafers` | Chapter 2's layers (`/growth/czochralski?tab=fz`, `?k0=0.8&f=0.9`) |
 | `/clean/cleanroom?tab=wetbench` | Chapter 3 (`tab=room`, `wetbench`, `redox`) |
-| `/cmos/wafer?tab=process` | Process flow and lab (`tab=gettering`, `tab=yield`) |
+| `/films/deposition?tab=cvd` | Chapter 4's deposition bay (`tab=plasma`, `pvd`, `coverage`; `siepi` is Chapter 5) |
+| `/epi/mbe`, `/epi/surface?tab=strain` | Chapter 5: MBE chamber, growth modes and lattice mismatch |
+| `/cmos/wafer?tab=process` | Process flow and lab (`tab=gettering`, `tab=yield`, `tab=soi`) |
 | `/cmos/inverter/nmos/gate-oxide/lattice?tab=miller&hkl=111` | Lattice tabs: `cells`, `miller`, `bands`, `defects` |
 | `/cmos/wafer` … `/cmos/inverter/nmos/gate-oxide/lattice` | The six zoom layers |
 | `/cmos/inverter?view=section&cut=slide27` | Locked section on the slide 27 line (`cut` can also be `ngate`, `pgate`, or `<λ>&axis=x\|y`) |
@@ -43,10 +45,10 @@ Useful URLs:
 
 Modes (top bar):
 - **Explore** is the sandbox. Its "mastery" toggle tints the model by how well you know each part.
-- **Lesson** (`?mode=lesson&at=<step id>`): one lesson per chapter (Topic 2 in 15 sections, Topic 3 in 10, Topic 4 in 7). Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
-- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 696 questions (filter by topic), a skill map and per-slide coverage, and a timed paper.
+- **Lesson** (`?mode=lesson&at=<step id>`): one lesson per chapter (Topic 2 in 15 sections, Topic 3 in 10, Topic 4 in 7, Topic 5 in 10, Topic 6 in 6). Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
+- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 929 questions (filter by topic), a skill map and per-slide coverage, and a timed paper.
 
-Each topic has `content/topicN/facts.json` (the fact inventory), `content/topicN/questions/` and `content/topicN/lesson/`. Topics 3 and 4 use the shared builders in `content/kit.ts`. Parameterised calculations are generated in `src/learn/calcs.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
+Each topic has `content/topicN/facts.json` (the fact inventory), `content/topicN/questions/` and `content/topicN/lesson/`. Topics 3–6 use the shared builders in `content/kit.ts`. Parameterised calculations are generated in `src/learn/calcs.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
 
 Keys:
 - **Global:** `Esc` goes up a level (it closes a panel first).
@@ -76,7 +78,7 @@ The scene core is imperative (`CellModel`, `rig`, `transition`, `cellRuntime`): 
 
 ## How to add a chapter
 
-Chapters 2 and 3 show the second pattern: hand-built layers and tabs instead of masks. Add layers (or `tabs` on an existing layer) to `chapters/cmos/layers.ts`, put the physics in `chapters/<chapter>/physics.ts` with tests, write one content file per object in `chapters/<chapter>/content/` (with `tabs` if it appears on only some tabs), register the nodes in `nodes.ts`, and add the facts, questions and lesson under `content/topicN/`. "do" questions can target any store value with a `state` target.
+Chapters 2–5 show the second pattern: hand-built layers and tabs instead of masks. Add layers (or `tabs` on an existing layer) to `chapters/cmos/layers.ts`, put the physics in `chapters/<chapter>/physics.ts` with tests, write one content file per object in `chapters/<chapter>/content/` (with `tabs` if it appears on only some tabs), register the nodes in `nodes.ts`, and add the facts, questions and lesson under `content/topicN/`. "do" questions can target any store value with a `state` target.
 
 For a chapter built from masks:
 
