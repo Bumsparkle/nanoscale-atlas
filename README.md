@@ -153,6 +153,8 @@ npx supabase db push            # applies the migrations, creates the private sl
 npx supabase config push        # auth settings, email templates, the hook (from supabase/config.jsonc)
 ```
 
+**Live auth config and email sender:** `npm run auth:push` builds a production copy of the config (site URL, redirects, hook, templates) with Resend as the SMTP sender (`signin@atlas.txtbook.co.uk`, domain verified in Resend with its Cloudflare auto-setup), asks for the Resend API key in a hidden prompt, and pushes it. Supabase's free tier only accepts the custom templates once a custom SMTP sender is set.
+
 Then in the dashboard check: **Authentication → Hooks**: *Before User Created* → Postgres function `public.hook_ucl_only`; **Authentication → Sign In / Providers → Email**: confirm email on; **URL Configuration**: Site URL = the deployed site, redirect URLs include `https://<site>/gate/**`; **SMTP**: set a real sender (Supabase's built-in mailer is limited to a few emails an hour). Upload the slides from your local `private/slides/`:
 
 ```bash
