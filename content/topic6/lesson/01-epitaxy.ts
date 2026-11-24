@@ -24,7 +24,7 @@ export const sections: S[] = [
     steps: [
       {
         id: 'e-uses', title: 'Crystal on crystal', scene: SIEPI(), sources: [T6(1), T6(2), T6(3)],
-        factIds: f('s01-topic', 's02-materials', 's03-uses'),
+        factIds: f('s02-materials', 's03-uses'),
         text: 'Topic 6 is epitaxy. Almost every semiconductor can be grown this way: silicon; the III–V arsenides, phosphides, nitrides and antimonides such as GaAs, AlGaAs, InP, GaN and InSb; II–VI compounds such as ZnSe and CdTe; and silicon–germanium. In silicon chips an epitaxial layer gives a region whose doping is set independently of the wafer underneath. A bipolar transistor is built in a lightly doped layer that sits on top of a heavily doped one buried below it; CMOS wells sit in a lightly doped p layer on a heavily doped p⁺ wafer.',
         example: { kind: 'demo', text: 'The barrel reactor in front of you grows silicon epi; the inset slab shows a new layer on its substrate.' },
         checks: q('bipolar'),

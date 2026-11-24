@@ -40,7 +40,7 @@ export default [
   predict('strained-si', ['s15-sige', 's16-strained'], 'Silicon is grown thin on a relaxed SiGe layer. Predict the effect on an NMOS transistor in it.', STRAIN('Si', 'Ge', 1),
     ['faster: the stretched Si has higher electron mobility', 'slower: strain always hurts', 'no change', 'it stops conducting'], 0, { ...STRAIN('Si', 'Ge', 1), look: 'surface-film' },
     'Ge content strains the Si lattice and raises electron mobility; Intel used strained Si at 0.05 µm gates.', 'Strain engineering.'),
-  calc('mob', ['s15-mobility'], 'Using slide 15’s chart, roughly how many times higher is the electron mobility of InSb than Si at 300 K?', 57, 6, '×',
+  calc('mob', ['s15-mobility'], 'Roughly how many times higher is the electron mobility of InSb than Si at 300 K?', 57, 6, '×',
     'Read both off the chart.', 'InSb ≈ 80 000, Si ≈ 1 400 cm²/V·s: 80 000/1 400 ≈ 57.'),
 
   // silicon epitaxy (slides 10–14)
@@ -48,7 +48,7 @@ export default [
   predict('tcs', ['s11-tcs', 's10-gases'], 'Trichlorosilane and hydrogen flow over a hot wafer. Predict the by-product.', SIEPI(),
     ['HCl: HSiCl₃ + H₂ → Si + 3HCl', 'H₂O', 'SiO₂', 'Cl₂ only'], 0, { ...SIEPI(), look: 'epi-layer' },
     'Chlorosilanes are H₂-reduced; silane is pyrolysed.', 'Balance Cl.', { obj: 'epi-layer' }),
-  act('epi-t', ['s11-conditions'], 'Bring the reactor into slide 11’s temperature window for silicon epitaxy.', SIEPI({ T: 1150 }),
+  act('epi-t', ['s11-conditions'], 'Bring the reactor into the temperature window for silicon epitaxy.', SIEPI({ T: 1150 }),
     ST('deposition', 'siepi', [{ path: 'epi.T', max: 1100 }]), { epi: { T: 1050 } }, '900–1100 °C.', { obj: 'barrel' }),
   predict('whyepi', ['s12-profile'], 'A design needs a 3 Ω·cm layer at the surface of a 0.01 Ω·cm wafer. Predict how it is made.', SIEPI(),
     ['grow it by epitaxy: diffusion can only add dopant, lowering resistivity', 'diffuse in more dopant', 'implant it', 'oxidise the surface'], 0, { ...SIEPI(), look: 'epi-layer' },
@@ -88,7 +88,7 @@ export default [
   predict('half', ['s25-osc'], 'Half a monolayer has been deposited. Predict the RHEED intensity.', MBE(),
     ['at a minimum: half-covered terraces scatter most', 'at a maximum', 'zero for ever', 'unchanged from the start'], 0, { ...MBE(), look: 'rheed-screen' },
     'Highest at θ = 0, 1; lowest at θ = 0.5.', 'Rough surface.', { obj: 'rheed-screen' }),
-  predict('sl', ['s27-superlattice'], 'Predict what the shutters do to make a superlattice like slide 27’s.', MBE(),
+  predict('sl', ['s27-superlattice'], 'Predict what the shutters do to make an AlGaAs/GaAs superlattice.', MBE(),
     ['open and close the Al shutter every 15 monolayers, alternating AlGaAs and GaAs', 'keep all shutters open', 'heat the substrate in steps', 'nothing: it forms by itself'], 0, { ...MBE(), look: 'mbe-shutter' },
     'Alternating 15-ML AlGaAs and GaAs layers.', 'Layers of a cake.'),
 

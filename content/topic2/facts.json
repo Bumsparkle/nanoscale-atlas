@@ -264,18 +264,6 @@
  ],
  "facts": [
   {
-   "id": "s01-topic",
-   "source": {
-    "topic": "topic2",
-    "slide": 1
-   },
-   "kind": "definition",
-   "statement": "ELEC0031 Topic 2 is \"Introduction to CMOS VLSI Design\".",
-   "area": "intro",
-   "key": false,
-   "objects": []
-  },
-  {
    "id": "s02-ic",
    "source": {
     "topic": "topic2",
@@ -321,18 +309,6 @@
    },
    "kind": "cause-effect",
    "statement": "CMOS transistors are fast, cheap and low power.",
-   "area": "intro",
-   "key": false,
-   "objects": []
-  },
-  {
-   "id": "s02-plan",
-   "source": {
-    "topic": "topic2",
-    "slide": 2
-   },
-   "kind": "definition",
-   "statement": "Building a simple CMOS chip covers the CMOS transistor, building logic gates from transistors, and transistor layout and fabrication.",
    "area": "intro",
    "key": false,
    "objects": []
@@ -2636,6 +2612,12 @@
    "objects": [
     "lambda"
    ]
+  }
+ ],
+ "noFacts": [
+  {
+   "slide": 1,
+   "why": "Title slide: only the topic name, nothing examinable."
   }
  ]
 }

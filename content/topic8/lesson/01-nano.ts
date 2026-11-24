@@ -21,7 +21,7 @@ export const sections: S[] = [
     steps: [
       {
         id: 'l8-define', title: 'Nanotechnology', scene: SCALE({ logSize: -6 }), sources: [T8(1), T8(2)],
-        factIds: f('s01-topic', 's02-nano', 's02-differ'),
+        factIds: f('s02-nano', 's02-differ'),
         text: 'Topic 8 is about III–V semiconductor nanostructures. Nanotechnology is the understanding and control of matter on a scale from about one to a hundred nanometres, because in that window materials stop behaving like either single atoms or the everyday objects we handle: their physical, chemical and biological properties take on values of their own, and that is what new devices exploit.',
         example: { kind: 'demo', text: 'Drag the size slider and watch the regime readout change.' },
         checks: q('nano'),

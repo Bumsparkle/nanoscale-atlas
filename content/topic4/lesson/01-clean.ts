@@ -19,7 +19,7 @@ export const sections: S[] = [
     steps: [
       {
         id: 'k-room', title: 'What a cleanroom is', scene: ROOM, sources: [T4(1), T4(2), T4(4)],
-        factIds: f('s01-topic', 's02-level1', 's02-def', 's02-air', 's02-uses', 's02-spec', 's04-yellow'),
+        factIds: f('s02-level1', 's02-def', 's02-air', 's02-uses', 's02-spec', 's04-yellow'),
         text: 'Topic 4 is about keeping wafers clean, and the first defence is the factory itself. A cleanroom is a space where pollutants are kept low, used for manufacturing and research, and the thing it controls above all is its air. It is rated by counting the particles in a volume of air at a stated size. The lithography bays glow amber because the resist would be exposed by ordinary white light.',
         example: { kind: 'demo', text: 'Orbit the bay: the specks drifting down are tracers following the air.' },
         checks: q('bay'),

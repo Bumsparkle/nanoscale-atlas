@@ -5,7 +5,7 @@ import { CONTENT_BY_ID } from '../chapters/cmos/content'
 const T2F = FACTS.filter((f) => f.source.topic === 'topic2')
 describe('fact inventory (content/topic2/facts.json)', () => {
   it('covers all 49 slides', () => {
-    const slides = new Set(T2F.map((f) => f.source.slide))
+    const slides = new Set([...T2F.map((f) => f.source.slide), ...FACT_FILE.noFacts.map((x) => x.slide)])
     for (let s = 1; s <= 49; s++) expect(slides.has(s), `slide ${s} has no fact`).toBe(true)
   })
   it('fact ids are unique and match their slide', () => {

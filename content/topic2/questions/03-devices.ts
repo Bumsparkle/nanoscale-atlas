@@ -66,7 +66,7 @@ export default [
     [H('The values fall, and none of them are whole steps of 1 V.')], 'VDD = 3.3, 2.5, 1.8, 1.5, 1.2, 1.0 V, ….'),
   calc('q-s13-factor', 13, ['s13-vdd-1980', 's13-vdd-modern'], 'By what factor has VDD fallen from the 1980s value to 1.0 V?', 5, 0.01, '×',
     [H('Divide the 1980s supply by the modern one.')], '5 V / 1.0 V = 5×.'),
-  recall('q-s13-why', 13, ['s13-vdd-why'], 'Why has VDD decreased? Pick the reason the lecture gives.', ['high voltage would damage modern tiny transistors, and lower VDD saves power', 'batteries got weaker', 'lower VDD makes transistors faster', 'metal wires cannot carry 5 V'], 0,
+  recall('q-s13-why', 13, ['s13-vdd-why'], 'Why has VDD decreased over the years?', ['high voltage would damage modern tiny transistors, and lower VDD saves power', 'batteries got weaker', 'lower VDD makes transistors faster', 'metal wires cannot carry 5 V'], 0,
     [H('Two reasons: one about the transistors, one about energy.')], 'High voltage would damage tiny transistors; lower VDD saves power.'),
   recall('q-s13-structure', 13, ['s13-structure'], 'In the pMOS structure drawing, the source and drain are…', ['n-type in p-type silicon', 'p-type in n-type silicon', 'metal on oxide', 'undoped'], 1,
     [H('Reverse the nMOS.')], 'p-type source and drain in n-type silicon, with a p-channel under the poly gate.'),

@@ -24,7 +24,7 @@ export const sections: S[] = [
     steps: [
       {
         id: 'f-need', title: 'A good film', scene: COV('cvd'), sources: [T5(1), T5(2), T5(34)],
-        factIds: f('s01-topic', 's02-req', 's02-planar', 's34-stress'),
+        factIds: f('s02-req', 's02-planar', 's34-stress'),
         text: 'Thin film deposition adds material instead of converting the wafer, as oxidation does. A useful film has the right composition and very little contamination, the electrical, optical or mechanical properties it was chosen for, and an even thickness from the centre of a wafer to its edge and from one wafer to the next. It must stick, it must not be under too much stress, and it must cover steps. Some films are also meant to flatten what lies beneath: planarisation may be absent, local, or global across the whole wafer. Any layer unlike the wafer pulls or pushes on it as it cools.',
         checks: q('stress'),
       },

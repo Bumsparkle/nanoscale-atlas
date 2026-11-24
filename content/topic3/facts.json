@@ -277,32 +277,17 @@
    "note": "Chapter 1 sputters its aluminium; Topic 3 adds thermal evaporation."
   }
  ],
- "noFacts": [],
+ "noFacts": [
+  {
+   "slide": 1,
+   "why": "Title slide: only the topic name, nothing examinable."
+  },
+  {
+   "slide": 2,
+   "why": "The topic aims: course structure, nothing examinable."
+  }
+ ],
  "facts": [
-  {
-   "id": "t3-s01-topic",
-   "source": {
-    "topic": "topic3",
-    "slide": 1
-   },
-   "statement": "ELEC0031 Topic 3 is \"Silicon Growth and Fabrication\".",
-   "kind": "definition",
-   "area": "intro",
-   "key": false,
-   "objects": []
-  },
-  {
-   "id": "t3-s02-aims",
-   "source": {
-    "topic": "topic3",
-    "slide": 2
-   },
-   "statement": "The aims: the science and technology of silicon and device fabrication, the basic properties of silicon, and the fundamental steps of the fabrication process flow.",
-   "kind": "definition",
-   "area": "intro",
-   "key": false,
-   "objects": []
-  },
   {
    "id": "t3-s03-synopsis",
    "source": {

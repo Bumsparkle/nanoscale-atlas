@@ -53,7 +53,7 @@ export default [
   go('q-s33-etch', 33, ['s33-hf'], 'Step to the oxide etch.', 'n-well-develop', ['n-well-etch'], 'The wet bench appears.', 'Etch oxide with hydrofluoric acid.'),
   short('q-s33-acid', 33, ['s33-hf'], 'Which acid etches the oxide?', ['hf', 'hydrofluoric acid', 'hydrofluoric'],
     [H('Two letters; the lecture warns it is nasty.')], 'Hydrofluoric acid, HF.'),
-  recall('q-s33-danger', 33, ['s33-danger'], 'Why does the lecture call HF "nasty stuff"?', ['it smells bad', 'it seeps through skin and eats bone', 'it is radioactive', 'it explodes on contact'], 1,
+  recall('q-s33-danger', 33, ['s33-danger'], 'Why is HF so dangerous to handle?', ['it smells bad', 'it seeps through skin and eats bone', 'it is radioactive', 'it explodes on contact'], 1,
     [H('Think about what it does to people, not wafers.')], 'HF seeps through skin and eats bone.'),
   predict('q-s33-only', 33, ['s33-only'], 'The resist has been developed. Predict where HF removes oxide.', FAB('n-well-develop'),
     ['everywhere', 'only where the resist has been removed', 'only under the resist', 'nowhere: HF only etches silicon'], 1,
@@ -97,8 +97,6 @@ export default [
   go('q-s36-strip', 36, ['s36-strip'], 'Step to where the remaining oxide is stripped, leaving a bare wafer with an n-well.', 'nwell-implant', ['nwell-strip-ox'], 'Right after the well is formed.', 'Strip off the remaining oxide using HF.'),
   recall('q-s36-hf', 36, ['s36-strip'], 'The remaining oxide is stripped using…', ['piranha', 'HF', 'silane', 'arsenic gas'], 1,
     [H('The same acid that etched it.')], 'HF, leaving a bare wafer with an n-well.'),
-  recall('q-s36-similar', 36, ['s36-similar'], 'What does the lecture say about the remaining steps?', ['they are all different', 'they involve a similar series of steps', 'they need no masks', 'they happen in one furnace'], 1,
-    [H('Oxide, resist, expose, develop, etch, strip…')], 'Subsequent steps involve a similar series of steps.'),
 
   // 37
   go('q-s37-gox', 37, ['s37-gox'], 'Step to where the thin gate oxide is deposited.', 'nwell-strip-ox', ['gate-ox'], 'The step right after the n-well is finished.', 'Deposit a very thin layer of gate oxide.'),

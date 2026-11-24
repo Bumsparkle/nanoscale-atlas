@@ -8,7 +8,7 @@ export default [
     ['almost no current flows', 'a current flows through the junction', 'only a photocurrent flows', 'the depletion region widens'], 1,
     JUNCTION(0.45), 'The barrier drops and a current flows: the steep forward branch of the diode I–V curve.',
     [H('Forward bias lowers something that holds carriers back.')], 'Forward bias: current rises sharply. Reverse bias: almost none (I–V curve).'),
-  recall('q-s06-nplus', 6, ['s06-nplus'], 'In the lecture’s diode structure drawing, why is there an n+ layer under the n layer?', ['to block current', 'low resistance to the back contact', 'to form a second junction', 'to absorb light'], 1,
+  recall('q-s06-nplus', 6, ['s06-nplus'], 'In a p-n diode structure, why is there an n+ layer under the n layer?', ['to block current', 'low resistance to the back contact', 'to form a second junction', 'to absorb light'], 1,
     [H('Metal on lightly doped silicon makes a poor contact.')], 'The slide labels it "n+ for low resistance".'),
 
   // slide 7
@@ -27,7 +27,7 @@ export default [
     [H('Donors give electrons.')], 'n-region: fixed donor ions with free electrons; p-region: fixed acceptor ions with free holes.'),
   recall('q-s07-diffusion', 7, ['s07-diffusion', 's07-depleted'], 'Why do holes diffuse across the junction?', ['the field pushes them', 'there are far more holes on the p side (p_po ≫ p_no)', 'they are attracted to holes on the n side', 'thermal oxidation'], 1,
     [H('Diffusion runs from high concentration to low.')], 'Concentration difference: holes go from p (p_po) to n (p_no), leaving the region near the junction depleted.'),
-  recall('q-s07-diagram', 7, ['s07-diagram'], 'In the lecture’s junction drawing, which ions sit on the n side?', ['B⁻', 'As⁺', 'Si⁴⁺', 'O²⁻'], 1,
+  recall('q-s07-diagram', 7, ['s07-diagram'], 'In a p-n junction, which ions sit on the n side of the depletion region?', ['B⁻', 'As⁺', 'Si⁴⁺', 'O²⁻'], 1,
     [H('The n side was doped with a group V atom.')], 'As⁺ donor ions on the n side, B⁻ acceptor ions on the p side; E0 points from n to p across the space charge region.'),
 
   // slide 8

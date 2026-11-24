@@ -56,7 +56,7 @@ export const sections: LessonSection[] = [
     steps: [
       {
         id: 'silicon-chips', title: 'Many transistors on one chip', scene: { layer: 'die' }, sources: [T2(1), T2(2)],
-        factIds: ['s01-topic', 's02-ic', 's02-ulsi', 's02-cmos', 's02-cmos-props', 's02-plan'],
+        factIds: ['s02-ic', 's02-ulsi', 's02-cmos', 's02-cmos-props'],
         text: 'An integrated circuit puts every transistor and every wire of a circuit onto one piece of silicon. The wires become microns long instead of centimetres, so signals are fast, and thousands of identical circuits are printed at once, so each one is cheap. Today that means ultra large scale integration (ULSI): billions of devices per chip. The device used almost everywhere is CMOS, complementary metal oxide semiconductor: an n-type and a p-type transistor working as a pair, which is fast, cheap and draws very little power. This lesson follows one CMOS circuit, the inverter, from the transistor, to logic, to how it is laid out and made.',
         example: { kind: 'demo', text: 'The pulsing ring on the die marks one inverter. Zoom towards it and the plain blocks resolve into rows of the same cell, stamped side by side.' },
         checks: ['q-l01-rows'],

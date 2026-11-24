@@ -53,7 +53,7 @@ export default [
   act('tier3', ['s12-metal', 's21-levels'], 'Go to the third tier: where metal ions are trapped away from the devices.', ROOM(),
     ST('wafer', 'gettering', []), { layer: 'wafer', tab: 'gettering' }, 'Level 3.'),
   label('contam', ['s09-contaminants'], 'Click the surface carrying particles, an organic film, metals and alkali ions.', ['bench-wafer'], BENCH(0), 'The close-up beside the bench.'),
-  calc('defect', ['s09-table'], 'By how many times did slide 9’s critical defect size shrink from 1998 (125 nm) to 2018 (45 nm)?', 2.78, 0.03, '×', 'Divide.', '125 / 45 = 2.78.'),
+  calc('defect', ['s09-table'], 'By how many times did the critical defect size shrink from 1998 (125 nm) to 2018 (45 nm)?', 2.78, 0.03, '×', 'Divide.', '125 / 45 = 2.78.'),
   predict('front', ['s10-front'], 'The next step is a 1000 °C oxidation. Predict the cleaning beforehand.', ROOM(),
     ['resist strip, then the full RCA clean', 'a quick post-metal clean', 'none', 'only a DI rinse'], 0, { tab: 'wetbench', clean: { rca: 0 } },
     'High-temperature steps drive contaminants in, so the front end uses the RCA clean.', 'Front end vs back end.'),
@@ -87,7 +87,7 @@ export default [
   predict('o3', ['s19-strongest'], 'Gold sits low on the ladder (−1.42 V). Predict what ozone (−2.07 V) does to it.', REDOX('Au', 'water'),
     ['dissolves it: O₃ is below Au in the table', 'nothing', 'plates more gold', 'turns it into Si'], 0, { clean: { solution: 'o3' } },
     'The strongest oxidants are at the bottom and drive the metal reactions above them to the right.', 'Compare positions.'),
-  calc('dv', ['s19-table'], 'From slide 19, what is the potential difference between Fe³⁺/Fe (0.17 V) and H₂O₂/H₂O (−1.77 V), in V?', 1.94, 0.01, 'V', 'Subtract.', '0.17 − (−1.77) = 1.94 V.'),
+  calc('dv', ['s19-table'], 'What is the potential difference between Fe³⁺/Fe (0.17 V) and H₂O₂/H₂O (−1.77 V), in V?', 1.94, 0.01, 'V', 'Subtract.', '0.17 − (−1.77) = 1.94 V.'),
   calc('o2', ['s19-o2'], 'In 2H₂O ⇌ O₂ + 4H⁺ + ne⁻, what must n be for the charge to balance?', 4, 0.01, 'e⁻', 'Left side is neutral.', '4H⁺ carries +4, so n = 4. (Slide 19 writes 2e⁻.)'),
 
   // gettering (slides 12–14, 20)

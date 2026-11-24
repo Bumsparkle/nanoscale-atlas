@@ -21,21 +21,21 @@ export const sections: S[] = [
     steps: [
       {
         id: 'l7-stakes', title: 'The most important step', scene: ROADMAP({ year: 1998 }), sources: [T7(1), T7(2)],
-        factIds: f('s01-topic', 's02-most', 's02-cost', 's02-unknown'),
+        factIds: f('s02-most', 's02-cost'),
         text: 'Topic 7 is lithography and patterning. A chip has dozens of patterned layers and each one passes under an exposure tool, so the tools are among the most expensive machines in a fab and lithography takes roughly a third of the money spent making a wafer. The lecture calls it arguably the single most important technology in IC manufacturing, because the smallest feature it can print sets transistor size, and so speed, power and cost.',
         example: { kind: 'demo', text: 'Slide the year: the lines are drawn at each node’s half pitch, the wave is the light that prints them.' },
         checks: q('cost'),
       },
       {
         id: 'l7-shrink', title: '0.7× every three years', scene: ROADMAP({ year: 2000 }), sources: [T7(2)],
-        factIds: f('s02-shrink', 's02-cd', 's02-nodes', 's02-gate'),
+        factIds: f('s02-shrink', 's02-cd'),
         text: 'The roadmap shrinks linear dimensions by a factor of 0.7 every three years, which halves the area of a transistor. The half pitch goes 250, 180, 130, 90, 65, 45, 32, 22 and 18 nm from 1998 to 2018, and the printed MPU gate is shorter still, from 100 nm in 2000 to 10 nm. Shrinking is not enough on its own: the critical dimension has to be held to about a tenth of the smallest size, and each layer must land on the one below to about a third of a feature.',
         example: { kind: 'worked', text: 'Two three-year steps: 0.7 × 0.7 ≈ 0.49, so a 250 nm node becomes about 122 nm six years later.' },
-        checks: q('shrink', 'year45'),
+        checks: q('shrink', 's02-cd'),
       },
       {
         id: 'l7-tech', title: 'Light shorter than the features', scene: ROADMAP({ year: 2007 }), sources: [T7(2)],
-        factIds: f('s02-tech', 's02-unknown', 's02-control', 's02-scale'),
+        factIds: f('s02-tech'),
         text: 'Until 2002 the exposure light was 248 nm; then 193 nm with resolution-enhancement tricks, and from 2010 water between lens and wafer. Look at the scale: from the late 1990s the lines are narrower than the light printing them. Beyond 2013 the exposure row simply reads “???”, the largest uncertainty in the plan. Meanwhile the field printed in one shot stays the same size every year, so chips grow from hundreds of millions to billions of transistors and each mask level carries terabytes of data.',
         example: { kind: 'demo', text: 'Compare 2004 and 2013: the λ wave barely changes, the lines shrink threefold.' },
         checks: q('tech'),
@@ -48,7 +48,7 @@ export const sections: S[] = [
         checks: q('mask-made'),
       },
     ],
-    review: q('control', 'overlay', 's02-nodes'),
+    review: q('overlay', 's02-shrink', 's02-tech'),
   },
   {
     id: 'l7-tools', title: 'Light sources and exposure tools',

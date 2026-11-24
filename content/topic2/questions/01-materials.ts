@@ -5,10 +5,6 @@ const LATTICE = (structure: 'crystal' | 'poly' | 'amorphous' = 'crystal', dopant
 const OXIDE = { layer: 'oxide' as const }
 
 export default [
-  recall('q-s01-topic', 1, ['s01-topic'], 'ELEC0031 Topic 2 is titled…', ['Introduction to CMOS VLSI Design', 'Semiconductor Lasers', 'Thin-Film Deposition', 'Quantum Transport'], 0,
-    [H('Think about what this whole atlas is built around: one logic gate made of complementary transistors.')],
-    'Topic 2 is "Introduction to CMOS VLSI Design".'),
-
   recall('q-s02-ic', 2, ['s02-ic'], 'An integrated circuit is…', ['a single transistor on a wafer', 'many transistors on one chip', 'a circuit board of discrete parts', 'a wafer before it is diced'], 1,
     [H('Zoom out to the die: what does one chip carry?', 'die')], 'Integrated circuits have many transistors on one chip.', { obj: 'die' }),
   short('q-s02-ulsi', 2, ['s02-ulsi'], 'What does ULSI stand for?', ['ultra large scale integration', 'ultra-large-scale integration'],
@@ -17,8 +13,6 @@ export default [
     [H('The C refers to pairing nMOS with pMOS; MOS is the gate–oxide–silicon stack.')], 'CMOS = Complementary Metal Oxide Semiconductor.'),
   recall('q-s02-props', 2, ['s02-cmos-props'], 'CMOS transistors are described as…', ['slow, expensive, low power', 'fast, cheap, high power', 'fast, cheap, low power', 'slow, cheap, high power'], 2,
     [H('Why would every modern chip use them?')], 'Fast, cheap, low-power transistors.'),
-  recall('q-s02-plan', 2, ['s02-plan'], 'Which is NOT one of the parts of building a simple CMOS chip listed in the introduction?', ['the CMOS transistor', 'building logic gates from transistors', 'transistor layout and fabrication', 'packaging and wire bonding'], 3,
-    [H('The three parts go device → logic → making it.')], 'The introduction lists the CMOS transistor, logic gates from transistors, and layout and fabrication. Packaging is not covered.'),
 
   // slide 3
   act('q-s03-amorphous', 3, ['s03-amorphous-order', 's03-diagram'], 'Switch the lattice to the structure with no recognizable long-range order.', LATTICE('crystal'),
@@ -46,7 +40,7 @@ export default [
     [H('Silicon is in group IV.', 'lattice-cell')], 'Silicon is group IV: 4 electrons to share.', { obj: 'lattice-cell' }),
   calc('q-s04-bonds', 4, ['s04-four-bonds', 's04-group-iv'], 'Count the highlighted bonds on the centre atom: how many nearest neighbours does each Si atom bond to?', 4, 0.01, 'bonds',
     [H('Count the amber bonds on the centre atom.', 'lattice-cell')], 'Each Si shares its 4 electrons in 4 covalent bonds with its four nearest neighbours.', { scene: { layer: 'lattice', lattice: { structure: 'crystal', dopant: 'none' } }, obj: 'lattice-cell', d: 1 }),
-  recall('q-s04-diagram', 4, ['s04-diagram'], 'What does the 2D sketch of the silicon lattice show?', ['electrons moving through a wire', 'silicon atoms sharing electrons in covalent bonds', 'ions implanted into a wafer', 'the energy band diagram'], 1,
+  recall('q-s04-diagram', 4, ['s04-diagram'], 'A 2D bond picture of the silicon lattice shows…', ['electrons moving through a wire', 'silicon atoms sharing electrons in covalent bonds', 'ions implanted into a wafer', 'the energy band diagram'], 1,
     [H('The labels point at "silicon atoms" and "electrons in covalent bonds".')], 'Silicon atoms sharing electrons in covalent bonds; the 3D sketch is the cubic cell.'),
 
   // slide 5

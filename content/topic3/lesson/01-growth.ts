@@ -18,7 +18,7 @@ export const sections: S[] = [
     steps: [
       {
         id: 'g-cells', title: 'A box that fills space', scene: { layer: 'lattice', tab: 'cells', crystal: { cell: 'sc', offset: 0 } }, sources: [T3(1), T3(2), T3(3), T3(4)],
-        factIds: f('s01-topic', 's02-aims', 's03-synopsis', 's04-unit-cell', 's04-basic'),
+        factIds: f('s03-synopsis', 's04-unit-cell', 's04-basic'),
         text: 'This chapter covers silicon itself: its crystal, its electronic bands, how it is grown and refined, its defects, and the basic fabrication flow. A crystal is described by one small cube of side a, the unit cell, copied over and over along x, y and z until it fills space. The simplest cell has an atom at each of its eight corners. Adding atoms elsewhere in the box gives the other cubic families: one more atom exactly in the middle of the cube, or one more in the middle of each of the six faces.',
         example: { kind: 'demo', text: 'Switch between the three cubic cells and watch where the extra atoms appear.' },
         checks: q('bcc'),

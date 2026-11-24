@@ -28,7 +28,7 @@ export default [
     [H('λ = f/2.')], 'λ = 0.3 µm.'),
 
   // slide 47
-  recall('q-s47-cons', 47, ['s47-conservative'], 'The lecture calls its simplified design rules…', ['exact limits of the process', 'conservative rules to get you started', 'optional', 'for metal only'], 1,
+  recall('q-s47-cons', 47, ['s47-conservative'], 'Simplified λ-based design rules are…', ['exact limits of the process', 'conservative rules to get you started', 'optional', 'for metal only'], 1,
     [H('They leave a margin.')], 'Conservative rules to get you started.'),
   breakRule('q-s47-m1', 47, ['s47-m1'], 'Edit the layout so it breaks the metal1 spacing rule.', 'metal1.spacing', [{ mask: 'metal', index: 2, side: 'x0', value: 10 }],
     'The Y wire sits exactly 4λ from the GND arm.', 'Dragging the Y wire to 2λ from GND breaks the 4λ metal1 spacing.'),
@@ -74,7 +74,7 @@ export default [
     [H('3λ.')], '3λ = 0.9 µm.'),
 
   // slide 48
-  recall('q-s48-spec', 48, ['s48-spec'], 'The lecture specifies transistor dimensions as…', ['Width × Height', 'Length / Width', 'Area', 'Gate / Drain'], 1,
+  recall('q-s48-spec', 48, ['s48-spec'], 'Transistor dimensions are specified as…', ['Width × Height', 'Length / Width', 'Area', 'Gate / Drain'], 1,
     [H('Two dimensions separated by a slash.')], 'Length / Width. The feature size f decides which dimension is the channel length.'),
   label('q-s48-min', 48, ['s48-min'], 'Click the callout for the minimum transistor.', ['min-transistor'], LAYOUT(),
     [H('Callouts sit above the gates.')], 'Both gates are the minimum transistor, 4λ / 2λ.'),
@@ -84,18 +84,18 @@ export default [
     [H('Multiply the two dimensions.')], '4λ × 2λ = 8λ².'),
   calc('q-s48-um', 48, ['s48-um', 's46-example'], 'In the f = 0.6 µm process, how many µm is the 4λ dimension of the minimum transistor?', 1.2, 0.001, 'µm',
     [H('λ = 0.3 µm.')], '4λ = 1.2 µm and 2λ = 0.6 µm.'),
-  recall('q-s48-l', 48, ['s48-um', 's46-f'], 'Using the lecture’s definition of f, the 0.6 µm (2λ) dimension of the minimum transistor is its…', ['channel length (source–drain distance)', 'channel width', 'oxide thickness', 'contact size'], 0,
+  recall('q-s48-l', 48, ['s48-um', 's46-f'], 'With f as the feature size, the 0.6 µm (2λ) dimension of the minimum transistor is its…', ['channel length (source–drain distance)', 'channel width', 'oxide thickness', 'contact size'], 0,
     [H('f is the distance between source and drain.')], 'The 2λ poly width is the source–drain distance: the channel length L = 0.6 µm, and W = 1.2 µm. The lecture words these as "0.6 µm wide, 1.2 µm long"; the Layout view explains the discrepancy.'),
-  calc('q-s48-units', 48, ['s48-sizing'], 'The lecture’s inverter layout uses an 8/2 pMOS. How many units is that?', 2, 0.01, 'units',
+  calc('q-s48-units', 48, ['s48-sizing'], 'An inverter layout uses an 8/2 pMOS. How many units is that?', 2, 0.01, 'units',
     [H('1 unit is 4/2.')], '8/2 is twice 4/2: 2 units; the nMOS 4/2 is 1 unit.'),
-  recall('q-s48-why', 48, ['s48-sizing', 's10-pchannel'], 'The lecture’s inverter draws the pMOS twice as wide as the nMOS. Which fact about carriers explains why?', ['holes have lower mobility than electrons', 'the n-well is larger', 'pMOS needs more contacts', 'VDD is higher than GND'], 0,
+  recall('q-s48-why', 48, ['s48-sizing', 's10-pchannel'], 'A CMOS inverter is usually drawn with the pMOS twice as wide as the nMOS. Which fact about carriers explains why?', ['holes have lower mobility than electrons', 'the n-well is larger', 'pMOS needs more contacts', 'VDD is higher than GND'], 0,
     [H('Compare the speeds of p- and n-channel.')], 'Holes have lower mobility, so the pMOS is made wider: 8/2 vs 4/2.'),
-  recall('q-s48-layout', 48, ['s48-layout'], 'In the slide 48 layout, where is VDD?', ['along the bottom', 'along the top', 'on the left', 'on the right'], 1,
+  recall('q-s48-layout', 48, ['s48-layout'], 'In a standard CMOS inverter layout, where is the VDD rail?', ['along the bottom', 'along the top', 'on the left', 'on the right'], 1,
     [H('GND is the opposite rail.')], 'VDD along the top, GND along the bottom, A in from the left, Y out on the right.'),
 
   // slide 49
-  recall('q-s49-stack', 49, ['s49-stack'], 'Slide 49 summarises a MOS transistor as a stack of…', ['metal, oxide, metal', 'gate, oxide, silicon', 'resist, oxide, silicon', 'n, p, n'], 1,
+  recall('q-s49-stack', 49, ['s49-stack'], 'A MOS transistor is a stack of…', ['metal, oxide, metal', 'gate, oxide, silicon', 'resist, oxide, silicon', 'n, p, n'], 1,
     [H('Gate–oxide–body.')], 'A stack of gate, oxide and silicon.'),
-  recall('q-s49-sw', 49, ['s49-switches'], 'According to slide 49, logic gates are built out of…', ['resistors', 'switches (transistors)', 'diodes only', 'capacitors'], 1,
+  recall('q-s49-sw', 49, ['s49-switches'], 'Logic gates are built out of…', ['resistors', 'switches (transistors)', 'diodes only', 'capacitors'], 1,
     [H('Slide 14 viewed transistors as…')], 'Transistors are electrically controlled switches; logic gates are built out of switches.'),
 ]
