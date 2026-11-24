@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAtlas } from '../../state/store'
-import { examPaper, EXAM_MINUTES, progress, type Filter } from '../progress'
+import { examPaper, EXAM_MINUTES, MAKE_MINUTES, MAKE_TOPICS, paperTitle, processingPaper, progress, type Filter } from '../progress'
 import { grade } from '../engine'
 import { realise, sci } from '../calcs'
 import { layoutState } from '../../chapters/cmos/layout'
@@ -17,10 +17,12 @@ type Ans = { choice?: number; text?: string }
 export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => void }) {
   const [seed, setSeed] = useState<number | null>(null)
   const [answers, setAnswers] = useState<Record<string, Ans>>({})
+  const [make, setMake] = useState(false)
+  const minutes = make ? MAKE_MINUTES : EXAM_MINUTES
   const [left, setLeft] = useState(EXAM_MINUTES * 60)
   const [marked, setMarked] = useState(false)
   const set = useAtlas((s) => s.set)
-  const paper = useMemo(() => (seed == null ? [] : examPaper(seed, filter).map((q, i) => realise(q, seed + i + 1))), [seed]) // eslint-disable-line react-hooks/exhaustive-deps
+  const paper = useMemo(() => (seed == null ? [] : (make ? processingPaper(seed) : examPaper(seed, filter)).map((q, i) => realise(q, seed + i + 1))), [seed, make]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const respond = (q: Question, a: Ans) => {
     if (q.type === 'calc') return grade(q, { kind: 'number', value: parseNumber(a.text ?? '') }, useAtlas.getState(), layoutState.get())
@@ -53,10 +55,10 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
       <header className="sheet-head">
         <div>
           <p className="eyebrow">revise · exam paper</p>
-          <h2>Topic 2 · timed paper</h2>
+          <h2>{make ? 'All processing (Topics 2–8) · timed paper' : paperTitle(filter)}</h2>
           <p className="sheet-sub mono">
-            {EXAM_MINUTES} minutes · {paper.length || 14} questions · calculations and recall · 1 mark each
-            {(filter.from !== 1 || filter.to !== 49 || filter.area) && ` · slides ${filter.from}–${filter.to}${filter.area ? ' · ' + filter.area : ''}`}
+            {minutes} minutes · {paper.length || (make ? MAKE_TOPICS.length * 4 : 14)} questions · calculations and recall · 1 mark each
+            {!make && filter.topic && (filter.from !== 1 || filter.area) && ` · slides ${filter.from}–${filter.to}${filter.area ? ' · ' + filter.area : ''}`}
           </p>
         </div>
         <div className="exam-tools">
@@ -79,8 +81,11 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
       {seed == null ? (
         <div className="exam-start">
           <p>Answer on paper-style questions with no model to help. Calculations take a number in the unit shown (scientific notation like 1.6e-3 is fine). When the clock runs out the paper is marked automatically.</p>
-          <button className="lp-next" onClick={() => setSeed(Date.now() % 2 ** 31)}>
-            start the 20-minute paper →
+          <button className="lp-next" onClick={() => { setMake(false); setLeft(EXAM_MINUTES * 60); setSeed(Date.now() % 2 ** 31) }}>
+            start the {EXAM_MINUTES}-minute paper ({filter.topic ? 'this topic' : 'all topics'}) →
+          </button>
+          <button className="lp-next" onClick={() => { setMake(true); setLeft(MAKE_MINUTES * 60); setSeed(Date.now() % 2 ** 31) }}>
+            the whole processing half: Topics 2–8, {MAKE_MINUTES} minutes →
           </button>
         </div>
       ) : (
@@ -151,7 +156,7 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
               onClick={() => {
                 setAnswers({})
                 setMarked(false)
-                setLeft(EXAM_MINUTES * 60)
+                setLeft(minutes * 60)
                 setSeed(Date.now() % 2 ** 31)
               }}
             >

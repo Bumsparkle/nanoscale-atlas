@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { boxCounts, stepForObject, examPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
+import { boxCounts, stepForObject, examPaper, MAKE_TOPICS, processingPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
 import { QUESTIONS, QUESTIONS_FOR_FACT } from './bank'
 import { POSITIONS } from './lesson'
 
@@ -77,5 +77,16 @@ describe('lesson progress', () => {
     expect(progress.canOpen(POSITIONS[1])).toBe(true)
     expect(POSITIONS).toContain('review:silicon')
     progress.reset()
+  })
+})
+
+describe('the all-processing paper', () => {
+  it('draws four questions from every topic of the Make half, with calculations, and is stable per seed', () => {
+    const p = processingPaper(7)
+    expect(MAKE_TOPICS.length).toBe(7)
+    expect(p.length).toBe(28)
+    for (const t of MAKE_TOPICS) expect(p.filter((q) => q.source.topic === t).length, t).toBe(4)
+    expect(p.filter((q) => q.type === 'calc').length).toBeGreaterThanOrEqual(10)
+    expect(processingPaper(7).map((q) => q.id)).toEqual(p.map((q) => q.id))
   })
 })

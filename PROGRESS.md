@@ -640,7 +640,7 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
 - **Slides:** all five decks render; the 137-slide archive is local and gitignored. It is not uploaded yet.
 - **Slides (2026-11-24):** the five-deck archive (137 slides) replaced `slides-all.tar.gz` in the private release, as asset 786486636. To show Topics 3–6 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786486636` and redeploy.
 
-### Topics 7 and 8 · Chapters 6 and 7 — in progress (2026-11-24)
+### Topics 7 and 8 · Chapters 6 and 7 — done (2026-11-24)
 
 - **Step 1, inventories:** `content/topic7/facts.json` (92 facts, 76 key) and `content/topic8/facts.json` (72 facts, 61 key). Every slide was read, including the images: roadmap table, optics diagrams, MTF plots, resist flow, TEM/AFM/STM images, DoS plots and equations. Nine slide errors are corrected (DECISIONS.md), and `facts.test.ts` re-derives the DOF example, the de Broglie wavelengths and the 1D/2D DoS prefactors.
 - **Steps 2–3, scenes (one commit, as they share the store, layer and route plumbing):**
@@ -649,4 +649,24 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
   - **Process lab:** gains the full eight-step resist process.
   - **Chapter 7, Quantum structures:** the III–V MBE chamber (`/nano/mbe`), then a zoom ladder: sample (with the nanoscale entry), layers (and a TEM view), band diagram (with type I/II alignment), and wavefunctions (free electron, infinite and finite wells, well → wire → dot, density of states). A fabrication layer (`/nano/fab`) covers etched and split-gate wires, VLS nanowires, pillars, colloidal dots, patterned growth, Stranski–Krastanov growth and the QD laser.
   - **Correction found while building:** the slide's 1D density of states is half the true value (N = 2kL/π, not kL/π). It is corrected and tested.
+- **Step 4, learning:**
+  - 276 new questions (153 + 123), with 26 new parameterised calculations, each with a worked solution.
+  - Lessons of 9 and 8 sections.
+  - Revise covers every fact; every key fact has at least two question types.
+  - An all-processing exam paper (Topics 2–8).
+- **Verification:**
+  - 765 tests pass. The new tests cover the optics formulas, the aerial-image exposure (KrF prints the 0.6 µm inverter, a g-line tool cannot, the fitted f shrinks with λ), the Airy and Rayleigh numbers, MTF trends, Fresnel ringing, the Monte Carlo ranges, the well solvers (infinite-well energies exact, finite below infinite, finite differences agree with the exact solution), the DoS formulas and k-space counts, the slide corrections, and the processing paper.
+  - The type-check and production build are clean.
+  - `zoomcheck.mjs` still walks sand → lattice with no page errors. The Chapter 7 dive chain MBE → sample → layers → bands → wavefunctions works, and was fixed so the sample's scale tab also dives.
+  - `lessonrun.mjs` walks both lessons in the real UI: Chapter 7 with no problems (37 positions). Chapter 6 completes all 43 positions, then the script times out while the app hands over into Chapter 7. That is a script timing issue; Chapter 7 walked on its own passes.
+  - Every new tab was screenshotted (`chaptershots.mjs c6|c7`, 39 views) and reviewed. Fixes found that way:
+    - camera homes reset by the renderer start-up;
+    - per-tab scale bars;
+    - the projection lens ring standing on edge;
+    - the k-space octant and disc on the wrong side;
+    - band diagrams drawn too tall to see;
+    - overlapping InAs islands;
+    - labels under the panel or the top bar;
+    - the 3D cell not picking up the print settings outside the Layout view.
+- **Slides:** the archive now holds all seven decks (see DECISIONS).
 

@@ -253,6 +253,7 @@ function DosPanel() {
         marks={[{ x: n.E / 1000, y: 0, cls: 'marker' }]} />
       <p className="lc-fine">Blue: bulk ∝ E^½. Red: a 10 nm well, a step at each subband. Green: a 10 × 10 nm wire, ∝ (E − Eₙ)^−½ spikes. Amber: a 10 nm dot, delta functions. {m === 1 ? 'Free-electron mass.' : 'GaAs mass.'}</p>
       {cnt && <dl className="gp-read mono"><dt>states counted</dt><dd>{cnt.counted}</dd><dt>formula</dt><dd>{cnt.formula.toFixed(0)}</dd></dl>}
+      {cnt && <p className="lc-fine">The points on the axes planes (n = 0) are not states, so a small sphere holds fewer than the formula; the two agree once k ≫ π/L.</p>}
       <p className="lc-fine">{n.dof === 3 && 'Each state takes π³/V of k-space; the sphere 4πk³/3, ×2 spin, ×⅛ for positive k: N = k³V/3π² → ρ = (1/2π²)(2m/ħ²)^(3/2)E^½.'}
         {n.dof === 2 && 'Each state takes π²/A; the circle πk², ×2, ×¼: N = k²A/2π → ρ = m/πħ², constant: many states right at the band edge.'}
         {n.dof === 1 && 'Each state takes π/L; the line from −k to k (length 2k), ×2, ×½: N = 2kL/π → ρ = (1/π)√(2m/ħ²)E^−½. The slide’s kL/π and 1/2π are half of this.'}

@@ -4,14 +4,16 @@
 import { chromium } from '@playwright/test'
 import { mkdirSync } from 'node:fs'
 const base = process.argv[2] ?? 'http://localhost:5173'
+// optional start, e.g. '/litho/stepper?mode=lesson&at=l7-stakes' to walk another chapter's lesson
+const start = process.argv[3] ?? '/cmos/inverter?mode=lesson'
 mkdirSync('shots/lesson', { recursive: true })
 const b = await chromium.launch({ args: ['--enable-unsafe-webgpu', '--enable-features=Vulkan,WebGPU', '--use-angle=metal', '--ignore-gpu-blocklist'] })
 const p = await b.newPage({ viewport: { width: 1280, height: 800 } })
 const errors = []
 p.on('pageerror', (e) => errors.push(String(e)))
-await p.goto(base + '/cmos/inverter?mode=lesson')
+await p.goto(base + start)
 await p.evaluate(() => localStorage.clear())
-await p.goto(base + '/cmos/inverter?mode=lesson')
+await p.goto(base + start)
 await p.waitForTimeout(4000)
 const problems = []
 const next = p.locator('.lp-foot .lp-next')

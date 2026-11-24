@@ -1,7 +1,7 @@
 import { FACTS, QUESTIONS, QUESTIONS_FOR_FACT, FACT_BY_ID } from './bank'
 import { chapterOfPosition, POSITIONS, positionsOf, STEPS } from './lesson'
 import { factsOfSlide, FACT_FILES } from './bank'
-import type { TopicId } from '../sources'
+import { TOPIC_IDS, TOPIC_NAME, type TopicId } from '../sources'
 import type { Question } from './schema'
 
 /**
@@ -220,3 +220,24 @@ export function examPaper(seed: number, f: Filter, n = 14): Question[] {
   return [...pick(calcs, nc), ...pick(recalls, n - nc)].sort((a, b) => a.source.topic.localeCompare(b.source.topic) || a.source.slide - b.source.slide)
 }
 export const EXAM_MINUTES = 20
+
+/** the processing ("Make") half of the course: Topics 2–8, complete since Chapter 7 */
+export const MAKE_TOPICS: TopicId[] = TOPIC_IDS.filter((t) => ['topic2', 'topic3', 'topic4', 'topic5', 'topic6', 'topic7', 'topic8'].includes(t))
+export const MAKE_MINUTES = 40
+/**
+ * The combined "all processing" paper: four questions from every Make topic
+ * (two calculations where the topic has them, the rest recall), seeded.
+ */
+export function processingPaper(seed: number, perTopic = 4): Question[] {
+  let s = seed >>> 0
+  const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296)
+  const pick = (arr: Question[], k: number) => [...arr].sort(() => rnd() - 0.5).slice(0, k)
+  const out: Question[] = []
+  for (const t of MAKE_TOPICS) {
+    const pool = QUESTIONS.filter((q) => q.source.topic === t && (q.type === 'calc' || q.type === 'recall'))
+    const calcs = pick(pool.filter((q) => q.type === 'calc'), 2)
+    out.push(...calcs, ...pick(pool.filter((q) => q.type === 'recall'), perTopic - calcs.length))
+  }
+  return out.sort((a, b) => a.source.topic.localeCompare(b.source.topic) || a.source.slide - b.source.slide)
+}
+export const paperTitle = (f: Filter) => (f.topic ? `${TOPIC_NAME[f.topic]} · timed paper` : 'All topics · timed paper')

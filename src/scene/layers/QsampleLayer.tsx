@@ -109,7 +109,7 @@ function Sample() {
 
 export default function QsampleLayer() {
   const tab = useAtlas((s) => s.tab) || 'scale'
-  useDive('qmbe', tab === 'sample' ? 'hetero' : null, { home: [0, 1, 0] })
+  useDive('qmbe', 'hetero', { home: [0, 1, 0] })
   useTabHome('qsample', tab === 'scale' ? { target: [X(1e3) + 18, 2, 0], polar: 1.4, azimuth: 0.05, dist: 200 } : { target: [1.5, 1, 3], polar: 1.15, azimuth: 0.5, dist: 30 }, tab)
   return (
     <>

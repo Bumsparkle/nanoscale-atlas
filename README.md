@@ -2,10 +2,14 @@
 
 **Live site:** _(add the Vercel URL here)_
 
-A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation), in three chapters:
+A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation). The processing (“Make”) half is complete, in seven chapters:
 - **Ch.1 CMOS inverter** (Topic 2): from a 300 mm wafer down to the 5.43 Å silicon lattice.
 - **Ch.2 From sand to wafer** (Topic 3): refining, Czochralski and float-zone growth, crystal structure and Miller planes, bands, defects, and the process flow with a process lab.
 - **Ch.3 Keeping it clean** (Topic 4): the cleanroom, the RCA wet bench, redox, gettering and yield.
+- **Ch.4 Laying down films** (Topic 5): CVD kinetics, plasma, evaporation and sputtering, step coverage.
+- **Ch.5 Atom by atom** (Topic 6): epitaxy, lattice mismatch, Si epi, MBE with RHEED, SOI.
+- **Ch.6 Printing smaller** (Topic 7): light sources, exposure tools, diffraction, resolution and depth of focus, MTF, proximity printing, resists, the roadmap, next-generation and e-beam lithography; the inverter printed by a real tool.
+- **Ch.7 Quantum structures** (Topic 8): III–V heterostructures grown by MBE, the nanoscale, quantum wells, type I/II alignment, wires and dots, the density of states, nanofabrication routes and the QD laser.
 
 In Chapter 1, Every 3D structure inside the chip is **generated** from the six masks of slide 28 and the fabrication recipe of slides 29–45. Every panel cites its slide.
 
@@ -45,10 +49,10 @@ Useful URLs:
 
 Modes (top bar):
 - **Explore** is the sandbox. Its "mastery" toggle tints the model by how well you know each part.
-- **Lesson** (`?mode=lesson&at=<step id>`): one lesson per chapter (Topic 2 in 15 sections, Topic 3 in 10, Topic 4 in 7, Topic 5 in 10, Topic 6 in 6). Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
-- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 929 questions (filter by topic), a skill map and per-slide coverage, and a timed paper.
+- **Lesson** (`?mode=lesson&at=<step id>`): one lesson per chapter (Topic 2 in 15 sections, Topic 3 in 10, Topic 4 in 7, Topic 5 in 10, Topic 6 in 6, Topic 7 in 9, Topic 8 in 8). Every step explains why, drives the model and then checks you (two tries, with a hint that highlights the model). Each section ends with a mixed review.
+- **Revise** (`?mode=revise`, `&rv=coverage` or `&rv=exam`) offers spaced repetition over 1205 questions (filter by topic), a skill map and per-slide coverage, and timed papers: one for the current filter (20 min) and one for the whole processing half, Topics 2–8 (40 min, four questions per topic).
 
-Each topic has `content/topicN/facts.json` (the fact inventory), `content/topicN/questions/` and `content/topicN/lesson/`. Topics 3–6 use the shared builders in `content/kit.ts`. Parameterised calculations are generated in `src/learn/calcs.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
+Each topic has `content/topicN/facts.json` (the fact inventory), `content/topicN/questions/` and `content/topicN/lesson/`. Topics 3–8 use the shared builders in `content/kit.ts`. Parameterised calculations are generated in `src/learn/calcs.ts`. The build tests fail if any fact has no question, or if a key fact lacks two question types.
 
 Keys:
 - **Global:** `Esc` goes up a level (it closes a panel first).
@@ -76,9 +80,19 @@ scripts/            Playwright: shots.mjs (screenshots), tour.mjs (recorded tour
 
 The scene core is imperative (`CellModel`, `rig`, `transition`, `cellRuntime`): React only mounts layers and owns the DOM UI. So moving the render loop to vanilla three would mean replacing `Stage.tsx` and the thin layer components, not the simulator or the camera.
 
+## Heterostructure model (Chapter 7, reused by the Measure half)
+
+`src/chapters/nano/hetero.ts` describes a III–V sample once; every Chapter 7 view derives from it.
+
+- **`Material`**: `id`, `name`, band gap `Eg` (eV, 300 K), valence-band offset `VBO` (eV on one absolute scale, so `Ec = VBO + Eg`, `Ev = VBO`), electron and heavy-hole masses `me`, `mh` (m₀), lattice constant `a` (Å), display colour. Values after Vurgaftman, Meyer & Ram-Mohan (2001); alloys are listed directly.
+- **`Layer`**: `mat` (a material id), thickness `nm`, `role` (`substrate`, `buffer`, `barrier`, `well`, `cladding`, `cap`, `dots`, `spacer`), and optional `doping` (cm⁻³, positive n, negative p) for the 2DEG and HEMT.
+- **`Heterostructure`**: `id`, `name`, `layers` from the substrate up, and the `slide` it illustrates. `SAMPLES` holds the GaAs/AlGaAs well, InGaAs/GaAs multiple wells, InP/InAlAs (type II) and the slide 33 QD laser.
+- **Derived**: `spans` (each layer's z₀–z₁), `bandProfile(h, dz)` (Ec, Ev, me, mh sampled every dz nm), `alignment(well, barrier)` (type I/II/III, which layer holds the electron and the hole, ΔEc, ΔEv), `mismatch`, and `confinedLevels(h, 'e' | 'h')`, which solves the actual profile with `solveProfile` in `quantum.ts` (finite differences with BenDaniel–Duke mass matching) for absolute level energies and normalised wavefunctions.
+- **To extend it** for a HEMT: add a doped AlGaAs layer (`doping`) and a band-bending (Poisson) step that adds an electrostatic potential to `bandProfile`; the solver, band view and levels already take any profile.
+
 ## How to add a chapter
 
-Chapters 2–5 show the second pattern: hand-built layers and tabs instead of masks. Add layers (or `tabs` on an existing layer) to `chapters/cmos/layers.ts`, put the physics in `chapters/<chapter>/physics.ts` with tests, write one content file per object in `chapters/<chapter>/content/` (with `tabs` if it appears on only some tabs), register the nodes in `nodes.ts`, and add the facts, questions and lesson under `content/topicN/`. "do" questions can target any store value with a `state` target.
+Chapters 2–7 show the second pattern: hand-built layers and tabs instead of masks. Add layers (or `tabs` on an existing layer) to `chapters/cmos/layers.ts`, put the physics in `chapters/<chapter>/physics.ts` with tests, write one content file per object in `chapters/<chapter>/content/` (with `tabs` if it appears on only some tabs), register the nodes in `nodes.ts`, and add the facts, questions and lesson under `content/topicN/`. "do" questions can target any store value with a `state` target.
 
 For a chapter built from masks:
 
@@ -189,7 +203,7 @@ None of this is set up yet, and no credentials are in the repository.
 
 ## Facts and sources
 
-The lecture PDFs are UCL course material and are **not** included in this repository. To work on the content, put your own copies at `docs/topic2-cmos.pdf`, `docs/topic3-silicon-growth.pdf` and `docs/topic4-cleaning-cleanrooms.pdf` (all gitignored), then `npm run slides`.
+The lecture PDFs are UCL course material and are **not** included in this repository. To work on the content, put your own copies at `docs/topic2-cmos.pdf`, `docs/topic3-silicon-growth.pdf`, `docs/topic4-cleaning-cleanrooms.pdf`, `docs/topic5-thin-films.pdf`, `docs/topic6-epitaxy.pdf`, `docs/topic7-lithography.pdf` and `docs/topic8-iii-v-nanostructures.pdf` (all gitignored), then `npm run slides`.
 
 On-slide facts cite the Topic 2 slide numbers (PDF page = slide). Anything beyond the lecture is marked "beyond the lecture" with a named source. The main ones are:
 - Plummer, Deal & Griffin, *Silicon VLSI Technology*

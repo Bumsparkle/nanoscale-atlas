@@ -377,5 +377,43 @@ Every one is checked from first principles; `facts.test.ts` re-derives the numbe
 | T8 · 12–13 | Quantum numbers l, n (and j) = ±1, ±2, ±3… | 1, 2, 3… for the same reason |
 | T8 · 12–13 | The wire and dot wavefunctions use n in every sine factor | Each direction has its own quantum number (n, l, j), matching the energy formulas |
 | T8 · 30 | ρ(E) = 2σ(E − E_c) | ρ(E) = 2δ(E − E_c), the Dirac delta, as the slide's own text says |
+| T8 · 28–29 | N = kL/π and ρ₁D = (1/2π)√(2m/ħ²)E^(−1/2) | N = 2kL/π and ρ₁D = (1/π)√(2m/ħ²)E^(−1/2). The slide measures the k-line from 0 to k but still applies the ½ for ± redundancy, counting each state half. Found by counting standing waves directly (`quantum.test.ts`, `facts.test.ts`) |
 
-**Checked and correct:** the 3D, 2D and 1D DoS. Re-derived: 3D N = k³V/(3π²) → ρ = (1/2π²)(2m/ħ²)^(3/2)E^(1/2); 2D N = k²A/(2π) → ρ = m/(πħ²); 1D N = kL/π → ρ = (1/2π)√(2m/ħ²)E^(−1/2). The slide 8 plot matches Eₙ = n² × 3.76 meV for a 10 nm well with the free-electron mass. Slide 14's W_min = √(0.365 × 10) = 1.9 ≈ 2 µm. The slide 18 photon rows (3.1, 4.96, 2480 eV) are right.
+**Checked and correct:** the 3D and 2D DoS. Re-derived: 3D N = k³V/(3π²) → ρ = (1/2π²)(2m/ħ²)^(3/2)E^(1/2); 2D N = k²A/(2π) → ρ = m/(πħ²). The 1D prefactor is not (table above). The slide 8 plot matches Eₙ = n² × 3.76 meV for a 10 nm well with the free-electron mass. Slide 14's W_min = √(0.365 × 10) = 1.9 ≈ 2 µm. The slide 18 photon rows (3.1, 4.96, 2480 eV) are right.
+
+### Structure
+- **Chapter 6** adds two layers. The **lithography bay** (`/litho/stepper`, `up: 'cleanroom'`) has seven tabs: tool, diffraction, MTF, proximity gap, resist process, roadmap and next generation. The **e-beam writer** (`/litho/ebeam`, up the bay) has direct write, lift-off and proximity effect. The tabs draw at their own scale, so the rig's new `unitOverride` keeps the scale bar honest per tab.
+- **Chapter 7** adds a ladder: the **III–V MBE chamber** (`/nano/mbe`) → **sample** (`/nano/sample`; the nanoscale entry tab and the cleaved edge) → **layers** (`/nano/layers`, with a TEM view) → **band diagram** (`/nano/bands`, with type I/II) → **wavefunctions** (`/nano/wave`: free electron, well, well → wire → dot, density of states). **Making nanostructures** (`/nano/fab`) hangs off the cleanroom with seven routes. The cleanroom panel links to all three, the Topic 3 process lab's MBE option links to the III–V chamber, and its lithography step links to the bay.
+- **Camera homes per tab** are now registered with the rig (`useTabHome`), because the renderer finishes starting after a layer mounts and its `setLayer` call used to reset the view to the layer default.
+
+### The simulator's optical exposure (Topic 7 × Topic 2)
+- `expose(mask, { optics })` (`sim/ops.ts`) computes the **aerial image** (`sim/aerial.ts`): the mask is rasterised at 4 samples per λ, blurred by a separable Gaussian, and mixed between coherent (amplitude blurred, then squared) and incoherent (intensity blurred) by S. The dose is I/threshold, and develop clears where it reaches 1 (threshold 0.5). Without `optics` the step is the old ideal copy, so Chapters 1–5 and all their tests are unchanged.
+- **Calibration (beyond the lecture).** A Gaussian stands in for the Airy core, with σ chosen so an isolated dark line exactly R = k₁λ/NA wide sits on the 0.5 threshold (σ = R/1.349). So "R" means what the lecture says: features wider print, narrower wash out. Tested in `optics.test.ts`.
+- **The layout tie-in.** The Layout view can print the poly with any tool. The design's f gives λ = f/2 on the same λ-grid layout. "Design to the tool" searches the smallest f (10 nm steps) at which every drawn poly square prints, so f follows the tool and shrinks with λ. A fixed f with a coarse tool shows the gates washing out. The 3D cell and its fab timeline rebuild with the same optics (`printState` in `recipe.ts`), for every mask level.
+- **The process lab** gains the full eight-step resist process (slide 16) as a toggle on its lithography step, so the steps play on the lab's timeline. The inverter's 45-step recipe is unchanged.
+
+### Modelling choices (stated in the panels)
+- **MTF** uses Abbe's method on an equal line/space grating: source points spread over ±S·NA, each passing the diffraction orders inside the pupil. It reproduces slide 12: larger S lowers the MTF of mid-sized features and raises it near the cut-off.
+- **The Airy pattern** is [2J₁(v)/v]², and two incoherent points at the Rayleigh separation dip to 73.5 % (tested).
+- **Fresnel diffraction** under a slit uses the Fresnel integrals; partial incoherence averages a small spread of angles.
+- **Resist thickness** ∝ 1/√rpm, ≈ 0.5 µm at 4000 rpm (Meyerhofer). The cleared fraction ramps to 100 % at the 100 mJ cm⁻² sensitivity. Both are illustrative.
+- **The e-beam proximity effect** is a single-scattering Monte Carlo (screened Rutherford plus Bethe with Joy–Luo), and ranges use Kanaya–Okayama. It shows the right trend (range grows with energy, ~10–20 % backscatter), not production accuracy.
+- **Heterostructure parameters** come from Vurgaftman et al. (2001), with offsets set to the usual 60:40 (GaAs/AlGaAs, InGaAs/GaAs) and InP/InAlAs type II. Strain and band bending are ignored.
+- **Wells** are solved two ways. The symmetric finite well is solved exactly by bisection on the even/odd matching equations. Any profile is solved by finite differences (Sturm-sequence bisection plus inverse iteration), and the two agree to 1 meV (tested).
+- **Colloidal colour** uses the Brus model; **Stranski–Krastanov** switches at ≈ 1.7 ML (Leonard et al. 1994); **QD laser thresholds** use a characteristic-temperature model. All three are illustrative and marked "beyond the lecture".
+
+### Learning
+- **26 new parameterised calculations, each with a full worked solution.**
+  - Topic 7: R, DOF, the NA needed, NA = n sin α, the Airy radius, MTF, S, W_min, the Fresnel gap limit, the roadmap's 0.7×/3 years, photon energy and the electron de Broglie wavelength.
+  - Topic 8: the free-electron E(k), infinite-well levels and spacings, the e1→hh1 photon, the normalisation constant (derived step by step), wire and dot levels, the 3D, 2D and 1D DoS, and N(k) in 3D.
+  - The DoS derivations are also fill-in-the-step questions (cell volume, octant factor, result).
+- **Counts.**
+  - Topic 7: 153 questions (92 recall, 27 predict, 17 do, 13 calc of which 11 parameterised, 4 label); lesson of 9 sections, 34 steps.
+  - Topic 8: 123 questions (73 recall, 18 predict, 16 do, 10 calc all parameterised, 6 label); lesson of 8 sections, 29 steps.
+  - Whole bank: 717 facts, 1205 questions.
+- The Chapter 2–5 lesson rules now cover Chapters 6 and 7, and both lessons were walked end to end in the browser (`scripts/lessonrun.mjs`, which now takes a start path).
+- **Revise:** the filters, coverage screen and skill map include T7 and T8. The exam sheet adds an **all-processing paper**: Topics 2–8, four questions each (two calculations where available), 40 minutes. Its title now names the topic it covers instead of always "Topic 2".
+
+
+### Slides
+`npm run slides` renders all seven decks (242 slides) into `private/slides/` and packs `private/slides-all.tar.gz` (36.7 MB). Both stay gitignored. The archive is built locally but not yet uploaded: to show Topics 7 and 8 on the deployed site, it must replace `slides-all.tar.gz` (asset 786486636) in the private release, and `SLIDES_ARCHIVE_URL` must then point at the new asset id.
