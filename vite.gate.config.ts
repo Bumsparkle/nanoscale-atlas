@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { publicSupabaseEnv } from './server/publicEnv.ts'
+
+publicSupabaseEnv(process.env)
 
 /**
  * The landing page: the cleanroom door with the access code and sign-in

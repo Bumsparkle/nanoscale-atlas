@@ -31,3 +31,6 @@ private/
 # Tauri build output
 src-tauri/target/
 src-tauri/gen/schemas/
+
+# the live access code, kept locally only
+ACCESS-CODE.local.txt

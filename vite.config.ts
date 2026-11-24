@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { devGate } from './server/devPlugin.ts'
+import { publicSupabaseEnv } from './server/publicEnv.ts'
 
 /**
  * Two builds share this config:
@@ -16,6 +17,7 @@ const APP = process.env.ATLAS_APP === '1'
 export default defineConfig(({ mode }) => {
   // the dev gate runs the server code, which reads process.env (as on Vercel)
   for (const [k, v] of Object.entries(loadEnv(mode, process.cwd(), ''))) process.env[k] ??= v
+  publicSupabaseEnv(process.env)
   return {
     plugins: [react(), devGate()],
     define: {

@@ -23,7 +23,7 @@ export function safeNext(raw: string | null): string {
 
 const friendly = (msg: string | undefined) => {
   if (!msg) return 'Something went wrong. Try again.'
-  if (/ucl\.ac\.uk/i.test(msg)) return 'Only @ucl.ac.uk email addresses can sign up.'
+  if (/ucl\.ac\.uk|database error saving new user/i.test(msg)) return 'Only @ucl.ac.uk email addresses can sign up.'
   if (/rate limit|too many|security purposes/i.test(msg)) return 'Too many emails asked for. Wait a minute and try again.'
   if (/expired|invalid.*(otp|token)|token.*(invalid|expired)/i.test(msg)) return 'That code is wrong or has expired.'
   if (/invalid login credentials/i.test(msg)) return 'Wrong email or password.'
