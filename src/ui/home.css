@@ -214,11 +214,6 @@
     background-position-y: 40px;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .air {
-    animation: none;
-  }
-}
 @media (max-width: 720px) {
   .home-card {
     padding: var(--s-5) var(--s-4);

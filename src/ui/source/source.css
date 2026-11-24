@@ -106,12 +106,6 @@
   font-size: var(--t-13);
   color: var(--ink-1);
 }
-@media (prefers-reduced-motion: reduce) {
-  .source-scrim,
-  .source-modal {
-    animation: none;
-  }
-}
 .lc-head,
 .lp-eyebrow,
 .legend-head {

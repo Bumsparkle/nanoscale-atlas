@@ -249,7 +249,6 @@ function initialSpeed() {
   }
 }
 
-const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 export const PROC_DEFAULT: ProcState = {
   op: 'oxidation', ambient: 'dry', oxT: 1000, oxHours: 1, tone: 'positive', fullResist: false, iso: true, lineUm: 2,
@@ -309,7 +308,8 @@ export const useAtlas = create<AtlasState>((set) => ({
   source: null,
   mastery: false,
   progressVersion: 0,
-  reducedMotion: !!prefersReduced,
+  // motion is always full: no toggle, and the OS reduced-motion setting is not applied
+  reducedMotion: false,
   speed: initialSpeed(),
   explode: 0,
   renderer: { backend: 'pending' },

@@ -94,11 +94,6 @@ html[data-view='fab'] {
   color: var(--ink-0);
 }
 
-.topbar-tools {
-  margin-left: auto;
-  display: flex;
-  gap: var(--s-2);
-}
 .tool {
   font-family: var(--mono);
   font-size: var(--t-11);
@@ -143,10 +138,6 @@ html[data-view='fab'] {
   }
   .crumbs ol {
     white-space: nowrap;
-  }
-  .topbar-tools {
-    grid-area: tools;
-    margin-left: 0;
   }
 }
 

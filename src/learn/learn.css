@@ -332,13 +332,6 @@
     opacity: 0.25;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .qpulse,
-  .qcard-wrong,
-  .learn-panel {
-    animation: none;
-  }
-}
 .qresult {
   margin: var(--s-3) 0 0;
   font-size: var(--t-13);

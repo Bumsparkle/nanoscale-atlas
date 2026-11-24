@@ -417,3 +417,7 @@ Every one is checked from first principles; `facts.test.ts` re-derives the numbe
 
 ### Slides
 `npm run slides` renders all seven decks (242 slides) into `private/slides/` and packs `private/slides-all.tar.gz` (36.7 MB). Both stay gitignored. On 2026-11-24 it replaced `slides-all.tar.gz` in the private release (clobbered, so asset 786486636 no longer exists). The new asset is 786861401, API URL `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786861401`. To show Topics 3–8 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it and redeploy. The Topic 2 asset (776184764) is untouched.
+
+## Motion is always full (2026-11-24)
+At the user's request the top bar's "motion full / motion reduced" button is gone, and motion is always full: the store's `reducedMotion` starts false and nothing sets it, and the `prefers-reduced-motion` CSS blocks are removed. This overrides the brief's "`prefers-reduced-motion` respected" line. The `reducedMotion` checks in the scenes stay in place (always false), so restoring the option later is a one-line change in `store.ts` plus the button.
+

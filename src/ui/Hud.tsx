@@ -83,8 +83,6 @@ export function ChapterMenu() {
 }
 
 export function TopBar() {
-  const reduced = useAtlas((s) => s.reducedMotion)
-  const set = useAtlas((s) => s.set)
   return (
     <header className="topbar">
       <a className="brand" href="/" onClick={(e) => { e.preventDefault(); navigate('/') }}>
@@ -94,11 +92,6 @@ export function TopBar() {
       <ChapterMenu />
       <Breadcrumbs />
       <ModeSwitch />
-      <div className="topbar-tools">
-        <button className="tool" aria-pressed={reduced} onClick={() => set({ reducedMotion: !reduced })} title="Reduce motion: no camera flights, springs settle instantly">
-          {reduced ? 'motion reduced' : 'motion full'}
-        </button>
-      </div>
     </header>
   )
 }
