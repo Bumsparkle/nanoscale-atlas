@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/fetch-slides.mjs && tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --config vite.gate.config.ts",
     "preview": "vite preview --port 4173",
     "test": "vitest run --exclude '**/*.perf.test.ts' && vitest run src/sim/mesh.perf.test.ts",
     "typecheck": "tsc -b",
@@ -14,17 +14,24 @@
     "dev:app": "ATLAS_APP=1 vite",
     "build:app": "tsc -b && ATLAS_APP=1 vite build && node scripts/check-app-slides.mjs",
     "tauri": "tauri",
-    "app:check": "node scripts/check-app-slides.mjs --binary"
+    "app:check": "node scripts/check-app-slides.mjs --binary",
+    "test:db": "vitest run --config vitest.db.config.ts",
+    "db:start": "supabase start",
+    "db:reset": "supabase db reset",
+    "slides:upload": "node scripts/upload-slides.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "5.3.0",
     "@fontsource/ibm-plex-sans": "5.3.0",
     "@react-three/fiber": "9.8.2",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.2",
     "@tauri-apps/api": "2.12.4",
     "@tauri-apps/plugin-process": "2.4.0",
     "@tauri-apps/plugin-updater": "2.14.1",
     "@vercel/functions": "3.10.5",
     "gsap": "3.15.1",
+    "jose": "^6.2.18",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "three": "0.187.0",
@@ -39,6 +46,7 @@
     "@types/react-dom": "19.3.0",
     "@types/three": "0.187.0",
     "@vitejs/plugin-react": "6.3.0",
+    "supabase": "^3.4.0",
     "typescript": "6.0.3",
     "vite": "8.3.7",
     "vitest": "5.1.0"

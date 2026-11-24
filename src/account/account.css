@@ -1,0 +1,182 @@
+/* the account menu (top bar) and the import prompt */
+.acct {
+  position: relative;
+}
+.acct-icon[data-sync='offline'],
+.acct-icon[data-sync='error'] {
+  color: var(--warn);
+}
+.acct-menu {
+  position: absolute;
+  top: calc(100% + var(--s-2));
+  right: 0;
+  z-index: 60;
+  width: 320px;
+  padding: var(--s-4);
+  background: var(--glass-strong);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+.acct-menu .eyebrow {
+  margin: 0;
+}
+.acct-email {
+  margin: var(--s-1) 0 var(--s-2);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.acct-sync {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-11);
+  color: var(--ink-2);
+}
+.acct-sync i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--on);
+}
+.acct-sync-syncing i {
+  background: var(--amber);
+  animation: acct-pulse 1s ease-in-out infinite alternate;
+}
+.acct-sync-offline i,
+.acct-sync-error i {
+  background: var(--warn);
+}
+@keyframes acct-pulse {
+  to {
+    opacity: 0.3;
+  }
+}
+.acct-summary {
+  display: grid;
+  gap: var(--s-1);
+  margin: 0 0 var(--s-3);
+  padding: var(--s-3) 0;
+  border-top: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--line);
+}
+.acct-summary div {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--s-2);
+  font-size: var(--t-13);
+}
+.acct-summary dt {
+  color: var(--ink-3);
+  font-size: var(--t-11);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 1px;
+}
+.acct-summary dd {
+  margin: 0;
+  color: var(--ink-1);
+}
+.acct-actions {
+  display: grid;
+  gap: 2px;
+}
+.acct-actions > button,
+.acct-actions > a {
+  text-align: left;
+  padding: 7px var(--s-2);
+  margin: 0 calc(var(--s-2) * -1);
+  border-radius: var(--radius);
+  color: var(--ink-0);
+  font-size: var(--t-13);
+}
+.acct-actions > button:hover:not(:disabled),
+.acct-actions > a:hover {
+  background: var(--bg-3);
+  text-decoration: none;
+}
+.acct-actions > button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.acct-actions .acct-danger {
+  color: var(--warn);
+}
+.acct-confirm p {
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-13);
+  color: var(--ink-1);
+}
+.acct-confirm label {
+  display: grid;
+  gap: var(--s-1);
+  margin-bottom: var(--s-3);
+}
+.acct-confirm label span {
+  font-size: var(--t-11);
+  color: var(--ink-2);
+}
+.acct-confirm input {
+  padding: 7px 10px;
+  font: inherit;
+  font-family: var(--mono);
+  color: var(--ink-0);
+  background: var(--home-well);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+.acct-confirm input:focus {
+  outline: none;
+  border-color: var(--warn);
+}
+.acct-error {
+  margin: var(--s-3) 0 0;
+  font-size: var(--t-13);
+  color: var(--warn);
+}
+
+.acct-import {
+  position: fixed;
+  left: 50%;
+  bottom: var(--s-6);
+  z-index: 70;
+  transform: translateX(-50%);
+  width: min(520px, calc(100vw - 32px));
+  padding: var(--s-4) var(--s-5);
+  background: var(--glass-strong);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+.acct-import .eyebrow {
+  margin: 0 0 var(--s-2);
+}
+.acct-import p {
+  margin: 0 0 var(--s-3);
+  color: var(--ink-1);
+  line-height: 1.5;
+}
+.acct-actions-row {
+  display: flex;
+  gap: var(--s-3);
+}
+.acct-actions-row > button {
+  margin: 0;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+}
+.acct-actions-row > .acct-primary {
+  background: var(--amber);
+  color: var(--on-amber);
+  border-color: var(--amber);
+}
+.acct-actions-row > .acct-primary:hover:not(:disabled) {
+  background: var(--amber);
+  filter: brightness(1.06);
+}
+.acct-privacy {
+  z-index: 80;
+}

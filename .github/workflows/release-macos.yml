@@ -20,8 +20,11 @@ jobs:
   macos:
     runs-on: macos-latest
     env:
-      # never bundle the lecture slides in a release (private/ is not in the repo either)
-      INCLUDE_SLIDES: '0'
+      # public values baked into the app: the Supabase project and the deployed site
+      # (repository variables, not secrets: they are in every copy of the app anyway)
+      VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+      VITE_SITE_URL: ${{ vars.SITE_URL }}
       TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
       TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
     steps:
@@ -54,6 +57,10 @@ jobs:
           workspaces: src-tauri
 
       - run: npm ci
+
+      - name: The app knows where to sign in
+        run: |
+          test -n "$VITE_SUPABASE_URL" -a -n "$VITE_SUPABASE_ANON_KEY" -a -n "$VITE_SITE_URL" || { echo "set the repository variables SUPABASE_URL, SUPABASE_ANON_KEY and SITE_URL"; exit 1; }
 
       - name: Build the universal app (with signed updater artifacts)
         run: npm run tauri build -- --target universal-apple-darwin --config '{"bundle":{"createUpdaterArtifacts":true}}'

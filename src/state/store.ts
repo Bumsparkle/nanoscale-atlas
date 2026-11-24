@@ -1,3 +1,4 @@
+import { db } from '../sync/db'
 import { create } from 'zustand'
 import type { Device, LayerId } from '../chapters/cmos/layers'
 import { MASK_IDS, type MaskId } from '../chapters/cmos/layout'
@@ -220,7 +221,7 @@ export interface AtlasState {
   source: { refs: SourceRef[]; index: number } | null
   /** Explore: tint objects by mastery */
   mastery: boolean
-  /** bumps when learning progress changes (localStorage is not reactive) */
+  /** bumps when learning progress changes (here or, through sync, on another device) */
   progressVersion: number
   reducedMotion: boolean
   /** fab animation speed, 0.25–2× (see state/timescale.ts) */
@@ -240,13 +241,10 @@ export const SNAP_TARGETS: Record<CutTarget, { axis: CutAxis; offset: number; la
   pgate: { axis: 'x', offset: 34, label: 'Along the pMOS gate', slide: 25 },
 }
 
+/** the account's saved speed (the local store is open before the store is made) */
 function initialSpeed() {
-  try {
-    const v = Number(localStorage.getItem('atlas.speed.v1'))
-    return v >= 0.25 && v <= 2 ? v : 1
-  } catch {
-    return 1
-  }
+  const v = Number(db.get('settings', 'speed'))
+  return v >= 0.25 && v <= 2 ? v : 1
 }
 
 

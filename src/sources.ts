@@ -3,8 +3,9 @@ import { z } from 'zod'
 /**
  * A reference to a lecture slide. Stored as {topic, slide} everywhere
  * (facts, questions, panels, lesson steps, fab steps) so later chapters can
- * cite their own decks. The slide image is served from /slides/<topic>/,
- * which is not in the repository and sits behind the site password.
+ * cite their own decks. The slide image is in the private Supabase Storage
+ * bucket `slides` at slidePath(ref), never in the repository or a build, and
+ * is shown through a short-lived signed URL (src/account/slides.ts).
  */
 export const TOPIC_IDS = ['topic2', 'topic3', 'topic4', 'topic5', 'topic6', 'topic7', 'topic8'] as const
 export type TopicId = (typeof TOPIC_IDS)[number]
@@ -22,7 +23,7 @@ export const T5 = (slide: number): SourceRef => ({ topic: 'topic5', slide })
 export const T6 = (slide: number): SourceRef => ({ topic: 'topic6', slide })
 export const T7 = (slide: number): SourceRef => ({ topic: 'topic7', slide })
 export const T8 = (slide: number): SourceRef => ({ topic: 'topic8', slide })
-export const slideUrl = (r: SourceRef) => `/slides/${r.topic}/slide-${String(r.slide).padStart(2, '0')}.jpg`
+export const slidePath = (r: SourceRef) => `${r.topic}/slide-${String(r.slide).padStart(2, '0')}.jpg`
 export const sourceLabel = (r: SourceRef) => `${TOPIC_NAME[r.topic]} · slide ${r.slide}`
 
 /** dedupe and order references */

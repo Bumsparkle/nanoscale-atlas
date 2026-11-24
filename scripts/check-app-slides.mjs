@@ -3,13 +3,13 @@
 //   node scripts/check-app-slides.mjs --binary         also the local release app
 //   node scripts/check-app-slides.mjs --bundle <.app>  a given app bundle (files and embedded assets)
 //   node scripts/check-app-slides.mjs --dmg <.dmg>     mount a .dmg read-only and check the app inside
-// INCLUDE_SLIDES=1 allows slide images (personal builds only). PDFs are never allowed.
+// Slide images and PDFs are never allowed: slides are served only from the private Storage bucket.
 // Exits 1 on any finding.
 import { execFileSync } from 'node:child_process'
 import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-const allowSlides = process.env.INCLUDE_SLIDES === '1'
+const allowSlides = false
 const args = process.argv.slice(2)
 const arg = (k) => (args.includes(k) ? args[args.indexOf(k) + 1] : null)
 const problems = []
@@ -68,4 +68,4 @@ if (problems.length) {
   console.error('lecture material guard FAILED:\n  ' + problems.join('\n  '))
   process.exit(1)
 }
-console.log(`lecture material guard: ok (${allowSlides ? 'slides allowed by INCLUDE_SLIDES=1' : 'no slides'}, no PDFs)`)
+console.log('lecture material guard: ok (no slides, no PDFs)')

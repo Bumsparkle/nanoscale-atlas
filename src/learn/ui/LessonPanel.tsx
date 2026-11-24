@@ -268,7 +268,7 @@ function StepView({ section, step, done, onNext, last }: { section: Section; ste
               const a = [...answered]
               a[k] = true
               setAnswered(a)
-              if (step.checks.every((_, j) => a[j])) progress.complete(step.id)
+              if (step.checks.every((_, j) => a[j])) progress.complete(step.id, peeked)
             }}
           />
           {thisDone && (

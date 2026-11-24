@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { IS_APP, MAC_DOWNLOAD_URL } from '../platform'
 import { useAtlas } from '../state/store'
+import { db } from '../sync/db'
 import { navigate } from '../state/url'
 import './home.css'
-import { ThemeIcon } from './TopIcons'
+import { ThemeIcon } from './ThemeIcon'
+import { DoorLeaves } from './DoorLeaves'
 
 /**
  * "Enter the cleanroom": the home page is the bay door. The call to action
@@ -22,15 +24,8 @@ const STEPS = [
   { id: 'shower', label: 'Air shower', note: 'HEPA-filtered jets blow off what is left (beyond the lecture).' },
 ]
 const MIN_STEP_MS = 520
-const KEY = 'atlas.gowned'
-
-function seen() {
-  try {
-    return localStorage.getItem(KEY) === '1'
-  } catch {
-    return false
-  }
-}
+/** returning visitors (synced with the account) skip the gowning */
+const seen = () => db.get('settings', 'gowned') === true
 
 /** a damped spring on a CSS variable, for the doors */
 function useDoorSpring(open: boolean, reduced: boolean, onDone: () => void) {
@@ -70,11 +65,7 @@ export function Home() {
   const returning = useRef(seen())
 
   const enter = () => {
-    try {
-      localStorage.setItem(KEY, '1')
-    } catch {
-      /* private mode: fine */
-    }
+    if (!seen()) db.put('settings', 'gowned', true)
     navigate('/clean/cleanroom' + (location.search.includes('gl=webgl') ? '?gl=webgl' : ''))
   }
   const doors = useDoorSpring(phase === 'opening', reduced, enter)
@@ -114,21 +105,7 @@ export function Home() {
 
   return (
     <main className={'home phase-' + phase} ref={doors} aria-label="Nanoscale Atlas">
-      <div className="door door-l" aria-hidden>
-        <div className="door-window" />
-        <div className="door-plate">
-          <span>LITHO BAY 2</span>
-          <span>ISO 5</span>
-        </div>
-      </div>
-      <div className="door door-r" aria-hidden>
-        <div className="door-window" />
-        <div className="door-plate">
-          <span>YELLOW LIGHT ONLY</span>
-          <span>λ &gt; 500 nm</span>
-        </div>
-      </div>
-      <div className="door-seam" aria-hidden />
+      <DoorLeaves />
       {phase !== 'opening' && (
         <div className="home-theme">
           <ThemeIcon />

@@ -694,3 +694,30 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
   Every fixed screen was re-shot at both sizes and checked. The slide-viewer step in the script was also fixed (it passed the wrong source shape).
 - **Open:** the Mac app itself hasn't been run with the new theme.
 
+
+## Access gate and accounts (2026-11-24)
+- **Shipped:**
+  - the basic-auth password is gone. `/gate/` is the cleanroom door with an access-code field, then UCL sign-in (magic link, 6-digit code, or password). Every other route, asset and API needs both gates.
+  - Supabase Auth, Postgres and Storage. There are six user tables with RLS, a rate-limit table, and the UCL-only hook and trigger, all as migrations in `supabase/`.
+  - local-first sync in `src/sync/` has replaced localStorage persistence for progress, attempts, mastery and settings. The first sign-in offers to import old browser progress.
+  - an account menu: sync state, summary, export JSON, privacy, sign out, delete account.
+  - a privacy page at `/gate/privacy`.
+  - slides now live only in a private bucket, behind 5-minute signed URLs. `scripts/fetch-slides.mjs` and `INCLUDE_SLIDES` are removed, and `npm run slides:upload` replaces them.
+  - Mac app: the same gate in the window, session and access token in the Keychain.
+- **Tests:**
+  - `npm test`: 812 pass, including new suites for the middleware, `/api/access`, sync and import.
+  - `npm run test:db`: 23 pass against local Supabase: RLS across users and anon, append-only attempts, private bucket, cascade delete, non-UCL refused on every path (the admin API too, after adding the trigger), rate limit across instances, sync and import end to end.
+- **Checked in the browser (local Supabase):**
+  - wrong code, then rate limit, then the right code; non-UCL email refused.
+  - magic link sign-in; password sign-up confirmed with the emailed code.
+  - import prompt → rows in Postgres; theme change synced.
+  - a slide opened through a signed URL.
+  - account deleted (rows gone, back at the door).
+  - `npm run preview` of the production build: assets and API give 401, pages redirect, only `/gate/*`, the favicon, OG image and robots.txt are public. No access code or service key in `dist/`.
+- **Screenshot review (dark and light, 1440 × 900):** code step, sign-in, password, code entry, account menu, delete confirmation, privacy. Fixes:
+  - the door windows showed through the translucent card: it is now solid glass with blur.
+  - the door plates collided with the taller form: moved lower, and hidden on short windows.
+  - "Create account" said "signing in…" while busy.
+- **Open:**
+  - the Mac app's gate and Keychain were not driven by hand. The Rust side builds and the app launched, but window control was declined.
+  - the deployed site needs the hosted Supabase project, Vercel env vars and the repository variables (README "Supabase setup") before it works end to end. Until then the new middleware fails closed (503).

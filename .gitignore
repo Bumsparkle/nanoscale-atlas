@@ -5,6 +5,7 @@ dist
 
 # secrets
 .env*
+!.env.example
 
 # Playwright output
 test-results

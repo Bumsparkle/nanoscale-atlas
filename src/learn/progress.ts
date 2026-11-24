@@ -1,16 +1,18 @@
+import { db, type Change } from '../sync/db'
 import { FACTS, QUESTIONS, QUESTIONS_FOR_FACT, FACT_BY_ID } from './bank'
 import { chapterOfPosition, POSITIONS, positionsOf, STEPS } from './lesson'
 import { factsOfSlide, FACT_FILES } from './bank'
 import { TOPIC_IDS, TOPIC_NAME, type TopicId } from '../sources'
 import type { Question } from './schema'
 
+
 /**
- * Learning progress in localStorage (per browser): Leitner boxes for every
- * question, and the lesson position. Every read and write is guarded, so a
- * private window or blocked storage just means nothing is remembered.
+ * Learning progress: Leitner boxes for every question, the lesson position,
+ * what is finished (and whether it was finished after a peek), mastery per
+ * fact and a log of every first attempt. All of it lives in the local-first
+ * store (src/sync/db.ts), which keeps it on this device and syncs it to the
+ * signed-in account.
  */
-const KEY_L = 'atlas.leitner.v1'
-const KEY_LESSON = 'atlas.lesson.v2'
 const DAY = 86_400_000
 /** box → review interval: box 1 is due again at once, box 5 after three weeks */
 export const INTERVALS = [0, 0, DAY, 3 * DAY, 7 * DAY, 21 * DAY]
@@ -27,31 +29,69 @@ export interface LessonProgress {
   at: string
   /** positions finished (checks answered or their solutions opened) */
   done: string[]
+  /** finished positions whose checks were answered after peeking at the step */
+  peeked: string[]
 }
 /** a first attempt: right, wrong, or right after re-opening the step text */
 export type Result = boolean | 'peeked'
-
-const read = <T,>(k: string, fallback: T): T => {
-  try {
-    const s = localStorage.getItem(k)
-    return s ? (JSON.parse(s) as T) : fallback
-  } catch {
-    return fallback
-  }
-}
-const write = (k: string, v: unknown) => {
-  try {
-    localStorage.setItem(k, JSON.stringify(v))
-  } catch {
-    /* storage unavailable: progress is just not kept */
-  }
+interface LessonItem {
+  done: boolean
+  peeked: boolean
 }
 
-let cards: Record<string, Card> = read(KEY_L, {})
-let lesson: LessonProgress = read(KEY_LESSON, { at: POSITIONS[0], done: [] })
-if (!POSITIONS.includes(lesson.at)) lesson = { at: POSITIONS[0], done: lesson.done.filter((d) => POSITIONS.includes(d)) }
+let cards: Record<string, Card> = {}
+let lesson: LessonProgress = { at: POSITIONS[0], done: [], peeked: [] }
+
+function load() {
+  cards = db.all<Card>('cards')
+  const items = db.all<LessonItem>('lesson')
+  const done = Object.keys(items).filter((k) => items[k].done && POSITIONS.includes(k))
+  const at = db.get<string>('settings', 'last_position')
+  lesson = {
+    at: at && POSITIONS.includes(at) ? at : POSITIONS[0],
+    done,
+    peeked: done.filter((k) => items[k].peeked),
+  }
+}
+load()
+
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((f) => f())
+// another device's changes (or switching account) arrive through the store
+db.subscribe((c: Change) => {
+  if (c.source === 'local') return
+  if (c.collection === 'all' || c.collection === 'cards' || c.collection === 'lesson' || (c.collection === 'settings' && c.keys.includes('last_position'))) {
+    load()
+    emit()
+  }
+})
+
+/** keep the stored per-fact mastery in step with the cards of a question */
+function updateMastery(questionId: string) {
+  const q = QUESTIONS.find((x) => x.id === questionId)
+  if (!q?.factIds.length) return
+  db.putMany(
+    'mastery',
+    q.factIds.map((f) => {
+      const score = factScore(f)
+      return [f, { score: Math.round(score * 1000) / 1000, mastered: score >= MASTERED }]
+    }),
+  )
+}
+
+/** re-read everything from the store (after an import) and bring per-fact mastery up to date */
+export function reloadProgress() {
+  load()
+  const facts = new Set(Object.keys(cards).flatMap((id) => QUESTIONS.find((q) => q.id === id)?.factIds ?? []))
+  db.putMany(
+    'mastery',
+    [...facts].map((f) => {
+      const score = factScore(f)
+      return [f, { score: Math.round(score * 1000) / 1000, mastered: score >= MASTERED }]
+    }),
+  )
+  emit()
+}
 
 export const progress = {
   subscribe(f: () => void) {
@@ -63,19 +103,21 @@ export const progress = {
   /**
    * Leitner: right on the first attempt moves up a box; any miss sends the
    * card back to box 1; right after a peek keeps its box and is due again now.
+   * Every call is also logged as an attempt.
    */
   record(id: string, result: Result, now = Date.now()) {
     const c = cards[id] ?? { box: 1, due: now, seen: 0, right: 0 }
     const correct = result === true
-    if (result === 'peeked') {
-      cards = { ...cards, [id]: { ...c, due: now, seen: c.seen + 1 } }
-      write(KEY_L, cards)
-      emit()
-      return
+    let next: Card
+    if (result === 'peeked') next = { ...c, due: now, seen: c.seen + 1 }
+    else {
+      const box = correct ? Math.min(BOXES, c.seen === 0 ? 2 : c.box + 1) : 1
+      next = { box, due: now + INTERVALS[box], seen: c.seen + 1, right: c.right + (correct ? 1 : 0) }
     }
-    const box = correct ? Math.min(BOXES, c.seen === 0 ? 2 : c.box + 1) : 1
-    cards = { ...cards, [id]: { box, due: now + INTERVALS[box], seen: c.seen + 1, right: c.right + (correct ? 1 : 0) } }
-    write(KEY_L, cards)
+    cards = { ...cards, [id]: next }
+    db.put('cards', id, next)
+    db.attempt(id, result === 'peeked' ? 'peeked' : correct ? 'right' : 'wrong', now)
+    updateMastery(id)
     emit()
   },
 
@@ -83,13 +125,14 @@ export const progress = {
   setAt(at: string) {
     if (!POSITIONS.includes(at) || lesson.at === at) return
     lesson = { ...lesson, at }
-    write(KEY_LESSON, lesson)
+    db.put('settings', 'last_position', at)
     emit()
   },
-  complete(pos: string) {
+  /** `peeked`: its checks were answered after re-opening the step text */
+  complete(pos: string, peeked = false) {
     if (lesson.done.includes(pos)) return
-    lesson = { ...lesson, done: [...lesson.done, pos] }
-    write(KEY_LESSON, lesson)
+    lesson = { ...lesson, done: [...lesson.done, pos], peeked: peeked ? [...lesson.peeked, pos] : lesson.peeked }
+    db.put('lesson', pos, { done: true, peeked })
     emit()
   },
   /**
@@ -107,9 +150,11 @@ export const progress = {
 
   reset() {
     cards = {}
-    lesson = { at: POSITIONS[0], done: [] }
-    write(KEY_L, cards)
-    write(KEY_LESSON, lesson)
+    lesson = { at: POSITIONS[0], done: [], peeked: [] }
+    db.clear('cards')
+    db.clear('lesson')
+    db.clear('mastery')
+    db.remove('settings', 'last_position')
     emit()
   },
   /** tests */

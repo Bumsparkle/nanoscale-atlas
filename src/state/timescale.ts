@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAtlas } from './store'
+import { db } from '../sync/db'
 
 /**
  * Fab animation speed. Only the fabrication replay (playback, the step
@@ -9,7 +10,6 @@ import { useAtlas } from './store'
 export const SPEED_MIN = 0.25
 export const SPEED_MAX = 2
 export const SPEED_SNAPS = [0.25, 0.5, 1, 2] as const
-const KEY = 'atlas.speed.v1'
 
 /** dt for fab animation this frame */
 export const fabDt = (dt: number) => dt * useAtlas.getState().speed
@@ -28,11 +28,8 @@ export function nextSpeed(v: number, dir: -1 | 1) {
 export function setSpeed(v: number) {
   const speed = snapSpeed(v)
   useAtlas.getState().set({ speed })
-  try {
-    localStorage.setItem(KEY, String(speed))
-  } catch {
-    /* not remembered */
-  }
+  // synced with the account (src/sync)
+  db.put('settings', 'speed', speed)
 }
 
 /** A DOM tween at natural speed: eases from the previous value to `target` over `seconds`. */

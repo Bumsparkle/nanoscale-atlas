@@ -22,7 +22,8 @@ In Chapter 1, Every 3D structure inside the chip is **generated** from the six m
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm test           # Vitest: simulator, rules, content integrity, logic, junction
+npm test           # Vitest: simulator, rules, content integrity, logic, junction, gate, sync
+npm run test:db    # RLS, UCL-only sign-up, rate limit, sync: needs `npx supabase start`
 npm run build      # type-check + production build into dist/
 npm run preview    # serve dist/ on :4173
 ```
@@ -110,12 +111,89 @@ A chapter is masks + a recipe + content. No 3D modelling.
 6. **Section targets.** Add snap targets to `SNAP_TARGETS` in `state/store.ts`.
 7. **Check it by eye.** Run `node scripts/shots.mjs`, `node scripts/fabsheet.mjs` and `node scripts/tour.mjs`, and look at the images.
 
+## Access, accounts and progress
+
+Two gates stand in front of everything (`middleware.ts`, Vercel Routing Middleware, runs on every request):
+
+1. **The access code.** `/gate/` is the landing page: the cleanroom door with an access-code field. `POST /api/access` compares a SHA-256 of the code against `SITE_ACCESS_CODE` in constant time, allows 5 wrong tries per client per 15 minutes (counted in Postgres against a keyed hash of the IP, never the IP), and on success sets `atlas_access`, an httpOnly, Secure, SameSite=Lax cookie signed with `ACCESS_COOKIE_SECRET` (30 days). The code is never logged, returned or put in the bundle.
+2. **A Supabase Auth session** for a verified `@ucl.ac.uk` address: magic link, 6-digit email code, or password. The web session lives in the `atlas-auth` cookie so the middleware can verify its JWT (against the project's JWKS) on every request.
+
+Only `/gate/*` (the landing page, its own assets under `/gate/assets/`, and `/gate/privacy`), `/api/access`, `/favicon.svg`, `/og.png` and `/robots.txt` are public. Every other page, asset and API call needs both; pages without them redirect to `/gate/?next=…`, everything else gets a 401. Without the env vars the site serves nothing (503).
+
+**Progress** is local-first (`src/sync/`): every change is written to this device's store at once (works offline, including in the Mac app) and synced to Postgres in the background: a moment after each change, on reconnect, on focus, and every minute. Each item (a Revise card, a lesson step, a fact's mastery, a setting) carries its change time and the latest write wins, item by item; a Postgres trigger refuses an older write too. Question attempts are an append-only log with ids made on the device, so a retried push never duplicates one. On the first sign-in on a device that has progress from before accounts, the app offers to import it.
+
+**Account menu** (person icon, top right): sync state, a progress summary, *Export my data* (one JSON file of every row plus this device's copy), *Privacy*, *Sign out*, and *Delete my account* (deletes the auth user; every row goes with it by `on delete cascade`).
+
+**Lecture slides** are in the private Storage bucket `slides`, with no storage policies: nobody can list or read it directly. `POST /api/slides` (both gates) returns signed URLs that expire after 5 minutes. No slide is in git, any build, or a release.
+
+### Supabase setup
+
+Schema, RLS and the sign-up restriction are migrations in `supabase/migrations/`:
+
+| Table | Holds | RLS |
+|---|---|---|
+| `profiles` | email, the import choice | read own; update only `local_import*` |
+| `lesson_progress` | per lesson position: `done`, `peeked` | own rows only |
+| `revise_cards` | Leitner box, due, seen, right | own rows only |
+| `fact_mastery` | per fact: score, mastered | own rows only |
+| `user_settings` | `theme`, `speed`, `last_position`, `gowned` | own rows only |
+| `question_attempts` | every first attempt (append-only) | insert and read own; no update or delete |
+| `private.access_failures` | access-code rate limit | not exposed; service role only |
+
+The four latest-write-wins tables carry `updated_at` (device clock, clamped to now + 5 min), `synced_at` (server, the pull cursor) and `deleted` (tombstones). `anon` has no grants at all.
+
+**UCL only, enforced server-side:** `public.hook_ucl_only` is a *Before User Created* Auth hook (every sign-up path), the `ucl_only_users` trigger on `auth.users` also refuses non-UCL addresses on insert (covering the admin API) and on any email change, and email confirmation is on, so an address only gets a session after using the link or code sent to it. The middleware also rejects any JWT whose email is not `@ucl.ac.uk`.
+
+Hosted project, once:
+
+```bash
+npx supabase login
+npx supabase link --project-ref <ref>
+npx supabase db push            # applies the migrations, creates the private slides bucket
+npx supabase config push        # auth settings, email templates, the hook (from supabase/config.jsonc)
+```
+
+Then in the dashboard check: **Authentication → Hooks**: *Before User Created* → Postgres function `public.hook_ucl_only`; **Authentication → Sign In / Providers → Email**: confirm email on; **URL Configuration**: Site URL = the deployed site, redirect URLs include `https://<site>/gate/**`; **SMTP**: set a real sender (Supabase's built-in mailer is limited to a few emails an hour). Upload the slides from your local `private/slides/`:
+
+```bash
+ENV_FILE=.env.production.local npm run slides:upload
+```
+
+### Environment variables
+
+| Name | Where | What |
+|---|---|---|
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | Vercel, app build | the project URL and publishable key (public) |
+| `SUPABASE_URL` | Vercel | the same URL, for the server |
+| `SUPABASE_SERVICE_ROLE_KEY` | Vercel only | rate limit, signed slide URLs, account deletion. Never `VITE_`-prefixed |
+| `SITE_ACCESS_CODE` | Vercel only | the access code |
+| `ACCESS_COOKIE_SECRET` | Vercel only | 32+ random characters (`openssl rand -base64 48`) |
+| `SUPABASE_JWT_SECRET` | Vercel, optional | only for a project still on the legacy shared JWT secret |
+| `VITE_SITE_URL` | app build | the deployed site, where the Mac app calls `/api/*` |
+
+For the release workflow, set repository **variables** (not secrets; they ship in the app): `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SITE_URL`.
+
+**Changing the access code:** set a new `SITE_ACCESS_CODE` in Vercel and redeploy. Every access cookie and app token carries a fingerprint of the code it was issued for, so all of them stop working at once and everyone types the new code (their accounts and progress are untouched). Rotating `ACCESS_COOKIE_SECRET` does the same.
+
+### Local development
+
+```bash
+npx supabase start              # local stack on ports 544xx (Docker)
+cp .env.example .env.local      # fill in the keys `supabase start` prints, a code and a secret
+npm run slides:upload           # optional: slides into the local bucket
+npm run dev
+```
+
+`npm run dev` runs the real middleware and API inside Vite (`server/devPlugin.ts`), gating pages and the API. Sign-in emails land in Mailpit at http://127.0.0.1:54424. `npm run preview` serves the production build with every request gated, exactly as on Vercel.
+
+### Tests
+
+- `npm test`: unit tests, including the middleware (public paths, both gates, forged/expired/old-code tokens, non-UCL and anonymous JWTs, path tricks), `/api/access` (wrong code rejected, rate limit and its expiry, the code never in a response or log, fail closed), the sync engine (offline then online, two devices, latest write wins, append-only retries, tombstones) and the localStorage import.
+- `npm run test:db` (needs `npx supabase start`): RLS denies every cross-user read and write, anon gets nothing, attempts are append-only, the bucket is private, account deletion cascades, non-UCL sign-up is refused on every path, the rate limit holds across instances, and sync and import run end to end against Postgres.
+
 ## Deploy (web)
 
-The repository deploys to Vercel as a static Vite SPA (`vercel.json`): build `npm run build`, output `dist/`, and a rewrite that sends every route to `/index.html` so deep links survive a refresh. `middleware.ts` puts the whole site, slides included, behind HTTP basic auth. Set these in Vercel:
-
-- `SITE_PASSWORD`: required. Without it the site serves nothing (it fails closed).
-- `SLIDES_ARCHIVE_URL` and `SLIDES_TOKEN`: where the build fetches the private slide archive (see DECISIONS.md).
+Vercel builds `npm run build` (the app, then the landing page into `dist/gate/`) and serves `dist/`. `vercel.json` rewrites deep links to `/index.html` but never `/api/`, `/gate/` or `/assets/`; gated assets are `Cache-Control: private`.
 
 ## Desktop app (macOS)
 
@@ -133,17 +211,9 @@ npm run tauri build
 
 `tauri dev` runs the dev server inside the app window. `tauri build` writes an unsigned app and `.dmg` to `src-tauri/target/release/bundle/` (`macos/Nanoscale Atlas.app` and `dmg/Nanoscale Atlas_0.1.0_aarch64.dmg`). Open the .dmg and drag the app to Applications.
 
-**Lecture slides in the app.** By default the app contains **no** slide images, and the Source buttons are hidden. For a personal build that bundles the slides from your local, gitignored `private/slides/` (rendered with `npm run slides`), set `INCLUDE_SLIDES=1`:
+**Sign-in in the app.** The app shows the same door in its window: the access code (checked by `/api/access` on the deployed site, which hands back a token instead of a cookie) and then a 6-digit email code or a password. The access token and the Supabase session are kept in the macOS Keychain (`src-tauri/src/lib.rs`, items `session` and `access` under `app.nanoscaleatlas.desktop`), never in the webview's storage. Progress syncs with the website through the same account; offline, the app opens with the last session and its local copy, and syncs when back online. The app contains no slide images: the Source modal fetches signed URLs like the website.
 
-```bash
-INCLUDE_SLIDES=1 npm run tauri build
-```
-
-That .dmg contains UCL lecture material: keep it to yourself, and never commit it or attach it to a release. A default build (`npm run tauri build`) removes any slides left in `dist/` from an earlier build.
-
-There is no password in the app: the Vercel middleware is web-only.
-
-**Debug readout.** Press ⌥D for `/debug`. It shows the active renderer (WebGPU, or the WebGL 2 fallback), whether it is running as the app or in a browser, and whether slides are bundled.
+**Debug readout.** Press ⌥D for `/debug`. It shows the active renderer (WebGPU, or the WebGL 2 fallback) and whether it is running as the app or in a browser.
 
 **Download.** The cleanroom home page has a "Download for Mac" link (hidden inside the app). It always points to `releases/latest/download/Nanoscale-Atlas-macOS.dmg`, the newest release.
 
@@ -155,7 +225,7 @@ Releases are built by GitHub Actions (`.github/workflows/release-macos.yml`) whe
 
 1. checks the tag matches the app version;
 2. refuses to run if any slide or PDF is tracked;
-3. builds a universal (Apple Silicon and Intel) app with `INCLUDE_SLIDES` off;
+3. builds a universal (Apple Silicon and Intel) app pointed at the Supabase project and site in the repository variables `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SITE_URL`;
 4. fails if any slide image or PDF ended up in the .app, the .dmg or the updater bundle (`scripts/check-app-slides.mjs`);
 5. publishes a GitHub Release with the .dmg, the signed updater bundle, `latest.json`, and notes listing the commits since the previous tag.
 
@@ -190,7 +260,7 @@ gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD < ~/.tauri/nanoscale-atlas.key.
 
 Keep a backup of `~/.tauri/`. If the private key is lost, installed apps can't verify any new update: you would need a new keypair, a new public key in `tauri.conf.json`, and everyone would have to download the .dmg once by hand.
 
-**Local builds** don't need the key. `npm run tauri build` (and your personal `INCLUDE_SLIDES=1 npm run tauri build`) skip the updater artifacts, which only the release workflow switches on. A personal build with slides must never be uploaded to a release.
+**Local builds** don't need the key. `npm run tauri build` skips the updater artifacts, which only the release workflow switches on.
 
 **Signing and notarising (later).** The .dmg is ad-hoc signed only. A Mac that downloads it will refuse to open it until you right-click it and choose Open. To distribute it properly with an Apple Developer account:
 

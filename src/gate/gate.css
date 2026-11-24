@@ -1,0 +1,176 @@
+/* the access gate: the home page door, locked, with a form in the card */
+.gate .home-card {
+  opacity: 1;
+  transform: none;
+  /* solid glass: the dark door windows must not show through the form */
+  background: var(--glass-strong);
+  backdrop-filter: blur(16px);
+}
+/* the form is taller than the home card: keep the door plates clear of it */
+.gate .door-plate {
+  bottom: 5%;
+}
+@media (max-height: 720px) {
+  .gate .door-plate {
+    display: none;
+  }
+}
+.gate-form {
+  display: grid;
+  gap: var(--s-4);
+  justify-items: start;
+}
+.gate-form .home-lede {
+  margin-bottom: 0;
+}
+.gate-field {
+  display: grid;
+  gap: var(--s-1);
+  width: 100%;
+}
+.gate-field span {
+  font-size: var(--t-11);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.gate-field input {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: var(--t-15);
+  color: var(--ink-0);
+  background: var(--home-well);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+.gate-field input::placeholder {
+  color: var(--ink-3);
+}
+.gate-field input:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+.gate-otp {
+  font-family: var(--mono) !important;
+  font-size: var(--t-24) !important;
+  letter-spacing: 0.35em;
+  max-width: 16ch;
+}
+.gate .home-cta:disabled {
+  opacity: 0.55;
+  cursor: default;
+  transform: none;
+}
+.gate-row {
+  display: flex;
+  gap: var(--s-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.gate-secondary {
+  padding: 11px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink-0);
+}
+.gate-secondary:hover:not(:disabled) {
+  border-color: var(--amber);
+  color: var(--amber-ink);
+}
+.gate-secondary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.gate-alt {
+  margin: calc(var(--s-1) * -1) 0 0;
+  font-size: var(--t-11);
+}
+.gate-alt button,
+.gate-links button {
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: var(--t-11);
+}
+.gate-alt button:hover,
+.gate-links button:hover {
+  color: var(--amber-ink);
+}
+.gate-note {
+  color: var(--ink-2);
+  font-size: var(--t-13);
+}
+.gate-error {
+  margin: var(--s-4) 0 0;
+  padding: var(--s-2) var(--s-3);
+  border-left: 2px solid var(--warn);
+  background: var(--tint-warn);
+  color: var(--ink-0);
+  font-size: var(--t-13);
+}
+.gate-links {
+  color: var(--ink-3);
+}
+.gate-links > :last-child {
+  margin-left: auto;
+}
+
+/* the privacy dialog (Mac app) and page */
+.gate-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--scene) 80%, transparent);
+}
+.gate-privacy {
+  width: min(640px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+  padding: var(--s-6);
+  background: var(--glass-strong);
+  border: var(--hair);
+  border-top: 2px solid var(--amber);
+}
+.privacy-body h2 {
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-34);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.privacy-body h3 {
+  margin: var(--s-5) 0 var(--s-2);
+  font-size: var(--t-15);
+  font-weight: 600;
+  color: var(--amber-ink);
+}
+.privacy-body p,
+.privacy-body li {
+  color: var(--ink-1);
+  line-height: 1.55;
+}
+.privacy-body ul {
+  padding-left: 1.2em;
+  margin: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+.privacy-page {
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+  display: grid;
+  justify-items: center;
+  padding: var(--s-7) var(--s-4);
+  background: var(--scene);
+}
+.privacy-page .gate-privacy {
+  max-height: none;
+}
+.privacy-page nav {
+  margin-top: var(--s-5);
+  font-family: var(--mono);
+  font-size: var(--t-11);
+}

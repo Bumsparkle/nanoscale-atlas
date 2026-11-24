@@ -4,6 +4,7 @@ import { startUrlSync } from './state/url'
 import { Home } from './ui/Home'
 import { StylePage } from './ui/StylePage'
 import { IS_APP } from './platform'
+import { ImportPrompt } from './account/ImportPrompt'
 
 export const loadShell = () => import('./AtlasShell')
 const AtlasShell = lazy(loadShell)
@@ -43,6 +44,7 @@ export function App() {
       )}
       {page === 'home' && <Home />}
       {page === 'style' && <StylePage />}
+      {page !== 'style' && <ImportPrompt />}
       {IS_APP && (
         <Suspense fallback={null}>
           <UpdatePrompt />
