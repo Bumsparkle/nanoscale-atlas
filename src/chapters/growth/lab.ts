@@ -3,7 +3,7 @@ import { anneal, deposit, develop, diffuse, epitaxy, etch, evaporate, expose, im
 import { Process, type Step } from '../../sim/recipe'
 import type { Doping, Grid, Mask } from '../../sim/types'
 import type { ProcState } from '../../state/store'
-import { T3 } from '../../sources'
+import { T3, T7 } from '../../sources'
 import { dealGrove, DIFFUSERS, diffusivity, driveIn, junctionDepth, MBE_NM_PER_HOUR, predep, projectedRange, SI_CONSUMED } from './physics'
 
 /**
@@ -26,6 +26,8 @@ export interface LabRun {
 const step = (id: string, title: string, slide: number, kind: Step['kind'], tool: string, chemistry: string, note: string, op: Step['op']): Step => ({
   id, title, source: T3(slide), group: 'lab', kind, tool, chemistry, note, op,
 })
+/** a Topic 7 (slide 16) resist-process step */
+const t7 = (id: string, title: string, kind: Step['kind'], tool: string, chemistry: string, note: string, op: Step['op']): Step => ({ id, title, source: T7(16), group: 'lab', kind, tool, chemistry, note, op })
 const start = (note: string) => step('start', 'Start', 24, 'start', 'Wafer', 'Si', note, (m) => m)
 const grid = (nx: number): Grid => ({ x0: 0, y0: 0, nx, ny: 1, d: 1 })
 const centre = (nx: number, w: number): Mask => ({ id: 'lab', name: 'lab mask', slide: 0, rects: [{ x0: Math.round((nx - w) / 2), y0: 0, x1: Math.round((nx + w) / 2), y1: 1 }] })
@@ -92,9 +94,22 @@ export function labRun(p: ProcState): LabRun {
       const steps = [
         start('Silicon.'),
         step('ox', 'Grow oxide', 27, 'oxidise', 'Oxidation furnace', 'O₂', 'A film to pattern.', oxidise('ox', 250)),
-        step('spin', 'Spin resist', 28, 'spin', 'Spinner', p.tone === 'positive' ? 'positive resist' : 'negative resist', 'Polymer resin with a photoactive compound.', spinResist(600)),
-        step('expose', 'Expose through the mask', 28, 'expose', 'Aligner, UV', 'UV light', 'The opaque square in the middle of the mask blocks the light.', expose(mask, { keep: true })),
-        step('develop', 'Develop', 28, 'develop', 'Developer', 'alkaline developer', p.tone === 'positive' ? 'Light softened the resist: the exposed resist dissolves.' : 'Light hardened the resist: the unexposed resist dissolves.', develop({ tone: p.tone })),
+        ...(p.fullResist
+          ? [
+              t7('dehydrate', 'Surface clean / dehydration bake', 'anneal', 'Hot plate', '—', 'Prepares the surface for resist.', (m) => m),
+              t7('hmds', 'HMDS adhesion promoter', 'spin', 'Spinner', 'HMDS', 'Typically spun on; helps the resist stick.', (m) => m),
+              t7('spin', 'Spin resist', 'spin', 'Spinner, 3000–6000 rpm', p.tone === 'positive' ? 'positive resist' : 'negative resist', 'Forms a ≈ 0.5 µm layer.', spinResist(600)),
+              t7('prebake', 'Pre-bake', 'anneal', 'Hot plate', '—', 'Typically 10–30 min at 90–100 °C.', (m) => m),
+              t7('expose', 'Align and expose', 'expose', 'Aligner, UV', 'UV light', 'Aligned at each exposure site; typically 150 mJ cm⁻².', expose(mask, { keep: true })),
+              t7('peb', 'Post-exposure bake', 'anneal', 'Hot plate', '—', 'Sometimes used to minimise standing waves; typically 10 min at 100 °C.', (m) => m),
+              t7('develop', 'Develop', 'develop', 'Spray or immersion', 'alkaline developer', 'Typically 30–60 s at room temperature.', develop({ tone: p.tone })),
+              t7('postbake', 'Post-bake', 'anneal', 'Hot plate', '—', 'Typically 10–30 min at 100–140 °C: hardens the resist for etching.', (m) => m),
+            ]
+          : [
+              step('spin', 'Spin resist', 28, 'spin', 'Spinner', p.tone === 'positive' ? 'positive resist' : 'negative resist', 'Polymer resin with a photoactive compound.', spinResist(600)),
+              step('expose', 'Expose through the mask', 28, 'expose', 'Aligner, UV', 'UV light', 'The opaque square in the middle of the mask blocks the light.', expose(mask, { keep: true })),
+              step('develop', 'Develop', 28, 'develop', 'Developer', 'alkaline developer', p.tone === 'positive' ? 'Light softened the resist: the exposed resist dissolves.' : 'Light hardened the resist: the unexposed resist dissolves.', develop({ tone: p.tone })),
+            ]),
         step('etch', 'Etch the oxide', 29, 'etch', 'HF bath', 'HF', 'HF attacks SiO₂ but not Si or resist.', etch('ox')),
         step('strip', 'Strip the resist', 29, 'strip', 'Stripper', 'piranha / O₂ plasma', 'The pattern is now in the oxide.', strip('resist')),
       ]

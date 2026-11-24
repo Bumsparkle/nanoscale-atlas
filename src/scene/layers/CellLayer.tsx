@@ -1,7 +1,7 @@
 import * as THREE from 'three/webgpu'
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
-import { inverterProcess } from '../../chapters/cmos/recipe'
+import { inverterProcess, printState } from '../../chapters/cmos/recipe'
 import { layoutState } from '../../chapters/cmos/layout'
 import { MESH_OPTS } from '../../chapters/cmos/display'
 import { resolveComponents, CONTENT_BY_ID, CONTENT } from '../../chapters/cmos/content'
@@ -189,7 +189,7 @@ export default function CellLayer() {
     const lit = st.view === 'logic' ? logicLit(st.inputs.a) : st.mastery && st.mode === 'explore' && st.view === 'explore' ? masteryLit() : undefined
     // edited masks rebuild the cell when you leave the Layout view, not on every drag
     const ver = st.view === 'layout' ? builtVer.current : layoutState.version()
-    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? (st.view === 'logic' ? 'L' + st.inputs.a : 'M' + st.progressVersion) : ''}|v${ver}`
+    const key = `${s.toFixed(4)}|${clip ? clip.axis + clip.offset.toFixed(3) : '-'}|${gap > 0.001 ? 1 : 0}|${lit ? (st.view === 'logic' ? 'L' + st.inputs.a : 'M' + st.progressVersion) : ''}|v${ver}|p${printState.version()}`
     if (key !== geoKey.current) {
       geoKey.current = key
       builtVer.current = ver

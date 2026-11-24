@@ -30,8 +30,9 @@ export interface ProcState {
   ambient: 'dry' | 'wet'
   oxT: number
   oxHours: number
-  /** lithography */
+  /** lithography; fullResist runs Topic 7's eight-step resist process */
   tone: 'positive' | 'negative'
+  fullResist: boolean
   /** etch */
   iso: boolean
   lineUm: number
@@ -102,6 +103,70 @@ export interface AtlasState {
     thick: number
     /** SOI smart-cut step (0–5) */
     soi: number
+  }
+  /** Chapter 6 (Topic 7): lithography */
+  litho: {
+    /** exposure system and source */
+    system: 'contact' | 'proximity' | 'projection'
+    source: 'g' | 'i' | 'krf' | 'arf' | 'f2'
+    NA: number
+    k1: number
+    k2: number
+    /** spatial coherence S */
+    S: number
+    /** diffraction tab: separation of two point images in Airy radii (0: one point) */
+    sep: number
+    /** MTF tab: line width (nm), equal lines and spaces */
+    feature: number
+    /** proximity tab: gap and opening width (µm) */
+    gap: number
+    W: number
+    /** resist tab: steps done (0–8), spin speed (rpm), dose (mJ/cm²) */
+    rstep: number
+    rpm: number
+    dose: number
+    /** roadmap year */
+    year: number
+    /** e-beam: beam energy (keV) and lift-off step (0–6) */
+    keV: number
+    eb: number
+    /** the inverter printed by this tool (Layout view): on, design follows the tool, design f (nm) */
+    print: boolean
+    fit: boolean
+    fNm: number
+  }
+  /** Chapter 7 (Topic 8): III–V nanostructures */
+  nano: {
+    /** sample being grown and how many of its layers are down */
+    sample: string
+    grown: number
+    /** alignment tab: well and barrier materials */
+    well: string
+    barrier: string
+    /** quantum-well tab: width (nm), depth (eV), mass (m₀), finite or infinite, selected level, ψ or |ψ|² */
+    L: number
+    V0: number
+    m: number
+    finite: boolean
+    level: number
+    prob: boolean
+    /** free electron: wavevector probe (nm⁻¹) */
+    k: number
+    /** confinement: directions confined (1 well, 2 wire, 3 dot) and box sides (nm) */
+    dims: 1 | 2 | 3
+    a: number
+    b: number
+    c: number
+    /** density of states: degrees of freedom shown and the energy probe (meV) */
+    dof: 0 | 1 | 2 | 3
+    E: number
+    /** fabrication route step, VLS seed, colloidal dot diameter (nm), laser temperature (°C) */
+    fstep: number
+    seed: 'au' | 'self'
+    dotNm: number
+    T: number
+    /** scale tab: log10 of the size in metres */
+    logSize: number
   }
   /** Chapter 3 (Topic 4) */
   clean: {
@@ -187,7 +252,7 @@ function initialSpeed() {
 const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 export const PROC_DEFAULT: ProcState = {
-  op: 'oxidation', ambient: 'dry', oxT: 1000, oxHours: 1, tone: 'positive', iso: true, lineUm: 2,
+  op: 'oxidation', ambient: 'dry', oxT: 1000, oxHours: 1, tone: 'positive', fullResist: false, iso: true, lineUm: 2,
   dopant: 'B', preT: 950, preMin: 30, driveT: 1100, driveMin: 60, species: 'B', keV: 50, annealed: false,
   epi: 'cvd', epiMin: 30, metalNm: 500,
 }
@@ -195,6 +260,14 @@ export const FILMS_DEFAULT: AtlasState['films'] = { T: 900, P: 760, Y: 0.01, pla
 export const EPI_DEFAULT: AtlasState['epi'] = {
   T: 1100, rate: 1, sub: 'As', seal: false, rp: false, logGa: -3.5, shutter: true, ml: 0, mode: 'fvdm', coverage: 1.5,
   film: 'InAs', substrate: 'GaAs', thick: 1, soi: 0,
+}
+export const LITHO_DEFAULT: AtlasState['litho'] = {
+  system: 'projection', source: 'krf', NA: 0.6, k1: 0.75, k2: 0.5, S: 0.6, sep: 1.6, feature: 300, gap: 10, W: 4,
+  rstep: 0, rpm: 4000, dose: 150, year: 2004, keV: 20, eb: 0, print: false, fit: false, fNm: 600,
+}
+export const NANO_DEFAULT: AtlasState['nano'] = {
+  sample: 'qw', grown: 5, well: 'GaAs', barrier: 'AlGaAs', L: 10, V0: 0.3, m: 0.067, finite: false, level: 1, prob: false, k: 0.5,
+  dims: 1, a: 10, b: 10, c: 10, dof: 3, E: 60, fstep: 0, seed: 'au', dotNm: 4, T: 25, logSize: -8,
 }
 export const CLEAN_DEFAULT: AtlasState['clean'] = {
   cls: 100, sources: { person: false, book: false, gloves: false }, rca: 0, metal: 'Fe', solution: 'water',
@@ -213,6 +286,8 @@ export const useAtlas = create<AtlasState>((set) => ({
   clean: CLEAN_DEFAULT,
   films: FILMS_DEFAULT,
   epi: EPI_DEFAULT,
+  litho: LITHO_DEFAULT,
+  nano: NANO_DEFAULT,
   focus: null,
   hover: null,
   section: { axis: 'y', offset: -4, locked: null, gap: 0 },

@@ -88,7 +88,15 @@ function Controls({ p, set }: { p: ProcState; set: (q: Partial<ProcState>) => vo
         </>
       )
     case 'litho':
-      return seg([['positive', 'positive resist'], ['negative', 'negative resist']], p.tone, (tone) => set({ tone }))
+      return (
+        <>
+          {seg([['positive', 'positive resist'], ['negative', 'negative resist']], p.tone, (tone) => set({ tone }))}
+          <label className="gp-check">
+            <input type="checkbox" checked={p.fullResist} onChange={(e) => set({ fullResist: e.target.checked })} /> the full eight-step resist process (Topic 7)
+          </label>
+          <div className="lc-quick"><button className="chip" onClick={() => void transition.go('litho')}>lithography bay (ch.6) →</button></div>
+        </>
+      )
     case 'etch':
       return (
         <>
@@ -121,6 +129,7 @@ function Controls({ p, set }: { p: ProcState; set: (q: Partial<ProcState>) => vo
         <>
           {seg([['cvd', 'CVD · SiH₄'], ['mbe', 'MBE · UHV']], p.epi, (epi) => set({ epi }))}
           {slider('growth time', p.epiMin, 1, p.epi === 'mbe' ? 240 : 10, 1, 'min', (epiMin) => set({ epiMin }))}
+          {p.epi === 'mbe' && <div className="lc-quick"><button className="chip" onClick={() => void transition.go('qmbe')}>III–V MBE: grow a heterostructure (ch.7) →</button></div>}
         </>
       )
     case 'metal':

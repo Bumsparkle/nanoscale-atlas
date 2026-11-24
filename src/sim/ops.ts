@@ -1,5 +1,6 @@
 import { colCentre, idx, inMask, mapCols, surface, top } from './model'
 import type { Column, Doping, Interval, Mask, Material, Model, Op } from './types'
+import { aerialImage } from './aerial'
 
 /**
  * Process operations. Each is pure (model in, new model out) and can be
@@ -69,7 +70,8 @@ export function spinResist(t: number): Op {
  * drawn (clear-field), or everywhere except the drawing when `keep` is set
  * (dark-field: used to keep poly and metal where they are drawn).
  */
-export function expose(mask: Mask, opts: { keep?: boolean } = {}): Op {
+export function expose(mask: Mask, opts: { keep?: boolean; optics?: ExposeOptics } = {}): Op {
+  if (opts.optics) return exposeOptical(mask, !!opts.keep, opts.optics)
   return (m, p) => {
     p = clamp01(p)
     if (p === 0) return m
@@ -78,6 +80,50 @@ export function expose(mask: Mask, opts: { keep?: boolean } = {}): Op {
       const t = top(c)
       if (!lit || t.mat !== 'resist') return c
       return [...c.slice(0, -1), { ...t, dose: p }]
+    })
+  }
+}
+
+/**
+ * Optical exposure settings for `expose` (Topic 7). The blur σ and the grid
+ * are in layout units (λ of the layout); `threshold` is the fraction of the
+ * open-field intensity at which the resist clears (0.5 by default).
+ */
+export interface ExposeOptics {
+  sigma: number
+  /** partial coherence S: 0 coherent … 1 incoherent */
+  S: number
+  threshold?: number
+}
+
+/**
+ * Expose through a real lens instead of copying the mask: the aerial image
+ * (sim/aerial.ts) sets each column's dose, and develop clears the resist
+ * where the dose reaches 1, i.e. where the intensity reaches the threshold.
+ * Narrow lines wash out and narrow gaps close when σ is too large.
+ */
+function exposeOptical(mask: Mask, keep: boolean, o: ExposeOptics): Op {
+  const imgs = new WeakMap<Model['grid'], { at: (x: number, y: number) => number }>()
+  const thr = o.threshold ?? 0.5
+  return (m, p) => {
+    p = clamp01(p)
+    if (p === 0) return m
+    const g = m.grid
+    let img = imgs.get(g)
+    if (!img) {
+      const bounds = { x0: g.x0, y0: g.y0, x1: g.x0 + g.nx * g.d, y1: g.y0 + g.ny * g.d }
+      img = aerialImage(mask.rects, bounds, o.sigma, o.S, Math.max(2, Math.round(4 / g.d)), keep)
+      imgs.set(g, img)
+    }
+    const im = img
+    return mapCols(m, (c, x, y) => {
+      const t = top(c)
+      if (t.mat !== 'resist') return c
+      const I = im.at(x, y)
+      // positive resist: soluble where the dose reaches the threshold
+      const dose = Math.min(1, (p * I) / thr)
+      if (dose <= 0) return c
+      return [...c.slice(0, -1), { ...t, dose }]
     })
   }
 }

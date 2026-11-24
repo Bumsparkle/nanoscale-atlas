@@ -75,3 +75,28 @@ export function rand(seed: number) {
   let s = seed >>> 0 || 1
   return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296)
 }
+
+/** a tab drawn at its own scale: metres per scene unit for the scale bar (cleared on unmount) */
+export function useUnits(metresPerUnit: number | null) {
+  useEffect(() => {
+    rig.unitOverride = metresPerUnit
+    return () => void (rig.unitOverride = null)
+  }, [metresPerUnit])
+}
+
+/**
+ * The resting camera of a hand-built layer, per tab. Registered with the rig
+ * so it survives the rig being reset to the layer's defaults (which happens
+ * after the scene mounts when the renderer finishes starting up).
+ */
+export function useTabHome(layer: LayerId, home: Partial<{ target: [number, number, number]; polar: number; azimuth: number; dist: number }>, key: string) {
+  useEffect(() => {
+    rig.homeProvider = { layer, fn: () => home }
+    rig.setHome(home)
+    rig.goHome()
+    return () => {
+      if (rig.homeProvider?.layer === layer) rig.homeProvider = null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layer, key])
+}

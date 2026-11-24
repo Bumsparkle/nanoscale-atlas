@@ -8,6 +8,8 @@ import { BandsPanel, CellsPanel, DefectsPanel, IngotPanel, MillerPanel, PolyPane
 import { ProcessLab } from './growth/ProcessLab'
 import { CleanroomPanels, CleanWaferPanels } from './clean/CleanPanels'
 import { DepositionPanels, MbePanels, SoiPanels, SurfacePanels } from './films/FilmPanels'
+import { EbeamPanels, LithoPanels } from './litho/LithoPanels'
+import { HeteroPanels, NanofabPanels, QbandsPanels, QmbePanels, QsamplePanels, QwavePanels } from './nano/NanoPanels'
 
 /** gate voltage for the transistor layer (slides 12–14) */
 function TransistorControls() {
@@ -112,6 +114,22 @@ export function LayerControls() {
       return <MbePanels />
     case 'surface':
       return <SurfacePanels />
+    case 'litho':
+      return <LithoPanels />
+    case 'ebeam':
+      return <EbeamPanels />
+    case 'qmbe':
+      return <QmbePanels />
+    case 'qsample':
+      return <QsamplePanels />
+    case 'hetero':
+      return <HeteroPanels />
+    case 'qbands':
+      return <QbandsPanels />
+    case 'qwave':
+      return <QwavePanels />
+    case 'nanofab':
+      return <NanofabPanels />
     case 'cleanroom':
       return <CleanroomPanels />
   }

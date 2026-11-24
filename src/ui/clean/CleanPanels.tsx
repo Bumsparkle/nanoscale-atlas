@@ -46,6 +46,9 @@ function RoomPanel() {
       <div className="lc-quick">
         <button className="chip" onClick={() => void transition.go('deposition')}>deposition bay (ch.4) →</button>
         <button className="chip" onClick={() => void transition.go('mbe')}>MBE (ch.5) →</button>
+        <button className="chip" onClick={() => void transition.go('litho')}>lithography bay (ch.6) →</button>
+        <button className="chip" onClick={() => void transition.go('qmbe')}>III–V MBE (ch.7) →</button>
+        <button className="chip" onClick={() => void transition.go('nanofab')}>nanostructures (ch.7) →</button>
       </div>
     </section>
   )

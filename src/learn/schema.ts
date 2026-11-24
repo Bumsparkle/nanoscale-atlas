@@ -57,7 +57,7 @@ export const FactFileSchema = z.object({
   facts: z.array(FactSchema),
 })
 
-const LAYER = z.enum(['sand', 'polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'deposition', 'mbe', 'surface', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice'])
+const LAYER = z.enum(['sand', 'polysilicon', 'puller', 'ingot', 'wafers', 'cleanroom', 'deposition', 'mbe', 'surface', 'litho', 'ebeam', 'qmbe', 'qsample', 'hetero', 'qbands', 'qwave', 'nanofab', 'wafer', 'die', 'cell', 'transistor', 'oxide', 'lattice'])
 const VIEW = z.enum(['explore', 'section', 'masks', 'fab', 'logic', 'layout'])
 const CUT = z.enum(['slide27', 'ngate', 'pgate'])
 const MASK = z.enum(['nwell', 'poly', 'nplus', 'pplus', 'contact', 'metal'])
@@ -94,6 +94,8 @@ export const SceneSchema = z.object({
   clean: z.record(z.string(), z.unknown()).optional(),
   films: z.record(z.string(), z.unknown()).optional(),
   epi: z.record(z.string(), z.unknown()).optional(),
+  litho: z.record(z.string(), z.unknown()).optional(),
+  nano: z.record(z.string(), z.unknown()).optional(),
 })
 export type Scene = z.infer<typeof SceneSchema>
 

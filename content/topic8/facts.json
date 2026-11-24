@@ -1099,13 +1099,14 @@
     "topic": "topic8",
     "slide": 28
    },
-   "statement": "1D (quantum wire): each state takes π/L and the states fill a line of length k, so N = (k/(π/L)) × 2 × ½ = kL/π.",
+   "statement": "1D (quantum wire): each state takes π/L of k-space and the states fill the line from −k to +k, length 2k, so N = (2k/(π/L)) × 2 × ½ = 2kL/π.",
    "kind": "rule",
    "area": "dos",
    "key": true,
    "objects": [
     "qv-kspace"
-   ]
+   ],
+   "corrects": "The slide takes the line’s length as k but still applies the ½ for ± redundancy, counting each state half; with the line from −k to +k (as the full sphere and circle are used in 3D and 2D) N = 2kL/π."
   },
   {
    "id": "t8-s29-1d",
@@ -1113,13 +1114,14 @@
     "topic": "topic8",
     "slide": 29
    },
-   "statement": "1D: N = (L/π)√(2m/ħ²)·√E, so ρ(E) = (1/2π)√(2m/ħ²)·E^(−1/2).",
+   "statement": "1D: N = (2L/π)√(2m/ħ²)·√E, so ρ(E) = (1/π)√(2m/ħ²)·E^(−1/2) = (1/πħ)√(2m/E): it falls as E^(−1/2).",
    "kind": "rule",
    "area": "dos",
    "key": true,
    "objects": [
     "qv-kspace"
-   ]
+   ],
+   "corrects": "The slide gives ρ(E) = (1/2π)√(2m/ħ²)E^(−1/2), half the correct value, because of the N = kL/π count on slide 28. Counting standing waves k = nπ/L directly (n = 1, 2, 3…, two spins) gives N = 2kL/π."
   },
   {
    "id": "t8-s30-0d",

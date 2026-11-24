@@ -132,14 +132,23 @@ describe('Topic 7 and 8 slide errors are corrected', () => {
     expect(by('t8-s30-0d').statement).toMatch(/2δ\(E − E_c\)/)
     expect(all).not.toMatch(/σ\(E/)
   })
-  it('the 1D and 2D DoS prefactors re-derive', () => {
-    // 2D: N = k²A/(2π), k² = 2mE/ħ² → ρ = (1/A)dN/dE = m/(πħ²); 1D: N = kL/π → ρ = (1/2π)√(2m/ħ²)E^(−1/2)
-    const m = 1, hbar = 1, E = 0.37, A = 1, L = 1, d = 1e-6
-    const N2 = (e: number) => ((2 * m * e) / hbar ** 2) * A / (2 * Math.PI)
-    const N1 = (e: number) => (Math.sqrt((2 * m * e) / hbar ** 2) * L) / Math.PI
-    expect((N2(E + d) - N2(E - d)) / (2 * d) / A).toBeCloseTo(m / (Math.PI * hbar ** 2), 6)
-    expect((N1(E + d) - N1(E - d)) / (2 * d) / L).toBeCloseTo((1 / (2 * Math.PI)) * Math.sqrt((2 * m) / hbar ** 2) / Math.sqrt(E), 6)
+  it('the 1D and 2D DoS prefactors re-derive (the slide’s 1D is half the true value)', () => {
+    // count standing waves directly: k = nπ/L, n = 1, 2, 3…, two spins
+    const L = 200, k = 1.7
+    const n1 = Math.floor((k * L) / Math.PI)
+    expect(2 * n1).toBeCloseTo((2 * k * L) / Math.PI, -1)
+    let n2 = 0
+    for (let a = 1; a < 200; a++) for (let b = 1; b < 200; b++) if ((Math.PI / L) ** 2 * (a * a + b * b) <= k * k) n2++
+    expect((2 * n2) / ((k * k * L * L) / (2 * Math.PI))).toBeCloseTo(1, 1)
+    // ρ = (1/size) dN/dE with k² = 2mE/ħ²: 2D m/(πħ²); 1D (1/π)√(2m/ħ²)E^(−1/2)
+    const m = 1, hbar = 1, E = 0.37, d = 1e-6
+    const N2 = (e: number) => ((2 * m * e) / hbar ** 2) * L * L / (2 * Math.PI)
+    const N1 = (e: number) => (2 * Math.sqrt((2 * m * e) / hbar ** 2) * L) / Math.PI
+    expect((N2(E + d) - N2(E - d)) / (2 * d) / (L * L)).toBeCloseTo(m / (Math.PI * hbar ** 2), 6)
+    expect((N1(E + d) - N1(E - d)) / (2 * d) / L).toBeCloseTo((1 / Math.PI) * Math.sqrt((2 * m) / hbar ** 2) / Math.sqrt(E), 6)
     expect(by('t8-s27-2d').statement).toMatch(/m\/\(πħ²\)/)
-    expect(by('t8-s29-1d').statement).toMatch(/\(1\/2π\)√\(2m\/ħ²\)·E\^\(−1\/2\)/)
+    expect(by('t8-s28-1d').statement).toMatch(/2kL\/π/)
+    expect(by('t8-s29-1d').statement).toMatch(/\(1\/π\)√\(2m\/ħ²\)·E\^\(−1\/2\)/)
+    expect(all).not.toMatch(/1\/2π\)√\(2m/)
   })
 })

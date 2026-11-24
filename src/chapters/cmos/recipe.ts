@@ -1,10 +1,11 @@
 import { createWafer } from '../../sim/model'
-import { deposit, develop, etch, expose, identity, implant, oxidise, spinResist, strip } from '../../sim/ops'
+import { deposit, develop, etch, expose, identity, implant, oxidise, spinResist, strip, type ExposeOptics } from '../../sim/ops'
 import { Process, type Step } from '../../sim/recipe'
 import { T2 } from '../../sources'
 import type { Mask } from '../../sim/types'
 import { GRID } from './masks'
 import { DEFAULT_LAYOUT, layoutState, masksOf, type Layout, type MaskId } from './layout'
+import { blurSigmaNm, type Optics } from '../litho/optics'
 
 /**
  * Film thicknesses and depths (nm). Only the gate oxide (< 20 Å, slide 37)
@@ -26,7 +27,7 @@ export const T = {
 const BEYOND_THICK = 'Thickness is a typical 0.6 µm-process value, not from the slides (Plummer, Deal & Griffin, ch. 2).'
 
 /** The four steps that pattern a film with resist, as in the lecture's lithography sequence. */
-function litho(group: string, mask: Mask, slide: number, keep: boolean, target: { mat: 'ox' | 'poly' | 'fox' | 'al'; tool: string; chem: string; slide: number; note: string; beyond?: string }, extra: Step[] = []): Step[] {
+function litho(optics: ExposeOptics | undefined, group: string, mask: Mask, slide: number, keep: boolean, target: { mat: 'ox' | 'poly' | 'fox' | 'al'; tool: string; chem: string; slide: number; note: string; beyond?: string }, extra: Step[] = []): Step[] {
   return [
     {
       id: `${group}-spin`, title: 'Spin on photoresist', source: T2(31), group, kind: 'spin',
@@ -40,7 +41,7 @@ function litho(group: string, mask: Mask, slide: number, keep: boolean, target: 
         ? `Light passes everywhere except where ${mask.name.toLowerCase} is drawn, so resist survives on the drawing.`
         : `Light passes where ${mask.name.toLowerCase} is drawn; the resist there softens.`,
       beyond: keep ? 'Dark-field mask polarity (keeping the film where it is drawn) is implied by the poly and metal patterning steps, not named in the lecture.' : undefined,
-      op: expose(mask, { keep }),
+      op: expose(mask, { keep, optics }),
     },
     {
       id: `${group}-develop`, title: 'Develop: strip exposed resist', source: T2(32), group, kind: 'develop',
@@ -65,7 +66,7 @@ function litho(group: string, mask: Mask, slide: number, keep: boolean, target: 
 const HF = { tool: 'Wet bench', chem: 'Hydrofluoric acid (HF)' }
 
 /** The recipe for a given mask set: same 45 steps, patterned by these masks. */
-export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
+export function buildSteps(masks: Record<MaskId, Mask>, optics?: ExposeOptics): Step[] {
   const { nwell: NWELL, poly: POLY, nplus: NPLUS, pplus: PPLUS, contact: CONTACT, metal: METAL } = masks
   return [
   {
@@ -79,7 +80,7 @@ export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
     tool: 'Oxidation furnace', chemistry: 'H₂O or O₂ at 900–1200 °C',
     note: 'A protective layer of oxide covers the wafer.', beyond: BEYOND_THICK, op: oxidise('ox', T.maskOx),
   },
-  ...litho('n-well', NWELL, 32, false, {
+  ...litho(optics, 'n-well', NWELL, 32, false, {
     mat: 'ox', tool: HF.tool, chem: HF.chem, slide: 33,
     note: 'HF only attacks oxide where the resist has been removed.',
   }),
@@ -107,7 +108,7 @@ export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
     tool: 'CVD furnace', chemistry: 'Silane (SiH₄) → many small Si crystals',
     note: 'Polysilicon forms from silane and is heavily doped to conduct.', beyond: BEYOND_THICK, op: deposit('poly', T.poly),
   },
-  ...litho(
+  ...litho(optics,
     'gate', POLY, 38, true,
     {
       mat: 'poly', tool: 'Plasma etcher', chem: 'Reactive ions remove unmasked poly', slide: 38,
@@ -127,7 +128,7 @@ export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
     tool: 'Oxidation furnace', chemistry: 'SiO₂ over silicon and poly',
     note: 'Oxide plus masking will expose only where n+ dopants should go.', beyond: BEYOND_THICK, op: oxidise('ox', T.maskOx),
   },
-  ...litho('n+', NPLUS, 40, false, { mat: 'ox', tool: HF.tool, chem: HF.chem, slide: 40, note: 'Oxide opens over the nMOS and the well tap; the gate stays covered by its own poly.' }),
+  ...litho(optics, 'n+', NPLUS, 40, false, { mat: 'ox', tool: HF.tool, chem: HF.chem, slide: 40, note: 'Oxide opens over the nMOS and the well tap; the gate stays covered by its own poly.' }),
   {
     id: 'n-implant', title: 'Form n+ regions (self-aligned)', source: T2(41), group: 'n+', kind: 'implant',
     tool: 'Ion implanter', chemistry: 'Group V donor (As or P)',
@@ -140,7 +141,7 @@ export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
     id: 'p-ox', title: 'Cover with oxide', source: T2(43), group: 'p+', kind: 'oxidise',
     tool: 'Oxidation furnace', chemistry: 'SiO₂', note: 'Same set of steps, now for p+.', beyond: BEYOND_THICK, op: oxidise('ox', T.maskOx),
   },
-  ...litho('p+', PPLUS, 43, false, { mat: 'ox', tool: HF.tool, chem: HF.chem, slide: 43, note: 'Oxide opens over the pMOS and the substrate tap.' }),
+  ...litho(optics, 'p+', PPLUS, 43, false, { mat: 'ox', tool: HF.tool, chem: HF.chem, slide: 43, note: 'Oxide opens over the pMOS and the substrate tap.' }),
   {
     id: 'p-implant', title: 'Form p+ regions (self-aligned)', source: T2(43), group: 'p+', kind: 'implant',
     tool: 'Ion implanter', chemistry: 'Group III acceptor (B)',
@@ -153,7 +154,7 @@ export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
     id: 'fox', title: 'Thick field oxide', source: T2(44), group: 'contacts', kind: 'deposit',
     tool: 'CVD reactor', chemistry: 'SiO₂', note: 'Cover the chip with thick oxide before wiring.', beyond: BEYOND_THICK, op: deposit('fox', T.fox),
   },
-  ...litho('contacts', CONTACT, 44, false, { mat: 'fox', tool: HF.tool, chem: HF.chem, slide: 44, note: 'Contact cuts open down to the diffusions.' }),
+  ...litho(optics, 'contacts', CONTACT, 44, false, { mat: 'fox', tool: HF.tool, chem: HF.chem, slide: 44, note: 'Contact cuts open down to the diffusions.' }),
   // ── metal (slide 45)
   {
     id: 'al', title: 'Sputter aluminium', source: T2(45), group: 'metal', kind: 'sputter',
@@ -161,7 +162,7 @@ export function buildSteps(masks: Record<MaskId, Mask>): Step[] {
     note: 'Aluminium fills the contact cuts and covers everything.', beyond: BEYOND_THICK,
     op: deposit('al', T.al, { planar: true, markPlugs: true }),
   },
-  ...litho('metal', METAL, 45, true, {
+  ...litho(optics, 'metal', METAL, 45, true, {
     mat: 'al', tool: 'Metal etcher', chem: 'Removes unmasked aluminium', slide: 45,
     note: 'Pattern to remove excess metal, leaving wires.',
     beyond: 'Chlorine plasma is the usual Al etch (Plummer, Deal & Griffin, ch. 10).',
@@ -174,8 +175,21 @@ export const STEPS: Step[] = buildSteps(masksOf(DEFAULT_LAYOUT))
 export const initialWafer = () => createWafer(GRID, T.substrate, 'p')
 
 const cache = new WeakMap<Layout, Process>()
-/** the fab process for a layout (memoised per layout object) */
-export function processFor(layout: Layout): Process {
+const printed = new Map<string, Process>()
+/** the fab process for a layout (memoised per layout object), printed by `print` if given */
+export function processFor(layout: Layout, print: PrintSettings | null = null): Process {
+  if (print) {
+    const key = `${layoutState.version()}|${printKey(print)}`
+    let p = layout === layoutState.get() ? printed.get(key) : undefined
+    if (!p) {
+      p = new Process(initialWafer(), buildSteps(masksOf(layout), exposeOptics(print)))
+      if (layout === layoutState.get()) {
+        if (printed.size > 12) printed.clear()
+        printed.set(key, p)
+      }
+    }
+    return p
+  }
   let p = cache.get(layout)
   if (!p) {
     p = new Process(initialWafer(), layout === DEFAULT_LAYOUT ? STEPS : buildSteps(masksOf(layout)))
@@ -184,7 +198,31 @@ export function processFor(layout: Layout): Process {
   return p
 }
 
-/** the process for the current (possibly edited) layout */
+/**
+ * Topic 7: print the inverter with a real exposure tool. `fNm` is the design's
+ * feature size f (λ = f/2 on the layout grid, slide 46 of Topic 2); the tool's
+ * blur is converted to layout units. Null (the default) is the ideal mode:
+ * every mask is copied perfectly, as Chapters 1–5 assume.
+ */
+export interface PrintSettings {
+  optics: Optics
+  fNm: number
+}
+export const printKey = (p: PrintSettings) => `${p.optics.lambdaNm}|${p.optics.NA}|${p.optics.k1}|${p.optics.S}|${p.fNm}`
+export const exposeOptics = (p: PrintSettings): ExposeOptics => ({ sigma: blurSigmaNm(p.optics) / (p.fNm / 2), S: p.optics.S })
+let print: PrintSettings | null = null
+let printVer = 0
+export const printState = {
+  get: () => print,
+  version: () => printVer,
+  set(p: PrintSettings | null) {
+    if ((p && print && printKey(p) === printKey(print)) || p === print) return
+    print = p
+    printVer++
+  },
+}
+
+/** the process for the current (possibly edited) layout, printed by the current tool */
 export function inverterProcess(): Process {
-  return processFor(layoutState.get())
+  return processFor(layoutState.get(), printState.get())
 }

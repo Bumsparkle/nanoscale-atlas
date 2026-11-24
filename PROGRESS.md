@@ -643,4 +643,10 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
 ### Topics 7 and 8 · Chapters 6 and 7 — in progress (2026-11-24)
 
 - **Step 1, inventories:** `content/topic7/facts.json` (92 facts, 76 key) and `content/topic8/facts.json` (72 facts, 61 key). Every slide was read, including the images: roadmap table, optics diagrams, MTF plots, resist flow, TEM/AFM/STM images, DoS plots and equations. Nine slide errors are corrected (DECISIONS.md), and `facts.test.ts` re-derives the DOF example, the de Broglie wavelengths and the 1D/2D DoS prefactors.
+- **Steps 2–3, scenes (one commit, as they share the store, layer and route plumbing):**
+  - **Chapter 6, Printing smaller:** the lithography bay (`/litho/stepper`), with tabs for the exposure tool, diffraction, MTF, proximity gap, resist process, roadmap and next generation. The e-beam writer (`/litho/ebeam`) has direct write, lift-off and the proximity-effect Monte Carlo, plus a marked SEM link point.
+  - **Topic 2 link:** the layout view can print the poly with any tool. The simulator's `expose` has an optical mode (the aerial image against the resist threshold), so a coarse tool washes the gates out on the layout and in the 3D cell. Chapters 1–5 stay in ideal mode.
+  - **Process lab:** gains the full eight-step resist process.
+  - **Chapter 7, Quantum structures:** the III–V MBE chamber (`/nano/mbe`), then a zoom ladder: sample (with the nanoscale entry), layers (and a TEM view), band diagram (with type I/II alignment), and wavefunctions (free electron, infinite and finite wells, well → wire → dot, density of states). A fabrication layer (`/nano/fab`) covers etched and split-gate wires, VLS nanowires, pillars, colloidal dots, patterned growth, Stranski–Krastanov growth and the QD laser.
+  - **Correction found while building:** the slide's 1D density of states is half the true value (N = 2kL/π, not kL/π). It is corrected and tested.
 

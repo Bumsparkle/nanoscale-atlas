@@ -350,3 +350,13 @@
   color: var(--on-amber);
   background: var(--amber);
 }
+
+/* Chapters 6–7 */
+.gp-steps li.done { opacity: 0.6; }
+.gp-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 6px 0; }
+.gp-table th, .gp-table td { text-align: left; padding: 2px 4px; border-bottom: 1px solid var(--line, rgba(255,255,255,0.08)); }
+.gp-table th { font-weight: 500; opacity: 0.7; }
+.gp-table tr.on td { color: var(--amber, #f0b43c); }
+.gp-table tbody tr { cursor: pointer; }
+.gp-chips .chip { text-align: left; }
+.lc-slider select { background: transparent; color: inherit; border: 1px solid var(--line, rgba(255,255,255,0.15)); border-radius: 4px; padding: 2px 4px; font: inherit; }

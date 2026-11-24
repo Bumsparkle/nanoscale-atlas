@@ -10,9 +10,11 @@
 export type LayerId =
   | 'sand' | 'polysilicon' | 'puller' | 'ingot' | 'wafers'
   | 'cleanroom' | 'deposition' | 'mbe' | 'surface'
+  | 'litho' | 'ebeam'
+  | 'qmbe' | 'qsample' | 'hetero' | 'qbands' | 'qwave' | 'nanofab'
   | 'wafer' | 'die' | 'cell' | 'transistor' | 'oxide' | 'lattice'
 
-export type ChapterId = 'ch1' | 'ch2' | 'ch3' | 'ch4' | 'ch5'
+export type ChapterId = 'ch1' | 'ch2' | 'ch3' | 'ch4' | 'ch5' | 'ch6' | 'ch7'
 
 export interface LayerDef {
   id: LayerId
@@ -107,6 +109,87 @@ export const LAYERS: LayerDef[] = [
     ],
   },
   {
+    id: 'litho', chapter: 'ch6', path: ['litho', 'stepper'], crumb: 'litho bay', title: 'Lithography bay', up: 'cleanroom',
+    metresPerUnit: 1e-2, minDist: 30, maxDist: 900, restDist: 260, restPolar: 1.2, restAzimuth: 0.6,
+    near: 0.2, far: 10000, scaleNote: 'stepper ~2 m · 1 unit = 1 cm (optics tabs: image-plane units)',
+    tabs: [
+      { id: 'tool', label: 'Exposure tool', chapter: 'ch6', hint: 'Contact, proximity or projection; pick a source and NA: R and DOF follow' },
+      { id: 'optics', label: 'Diffraction', chapter: 'ch6', hint: 'Bring two point images together until Rayleigh says they merge' },
+      { id: 'mtf', label: 'MTF', chapter: 'ch6', hint: 'Shrink the lines: the contrast falls; change the coherence S' },
+      { id: 'fresnel', label: 'Proximity gap', chapter: 'ch6', hint: 'Lift the mask off the resist and watch the edges ring' },
+      { id: 'resist', label: 'Resist process', chapter: 'ch6', hint: 'Eight steps from a bare wafer to a hard-baked pattern' },
+      { id: 'roadmap', label: 'Roadmap', chapter: 'ch6', hint: 'Slide through the years: 0.7× every three years' },
+      { id: 'ngl', label: 'Next generation', chapter: 'ch6', hint: 'Photons, electrons, X-rays and ions in resist' },
+    ],
+  },
+  {
+    id: 'ebeam', chapter: 'ch6', path: ['litho', 'ebeam'], crumb: 'e-beam writer', title: 'Electron-beam writer', up: 'litho',
+    metresPerUnit: 1e-2, minDist: 20, maxDist: 600, restDist: 190, restPolar: 1.25, restAzimuth: 0.55,
+    near: 0.1, far: 6000, scaleNote: 'column ~1.5 m · 1 unit = 1 cm (proximity tab: 1 unit = 50 nm)',
+    tabs: [
+      { id: 'write', label: 'Direct write', chapter: 'ch6', hint: 'The beam scans the pattern, blanked between shapes' },
+      { id: 'liftoff', label: 'Lift-off', chapter: 'ch6', hint: 'Six steps: PMMA, expose, develop, Ti/Au, lift off' },
+      { id: 'proximity', label: 'Proximity effect', chapter: 'ch6', hint: 'Raise the beam energy: the backscattered electrons spread further' },
+    ],
+  },
+  {
+    id: 'qmbe', chapter: 'ch7', path: ['nano', 'mbe'], crumb: 'III–V MBE', title: 'III–V MBE: growing a heterostructure', up: 'cleanroom',
+    metresPerUnit: 1e-2, minDist: 25, maxDist: 700, restDist: 210, restPolar: 1.15, restAzimuth: 0.65,
+    near: 0.2, far: 8000, scaleNote: 'growth chamber ~1 m · 1 unit = 1 cm',
+  },
+  {
+    id: 'qsample', chapter: 'ch7', path: ['nano', 'sample'], crumb: 'sample', title: 'The grown sample', up: 'qmbe',
+    metresPerUnit: 1e-3, minDist: 8, maxDist: 400, restDist: 120, restPolar: 1.1, restAzimuth: 0.6,
+    near: 0.05, far: 4000, scaleNote: 'a 10 mm piece of the wafer · 1 unit = 1 mm',
+    tabs: [
+      { id: 'scale', label: 'Nanoscale', chapter: 'ch7', hint: 'Slide from a tennis ball down to an atom: where do properties change?' },
+      { id: 'sample', label: 'Sample', chapter: 'ch7', hint: 'Zoom into the edge to see the layers' },
+    ],
+  },
+  {
+    id: 'hetero', chapter: 'ch7', path: ['nano', 'layers'], crumb: 'layers', title: 'Heterostructure layers', up: 'qsample',
+    metresPerUnit: 1e-9, minDist: 20, maxDist: 600, restDist: 210, restPolar: 1.3, restAzimuth: 0.5,
+    near: 0.1, far: 6000, scaleNote: '1 unit = 1 nm',
+    tabs: [
+      { id: 'stack', label: 'Layers', chapter: 'ch7', hint: 'Pick a sample; each layer is a material with its band gap' },
+      { id: 'tem', label: 'TEM view', chapter: 'ch7', hint: 'The cross-section as a TEM sees it' },
+    ],
+  },
+  {
+    id: 'qbands', chapter: 'ch7', path: ['nano', 'bands'], crumb: 'band diagram', title: 'Band diagram', up: 'hetero',
+    metresPerUnit: 1e-9, minDist: 20, maxDist: 600, restDist: 190, restPolar: 1.45, restAzimuth: 0.05,
+    near: 0.1, far: 6000, scaleNote: '1 unit = 1 nm across · 70 units = 1 eV up',
+    tabs: [
+      { id: 'bands', label: 'Band edges', chapter: 'ch7', hint: 'The layers become a potential: levels appear in the wells' },
+      { id: 'align', label: 'Type I / II', chapter: 'ch7', hint: 'Choose two materials: where do the electrons and holes fall?' },
+    ],
+  },
+  {
+    id: 'qwave', chapter: 'ch7', path: ['nano', 'wave'], crumb: 'wavefunctions', title: 'Wavefunctions', up: 'qbands',
+    metresPerUnit: 1e-9, minDist: 12, maxDist: 400, restDist: 120, restPolar: 1.4, restAzimuth: 0.1,
+    near: 0.05, far: 4000, scaleNote: '1 unit = 1 nm · energies scaled to fit (see the labels)',
+    tabs: [
+      { id: 'free', label: 'Free electron', chapter: 'ch7', hint: 'No walls: any k, any energy' },
+      { id: 'well', label: 'Quantum well', chapter: 'ch7', hint: 'Narrow the well; make it finite and watch the tails' },
+      { id: 'confine', label: 'Well → wire → dot', chapter: 'ch7', hint: 'Confine one, two, then three directions' },
+      { id: 'dos', label: 'Density of states', chapter: 'ch7', hint: 'Count the states in k-space as the confinement grows' },
+    ],
+  },
+  {
+    id: 'nanofab', chapter: 'ch7', path: ['nano', 'fab'], crumb: 'nanofab', title: 'Making nanostructures', up: 'cleanroom',
+    metresPerUnit: 1e-9, minDist: 20, maxDist: 900, restDist: 260, restPolar: 1.15, restAzimuth: 0.6,
+    near: 0.1, far: 8000, scaleNote: '1 unit = 1 nm (VLS: 1 unit = 10 nm)',
+    tabs: [
+      { id: 'wires', label: 'Etched wires', chapter: 'ch7', hint: 'Etch a ridge, or deplete under split gates' },
+      { id: 'vls', label: 'VLS nanowires', chapter: 'ch7', hint: 'Grow a wire under a droplet: gold or self-catalysed' },
+      { id: 'pillars', label: 'Etched pillars', chapter: 'ch7', hint: 'Lithography and etching cut a well into dots' },
+      { id: 'colloid', label: 'Colloidal dots', chapter: 'ch7', hint: 'Grow them in solution: size sets the colour' },
+      { id: 'patterned', label: 'Patterned growth', chapter: 'ch7', hint: 'Dots in pyramid-shaped recesses' },
+      { id: 'sk', label: 'Self-assembled', chapter: 'ch7', hint: 'Deposit InAs on GaAs: wetting layer, then islands' },
+      { id: 'laser', label: 'QD laser', chapter: 'ch7', hint: 'Heat the laser: the dots hold their threshold' },
+    ],
+  },
+  {
     id: 'wafer', chapter: 'ch1', path: ['cmos', 'wafer'], up: 'cleanroom', crumb: 'wafer', title: '300 mm wafer',
     metresPerUnit: 1e-3, minDist: 60, maxDist: 900, restDist: 430, restPolar: 0.95, restAzimuth: 0.35,
     near: 1, far: 5000, scaleNote: '300 mm wafer · beyond the lecture',
@@ -182,7 +265,7 @@ export interface ChapterDef {
   id: ChapterId
   n: number
   title: string
-  topic: 'topic2' | 'topic3' | 'topic4' | 'topic5' | 'topic6'
+  topic: 'topic2' | 'topic3' | 'topic4' | 'topic5' | 'topic6' | 'topic7' | 'topic8'
   /** where the chapter starts */
   entry: { layer: LayerId; tab?: string }
   blurb: string
@@ -193,6 +276,8 @@ export const CHAPTERS: ChapterDef[] = [
   { id: 'ch3', n: 3, title: 'Keeping it clean', topic: 'topic4', entry: { layer: 'cleanroom' }, blurb: 'Clean factories, wafer cleaning, gettering and yield.' },
   { id: 'ch4', n: 4, title: 'Laying down films', topic: 'topic5', entry: { layer: 'deposition' }, blurb: 'CVD kinetics, plasma, evaporation and sputtering, and how films fill a trench.' },
   { id: 'ch5', n: 5, title: 'Atom by atom', topic: 'topic6', entry: { layer: 'mbe' }, blurb: 'Epitaxy: lattice matching, growth modes, Si epi, MBE with RHEED, and SOI.' },
+  { id: 'ch6', n: 6, title: 'Printing smaller', topic: 'topic7', entry: { layer: 'litho', tab: 'tool' }, blurb: 'Light sources, exposure tools, resolution and depth of focus, MTF, resists, and e-beam writing.' },
+  { id: 'ch7', n: 7, title: 'Quantum structures', topic: 'topic8', entry: { layer: 'qsample', tab: 'scale' }, blurb: 'III–V heterostructures, quantum wells, wires and dots, the density of states, and the QD laser.' },
 ]
 export const CHAPTER_BY_ID = Object.fromEntries(CHAPTERS.map((c) => [c.id, c])) as Record<ChapterId, ChapterDef>
 

@@ -10,6 +10,7 @@ import { ContentBody } from './Panel'
 import './layout.css'
 import { SourceButton } from './source/Source'
 import { T2 } from '../sources'
+import { PrintBox, PrintCells, usePrint } from './litho/PrintOverlay'
 
 /**
  * Layout view (slides 46–48): the six masks drawn flat on the λ grid, as on
@@ -83,6 +84,9 @@ export function LayoutView() {
   const [pointer, setPointer] = useState<[number, number]>([0, 0])
   const drag = useRef<{ edge: EdgeRef; last: number } | null>(null)
   const lamPx = useRef<HTMLSpanElement>(null)
+  // Topic 7: the exposure tool, if one prints the layout, sets f and λ = f/2 (and the 3D cell's exposure)
+  const print = usePrint()
+  const lamNm = print.on ? print.f / 2 : LAMBDA_NM
 
   const layout = layoutState.get()
   const checks = useMemo(() => checkLayout(layout), [layout])
@@ -104,7 +108,7 @@ export function LayoutView() {
     if (!active) return
     let raf = 0
     const tick = () => {
-      if (lamPx.current) lamPx.current.textContent = ((LAMBDA_NM * 1e-9) / live.metresPerPixel).toFixed(1)
+      if (lamPx.current) lamPx.current.textContent = ((LAMBDA_NM * 1e-9) / live.metresPerPixel).toFixed(1) // the drawing stays in λ units
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
@@ -300,6 +304,7 @@ export function LayoutView() {
                 </g>
               )
             })}
+          <PrintCells f={f} />
         </svg>
         {hover && hover.kind !== 'shape' && hoverChecks.length > 0 && (
           <div className="rule-tip" style={{ transform: `translate(${Math.min(pointer[0] + 16, w - 360)}px, ${pointer[1] + 18}px)` }} role="status">
@@ -338,12 +343,13 @@ export function LayoutView() {
         ) : (
           <div className="lp-body">
             <p className="eyebrow lp-eyebrow">layout <SourceButton refs={[T2(46), T2(47), T2(48)]} /></p>
+            <PrintBox />
             <h2>λ design rules</h2>
             <button className="lp-readout" onClick={() => set({ focus: 'lambda' })}>
               <span>
-                λ = f/2 = <b>{(LAMBDA_NM / 1000).toFixed(1)} µm</b>
+                λ = f/2 = <b>{(lamNm / 1000).toFixed(lamNm < 100 ? 3 : 2)} µm</b>
               </span>
-              <span>f = 0.6 µm process</span>
+              <span>{print.on ? `f = ${(print.f / 1000).toFixed(2)} µm, set by the exposure tool` : 'f = 0.6 µm process'}</span>
               <span>
                 on screen 1λ = <b ref={lamPx}>–</b> px · grid 1λ, bold every 4λ
               </span>

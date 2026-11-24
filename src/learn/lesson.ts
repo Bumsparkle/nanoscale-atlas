@@ -8,7 +8,7 @@ import type { ChapterId } from '../chapters/cmos/layers'
  * Section files also export their check questions, which bank.ts adds.
  */
 const modules = import.meta.glob('../../content/topic*/lesson/[0-9]*.ts', { eager: true }) as Record<string, { sections: unknown[] }>
-const CHAPTER_OF_TOPIC: Record<string, ChapterId> = { topic2: 'ch1', topic3: 'ch2', topic4: 'ch3', topic5: 'ch4', topic6: 'ch5' }
+const CHAPTER_OF_TOPIC: Record<string, ChapterId> = { topic2: 'ch1', topic3: 'ch2', topic4: 'ch3', topic5: 'ch4', topic6: 'ch5', topic7: 'ch6', topic8: 'ch7' }
 
 export type Section = LessonSection & { chapter: ChapterId }
 export const SECTIONS: Section[] = Object.keys(modules)

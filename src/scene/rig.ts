@@ -23,6 +23,10 @@ class CameraRig {
   /** field of view (degrees): the Layout view dolly-zooms to near-orthographic */
   fov = new LogSpring(32, SPRINGS.camera)
   layer: LayerDef = LAYER_BY_ID.cell
+  /** metres per scene unit when a tab draws at another scale than its layer (null: the layer's) */
+  unitOverride: number | null = null
+  /** a layer's own resting view (per tab), reapplied whenever the layer is (re)set */
+  homeProvider: { layer: string; fn: () => Partial<CameraRig['home']> } | null = null
   handlers: DiveHandlers = {}
   reduced = false
   /** who owns the current pointer drag: 'orbit' | 'section' | null */
@@ -43,7 +47,9 @@ class CameraRig {
 
   setLayer(layer: LayerDef, entry?: { dist?: number; target?: [number, number, number] }) {
     this.layer = layer
+    this.unitOverride = null
     this.home = { target: [0, 0, 0], polar: layer.restPolar, azimuth: layer.restAzimuth, dist: layer.restDist }
+    if (this.homeProvider?.layer === layer.id) this.home = { ...this.home, ...this.homeProvider.fn() }
     this.cooldown = 0.9
     const startDist = entry?.dist ?? layer.restDist
     this.target.snap(entry?.target ?? [0, 0, 0])
@@ -127,7 +133,7 @@ class CameraRig {
 
   metresPerPixel(cam: THREE.PerspectiveCamera, heightPx: number) {
     const visible = 2 * this.dist.value * this.aspectBoost * Math.tan((cam.fov * Math.PI) / 360)
-    return (visible / heightPx) * this.layer.metresPerUnit
+    return (visible / heightPx) * (this.unitOverride ?? this.layer.metresPerUnit)
   }
 
   /** the camera distance in `layer` that shows the same metres-per-pixel */
