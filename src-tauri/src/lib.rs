@@ -52,10 +52,10 @@ pub fn run() {
             .build(),
         )?;
       }
-      // The window follows the system light/dark appearance. ATLAS_FORCE_THEME=light|dark
+      // The window follows the system light/dark appearance. NANOSCALE_FORCE_THEME=light|dark
       // overrides it for this window only (used to screenshot both without touching
       // System Settings).
-      if let (Some(win), Ok(theme)) = (app.get_webview_window("main"), std::env::var("ATLAS_FORCE_THEME")) {
+      if let (Some(win), Ok(theme)) = (app.get_webview_window("main"), std::env::var("NANOSCALE_FORCE_THEME")) {
         let t = match theme.as_str() {
           "light" => Some(tauri::Theme::Light),
           "dark" => Some(tauri::Theme::Dark),

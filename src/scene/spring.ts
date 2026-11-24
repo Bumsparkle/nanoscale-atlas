@@ -1,5 +1,5 @@
 /**
- * Damped harmonic springs. All motion in the atlas goes through these so
+ * Damped harmonic springs. All motion in the app goes through these so
  * that things have inertia, overshoot slightly and settle (brief: "motion
  * has physics"). Integrated with sub-stepped semi-implicit Euler so large
  * frame times stay stable.

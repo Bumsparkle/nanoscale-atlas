@@ -3,7 +3,7 @@ import { useAccount, recordImportChoice, syncNow } from './account'
 import { declineLegacy, importLegacy, legacySummary, shouldOffer } from './legacy'
 import { db } from '../sync/db'
 import { reloadProgress } from '../learn/progress'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import './account.css'
 
 /**
@@ -21,7 +21,7 @@ export function ImportPrompt() {
     if (!legacy) return
     const r = importLegacy(db, user.id, legacy)
     reloadProgress()
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     st.set({ progressVersion: st.progressVersion + 1 })
     void recordImportChoice('imported')
     void syncNow()

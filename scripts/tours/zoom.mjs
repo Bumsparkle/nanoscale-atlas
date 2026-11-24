@@ -5,7 +5,7 @@ export default async ({ page, base, frame, wait }) => {
   await wait(3500)
   await frame('wafer')
   const scales = []
-  const sample = async () => scales.push(await page.evaluate(() => [window.__atlas.layer, window.__live.metresPerPixel]))
+  const sample = async () => scales.push(await page.evaluate(() => [window.__app.layer, window.__live.metresPerPixel]))
   const centre = [720, 450]
   await page.mouse.move(...centre)
   const order = ['die', 'cell', 'transistor', 'oxide', 'lattice']
@@ -14,7 +14,7 @@ export default async ({ page, base, frame, wait }) => {
       await page.mouse.wheel(0, -200)
       await wait(70)
       await sample()
-      if ((await page.evaluate(() => window.__atlas.layer)) === target) break
+      if ((await page.evaluate(() => window.__app.layer)) === target) break
     }
     await wait(2200)
     await frame(target)

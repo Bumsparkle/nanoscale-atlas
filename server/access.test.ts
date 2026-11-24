@@ -9,7 +9,7 @@ const config = { code: CODE, secret: 'a-cookie-secret-that-is-at-least-32-charac
 function deps(over: Partial<Deps> = {}): Deps & { rate: ReturnType<typeof memoryRateStore> } {
   return { config, rate: memoryRateStore(), db: null, verify: async () => null, now: Date.now, ...over } as never
 }
-const post = (body: unknown, ip = '203.0.113.7', url = 'https://atlas.example/api/access') =>
+const post = (body: unknown, ip = '203.0.113.7', url = 'https://app.example/api/access') =>
   new Request(url, { method: 'POST', headers: { 'content-type': 'application/json', 'x-real-ip': ip }, body: JSON.stringify(body) })
 
 afterEach(() => vi.restoreAllMocks())
@@ -57,7 +57,7 @@ describe('/api/access', () => {
     expect(c).toMatch(/^atlas_access=v1\.\d+\.[A-Za-z0-9_-]+; Path=\/; Max-Age=\d+; HttpOnly; SameSite=Lax; Secure$/)
     const token = /atlas_access=([^;]+)/.exec(c)![1]
     expect(await verifyAccessToken(token, config)).toBe(true)
-    expect(await (await access(new Request('https://atlas.example/api/access', { headers: { cookie: `atlas_access=${token}` } }), deps())).json()).toEqual({ access: true })
+    expect(await (await access(new Request('https://app.example/api/access', { headers: { cookie: `atlas_access=${token}` } }), deps())).json()).toEqual({ access: true })
   })
 
   it('gives the Mac app its token in the body instead of a cookie', async () => {
@@ -76,7 +76,7 @@ describe('/api/access', () => {
       const r = await access(post(body), d)
       out.push(await r.text(), JSON.stringify([...r.headers]))
     }
-    out.push(await (await access(new Request('https://atlas.example/api/access'), d)).text())
+    out.push(await (await access(new Request('https://app.example/api/access'), d)).text())
     expect(out.join('\n')).not.toContain(CODE)
     expect(JSON.stringify(logs)).not.toContain(CODE)
   })
@@ -89,14 +89,14 @@ describe('/api/access', () => {
 
   it('rejects oversized or malformed bodies as a wrong code', async () => {
     expect((await access(post({ code: 'x'.repeat(5000) }), deps())).status).toBe(401)
-    const bad = new Request('https://atlas.example/api/access', { method: 'POST', body: 'not json', headers: { 'x-real-ip': '1.2.3.4' } })
+    const bad = new Request('https://app.example/api/access', { method: 'POST', body: 'not json', headers: { 'x-real-ip': '1.2.3.4' } })
     expect((await access(bad, deps())).status).toBe(401)
   })
 })
 
 describe('/api/slides', () => {
   it('needs both gates, even past the middleware', async () => {
-    const r = await slides(new Request('https://atlas.example/api/slides', { method: 'POST', body: '{"paths":["topic2/slide-01.jpg"]}' }), deps())
+    const r = await slides(new Request('https://app.example/api/slides', { method: 'POST', body: '{"paths":["topic2/slide-01.jpg"]}' }), deps())
     expect(r.status).toBe(401)
   })
 })

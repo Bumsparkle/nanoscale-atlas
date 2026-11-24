@@ -6,7 +6,7 @@ import { Inspectable, InspectSync, ClearOnMiss } from '../Inspectable'
 import { rig } from '../rig'
 import { transition } from '../transition'
 import { Gettering, SmartCut, YieldDies } from './WaferTabs'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { P } from '../../theme/scene'
 
 /**
@@ -66,7 +66,7 @@ function waferMaterial() {
 
 function WaferScene() {
   useLabEnvironment(true, 1.2)
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   const wafer = useMemo(() => waferMaterial(), [])
   const plain = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.wafer.plain, metalness: 0.8, roughness: 0.2 }), [])
   const chuck = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.wafer.chuck, roughness: 0.55, metalness: 0.4 }), [])
@@ -125,7 +125,7 @@ function WaferScene() {
 }
 
 export default function WaferLayer() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   useEffect(() => {
     if (tab !== 'gettering' && tab !== 'soi') return
     rig.setHome(tab === 'soi' ? { target: [0, 6, 0], polar: 1.2, azimuth: 0.5, dist: 300 } : { target: [40, 0, 0], polar: 1.38, azimuth: 0.25, dist: 620 })

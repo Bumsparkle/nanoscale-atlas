@@ -9,7 +9,7 @@ const filter = process.argv[3] && !process.argv[3].startsWith('-') ? new RegExp(
 const mobile = process.argv.includes('--mobile')
 
 const set = (patch) => async (page) => {
-  await page.evaluate((p) => window.__atlasSet?.(p), patch)
+  await page.evaluate((p) => window.__appSet?.(p), patch)
   await page.waitForTimeout(1200)
 }
 const FD = { T: 900, P: 760, Y: 0.01, plasma: 'pecvd', logP: -6, ebeam: false, method: 'cvd', aspect: 2, Sc: 0.1 }

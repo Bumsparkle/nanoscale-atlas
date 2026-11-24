@@ -1,4 +1,4 @@
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { channelStrength } from '../chapters/cmos/device'
 import { transition } from '../scene/transition'
 import './layercontrols.css'
@@ -13,9 +13,9 @@ import { HeteroPanels, NanofabPanels, QbandsPanels, QmbePanels, QsamplePanels, Q
 
 /** gate voltage for the transistor layer (slides 12–14) */
 function TransistorControls() {
-  const device = useAtlas((s) => s.device)
-  const vg = useAtlas((s) => s.vg)
-  const set = useAtlas((s) => s.set)
+  const device = useApp((s) => s.device)
+  const vg = useApp((s) => s.vg)
+  const set = useApp((s) => s.set)
   const s = channelStrength(device, vg)
   const on = s > 0.5
   const VDD = 1.0
@@ -57,8 +57,8 @@ function TransistorControls() {
 }
 
 function LatticeControls() {
-  const lattice = useAtlas((s) => s.lattice)
-  const set = useAtlas((s) => s.set)
+  const lattice = useApp((s) => s.lattice)
+  const set = useApp((s) => s.set)
   const L = (p: Partial<typeof lattice>) => set({ lattice: { ...lattice, ...p } })
   return (
     <section className="lc" aria-label="Lattice">
@@ -83,9 +83,9 @@ function LatticeControls() {
 }
 
 export function LayerControls() {
-  const layer = useAtlas((s) => s.layer)
-  const tab = useAtlas((s) => s.tab)
-  const focus = useAtlas((s) => s.focus)
+  const layer = useApp((s) => s.layer)
+  const tab = useApp((s) => s.tab)
+  const focus = useApp((s) => s.focus)
   if (focus) return null
   switch (layer) {
     case 'transistor':

@@ -55,7 +55,7 @@ export default function UpdatePrompt() {
   return (
     <aside className="update" role="status" aria-live="polite">
       <p>
-        <span className="eyebrow">update</span> Nanoscale Atlas {update.version} is available
+        <span className="eyebrow">update</span> Nanoscale Revision {update.version} is available
         {update.currentVersion ? <span className="update-from mono"> (you have {update.currentVersion})</span> : null}.
       </p>
       {state === 'offer' && (

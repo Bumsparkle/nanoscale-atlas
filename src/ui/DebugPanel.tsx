@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { IS_APP } from '../platform'
-import { live, useAtlas } from '../state/store'
+import { live, useApp } from '../state/store'
 import { LAYERS } from '../chapters/cmos/layers'
 import { navigate } from '../state/url'
 
 /** /debug: renderer backend, frame rate and quick links to every layer. */
 export function DebugPanel() {
-  const renderer = useAtlas((s) => s.renderer)
+  const renderer = useApp((s) => s.renderer)
   const [, tick] = useState(0)
   useEffect(() => {
     const id = setInterval(() => tick((n) => n + 1), 500)

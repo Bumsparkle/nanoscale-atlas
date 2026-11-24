@@ -1,22 +1,22 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { useAtlas } from './state/store'
+import { useApp } from './state/store'
 import { startUrlSync } from './state/url'
 import { Home } from './ui/Home'
 import { StylePage } from './ui/StylePage'
 import { IS_APP } from './platform'
 import { ImportPrompt } from './account/ImportPrompt'
 
-export const loadShell = () => import('./AtlasShell')
-const AtlasShell = lazy(loadShell)
+export const loadShell = () => import('./AppShell')
+const AppShell = lazy(loadShell)
 // desktop app only: the update check (never loaded on the web)
 const UpdatePrompt = lazy(() => import('./app/UpdatePrompt'))
 
 export function App() {
-  const page = useAtlas((s) => s.page)
-  const view = useAtlas((s) => s.view)
-  const layer = useAtlas((s) => s.layer)
-  const quiz = useAtlas((s) => s.quiz)
-  const mode = useAtlas((s) => s.mode)
+  const page = useApp((s) => s.page)
+  const view = useApp((s) => s.view)
+  const layer = useApp((s) => s.layer)
+  const quiz = useApp((s) => s.quiz)
+  const mode = useApp((s) => s.mode)
   useEffect(() => startUrlSync(), [])
   // on the door page, the three.js shell loads only after the door has painted
   // and the main thread is idle; deep links load it immediately
@@ -39,7 +39,7 @@ export function App() {
     <>
       {page !== 'style' && shellReady && (
         <Suspense fallback={null}>
-          <AtlasShell />
+          <AppShell />
         </Suspense>
       )}
       {page === 'home' && <Home />}

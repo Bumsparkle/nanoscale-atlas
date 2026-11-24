@@ -1,7 +1,7 @@
 import { defaultTab, LAYER_BY_ID, LAYERS, type LayerId } from '../chapters/cmos/layers'
 import { FROM_URL_LAYER, MASK_IDS, URL_LAYER } from '../chapters/cmos/layout'
 import { K0_TABLE } from '../chapters/growth/physics'
-import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } from './store'
+import { SNAP_TARGETS, useApp, type AppState, type CutTarget, type View } from './store'
 
 /**
  * URL ⇄ store. The URL is the deep-link format:
@@ -10,7 +10,7 @@ import { SNAP_TARGETS, useAtlas, type AtlasState, type CutTarget, type View } fr
  * else replaces. Free camera orbiting never touches the URL.
  */
 
-type UrlState = Pick<AtlasState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers' | 'mode' | 'lessonAt' | 'tab'> & {
+type UrlState = Pick<AppState, 'page' | 'layer' | 'device' | 'view' | 'focus' | 'step' | 'inputs' | 'vg' | 'layoutLayers' | 'mode' | 'lessonAt' | 'tab'> & {
   hkl: [number, number, number]
   k0: number
   frac: number
@@ -32,7 +32,7 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
   if (segs.length === 0) return { page: 'home', layer: 'cleanroom' }
   if (!['cmos', 'growth', 'clean', 'films', 'epi', 'litho', 'nano'].includes(segs[0])) return { page: 'home' }
 
-  out.page = 'atlas'
+  out.page = 'study'
   // device variant lives in the path at the transistor level
   const device = segs[0] === 'cmos' && segs[2] === 'pmos' ? 'pmos' : 'nmos'
   const norm = segs.map((s, i) => (i === 2 && segs[0] === 'cmos' && (s === 'pmos' || s === 'nmos') ? 'nmos' : s))
@@ -75,7 +75,7 @@ export function parseUrl(loc: { pathname: string; search: string }): Partial<Url
   return out
 }
 
-export function buildUrl(s: AtlasState): string {
+export function buildUrl(s: AppState): string {
   if (s.page === 'home') return '/' + (BOOT.forceWebGL ? '?gl=webgl' : '')
   if (s.page === 'style') return '/style'
   if (s.page === 'debug') return '/debug' + (BOOT.forceWebGL ? '?gl=webgl' : '')
@@ -112,8 +112,8 @@ export function buildUrl(s: AtlasState): string {
 
 export function applyUrl(loc: { pathname: string; search: string }) {
   const p = parseUrl(loc)
-  const st = useAtlas.getState()
-  const patch: Partial<AtlasState> = {}
+  const st = useApp.getState()
+  const patch: Partial<AppState> = {}
   if (p.page) patch.page = p.page
   if (p.layer) patch.layer = p.layer
   if (p.device) patch.device = p.device
@@ -121,15 +121,15 @@ export function applyUrl(loc: { pathname: string; search: string }) {
   if (p.hkl) patch.crystal = { ...st.crystal, hkl: p.hkl }
   if (p.k0 != null || p.frac != null) patch.growth = { ...st.growth, k0: p.k0 ?? st.growth.k0, frac: p.frac ?? st.growth.frac, dopant: p.k0 != null ? (K0_TABLE.find((d) => d.k0 === p.k0)?.el ?? '') : st.growth.dopant }
   if (p.view) patch.view = p.view
-  if (p.page === 'atlas') patch.focus = p.focus ?? null
+  if (p.page === 'study') patch.focus = p.focus ?? null
   if (p.step != null) patch.step = p.step
   if (p.inputs) patch.inputs = p.inputs
   if (p.vg != null) patch.vg = p.vg
   if (p.mode) patch.mode = p.mode
-  if (p.lessonAt !== undefined && p.page === 'atlas') patch.lessonAt = p.lessonAt
+  if (p.lessonAt !== undefined && p.page === 'study') patch.lessonAt = p.lessonAt
   if (p.rv) patch.revise = { ...st.revise, tab: p.rv }
   if (p.layoutLayers) patch.layoutLayers = p.layoutLayers
-  else if (p.page === 'atlas') patch.layoutLayers = [...MASK_IDS]
+  else if (p.page === 'study') patch.layoutLayers = [...MASK_IDS]
   st.set(patch)
   if (p.cut != null) {
     if (typeof p.cut === 'string') {
@@ -153,10 +153,10 @@ export function startUrlSync() {
   started = true
   applyUrl(window.location)
   window.addEventListener('popstate', () => applyUrl(window.location))
-  let last = buildUrl(useAtlas.getState())
-  let lastLayer = useAtlas.getState().layer + useAtlas.getState().page
+  let last = buildUrl(useApp.getState())
+  let lastLayer = useApp.getState().layer + useApp.getState().page
   history.replaceState(null, '', last)
-  useAtlas.subscribe((s) => {
+  useApp.subscribe((s) => {
     const next = buildUrl(s)
     if (next === last) return
     const layerKey = s.layer + s.page

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { SNAP_TARGETS, useAtlas, type CutTarget, type View } from '../state/store'
+import { SNAP_TARGETS, useApp, type CutTarget, type View } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
 import { PLANE_RANGE } from '../scene/section'
 import './viewbar.css'
@@ -16,24 +16,24 @@ const VIEWS: { id: View; label: string; key: string; hint: string }[] = [
 ]
 
 export function lockTo(id: CutTarget) {
-  const st = useAtlas.getState()
+  const st = useApp.getState()
   const t = SNAP_TARGETS[id]
   if (st.section.axis !== t.axis) rt.plane.snap(t.offset + (t.axis === 'y' ? -6 : -6))
   st.setSection({ axis: t.axis, locked: id, offset: t.offset })
 }
 
 export function ViewBar() {
-  const layer = useAtlas((s) => s.layer)
-  const view = useAtlas((s) => s.view)
-  const locked = useAtlas((s) => s.section.locked)
-  const set = useAtlas((s) => s.set)
+  const layer = useApp((s) => s.layer)
+  const view = useApp((s) => s.view)
+  const locked = useApp((s) => s.section.locked)
+  const set = useApp((s) => s.set)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return
       if ((e.target as HTMLElement)?.closest?.('input, textarea, select')) return
-      const st = useAtlas.getState()
-      if (st.page !== 'atlas' || st.layer !== 'cell') return
+      const st = useApp.getState()
+      if (st.page !== 'study' || st.layer !== 'cell') return
       const v = VIEWS.find((v) => v.key === e.key.toLowerCase())
       if (v) return set({ view: v.id, focus: null })
       if (st.view === 'section') {
@@ -60,7 +60,7 @@ export function ViewBar() {
   }, [set])
 
   const cell = layer === 'cell'
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   const tabs = LAYER_BY_ID[layer].tabs
   const hint = cell ? VIEWS.find((v) => v.id === view)!.hint : (tabs?.find((t) => t.id === tab)?.hint ?? LAYER_HINTS[layer] ?? '')
   return (

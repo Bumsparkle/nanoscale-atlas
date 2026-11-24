@@ -12,13 +12,13 @@ import { currentUser, hasAccess } from './account/client'
 import { IS_APP } from './platform'
 
 /**
- * Boot: nothing of the atlas runs until we know who is signed in.
+ * Boot: nothing of the app runs until we know who is signed in.
  * Web: the middleware only serves this page to a signed-in user who passed
  * the access code; if the session has lapsed since, back to the gate.
  * Mac app: the gate is shown here, in the window, until there is both an
  * access token and a session in the Keychain.
  * Then this user's local store is opened (progress, settings) before the
- * atlas modules load, so they start from it.
+ * app modules load, so they start from it.
  */
 async function boot() {
   const root = createRoot(document.getElementById('root')!)
@@ -38,7 +38,7 @@ async function boot() {
   }
   const { startAccount } = await import('./account/account')
   startAccount(user)
-  const [{ App }, { useAtlas, live }] = await Promise.all([import('./App'), import('./state/store')])
+  const [{ App }, { useApp, live }] = await Promise.all([import('./App'), import('./state/store')])
   root.render(
     <StrictMode>
       <App />
@@ -48,11 +48,11 @@ async function boot() {
   // test hook: expose the store for screenshot / e2e scripts
   const w = window as unknown as Record<string, unknown>
   w.__live = live
-  w.__atlas_set = (p: object) => useAtlas.getState().set(p)
-  w.__atlas = new Proxy({}, { get: (_, k) => (useAtlas.getState() as never)[k] })
+  w.__app_set = (p: object) => useApp.getState().set(p)
+  w.__app = new Proxy({}, { get: (_, k) => (useApp.getState() as never)[k] })
   // screenshot scripts: merge a patch, with shorthands for the process lab
-  w.__atlasSet = (p: Record<string, unknown>) => {
-    const st = useAtlas.getState()
+  w.__appSet = (p: Record<string, unknown>) => {
+    const st = useApp.getState()
     const { procOp, tone, ...rest } = p
     if (procOp || tone) st.set({ proc: { ...st.proc, ...(procOp ? { op: procOp as never } : {}), ...(tone ? { tone: tone as never } : {}) } })
     if (Object.keys(rest).length) st.set(rest as never)

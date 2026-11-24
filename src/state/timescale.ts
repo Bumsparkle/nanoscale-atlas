@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useAtlas } from './store'
+import { useApp } from './store'
 import { db } from '../sync/db'
 
 /**
@@ -12,7 +12,7 @@ export const SPEED_MAX = 2
 export const SPEED_SNAPS = [0.25, 0.5, 1, 2] as const
 
 /** dt for fab animation this frame */
-export const fabDt = (dt: number) => dt * useAtlas.getState().speed
+export const fabDt = (dt: number) => dt * useApp.getState().speed
 
 /** clamp, and snap to 0.25× / 0.5× / 1× / 2× when close (on a log scale) */
 export function snapSpeed(v: number) {
@@ -27,7 +27,7 @@ export function nextSpeed(v: number, dir: -1 | 1) {
 }
 export function setSpeed(v: number) {
   const speed = snapSpeed(v)
-  useAtlas.getState().set({ speed })
+  useApp.getState().set({ speed })
   // synced with the account (src/sync)
   db.put('settings', 'speed', speed)
 }
@@ -39,7 +39,7 @@ export function useTween(target: number, seconds = 0.6) {
   useEffect(() => {
     const from = cur.current
     if (from === target) return
-    const reduced = useAtlas.getState().reducedMotion
+    const reduced = useApp.getState().reducedMotion
     let raf = 0
     const t0 = performance.now()
     const tick = (now: number) => {

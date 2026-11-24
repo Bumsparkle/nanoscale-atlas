@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { Inspectable } from '../Inspectable'
 import { label, publish, rand } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { scatter } from '../../chapters/clean/physics'
 import { P } from '../../theme/scene'
 
@@ -51,7 +51,7 @@ export function Gettering() {
   const v = useMemo(() => new THREE.Vector3(), [])
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const k = st.reducedMotion ? 1 : Math.min(1, dt * 2.5)
     prog.current.cycle += (st.clean.cycle - prog.current.cycle) * k
     prog.current.getter += (st.clean.getter - prog.current.getter) * k
@@ -160,10 +160,10 @@ export function Gettering() {
 export function YieldDies() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const A = useAtlas((s) => s.clean.A)
-  const D0 = useAtlas((s) => s.clean.D0)
-  const C = useAtlas((s) => s.clean.C)
-  const seed = useAtlas((s) => s.clean.seed)
+  const A = useApp((s) => s.clean.A)
+  const D0 = useApp((s) => s.clean.D0)
+  const C = useApp((s) => s.clean.C)
+  const seed = useApp((s) => s.clean.seed)
   const R = 147
   const { dies, hits, side } = useMemo(() => {
     const side = Math.sqrt(A) * 10
@@ -209,7 +209,7 @@ export function YieldDies() {
     ;[goodIm, badIm, dots].forEach((m) => ((m.instanceMatrix.needsUpdate = true), m.computeBoundingSphere()))
   }, [dies, hits, side, goodIm, badIm, dots, seed])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     const okN = hits.filter((h) => !h).length
     publish([label(camera, size, 'y-n', `${okN} of ${dies.length} die good`, `simulated yield ${((okN / Math.max(1, dies.length)) * 100).toFixed(0)} %`, [R * 0.7, 2, -R * 0.75], 'top')])
   })
@@ -235,13 +235,13 @@ export function YieldDies() {
 export function SmartCut() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const step = useAtlas((s) => s.epi.soi)
+  const step = useApp((s) => s.epi.soi)
   const cur = useRef({ flip: 0, lift: 0, handle: 0 })
   const donor = useRef<THREE.Group>(null)
   const bulk = useRef<THREE.Group>(null)
   const handle = useRef<THREE.Mesh>(null)
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const k = st.reducedMotion ? 1 : Math.min(1, dt * 3)
     // targets: the donor flips face down onto the handle at bonding (3); after the cut (4) its bulk lifts away and
     // what stays on the handle is already SOI the right way up: handle, oxide, thin Si

@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { P } from '../../theme/scene'
 
 /**
@@ -65,7 +65,7 @@ export default function WafersLayer() {
   useDive('ingot', 'cleanroom', { home: [180, 160, 220] })
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     if (saw.current && !st.reducedMotion) saw.current.rotation.z += dt * 2.4
     if (st.quiz) return publish([])
     publish([

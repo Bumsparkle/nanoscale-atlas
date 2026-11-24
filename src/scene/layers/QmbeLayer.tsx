@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
 import { P } from '../../theme/scene'
 
@@ -31,8 +31,8 @@ export const ELEMENTS: Record<string, string[]> = {
 export default function QmbeLayer() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const sampleId = useAtlas((s) => s.nano.sample)
-  const grown = useAtlas((s) => s.nano.grown)
+  const sampleId = useApp((s) => s.nano.sample)
+  const grown = useApp((s) => s.nano.grown)
   const h = SAMPLE[sampleId] ?? SAMPLE.qw
   useDive('cleanroom', 'qsample', { home: [0, 6, 0] })
   const growing = grown > 0 ? h.layers[Math.min(grown, h.layers.length) - 1] : null
@@ -43,7 +43,7 @@ export default function QmbeLayer() {
   const total = sp.length ? sp[sp.length - 1].z1 : 1
   const scale = 22 / total
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     if (sub.current) sub.current.rotation.y += (st.reducedMotion ? 0 : dt) * 0.6
     if (st.quiz) return publish([])
     publish([

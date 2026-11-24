@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { useLabEnvironment } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { remaining, RCA_STEPS } from '../../chapters/clean/physics'
 import { P } from '../../theme/scene'
 
@@ -75,7 +75,7 @@ function Room() {
   const sources: [number, number, number][] = [[-18, 12, 6], [12, 9.5, 14], [-6, 9.5, -14]]
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     t.current += st.reducedMotion ? 0 : dt
     for (let i = 0; i < N_AIR; i++) {
       const [u, w, ph] = lanes[i]
@@ -241,14 +241,14 @@ function contamination() {
 function Bench() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const rca = useAtlas((s) => s.clean.rca)
+  const rca = useApp((s) => s.clean.rca)
   const left = remaining(rca)
   const c = useMemo(() => contamination(), [])
   const carrier = useRef<THREE.Group>(null)
   const x0 = -36
   const dx = 10
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const target = x0 + Math.max(0, Math.min(RCA_STEPS.length - 1, st.clean.rca - 1)) * dx
     if (carrier.current) {
       const k = st.reducedMotion ? 1 : Math.min(1, dt * 4)
@@ -336,7 +336,7 @@ function Bench() {
 }
 
 export default function CleanroomLayer() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   useLabEnvironment(true, 0.9)
   useDive('wafers', 'wafer', { home: tab === 'room' || !tab ? [4, 12, 0] : [4, 6, 0] })
   return (

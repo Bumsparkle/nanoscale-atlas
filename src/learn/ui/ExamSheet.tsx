@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { examPaper, EXAM_MINUTES, MAKE_MINUTES, MAKE_TOPICS, paperTitle, processingPaper, progress, type Filter } from '../progress'
 import { grade } from '../engine'
 import { realise, sci } from '../calcs'
@@ -21,18 +21,18 @@ export function ExamSheet({ filter, onClose }: { filter: Filter; onClose: () => 
   const minutes = make ? MAKE_MINUTES : EXAM_MINUTES
   const [left, setLeft] = useState(EXAM_MINUTES * 60)
   const [marked, setMarked] = useState(false)
-  const set = useAtlas((s) => s.set)
+  const set = useApp((s) => s.set)
   const paper = useMemo(() => (seed == null ? [] : (make ? processingPaper(seed) : examPaper(seed, filter)).map((q, i) => realise(q, seed + i + 1))), [seed, make]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const respond = (q: Question, a: Ans) => {
-    if (q.type === 'calc') return grade(q, { kind: 'number', value: parseNumber(a.text ?? '') }, useAtlas.getState(), layoutState.get())
-    if (q.type === 'recall' && 'options' in q.answer) return grade(q, { kind: 'choice', index: a.choice ?? -1 }, useAtlas.getState(), layoutState.get())
-    return grade(q, { kind: 'text', text: a.text ?? '' }, useAtlas.getState(), layoutState.get())
+    if (q.type === 'calc') return grade(q, { kind: 'number', value: parseNumber(a.text ?? '') }, useApp.getState(), layoutState.get())
+    if (q.type === 'recall' && 'options' in q.answer) return grade(q, { kind: 'choice', index: a.choice ?? -1 }, useApp.getState(), layoutState.get())
+    return grade(q, { kind: 'text', text: a.text ?? '' }, useApp.getState(), layoutState.get())
   }
   const submit = () => {
     if (marked) return
     for (const q of paper) progress.record(q.id, respond(q, answers[q.id] ?? {}))
-    set({ progressVersion: useAtlas.getState().progressVersion + 1 })
+    set({ progressVersion: useApp.getState().progressVersion + 1 })
     setMarked(true)
   }
 

@@ -6,13 +6,13 @@ import { publicSupabaseEnv } from './server/publicEnv.ts'
 /**
  * Two builds share this config:
  *  - web (default): the Vercel site, behind the access gate (middleware.ts).
- *  - app (ATLAS_APP=1, used by Tauri): the desktop app.
+ *  - app (NANOSCALE_APP=1, used by Tauri): the desktop app.
  * The landing page (/gate/) is a third, separate build: vite.gate.config.ts.
  *
  * Neither build contains a lecture slide: they live in a private Supabase
  * Storage bucket and are shown through short-lived signed URLs (/api/slides).
  */
-const APP = process.env.ATLAS_APP === '1'
+const APP = process.env.NANOSCALE_APP === '1'
 
 export default defineConfig(({ mode }) => {
   // the dev gate runs the server code, which reads process.env (as on Vercel)

@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { dopingColour, label, publish, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { csOverC0 } from '../../chapters/growth/physics'
 import { P } from '../../theme/scene'
 
@@ -71,7 +71,7 @@ function ground(flat: boolean) {
 export default function IngotLayer() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const k0 = useAtlas((s) => s.growth.k0)
+  const k0 = useApp((s) => s.growth.k0)
   const grown = useMemo(() => asGrown(k0), [k0])
   useEffect(() => () => grown.dispose(), [grown])
   const round = useMemo(() => ground(false), [])
@@ -79,7 +79,7 @@ export default function IngotLayer() {
   useDive('puller', 'wafers', { home: [0, 0, 10] })
 
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'i-seed', 'seed end', `Cs = ${csOverC0(k0, 0).toFixed(2)} C0`, [-BODY / 2 - 30, 4, -45], 'top'),
       label(camera, size, 'i-tail', 'tail end', `Cs = ${csOverC0(k0, F_END).toFixed(2)} C0`, [BODY / 2 + 22, 4, -45], 'top'),

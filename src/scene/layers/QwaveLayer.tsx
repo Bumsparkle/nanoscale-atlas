@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { boxLevels, countStates, finitePsi, finiteWell, freeEnergy, HB, infiniteLevel, infinitePsi } from '../../chapters/nano/quantum'
 import { Line } from './nanoShared'
 import { P } from '../../theme/scene'
@@ -17,12 +17,12 @@ import { P } from '../../theme/scene'
  * - confine: the same box confined in 1, 2 or 3 directions (slides 12–13);
  * - dos: counting states in k-space as the confinement grows (23–30).
  */
-type N = ReturnType<typeof useAtlas.getState>['nano']
+type N = ReturnType<typeof useApp.getState>['nano']
 
 function Free() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const { k, m } = useAtlas((s) => s.nano)
+  const { k, m } = useApp((s) => s.nano)
   const KX = 40 // units per nm⁻¹
   const kmax = 1.2
   const EY = 80 / freeEnergy(kmax, m) // units per eV, so the parabola fits
@@ -30,7 +30,7 @@ function Free() {
   const E = freeEnergy(k, m)
   const wave = useMemo(() => Array.from({ length: 300 }, (_, i) => { const x = -30 + (60 * i) / 299; return [x * 1.6, -25 + 8 * Math.cos(k * x), 0] as [number, number, number] }), [k])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'w-e', `k = ${k.toFixed(2)} nm⁻¹`, `E = ħ²k²/2m = ${(E * 1000).toFixed(1)} meV (m = ${m} m₀)`, [k * KX, E * EY, 0], 'right'),
       label(camera, size, 'w-psi', 'Re ψ = cos kx', `wavelength ${(2 * Math.PI / Math.max(k, 1e-3)).toFixed(1)} nm`, [52, -25, 0], 'right'),
@@ -58,7 +58,7 @@ function Free() {
 function Well() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const n = useAtlas((s) => s.nano)
+  const n = useApp((s) => s.nano)
   const XS = 4
   const fin = useMemo(() => (n.finite ? finiteWell(n.L, n.V0, n.m) : []), [n.finite, n.L, n.V0, n.m])
   const count = n.finite ? fin.length : 4
@@ -80,7 +80,7 @@ function Well() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [n.finite, n.L, n.V0, n.m, n.prob, fin, EY])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     const sel = levels[Math.min(levels.length, n.level) - 1]
     publish([
       ...levels.map((lv) => label(camera, size, `wl-${lv.n}`, `n = ${lv.n}`, `${(lv.E * 1000).toFixed(1)} meV${n.finite ? ` (infinite: ${(infiniteLevel(lv.n, n.L, n.m) * 1000).toFixed(1)})` : ''}`, [span * XS * 0.5 + 2, lv.E * EY, 0], 'right')),
@@ -128,7 +128,7 @@ function Well() {
 function Confine() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const n = useAtlas((s) => s.nano)
+  const n = useApp((s) => s.nano)
   const U = 3
   const big = 40
   const dims = n.dims
@@ -139,7 +139,7 @@ function Confine() {
   const EY = 110 / Math.max(lv[lv.length - 1].E * 1.1, 1e-3)
   const glow = useRef<THREE.Mesh>(null)
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'c-what', dims === 1 ? 'quantum well: confined in 1 direction' : dims === 2 ? 'quantum wire: confined in 2' : 'quantum dot: confined in 3', dims === 1 ? 'free in the plane: a subband above each level' : dims === 2 ? 'free along its length' : 'discrete levels only: an artificial atom', [0, sy / 2 + 14, 0], 'top'),
       ...lv.map((l, i) => label(camera, size, `c-${i}`, `(${l.q.join(',')})`, `${(l.E * 1000).toFixed(0)} meV`, [Math.max(sx, 40) / 2 + 30, l.E * EY - 40, 0], 'right')),
@@ -178,7 +178,7 @@ function Confine() {
 function Dos() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const n = useAtlas((s) => s.nano)
+  const n = useApp((s) => s.nano)
   const Lbox = 60
   const step = Math.PI / Lbox
   const M = 12
@@ -212,7 +212,7 @@ function Dos() {
     if (m.instanceColor) m.instanceColor.needsUpdate = true
   }, [pts, R])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish(dims === 0
       ? [label(camera, size, 'd-0', '0D: no k-space to fill', 'states only at discrete energies: ρ = 2δ(E − Eₙ)', [30, 30, 30], 'top')]
       : [label(camera, size, 'd-n', `${cnt.counted} states below ${n.E} meV (×2 spin)`, `formula ${dims === 3 ? 'k³V/3π²' : dims === 2 ? 'k²A/2π' : '2kL/π'} = ${cnt.formula.toFixed(0)}`, [R * 0.7, dims >= 3 ? R * 0.7 : 4, R * 0.4], 'top')])
@@ -260,7 +260,7 @@ const HOMES: Record<string, { target: [number, number, number]; polar: number; a
 }
 
 export default function QwaveLayer() {
-  const tab = useAtlas((s) => s.tab) || 'free'
+  const tab = useApp((s) => s.tab) || 'free'
   useDive('qbands', null)
   useTabHome('qwave', HOMES[tab] ?? HOMES.free, tab)
   return (

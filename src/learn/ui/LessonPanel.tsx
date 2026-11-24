@@ -4,7 +4,7 @@ import { QUESTION_BY_ID } from '../bank'
 import { driveScene } from '../drive'
 import { progress } from '../progress'
 import { CHAPTER_BY_ID, CHAPTERS } from '../../chapters/cmos/layers'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { QuestionCard, type Outcome } from './QuestionCard'
 import { CollapseToggle, useCollapsed } from './Collapse'
 import { SourceButton } from '../../ui/source/Source'
@@ -31,8 +31,8 @@ const parse = (at: string) => {
  * unlocks the next once its questions are answered or their solutions opened.
  */
 export function LessonPanel() {
-  const storeAt = useAtlas((s) => s.lessonAt)
-  const set = useAtlas((s) => s.set)
+  const storeAt = useApp((s) => s.lessonAt)
+  const set = useApp((s) => s.set)
   const lp = useProgress()
   const [menu, setMenu] = useState(false)
   const [collapsed, setCollapsed] = useCollapsed()
@@ -153,13 +153,13 @@ export function LessonPanel() {
 const record = (id: string, o: Outcome) => {
   if (!(id in outcomes)) outcomes[id] = o
   progress.record(id, o === 'right' ? true : o === 'peeked' ? 'peeked' : false)
-  const st = useAtlas.getState()
+  const st = useApp.getState()
   st.set({ progressVersion: st.progressVersion + 1 })
 }
 
 /** one teaching step: teach, then its checks one at a time */
 function StepView({ section, step, done, onNext, last }: { section: Section; step: FlatStep; done: boolean; onNext: () => void; last: boolean }) {
-  const set = useAtlas((s) => s.set)
+  const set = useApp((s) => s.set)
   const [phase, setPhase] = useState<'teach' | 'check'>('teach')
   const [ready, setReady] = useState(false)
   const [k, setK] = useState(0)
@@ -323,7 +323,7 @@ function SectionIntro({ section }: { section: Section }) {
 
 /** the mixed mini-review, one question at a time, then a summary */
 function ReviewView({ section, index, done, onNext, last }: { section: Section; index: number; done: boolean; onNext: () => void; last: boolean }) {
-  const set = useAtlas((s) => s.set)
+  const set = useApp((s) => s.set)
   const [k, setK] = useState(0)
   const [answered, setAnswered] = useState<boolean[]>([])
   const [summary, setSummary] = useState(done)

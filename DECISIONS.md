@@ -12,7 +12,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 ## Slides vs. the brief vs. physics
 
-- **Slide 48, "Length / Width = 4λ/2λ".** The slide's two sentences agree with each other: "Length / Width = 4λ/2λ" and "0.6 µm wide, 1.2 µm long" both give L = 1.2 µm, W = 0.6 µm. They conflict with slide 46, which defines f (= 2λ) as the source–drain distance, i.e. the channel *length*, and with every drawn layout (slides 27, 48), where the poly crossing the diffusion is 2λ wide and the diffusion under it is 4λ. The Atlas shows **L = 2λ = 0.6 µm, W = 4λ = 1.2 µm** (the usual W/L = 4/2 convention). The minimum-transistor panel quotes the slide and states the discrepancy: "the slide text says L = 1.2 µm and W = 0.6 µm; the drawn layout gives L = 0.6 µm and W = 1.2 µm". (Corrected 2026-11-21: an earlier version of this entry said the slide's numbers swapped its own words.)
+- **Slide 48, "Length / Width = 4λ/2λ".** The slide's two sentences agree with each other: "Length / Width = 4λ/2λ" and "0.6 µm wide, 1.2 µm long" both give L = 1.2 µm, W = 0.6 µm. They conflict with slide 46, which defines f (= 2λ) as the source–drain distance, i.e. the channel *length*, and with every drawn layout (slides 27, 48), where the poly crossing the diffusion is 2λ wide and the diffusion under it is 4λ. The app shows **L = 2λ = 0.6 µm, W = 4λ = 1.2 µm** (the usual W/L = 4/2 convention). The minimum-transistor panel quotes the slide and states the discrepancy: "the slide text says L = 1.2 µm and W = 0.6 µm; the drawn layout gives L = 0.6 µm and W = 1.2 µm". (Corrected 2026-11-21: an earlier version of this entry said the slide's numbers swapped its own words.)
 - **Diffusion widths.** Slide 28 draws the nMOS and pMOS diffusions the same height; slide 48 sizes the pMOS at 8/2. The mask set (source of truth) follows slides 27–28: both 4λ wide. The pMOS panel mentions the 8/2 sizing on slide 48 and why (hole mobility, slide 10).
 - **Slide 47 contact rules (read from the figure).** Contacts 2λ × 2λ, metal1 surrounds a diffusion contact by 1λ, metal1–poly contact shown with 2λ (read as the contact size), via spacing 3λ. Metal1/metal2/diffusion width and spacing 4λ; poly width 2λ, spacing 3λ; poly extends 2λ past diffusion; diffusion stays 6λ inside / outside the n-well edge. Encoded in `src/chapters/cmos/rules.ts`.
 - **n-well dopant.** Slide 35 says arsenic (diffusion or implant). Kept as on the slide. The panel adds, as beyond the lecture, that phosphorus is the more common n-well dopant in practice.
@@ -32,7 +32,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - **Router is hand-written** (History API ↔ zustand). Paths: `/`, `/cmos/{wafer,die,inverter,inverter/nmos,inverter/pmos,inverter/nmos/gate-oxide,lattice}`, plus query `cut`, `step`, `focus`, `a`, `b`, `view`.
 - **Gate oxide is one object.** In the slides' flow the thin oxide is grown everywhere, then cleared except under the poly (slides 37–38), and there is no field oxide underneath. So it sits under the whole poly U, bridge included, and forms one connected piece. The panel says so.
 - **No isotropic etch flag.** The brief lists one ("adds undercut"). The slides draw every etch with vertical walls (33, 38, 40, 44), and sub-λ undercut can't be shown on a 1λ column grid without voids under the resist. Cut from M2. If it's added later, it needs a `void` material in the column model.
-- **Layout dimensions.** Slides 27–28 are not dimensioned, so the λ coordinates in `masks.ts` were drawn for the Atlas: diffusions 4λ wide, gates 2λ, contacts 2λ, metal 4λ, all at or above the slide 47 minimums (verified in `rules.test.ts`). The cell is 62λ × 28λ including the metal rails.
+- **Layout dimensions.** Slides 27–28 are not dimensioned, so the λ coordinates in `masks.ts` were drawn for this app: diffusions 4λ wide, gates 2λ, contacts 2λ, metal 4λ, all at or above the slide 47 minimums (verified in `rules.test.ts`). The cell is 62λ × 28λ including the metal rails.
 - **Three.js shell loads after the door paints.** On `/` the 3D chunk is fetched on idle so the home page paints first (Lighthouse mobile FCP 3.7 s → 2.3 s); deep links load it at once.
 - **Camera distance in log space.** The dolly spring integrates log(distance), so zoom speed is uniform on the log scale bar and dives across two orders of magnitude (transistor → oxide) stay smooth.
 
@@ -190,8 +190,8 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 ## Desktop app (Tauri v2, 2026-11-21)
 
-- **Tauri v2, wrapping the same Vite build.** `src-tauri/` holds the shell. The app loads `dist/` from `npm run build:app`, which is the normal build with `ATLAS_APP=1`. `npm run tauri dev` runs the dev server in the window. The web build, `vercel.json` and the middleware are untouched.
-- **Window.** It is transparent with native vibrancy (`underWindowBackground`, which follows the system light/dark appearance). The title bar is hidden as an overlay with the traffic lights inset at (18, 26). The top strip is a `data-tauri-drag-region`. `macOSPrivateApi` is on, because a transparent window requires it. `ATLAS_FORCE_THEME=light|dark` overrides the appearance for one run, for screenshots, without touching System Settings.
+- **Tauri v2, wrapping the same Vite build.** `src-tauri/` holds the shell. The app loads `dist/` from `npm run build:app`, which is the normal build with `NANOSCALE_APP=1`. `npm run tauri dev` runs the dev server in the window. The web build, `vercel.json` and the middleware are untouched.
+- **Window.** It is transparent with native vibrancy (`underWindowBackground`, which follows the system light/dark appearance). The title bar is hidden as an overlay with the traffic lights inset at (18, 26). The top strip is a `data-tauri-drag-region`. `macOSPrivateApi` is on, because a transparent window requires it. `NANOSCALE_FORCE_THEME=light|dark` overrides the appearance for one run, for screenshots, without touching System Settings.
 - **App mode is detected at runtime** (`__TAURI_INTERNALS__`). An inline script sets `html[data-app]` before first paint, and `src/platform.ts` exports `IS_APP`. In app mode:
   - the page, `#root` and the WebGPU canvas are transparent, and the post-processing output keeps the scene's alpha;
   - the scene background is null, and the die's ground plane is hidden;
@@ -241,7 +241,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 ### Slide errors corrected (each fact has a `corrects` field with the slide's wording)
 
-| Deck · slide | The slide says | The Atlas teaches |
+| Deck · slide | The slide says | The app teaches |
 |---|---|---|
 | T3 · 5 | Ball-and-stick drawing labels the bond "0,15 nm" | That is the C–C bond of diamond; Si's bond length is √3a/4 ≈ 0.235 nm |
 | T3 · 8 | "No 2 electrons can have the same energy (Pauli)" | No two electrons can occupy the same quantum state (two of opposite spin share a level) |
@@ -323,7 +323,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 ### Slide errors corrected
 
-| Deck · slide | The slide says | The Atlas teaches |
+| Deck · slide | The slide says | The app teaches |
 |---|---|---|
 | T5 · 7 | TMGa and TMAl as "(CH₄)₃Ga", "(CH₄)₃Al" | Methyl groups are CH₃: (CH₃)₃Ga, (CH₃)₃Al |
 | T5 · 10 | "anemia, kidney damage, death" on the argon row | Argon is inert (an asphyxiant); those effects are arsine's |
@@ -366,7 +366,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 Every one is checked from first principles; `facts.test.ts` re-derives the numbers.
 
-| Deck · slide | The slide says | The Atlas teaches |
+| Deck · slide | The slide says | The app teaches |
 |---|---|---|
 | T7 · 4 | The 157 nm source is "FF" | The F₂ (molecular fluorine) excimer laser |
 | T7 · 7 | Φ = 1.22λf/d drawn across the whole central disk | 1.22λf/d is the radius to the first dark ring (the slide's own profile marks it from the centre); the disk is 2.44λf/d across |
@@ -476,7 +476,7 @@ The text System / Light / Dark switch and the three mode buttons are gone. On ph
 
 Replaces the HTTP basic-auth password with an access code plus Supabase accounts.
 
-- **Two gates, both checked by the middleware on every request.** The access code keeps the course material inside the cohort; the account carries progress. Either alone is not enough: a UCL student who never got the code can't see the atlas, and the code alone gives nobody a session. Pages without both redirect to `/gate/`; assets and the API get a 401, never the file.
+- **Two gates, both checked by the middleware on every request.** The access code keeps the course material inside the cohort; the account carries progress. Either alone is not enough: a UCL student who never got the code can't see the app, and the code alone gives nobody a session. Pages without both redirect to `/gate/`; assets and the API get a 401, never the file.
 - **The landing page is its own build (`vite.gate.config.ts`) under `/gate/`.** A Vite multi-page build would share chunks (React, fonts) through `/assets/`, which is gated, so the door couldn't load. A separate build puts every file it needs under `/gate/assets/`, and the middleware allow-lists that one folder with a strict pattern (no `..`, no escapes).
 - **Access token format `v1.<expiry>.<HMAC>`** over the expiry and a fingerprint of the current code, signed with `ACCESS_COOKIE_SECRET`. Stateless (no table lookup per asset request), and changing the code invalidates every cookie at once, which is the "how to change the access code" story. The code is compared as SHA-256 digests in constant time.
 - **Rate limit in Postgres, not memory.** Serverless instances don't share memory; 5 failures per 15 minutes per client, keyed by an HMAC of the IP so no address is stored. If the store is unreachable the endpoint fails closed (503) rather than allowing unlimited guesses. A success clears the counter.

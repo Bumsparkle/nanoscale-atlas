@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { SourceButton } from '../source/Source'
 import { T5, T6 } from '../../sources'
 import { transition } from '../../scene/transition'
@@ -9,10 +9,10 @@ import { sci } from '../../chapters/growth/lab'
 import '../growth/growth.css'
 
 /** Chapter 4 and 5 controls (Topics 5 and 6); numbers from chapters/films/physics.ts */
-type Films = ReturnType<typeof useAtlas.getState>['films']
-type Epi = ReturnType<typeof useAtlas.getState>['epi']
-const useFilms = () => [useAtlas((s) => s.films), (p: Partial<Films>) => useAtlas.getState().set({ films: { ...useAtlas.getState().films, ...p } })] as const
-const useEpi = () => [useAtlas((s) => s.epi), (p: Partial<Epi>) => useAtlas.getState().set({ epi: { ...useAtlas.getState().epi, ...p } })] as const
+type Films = ReturnType<typeof useApp.getState>['films']
+type Epi = ReturnType<typeof useApp.getState>['epi']
+const useFilms = () => [useApp((s) => s.films), (p: Partial<Films>) => useApp.getState().set({ films: { ...useApp.getState().films, ...p } })] as const
+const useEpi = () => [useApp((s) => s.epi), (p: Partial<Epi>) => useApp.getState().set({ epi: { ...useApp.getState().epi, ...p } })] as const
 
 function Slider({ label, value, min, max, step, unit, on, fmt }: { label: string; value: number; min: number; max: number; step: number; unit?: string; on: (v: number) => void; fmt?: (v: number) => string }) {
   return (
@@ -316,7 +316,7 @@ function SoiPanel() {
 }
 
 export function DepositionPanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'plasma') return <PlasmaPanel />
   if (tab === 'pvd') return <PvdPanel />
   if (tab === 'coverage') return <CoveragePanel />
@@ -325,7 +325,7 @@ export function DepositionPanels() {
 }
 export const MbePanels = MbePanel
 export function SurfacePanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   return tab === 'strain' ? <StrainPanel /> : <ModesPanel />
 }
 export const SoiPanels = SoiPanel

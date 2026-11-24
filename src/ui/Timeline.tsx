@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { inverterProcess } from '../chapters/cmos/recipe'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
 import { fabGoTo } from './play'
 import './timeline.css'
@@ -25,10 +25,10 @@ const GROUP_LABEL: Record<string, string> = {
  */
 export function Timeline() {
   const P = useMemo(() => inverterProcess(), [])
-  const view = useAtlas((s) => s.view)
-  const layer = useAtlas((s) => s.layer)
-  const step = useAtlas((s) => s.step)
-  const set = useAtlas((s) => s.set)
+  const view = useApp((s) => s.view)
+  const layer = useApp((s) => s.layer)
+  const step = useApp((s) => s.step)
+  const set = useApp((s) => s.set)
   const track = useRef<HTMLDivElement>(null)
   const thumb = useRef<HTMLDivElement>(null)
   const fill = useRef<HTMLDivElement>(null)
@@ -63,7 +63,7 @@ export function Timeline() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const st = useAtlas.getState()
+      const st = useApp.getState()
       if (st.view !== 'fab' || st.layer !== 'cell') return
       if ((e.target as HTMLElement)?.closest?.('input, textarea')) return
       if (e.key === 'ArrowRight') (e.preventDefault(), goTo(Math.round(rt.fab.target) + 1))

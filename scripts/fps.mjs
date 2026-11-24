@@ -6,7 +6,7 @@ const b = await chromium.launch({ args: ['--enable-unsafe-webgpu', '--use-angle=
 const p = await b.newPage({ viewport: { width: 1440, height: 900 } })
 await p.goto(base + '/cmos/inverter?view=section&cut=-6&axis=y')
 await p.waitForTimeout(4000)
-const backend = await p.evaluate(() => window.__atlas.renderer.backend)
+const backend = await p.evaluate(() => window.__app.renderer.backend)
 // idle
 await p.evaluate(() => { window.__frames = 0; const f = () => { window.__frames++; requestAnimationFrame(f) }; requestAnimationFrame(f) })
 await p.waitForTimeout(2000)

@@ -1,8 +1,8 @@
-# Nanoscale Atlas
+# Nanoscale Revision
 
 **Live site:** https://nanoscale-atlas.vercel.app (access code and a UCL account required)
 
-A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation). The processing (“Make”) half is complete, in seven chapters:
+A single-page 3D revision app for ELEC0031 (Nanoscale Processing and Characterisation). The processing (“Make”) half is complete, in seven chapters:
 - **Ch.1 CMOS inverter** (Topic 2): from a 300 mm wafer down to the 5.43 Å silicon lattice.
 - **Ch.2 From sand to wafer** (Topic 3): refining, Czochralski and float-zone growth, crystal structure and Miller planes, bands, defects, and the process flow with a process lab.
 - **Ch.3 Keeping it clean** (Topic 4): the cleanroom, the RCA wet bench, redox, gettering and yield.
@@ -213,7 +213,7 @@ npm run tauri dev
 npm run tauri build
 ```
 
-`tauri dev` runs the dev server inside the app window. `tauri build` writes an unsigned app and `.dmg` to `src-tauri/target/release/bundle/` (`macos/Nanoscale Atlas.app` and `dmg/Nanoscale Atlas_0.1.0_aarch64.dmg`). Open the .dmg and drag the app to Applications.
+`tauri dev` runs the dev server inside the app window. `tauri build` writes an unsigned app and `.dmg` to `src-tauri/target/release/bundle/` (`macos/Nanoscale Revision.app` and `dmg/Nanoscale Revision_0.1.0_aarch64.dmg`). Open the .dmg and drag the app to Applications.
 
 **Sign-in in the app.** The app shows the same door in its window: the access code (checked by `/api/access` on the deployed site, which hands back a token instead of a cookie) and then a 6-digit email code or a password. The access token and the Supabase session are kept in the macOS Keychain (`src-tauri/src/lib.rs`, items `session` and `access` under `app.nanoscaleatlas.desktop`), never in the webview's storage. Progress syncs with the website through the same account; offline, the app opens with the last session and its local copy, and syncs when back online. The app contains no slide images: the Source modal fetches signed URLs like the website.
 

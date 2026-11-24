@@ -6,7 +6,7 @@ import { inverterProcess } from '../../chapters/cmos/recipe'
 import { MESH_OPTS } from '../../chapters/cmos/display'
 import { resolveComponents } from '../../chapters/cmos/content'
 import { mesh } from '../../sim/mesher'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { CellModel } from '../CellModel'
 import { StudioLights } from '../Lighting'
 import { matUniforms } from '../materials'
@@ -29,7 +29,7 @@ const DEV = {
 }
 
 export default function TransistorLayer() {
-  const device = useAtlas((s) => s.device)
+  const device = useApp((s) => s.device)
   const d = DEV[device]
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
@@ -68,7 +68,7 @@ export default function TransistorLayer() {
   const offsetX = -(d.gate - 25)
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     strength.current.target = channelStrength(device, st.vg)
     const cdt = dt
     const s = strength.current.step(cdt, st.reducedMotion)

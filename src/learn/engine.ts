@@ -3,7 +3,7 @@ import { junction } from '../chapters/cmos/junction'
 import { DEFAULT_LAYOUT, layoutState, moveEdge, transistors, type Layout, type MaskId } from '../chapters/cmos/layout'
 import { checkLayout } from '../chapters/cmos/rules'
 import { STEPS } from '../chapters/cmos/recipe'
-import { SNAP_TARGETS, type AtlasState } from '../state/store'
+import { SNAP_TARGETS, type AppState } from '../state/store'
 import { defaultTab } from '../chapters/cmos/layers'
 import type { Question, Scene, Target } from './schema'
 
@@ -16,8 +16,8 @@ import type { Question, Scene, Target } from './schema'
 export const stepIndex = (id: string) => STEPS.findIndex((s) => s.id === id)
 
 /** the store patch for a scene (layer changes are animated by the UI, then this is applied) */
-export function scenePatch(sc: Scene, st: AtlasState): Partial<AtlasState> {
-  const p: Partial<AtlasState> = {}
+export function scenePatch(sc: Scene, st: AppState): Partial<AppState> {
+  const p: Partial<AppState> = {}
   if (sc.layer) p.layer = sc.layer
   if (sc.device) p.device = sc.device
   if (sc.view) p.view = sc.view
@@ -41,19 +41,19 @@ export function scenePatch(sc: Scene, st: AtlasState): Partial<AtlasState> {
   if (sc.look !== undefined) p.look = sc.look
   if (sc.tab != null) p.tab = sc.tab
   else if (sc.layer && sc.layer !== st.layer) p.tab = defaultTab(sc.layer)
-  if (sc.growth) p.growth = { ...st.growth, ...sc.growth } as AtlasState['growth']
-  if (sc.crystal) p.crystal = { ...st.crystal, ...sc.crystal } as AtlasState['crystal']
-  if (sc.proc) p.proc = { ...st.proc, ...sc.proc } as AtlasState['proc']
-  if (sc.clean) p.clean = { ...st.clean, ...sc.clean } as AtlasState['clean']
-  if (sc.films) p.films = { ...st.films, ...sc.films } as AtlasState['films']
-  if (sc.epi) p.epi = { ...st.epi, ...sc.epi } as AtlasState['epi']
-  if (sc.litho) p.litho = { ...st.litho, ...sc.litho } as AtlasState['litho']
-  if (sc.nano) p.nano = { ...st.nano, ...sc.nano } as AtlasState['nano']
+  if (sc.growth) p.growth = { ...st.growth, ...sc.growth } as AppState['growth']
+  if (sc.crystal) p.crystal = { ...st.crystal, ...sc.crystal } as AppState['crystal']
+  if (sc.proc) p.proc = { ...st.proc, ...sc.proc } as AppState['proc']
+  if (sc.clean) p.clean = { ...st.clean, ...sc.clean } as AppState['clean']
+  if (sc.films) p.films = { ...st.films, ...sc.films } as AppState['films']
+  if (sc.epi) p.epi = { ...st.epi, ...sc.epi } as AppState['epi']
+  if (sc.litho) p.litho = { ...st.litho, ...sc.litho } as AppState['litho']
+  if (sc.nano) p.nano = { ...st.nano, ...sc.nano } as AppState['nano']
   return p
 }
 
 /** read a dotted path from the store */
-export function readPath(st: AtlasState, path: string): unknown {
+export function readPath(st: AppState, path: string): unknown {
   return path.split('.').reduce<unknown>((o, k) => (o == null ? undefined : (o as Record<string, unknown>)[k]), st)
 }
 
@@ -65,13 +65,13 @@ export function sceneLayout(sc: Scene, current: Layout): Layout {
 }
 
 /** apply a scene synchronously (tests, and the UI once any layer transition has finished) */
-export function applySceneNow(sc: Scene, store: { getState: () => AtlasState; setState: (p: Partial<AtlasState>) => void }) {
+export function applySceneNow(sc: Scene, store: { getState: () => AppState; setState: (p: Partial<AppState>) => void }) {
   if (sc.resetLayout || sc.edits?.length) layoutState.set(sceneLayout(sc, layoutState.get()))
   store.setState(scenePatch(sc, store.getState()))
 }
 
 /** is the target reached in this app state? */
-export function checkTarget(t: Target, st: AtlasState, layout: Layout): boolean {
+export function checkTarget(t: Target, st: AppState, layout: Layout): boolean {
   switch (t.kind) {
     case 'gate': {
       const tab = t.gate === 'INV' ? 'inverter' : t.gate.toLowerCase()
@@ -145,7 +145,7 @@ export type Response =
 const norm = (s: string) => s.toLowerCase().replace(/[\s.,;:'"`()-]+/g, ' ').replace(/µ/g, 'u').trim()
 
 /** grade a response; "do" grades the live state */
-export function grade(q: Question, r: Response, st: AtlasState, layout: Layout): boolean {
+export function grade(q: Question, r: Response, st: AppState, layout: Layout): boolean {
   switch (q.type) {
     case 'do':
       return checkTarget(q.answer.target, st, layout)

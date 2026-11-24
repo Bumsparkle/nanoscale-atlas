@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "atlas-dev",
+      "name": "nanoscale-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
@@ -15,7 +15,7 @@
       "port": 5173
     },
     {
-      "name": "atlas-dev-5182",
+      "name": "nanoscale-dev-5182",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",

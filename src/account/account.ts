@@ -4,7 +4,7 @@ import { startSync } from '../sync/engine'
 import { supabaseRemote } from '../sync/remote'
 import { useTheme, type ThemePref } from '../theme/theme'
 import { IS_APP } from '../platform'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { api, keychain, supabase, type User } from './client'
 
 /**
@@ -41,7 +41,7 @@ function bindTheme() {
       applying = false
     }
     const speed = Number(db.get('settings', 'speed'))
-    if (speed >= 0.25 && speed <= 2 && speed !== useAtlas.getState().speed) useAtlas.getState().set({ speed })
+    if (speed >= 0.25 && speed <= 2 && speed !== useApp.getState().speed) useApp.getState().set({ speed })
   }
   apply()
   if (themeBound) return
@@ -51,7 +51,7 @@ function bindTheme() {
     if (c.collection === 'settings' || c.collection === 'all') apply()
     // progress from another device: redraw what depends on it
     if (c.collection !== 'settings') {
-      const st = useAtlas.getState()
+      const st = useApp.getState()
       st.set({ progressVersion: st.progressVersion + 1 })
     }
   })

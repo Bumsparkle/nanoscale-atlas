@@ -1,4 +1,4 @@
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { cellRuntime as rt } from '../scene/cellRuntime'
 import { inverterProcess } from '../chapters/cmos/recipe'
 import { nextSpeed, setSpeed } from '../state/timescale'
@@ -6,16 +6,16 @@ import { nextSpeed, setSpeed } from '../state/timescale'
 /** Fab replay controls: play / pause, step, speed. */
 const last = () => inverterProcess().length - 1
 
-export const isPlaying = () => useAtlas.getState().playing
+export const isPlaying = () => useApp.getState().playing
 
 export function fabGoTo(k: number) {
   k = Math.max(0, Math.min(last(), k))
-  useAtlas.getState().set({ playing: false, step: k })
+  useApp.getState().set({ playing: false, step: k })
   rt.fab.target = k
 }
 
 export function playPause() {
-  const st = useAtlas.getState()
+  const st = useApp.getState()
   if (st.playing) {
     st.set({ playing: false })
     rt.fab.target = Math.round(rt.fab.value)
@@ -29,5 +29,5 @@ export function playPause() {
 }
 
 export const stepFab = (dir: -1 | 1) => fabGoTo(Math.round(rt.fab.target) + dir)
-export const speedDown = () => setSpeed(nextSpeed(useAtlas.getState().speed, -1))
-export const speedUp = () => setSpeed(nextSpeed(useAtlas.getState().speed, 1))
+export const speedDown = () => setSpeed(nextSpeed(useApp.getState().speed, -1))
+export const speedUp = () => setSpeed(nextSpeed(useApp.getState().speed, 1))

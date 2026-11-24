@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { useAtlas } from './store'
+import { useApp } from './store'
 import { fabDt, nextSpeed, snapSpeed } from './timescale'
 import { advancePlayback, PLAY } from '../scene/playback'
 
@@ -16,12 +16,12 @@ function secondsForOneStep() {
   }
 }
 
-beforeEach(() => useAtlas.setState({ speed: 1 }))
+beforeEach(() => useApp.setState({ speed: 1 }))
 
 describe('fab replay speed', () => {
   it('a fab step at 0.5× takes about twice as long as at 1×', () => {
     const t1 = secondsForOneStep()
-    useAtlas.setState({ speed: 0.5 })
+    useApp.setState({ speed: 0.5 })
     const t05 = secondsForOneStep()
     expect(t1).toBeCloseTo(PLAY.MOVE, 1)
     expect(t05 / t1).toBeGreaterThan(1.95)
@@ -29,9 +29,9 @@ describe('fab replay speed', () => {
   })
   it('2× halves it, 0.25× quadruples it', () => {
     const t1 = secondsForOneStep()
-    useAtlas.setState({ speed: 2 })
+    useApp.setState({ speed: 2 })
     expect(secondsForOneStep() / t1).toBeCloseTo(0.5, 1)
-    useAtlas.setState({ speed: 0.25 })
+    useApp.setState({ speed: 0.25 })
     expect(secondsForOneStep() / t1).toBeCloseTo(4, 0)
   })
   it('snaps to ¼, ½, 1 and 2× and steps between them', () => {

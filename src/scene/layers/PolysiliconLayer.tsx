@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { P } from '../../theme/scene'
 
 /**
@@ -67,7 +67,7 @@ export default function PolysiliconLayer() {
   useFrame((_, dt) => {
     t.current += dt
     glow.emissiveIntensity = 0.5 + 0.05 * Math.sin(t.current * 2.2)
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'p-in', 'SiHCl₃ + H₂ in', 'Siemens process', [-700, 120, 300], 'side'),
       label(camera, size, 'p-out', '2SiHCl₃ + 2H₂ → 2Si + 6HCl', 'Si deposits on the hot rods', [0, 1900, 0], 'top'),

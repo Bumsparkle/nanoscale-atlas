@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { overlay, type ScreenLabel } from '../scene/cellRuntime'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import './overlay.css'
 import { SourceButton } from './source/Source'
 import { T2 } from '../sources'
@@ -52,7 +52,7 @@ function layout(labels: ScreenLabel[], W: number): Placed[] {
 }
 
 export function LabelOverlay() {
-  const quiz = useAtlas((s) => s.quiz)
+  const quiz = useApp((s) => s.quiz)
   const [version, setVersion] = useState(overlay.version)
   const svg = useRef<SVGSVGElement>(null)
   const box = useRef<HTMLDivElement>(null)
@@ -126,8 +126,8 @@ export function LabelOverlay() {
 
 /** slide 25 legend, shown with a locked cut */
 export function SectionLegend() {
-  const view = useAtlas((s) => s.view)
-  const locked = useAtlas((s) => s.section.locked)
+  const view = useApp((s) => s.view)
+  const locked = useApp((s) => s.section.locked)
   if (view !== 'section' || !locked) return null
   const rows: [string, string, boolean?][] = [
     ['var(--leg-sio2)', 'SiO₂', true],

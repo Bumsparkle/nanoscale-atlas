@@ -49,7 +49,7 @@ export function StylePage() {
   return (
     <main className="style-page">
       <header>
-        <p className="eyebrow">Nanoscale Atlas · system</p>
+        <p className="eyebrow">Nanoscale Revision · system</p>
         <h1>Type, colour, motion</h1>
         <p className="lede">
           A dark instrument panel. The materials carry the colour; the interface keeps one accent, the amber of a

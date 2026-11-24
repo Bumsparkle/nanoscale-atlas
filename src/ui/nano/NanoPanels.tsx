@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { SourceButton } from '../source/Source'
 import { T6, T8 } from '../../sources'
 import { transition } from '../../scene/transition'
@@ -11,8 +11,8 @@ import { Chart, Seg, Slider, Stepper } from '../controls'
 import '../growth/growth.css'
 
 /** Chapter 7 (Topic 8) controls; numbers from chapters/nano/*.ts */
-type Nano = ReturnType<typeof useAtlas.getState>['nano']
-const useNano = () => [useAtlas((s) => s.nano), (p: Partial<Nano>) => useAtlas.getState().set({ nano: { ...useAtlas.getState().nano, ...p } })] as const
+type Nano = ReturnType<typeof useApp.getState>['nano']
+const useNano = () => [useApp((s) => s.nano), (p: Partial<Nano>) => useApp.getState().set({ nano: { ...useApp.getState().nano, ...p } })] as const
 const meV = (e: number) => `${(e * 1000).toFixed(1)} meV`
 
 function SamplePicker() {
@@ -58,7 +58,7 @@ function ScalePanel() {
         <dt>nearest object</dt><dd>{SCALE_OBJECTS.reduce((a, o) => (Math.abs(Math.log10(o.nm / nm)) < Math.abs(Math.log10(a.nm / nm)) ? o : a)).name}</dd>
       </dl>
       <p className="lc-fine">Slide 3: a volume semiconductor (1 cm) has band structure; a waveguide is set by the wavelength of light (1 µm); a quantum dot (10 nm) by the electrons’ de Broglie wavelength at 300 K; an atom (1 Å) has discrete levels.</p>
-      <div className="lc-quick"><button className="chip" onClick={() => useAtlas.getState().set({ tab: 'sample' })}>the grown sample →</button></div>
+      <div className="lc-quick"><button className="chip" onClick={() => useApp.getState().set({ tab: 'sample' })}>the grown sample →</button></div>
     </section>
   )
 }
@@ -271,7 +271,7 @@ function WiresPanel() {
     <section className="lc gp" aria-label="Quantum wires">
       <span className="eyebrow lc-head">making quantum wires <SourceButton refs={[T8(15), T8(16)]} /></span>
       <p className="lc-fine">Start from an A/B/A quantum well (confined in one direction). (a) Etch it into a narrow ridge: the walls confine the second direction. (b) Put two gates on top with a gap: negative voltage depletes the well under them, leaving a strip under the gap.</p>
-      <div className="lc-quick"><button className="chip" onClick={() => useAtlas.getState().set({ tab: 'vls' })}>grow them bottom-up instead →</button></div>
+      <div className="lc-quick"><button className="chip" onClick={() => useApp.getState().set({ tab: 'vls' })}>grow them bottom-up instead →</button></div>
     </section>
   )
 }
@@ -363,18 +363,18 @@ function LaserPanel() {
 }
 
 export function QmbePanels() { return <QmbePanel /> }
-export function QsamplePanels() { return useAtlas((s) => s.tab) === 'sample' ? <SampleInfoPanel /> : <ScalePanel /> }
+export function QsamplePanels() { return useApp((s) => s.tab) === 'sample' ? <SampleInfoPanel /> : <ScalePanel /> }
 export function HeteroPanels() { return <HeteroPanel /> }
-export function QbandsPanels() { return useAtlas((s) => s.tab) === 'align' ? <AlignPanel /> : <BandsPanel /> }
+export function QbandsPanels() { return useApp((s) => s.tab) === 'align' ? <AlignPanel /> : <BandsPanel /> }
 export function QwavePanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'well') return <WellPanel />
   if (tab === 'confine') return <ConfinePanel />
   if (tab === 'dos') return <DosPanel />
   return <FreePanel />
 }
 export function NanofabPanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'vls') return <VlsPanel />
   if (tab === 'pillars') return <PillarsPanel />
   if (tab === 'colloid') return <ColloidPanel />

@@ -293,11 +293,11 @@
       // Sign-in and sign-up emails carry both the link (web) and the 6-digit code (Mac app)
       "template": {
         "magic_link": {
-          "subject": "Your Nanoscale Atlas sign-in",
+          "subject": "Your Nanoscale Revision sign-in",
           "content_path": "./supabase/templates/magic_link.html"
         },
         "confirmation": {
-          "subject": "Confirm your Nanoscale Atlas account",
+          "subject": "Confirm your Nanoscale Revision account",
           "content_path": "./supabase/templates/confirmation.html"
         }
       },

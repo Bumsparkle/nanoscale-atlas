@@ -3,14 +3,14 @@ import { POSITIONS, SECTIONS as ALL_SECTIONS, sectionMinutes, STEPS as ALL_STEPS
 import { FACT_BY_ID, FACTS, QUESTION_BY_ID } from './bank'
 import { applySceneNow, checkTarget, correctResponse, grade } from './engine'
 import { CONTENT_BY_ID } from '../chapters/cmos/content'
-import { useAtlas, type AtlasState } from '../state/store'
+import { useApp, type AppState } from '../state/store'
 import { layoutState } from '../chapters/cmos/layout'
 import type { Question } from './schema'
 
-const initial = useAtlas.getState()
-const store = { getState: () => useAtlas.getState(), setState: (p: Partial<AtlasState>) => useAtlas.setState(p) }
+const initial = useApp.getState()
+const store = { getState: () => useApp.getState(), setState: (p: Partial<AppState>) => useApp.setState(p) }
 beforeEach(() => {
-  useAtlas.setState({ ...initial, page: 'atlas' }, true)
+  useApp.setState({ ...initial, page: 'study' }, true)
   layoutState.reset()
 })
 
@@ -124,10 +124,10 @@ describe('the Topic 2 lesson', () => {
         const q = Q(id)
         if (q.scene) applySceneNow(q.scene, store)
         if (q.type === 'do') {
-          expect(checkTarget(q.answer.target, useAtlas.getState(), layoutState.get()), `${id} pre-solved`).toBe(false)
+          expect(checkTarget(q.answer.target, useApp.getState(), layoutState.get()), `${id} pre-solved`).toBe(false)
           applySceneNow(q.answer.solve, store)
         }
-        expect(grade(q, correctResponse(q), useAtlas.getState(), layoutState.get()), id).toBe(true)
+        expect(grade(q, correctResponse(q), useApp.getState(), layoutState.get()), id).toBe(true)
       }
     }
   })
@@ -215,10 +215,10 @@ for (const [ch, topic] of [['ch2', 'topic3'], ['ch3', 'topic4'], ['ch4', 'topic5
           const q = Q(id)
           if (q.scene) applySceneNow(q.scene, store)
           if (q.type === 'do') {
-            expect(checkTarget(q.answer.target, useAtlas.getState(), layoutState.get()), `${id} pre-solved`).toBe(false)
+            expect(checkTarget(q.answer.target, useApp.getState(), layoutState.get()), `${id} pre-solved`).toBe(false)
             applySceneNow(q.answer.solve, store)
           }
-          expect(grade(q, correctResponse(q), useAtlas.getState(), layoutState.get()), id).toBe(true)
+          expect(grade(q, correctResponse(q), useApp.getState(), layoutState.get()), id).toBe(true)
         }
       }
     })

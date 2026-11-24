@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useAtlas, type ProcOp, type ProcState } from '../../state/store'
+import { useApp, type ProcOp, type ProcState } from '../../state/store'
 import { FAB_LINK, labRun } from '../../chapters/growth/lab'
 import { CROSS_LEGEND, CrossSection, ProfileChart } from './charts'
 import { SourceButton } from '../source/Source'
@@ -159,9 +159,9 @@ function Evaporator() {
 }
 
 export function ProcessLab() {
-  const p = useAtlas((s) => s.proc)
-  const set = useAtlas((s) => s.set)
-  const setP = (q: Partial<ProcState>) => set({ proc: { ...useAtlas.getState().proc, ...q } })
+  const p = useApp((s) => s.proc)
+  const set = useApp((s) => s.set)
+  const setP = (q: Partial<ProcState>) => set({ proc: { ...useApp.getState().proc, ...q } })
   const run = useMemo(() => labRun(p), [p])
   const n = run.process.length
   const [pos, setPos] = useState(n - 1)
@@ -169,7 +169,7 @@ export function ProcessLab() {
   // a new experiment plays from its first step
   useEffect(() => {
     cancelAnimationFrame(anim.current)
-    const reduced = useAtlas.getState().reducedMotion
+    const reduced = useApp.getState().reducedMotion
     if (reduced || n < 2) return setPos(n - 1)
     let s = 0
     let last = performance.now()

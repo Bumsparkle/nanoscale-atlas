@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { flux, mlPerSecond, rheedIntensity } from '../../chapters/films/physics'
 import { mbeLive } from '../../chapters/films/live'
 import { P } from '../../theme/scene'
@@ -25,14 +25,14 @@ const CELLS = [
 export default function MbeLayer() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const shutter = useAtlas((s) => s.epi.shutter)
+  const shutter = useApp((s) => s.epi.shutter)
   useDive('cleanroom', 'surface', { home: [0, 8, 0] })
   const sub = useRef<THREE.Group>(null)
   const streaks = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.rheed, transparent: true, opacity: 0.8 }), [])
   const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.18 * P.k.sheet, depthWrite: false }), [])
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const step = st.reducedMotion ? 0 : dt
     if (sub.current) sub.current.rotation.y += step * 0.8
     const rate = mlPerSecond(flux(Math.pow(10, st.epi.logGa), 69.72, 1200))

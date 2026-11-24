@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { FACTS, SLIDES_OF } from '../bank'
 import { factMastered, factSeen, slideCoverage } from '../progress'
 import { TOPICS } from '../schema'
@@ -22,8 +22,8 @@ const AREA_TITLE: Record<string, string> = {
  * deck with its share of facts mastered; click a slide to drill it.
  */
 export function CoverageSheet({ onDrill, onClose }: { onDrill: (topic: TopicId, slide: number) => void; onClose: () => void }) {
-  useAtlas((s) => s.progressVersion)
-  const rvTopic = useAtlas((s) => s.revise.topic)
+  useApp((s) => s.progressVersion)
+  const rvTopic = useApp((s) => s.revise.topic)
   const [topic, setTopic] = useState<TopicId>(rvTopic ?? 'topic2')
   const cov = slideCoverage(topic)
   const facts = FACTS.filter((f) => f.source.topic === topic)

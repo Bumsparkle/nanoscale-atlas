@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { SourceButton } from '../source/Source'
 import { T7 } from '../../sources'
 import { transition } from '../../scene/transition'
@@ -10,8 +10,8 @@ import { Chart, Seg, Slider, Stepper } from '../controls'
 import '../growth/growth.css'
 
 /** Chapter 6 (Topic 7) controls; every number from chapters/litho/optics.ts and ebeam.ts */
-type Litho = ReturnType<typeof useAtlas.getState>['litho']
-const useLitho = () => [useAtlas((s) => s.litho), (p: Partial<Litho>) => useAtlas.getState().set({ litho: { ...useAtlas.getState().litho, ...p } })] as const
+type Litho = ReturnType<typeof useApp.getState>['litho']
+const useLitho = () => [useApp((s) => s.litho), (p: Partial<Litho>) => useApp.getState().set({ litho: { ...useApp.getState().litho, ...p } })] as const
 
 const SRC_ITEMS = SOURCES.map((s) => [s.id, `${s.name} ${s.nm}`] as [SourceId, string])
 
@@ -52,7 +52,7 @@ function ToolPanel() {
       )}
       <div className="lc-quick">
         <button className="chip" onClick={() => void transition.go('ebeam')}>e-beam writer →</button>
-        <button className="chip" onClick={() => { set({ print: true }); void transition.go('cell').then(() => useAtlas.getState().set({ view: 'layout' })) }}>print the inverter with this tool →</button>
+        <button className="chip" onClick={() => { set({ print: true }); void transition.go('cell').then(() => useApp.getState().set({ view: 'layout' })) }}>print the inverter with this tool →</button>
       </div>
     </section>
   )
@@ -256,7 +256,7 @@ function ProximityPanel() {
 }
 
 export function LithoPanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'optics') return <OpticsPanel />
   if (tab === 'mtf') return <MtfPanel />
   if (tab === 'fresnel') return <FresnelPanel />
@@ -266,7 +266,7 @@ export function LithoPanels() {
   return <ToolPanel />
 }
 export function EbeamPanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'liftoff') return <LiftoffPanel />
   if (tab === 'proximity') return <ProximityPanel />
   return <WritePanel />

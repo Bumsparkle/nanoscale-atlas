@@ -14,7 +14,7 @@ export default [
   recall('q-s24-steps', 24, ['s24-steps'], 'On each fabrication step, different materials are…', ['deposited or etched', 'only measured', 'melted', 'magnetised'], 0,
     [H('Scrub the timeline: films grow, then are partly removed.')], 'Deposited or etched.'),
   recall('q-s24-views', 24, ['s24-views'], 'Fabrication is easiest to understand by viewing…', ['only the top view', 'only the cross-section', 'both the top view and the cross-section', 'the band diagram'], 2,
-    [H('This atlas has a Layout view and a Section view for exactly that reason.')], 'Both top view and cross-section.'),
+    [H('The app has a Layout view and a Section view for exactly that reason.')], 'Both top view and cross-section.'),
 
   // slide 25
   label('q-s25-psub', 25, ['s25-psub'], 'Click the region that forms the body of the nMOS.', ['substrate'], SECTION27,

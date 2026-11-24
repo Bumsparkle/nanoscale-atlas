@@ -9,7 +9,7 @@ import { currentMasks } from '../chapters/cmos/maskIndex'
 import { displayStack } from '../sim/mesher'
 import { colAt, top } from '../sim/model'
 import type { Model } from '../sim/types'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { cellRuntime as rt } from './cellRuntime'
 import { CELL_CENTRE } from './cellGeometry'
 import { post } from './Pipeline'
@@ -75,7 +75,7 @@ function IonRain() {
   const clock = useRef(0)
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const im = mesh.current
     if (!im) return
     const { k, t } = activeStep(rt.fabPos, process.steps)
@@ -205,7 +205,7 @@ function Exposure() {
   const fade = useRef(new Spring(0, SPRINGS.ui))
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const { k, t, moving } = activeStep(rt.fabPos, process.steps)
     const step = process.steps[k]
     const on = st.view === 'fab' && step.kind === 'expose'
@@ -262,7 +262,7 @@ function Ambience() {
   const wetS = useRef(new Spring(0, SPRINGS.gentle))
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const fab = st.view === 'fab'
     const { k } = activeStep(rt.fabPos, process.steps)
     const step = process.steps[k]

@@ -233,7 +233,7 @@
   }
 }
 
-/* the theme switch sits top right on the door, as it does in the atlas top bar */
+/* the theme switch sits top right on the door, as it does in the app top bar */
 .home-theme {
   position: fixed;
   top: var(--s-4);

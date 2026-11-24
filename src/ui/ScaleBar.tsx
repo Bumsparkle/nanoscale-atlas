@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { live, useAtlas } from '../state/store'
+import { live, useApp } from '../state/store'
 import { LAYER_BY_ID } from '../chapters/cmos/layers'
 import './scalebar.css'
 import { EXAGGERATION_NOTE } from '../chapters/cmos/display'
@@ -43,8 +43,8 @@ export function ScaleBar() {
   const label = useRef<HTMLSpanElement>(null)
   const needle = useRef<HTMLDivElement>(null)
   const fov = useRef<HTMLSpanElement>(null)
-  const layer = useAtlas((s) => s.layer)
-  const view = useAtlas((s) => s.view)
+  const layer = useApp((s) => s.layer)
+  const view = useApp((s) => s.view)
   const note = LAYER_BY_ID[layer].scaleNote
   // drawing exaggerations belong with the scale they distort
   const exaggerated = (layer === 'cell' || layer === 'transistor') && view !== 'layout'

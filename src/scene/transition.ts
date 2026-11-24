@@ -1,5 +1,5 @@
 import { defaultTab, LAYER_BY_ID, layerIndex, parentOf, type Device, type LayerId } from '../chapters/cmos/layers'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { post } from './Pipeline'
 import { rig } from './rig'
 
@@ -59,8 +59,8 @@ export const transition = {
    * camera dives into; defaults to the current orbit target.
    */
   async go(to: LayerId, opts: { via?: [number, number, number]; device?: Device; focus?: string | null; tab?: string } = {}) {
-    const st = useAtlas.getState()
-    if (to === st.layer && opts.tab && opts.tab !== st.tab) useAtlas.getState().set({ tab: opts.tab, focus: null })
+    const st = useApp.getState()
+    if (to === st.layer && opts.tab && opts.tab !== st.tab) useApp.getState().set({ tab: opts.tab, focus: null })
     if (busy || (to === st.layer && (!opts.device || opts.device === st.device))) return
     busy = true
     const from = LAYER_BY_ID[st.layer]
@@ -92,7 +92,7 @@ export const transition = {
     dist = Math.min(Math.max(dist, next.minDist * 0.05), next.maxDist * 200)
     pending = { layer: to, entry: { dist: reduced ? next.restDist : dist } }
 
-    useAtlas.getState().set({
+    useApp.getState().set({
       layer: to,
       device: opts.device ?? st.device,
       focus: opts.focus ?? null,
@@ -108,7 +108,7 @@ export const transition = {
     busy = false
   },
   up() {
-    const p = parentOf(useAtlas.getState().layer)
+    const p = parentOf(useApp.getState().layer)
     if (p) return this.go(p)
   },
 }

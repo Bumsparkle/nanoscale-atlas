@@ -31,7 +31,7 @@ for (const r of routes) {
   await page.goto(url, { waitUntil: 'load' })
   await page.waitForTimeout(r.wait ?? 2500)
   if (r.action) await r.action(page)
-  const backend = await page.evaluate(() => window.__atlas?.renderer?.backend ?? 'n/a')
+  const backend = await page.evaluate(() => window.__app?.renderer?.backend ?? 'n/a')
   const file = `shots/${mobile ? 'm-' : ''}${r.name}.png`
   await page.screenshot({ path: file })
   console.log(file, backend)

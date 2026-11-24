@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
 import { regime, SCALE_OBJECTS } from '../../chapters/nano/scale'
 import { P } from '../../theme/scene'
@@ -21,11 +21,11 @@ const X = (nm: number) => Math.log10(nm) * 14 - 42
 function Scale() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const logSize = useAtlas((s) => s.nano.logSize)
+  const logSize = useApp((s) => s.nano.logSize)
   const nm = Math.pow(10, logSize + 9)
   const r = regime(nm)
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       ...SCALE_OBJECTS.map((o) => label(camera, size, `s-${o.id}`, o.name, o.nm >= 1e6 ? `${o.nm / 1e6} mm` : o.nm >= 1e3 ? `${o.nm / 1e3} µm` : `${o.nm} nm`, [X(o.nm), 10, 0], 'top')),
       label(camera, size, 's-you', nm >= 1e6 ? `${(nm / 1e6).toPrecision(2)} mm` : nm >= 1e3 ? `${(nm / 1e3).toPrecision(2)} µm` : `${nm.toPrecision(2)} nm`, `${r.name}: ${r.note}`, [X(nm), -8, 6], 'bottom'),
@@ -76,13 +76,13 @@ function Scale() {
 function Sample() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const sampleId = useAtlas((s) => s.nano.sample)
+  const sampleId = useApp((s) => s.nano.sample)
   const h = SAMPLE[sampleId] ?? SAMPLE.qw
   const sp = spans(h).filter((l) => l.role !== 'substrate')
   const top = sp.length ? sp[sp.length - 1].z1 - sp[0].z0 : 1
   const exag = 2 / top // the epi stack drawn 2 units (2 mm) tall at the edge: ×~2·10⁴
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'p-piece', '10 mm piece of the wafer', 'GaAs substrate ~0.5 mm thick', [-6, 1, 6], 'side'),
       label(camera, size, 'p-edge', `${h.name}`, `${top} nm of epitaxial layers · drawn ×${(exag * 1e6).toPrecision(2)}`, [5, 4, 5.4], 'right'),
@@ -109,7 +109,7 @@ function Sample() {
 }
 
 export default function QsampleLayer() {
-  const tab = useAtlas((s) => s.tab) || 'scale'
+  const tab = useApp((s) => s.tab) || 'scale'
   useDive('qmbe', 'hetero', { home: [0, 1, 0] })
   useTabHome('qsample', tab === 'scale' ? { target: [X(1e3) + 18, 2, 0], polar: 1.4, azimuth: 0.05, dist: 200 } : { target: [1.5, 1, 3], polar: 1.15, azimuth: 0.5, dist: 30 }, tab)
   return (

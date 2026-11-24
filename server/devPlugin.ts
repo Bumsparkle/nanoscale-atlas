@@ -42,7 +42,7 @@ type Load = (id: string) => Promise<Record<string, unknown>>
  * server serves source modules rather than the built assets, so there only
  * pages and the API go through the gate (the gate page itself is built from
  * those same modules); the asset rules are covered by the middleware tests
- * and by `npm run preview`. Under `tauri dev` (ATLAS_APP=1) the app shows
+ * and by `npm run preview`. Under `tauri dev` (NANOSCALE_APP=1) the app shows
  * its own gate in the window, so only the API is gated.
  */
 function mount(use: (fn: (req: IncomingMessage, res: ServerResponse, next: () => void) => void) => void, load: Load, origin: () => string, all: boolean) {
@@ -51,7 +51,7 @@ function mount(use: (fn: (req: IncomingMessage, res: ServerResponse, next: () =>
       try {
         const path = (req.url ?? '/').split('?')[0]
         const page = req.method === 'GET' && (req.headers['sec-fetch-mode'] === 'navigate' || String(req.headers.accept ?? '').includes('text/html'))
-        const appDev = process.env.ATLAS_APP === '1'
+        const appDev = process.env.NANOSCALE_APP === '1'
         if (!all && (!page || appDev) && !path.startsWith('/api/')) return nextFn()
         const request = await toRequest(req, origin())
         const mw = (await load('/middleware.ts')).default as (r: Request) => Promise<Response>
@@ -74,7 +74,7 @@ function mount(use: (fn: (req: IncomingMessage, res: ServerResponse, next: () =>
 
 export function devGate(): Plugin {
   return {
-    name: 'atlas-dev-gate',
+    name: 'nanoscale-dev-gate',
     configureServer(s) {
       const origin = () => `http://${s.config.server.host === true ? 'localhost' : s.config.server.host || 'localhost'}:${s.config.server.port ?? 5173}`
       mount((fn) => s.middlewares.use(fn), (id) => s.ssrLoadModule(id), origin, false)

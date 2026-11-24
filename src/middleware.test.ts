@@ -23,7 +23,7 @@ const authCookie = (token: string) => 'atlas-auth=base64-' + Buffer.from(JSON.st
 
 function req(path: string, o: { access?: string; session?: string; page?: boolean; headers?: Record<string, string>; method?: string } = {}) {
   const cookies = [o.access ? `atlas_access=${o.access}` : '', o.session ? authCookie(o.session) : ''].filter(Boolean).join('; ')
-  return new Request('https://atlas.example' + path, {
+  return new Request('https://app.example' + path, {
     method: o.method ?? 'GET',
     headers: { ...(cookies ? { cookie: cookies } : {}), ...(o.page ? { accept: 'text/html', 'sec-fetch-mode': 'navigate' } : {}), ...o.headers },
   })
@@ -49,7 +49,7 @@ describe('access gate middleware', () => {
       expect(isPublic(p), p).toBe(true)
       expect(passes(await middleware(req(p))), p).toBe(true)
     }
-    for (const p of ['/', '/index.html', '/assets/index-abc.js', '/assets/AtlasShell-x.js', '/api/slides', '/api/account', '/cmos/inverter', '/gate/../assets/index.js', '/gate/..%2Fassets/index.js', '/gate/assets/../../assets/x.js', '/gate%2F..%2Fassets/x.js', '/gatex', '/slides/topic2/slide-01.jpg']) {
+    for (const p of ['/', '/index.html', '/assets/index-abc.js', '/assets/AppShell-x.js', '/api/slides', '/api/account', '/cmos/inverter', '/gate/../assets/index.js', '/gate/..%2Fassets/index.js', '/gate/assets/../../assets/x.js', '/gate%2F..%2Fassets/x.js', '/gatex', '/slides/topic2/slide-01.jpg']) {
       expect(isPublic(new URL('https://a.b' + p).pathname), p).toBe(false)
     }
   })

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { rig } from '../rig'
 import { SEMI_BY_ID, strainState } from '../../chapters/films/physics'
 import { P } from '../../theme/scene'
@@ -56,8 +56,8 @@ function order(mode: 'fvdm' | 'sk' | 'vw') {
 function Modes() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const mode = useAtlas((s) => s.epi.mode)
-  const coverage = useAtlas((s) => s.epi.coverage)
+  const mode = useApp((s) => s.epi.mode)
+  const coverage = useApp((s) => s.epi.coverage)
   const seq = useMemo(() => order(mode), [mode])
   const heights = useMemo(heightColours, [])
   const film = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: P.obj.white, roughness: 0.4 }), PER_ML * 5), [])
@@ -93,7 +93,7 @@ function Modes() {
   const ad = useRef<THREE.Mesh>(null)
   const t = useRef(0)
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     t.current += st.reducedMotion ? 0 : dt
     if (ad.current) ad.current.position.set(Math.sin(t.current * 0.9) * 12, 0.5 + 4 * A, Math.cos(t.current * 0.6) * 9)
     if (st.quiz) return publish([])
@@ -119,7 +119,7 @@ function Modes() {
 function Strain() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const e = useAtlas((s) => s.epi)
+  const e = useApp((s) => s.epi)
   const sub = SEMI_BY_ID[e.substrate]
   const fl = SEMI_BY_ID[e.film]
   const s = strainState(fl.a, sub.a, e.thick)
@@ -158,7 +158,7 @@ function Strain() {
   const subIm = useMemo(() => mk(geom.subAtoms, P.atom.substrate), [geom])
   const filmIm = useMemo(() => mk(geom.filmAtoms, P.signal.amber), [geom])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'st-f', `${fl.id} on ${sub.id}: f = ${(s.f * 100).toFixed(2)} %`, s.mode === 'matched' ? 'lattice-matched' : s.mode === 'pseudomorphic' ? 'pseudomorphic: strained, bonds unbroken' : 'metamorphic: relaxed by misfit dislocations', [0, ml * A + 6, 0], 'top'),
       label(camera, size, 'st-x', 'mismatch drawn ×4', `${ml} monolayers shown`, [-40, -14, 0], 'bottom'),
@@ -189,7 +189,7 @@ function Strain() {
 }
 
 export default function SurfaceLayer() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   useDive('mbe', null, { home: [0, tab === 'strain' ? 6 : 2, 0] })
   // the strain view is a side-on cross-section; the modes view looks down on the terrace
   useEffect(() => {

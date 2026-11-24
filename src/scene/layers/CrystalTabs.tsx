@@ -5,7 +5,7 @@ import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { A_SI, atomsMesh, bondsMesh, setBonds, type V3 } from '../atoms'
 import { label, publish, rand, useDive } from './shared'
-import { useAtlas, type CellKind } from '../../state/store'
+import { useApp, type CellKind } from '../../state/store'
 import { bandsAt, cI, cV, distanceToPlane, FCC, planeInCube, reduceHkl, SI_ATOMS } from '../../chapters/growth/physics'
 import { P } from '../../theme/scene'
 
@@ -48,8 +48,8 @@ function edges(offset: number[] = [0, 0, 0]) {
 function Cells() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const kind = useAtlas((s) => s.crystal.cell)
-  const off = useAtlas((s) => s.crystal.offset)
+  const kind = useApp((s) => s.crystal.cell)
+  const off = useApp((s) => s.crystal.offset)
   const aKind: Exclude<CellKind, 'diamond'> = kind === 'diamond' ? 'fcc' : kind
   const A = useMemo(() => atomsMesh(cubePoints(aKind).map(toWorld), 0.55, A_COL), [aKind])
   const bPts = useMemo(() => cubePoints('fcc'), [])
@@ -62,7 +62,7 @@ function Cells() {
   const s = useRef(off)
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     s.current += (off - s.current) * (st.reducedMotion ? 1 : Math.min(1, dt * 6))
     const d = s.current * 0.25
     const showB = kind === 'diamond'
@@ -126,7 +126,7 @@ function Cells() {
 function Miller() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const hkl = useAtlas((s) => s.crystal.hkl)
+  const hkl = useApp((s) => s.crystal.hkl)
   const [h, k, l] = hkl
   const valid = !(h === 0 && k === 0 && l === 0)
   const poly = useMemo(() => (valid ? planeInCube(h, k, l) : []), [h, k, l, valid])
@@ -153,7 +153,7 @@ function Miller() {
   }, [h, k, l, valid])
 
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'm-x', 'x', undefined, toWorld([1.12, 0, 0]), 'right'),
       label(camera, size, 'm-y', 'y', undefined, toWorld([0, 1.12, 0]), 'right'),
@@ -204,7 +204,7 @@ function Bands() {
   const o = useMemo(() => new THREE.Object3D(), [])
   const cur = useRef(1)
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const r = st.crystal.r
     cur.current += (r - cur.current) * (st.reducedMotion ? 1 : Math.min(1, dt * 8))
     const s = cur.current
@@ -249,7 +249,7 @@ function Defects() {
   const r = useMemo(() => rand(3), [])
   const iRef = useRef<THREE.Mesh>(null)
   useFrame(() => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const T = st.crystal.T
     // thermal vibration grows with temperature (illustrative amplitude)
     const amp = st.reducedMotion ? 0 : 0.03 + 0.14 * (T / 1400)

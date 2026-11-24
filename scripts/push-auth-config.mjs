@@ -67,12 +67,12 @@ try {
   s = s.replace(/("sms": \{[\s\S]*?"enable_confirmations": )false/, '$1true')
   swap(
     '      // Use a production-ready SMTP server\n',
-    `      "smtp": { "enabled": true, "host": "smtp.resend.com", "port": 465, "user": "resend", "pass": "env(ATLAS_SMTP_PASS)", "admin_email": "${SENDER}", "sender_name": "Nanoscale Atlas" },\n`,
+    `      "smtp": { "enabled": true, "host": "smtp.resend.com", "port": 465, "user": "resend", "pass": "env(NANOSCALE_SMTP_PASS)", "admin_email": "${SENDER}", "sender_name": "Nanoscale Revision" },\n`,
   )
   writeFileSync(file, s)
   const res = spawnSync('npx', ['supabase', 'config', 'push', '--project-ref', REF, '--workdir', dir], {
     stdio: 'inherit',
-    env: { ...process.env, ATLAS_SMTP_PASS: key },
+    env: { ...process.env, NANOSCALE_SMTP_PASS: key },
   })
   if (res.status !== 0) process.exit(res.status ?? 1)
   console.log(`Done: sign-in emails for ${SITE} now come from ${SENDER}.`)

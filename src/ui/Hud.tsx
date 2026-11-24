@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { IS_APP } from '../platform'
 import { ancestry, CHAPTER_BY_ID, CHAPTERS, chapterOf, LAYER_BY_ID, layerIndex } from '../chapters/cmos/layers'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { transition } from '../scene/transition'
 import { navigate } from '../state/url'
 import { ScaleBar } from './ScaleBar'
@@ -20,8 +20,8 @@ import './hud.css'
 import { TopIcons } from './TopIcons'
 
 export function Breadcrumbs() {
-  const layer = useAtlas((s) => s.layer)
-  const device = useAtlas((s) => s.device)
+  const layer = useApp((s) => s.layer)
+  const device = useApp((s) => s.device)
   const idx = layerIndex(layer)
   // the zoom path within this layer's chapter, plus the layer just above it
   const ch = LAYER_BY_ID[layer].chapter
@@ -52,8 +52,8 @@ export function Breadcrumbs() {
 
 /** the three chapters: where you are, and a jump to the start of each */
 export function ChapterMenu() {
-  const layer = useAtlas((s) => s.layer)
-  const tab = useAtlas((s) => s.tab)
+  const layer = useApp((s) => s.layer)
+  const tab = useApp((s) => s.tab)
   const [open, setOpen] = useState(false)
   const cur = CHAPTER_BY_ID[chapterOf(layer, tab)]
   useEffect(() => {
@@ -88,7 +88,7 @@ export function TopBar() {
     <header className="topbar">
       <a className="brand" href="/" onClick={(e) => { e.preventDefault(); navigate('/') }}>
         <span className="brand-mark" aria-hidden />
-        <span>Nanoscale Atlas</span>
+        <span>Nanoscale Revision</span>
       </a>
       <ChapterMenu />
       <Breadcrumbs />
@@ -102,8 +102,8 @@ export function useGlobalKeys() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement)?.closest?.('input, textarea, select')) return
-      const st = useAtlas.getState()
-      if (st.page !== 'atlas') return
+      const st = useApp.getState()
+      if (st.page !== 'study') return
       // ⌥D: the renderer / debug readout (handy in the desktop app, which has no address bar)
       if (e.altKey && e.code === 'KeyD') return navigate('/debug')
       if (e.key === 'Escape') {

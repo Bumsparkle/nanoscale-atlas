@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome, useUnits } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { airy, depthOfFocus, fresnelRegime, fresnelSlit, gratingImage, resolution, ROADMAP, roadmapLambda, SOURCE_BY_ID, wMin } from '../../chapters/litho/optics'
 import { simulate } from '../../chapters/litho/ebeam'
 import { HeightField, lightColour, Line, Seg } from './nanoShared'
@@ -22,12 +22,12 @@ import { P } from '../../theme/scene'
  * - roadmap: lines at the year's node against the exposure wavelength (2);
  * - ngl: photons, electrons, X-rays and ions in resist (17–18).
  */
-type L = ReturnType<typeof useAtlas.getState>['litho']
+type L = ReturnType<typeof useApp.getState>['litho']
 
 function Tool() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const L = useAtlas((s) => s.litho)
+  const L = useApp((s) => s.litho)
   const src = SOURCE_BY_ID[L.source]
   const col = lightColour(L.source)
   const proj = L.system === 'projection'
@@ -41,7 +41,7 @@ function Tool() {
   const R = resolution(L.k1, src.nm, L.NA)
   const dof = depthOfFocus(L.k2, src.nm, L.NA)
   useFrame(() => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     if (st.quiz) return publish([])
     const tradeoff = L.system === 'contact' ? 'high resolution · unacceptable defects' : L.system === 'proximity' ? `gap ${L.gap} µm · ≥ a few µm only` : 'high resolution · low defects · dominates'
     publish([
@@ -141,7 +141,7 @@ function Tool() {
 function Optics() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const sep = useAtlas((s) => s.litho.sep)
+  const sep = useApp((s) => s.litho.sep)
   const span = 4 // Airy radii each side
   const I = (u: number, v: number) => {
     const x = (u - 0.5) * 2 * span
@@ -151,7 +151,7 @@ function Optics() {
   const peak = Math.max(I(0.5 + sep / 4 / span, 0.5), I(0.5, 0.5))
   const dip = sep > 0 ? I(0.5, 0.5) / peak : 1
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'o-sep', sep > 0 ? `separation ${sep.toFixed(2)} Φ` : 'one point source', sep === 0 ? 'Φ = 1.22λf/d to the first dark ring' : sep >= 1 ? `resolved · dip to ${(dip * 100).toFixed(0)} %` : 'not resolved (Rayleigh)', [0, 34, 0], 'top'),
     ])
@@ -174,7 +174,7 @@ function Optics() {
 function Mtf() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const L = useAtlas((s) => s.litho)
+  const L = useApp((s) => s.litho)
   const lam = SOURCE_BY_ID[L.source].nm
   const img = useMemo(() => gratingImage(L.feature, lam, L.NA, L.S, 96), [L.feature, lam, L.NA, L.S])
   const periods = 3
@@ -185,7 +185,7 @@ function Mtf() {
   }
   const prints = img.mtf >= 0.5
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'm-mtf', `MTF ${img.mtf.toFixed(2)}`, prints ? 'the resist can recognise it (> 0.5)' : 'too little contrast (< 0.5)', [0, 30, 0], 'top'),
       label(camera, size, 'm-thr', 'resist threshold', 'half the open-field intensity', [-44, 11, 0], 'side'),
@@ -228,7 +228,7 @@ function Mtf() {
 function Fresnel() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const L = useAtlas((s) => s.litho)
+  const L = useApp((s) => s.litho)
   const lam = SOURCE_BY_ID[L.source].nm / 1000
   const xs = useMemo(() => Array.from({ length: 241 }, (_, i) => -12 + (24 * i) / 240), [])
   const I = useMemo(() => fresnelSlit(L.W, Math.max(L.gap, 0.05), lam, xs, L.S * 0.04), [L.W, L.gap, lam, xs, L.S])
@@ -236,7 +236,7 @@ function Fresnel() {
   const gapU = Math.min(40, 2 + L.gap * 1.2)
   const regime = fresnelRegime(lam, L.gap, L.W)
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'f-w', `W = ${L.W} µm · g = ${L.gap} µm`, `W_min ≈ √(λg) = ${wMin(lam, L.gap).toFixed(2)} µm`, [0, gapU + 8, 0], 'top'),
       label(camera, size, 'f-reg', regime === 'fresnel' ? 'Fresnel: λ < g < W²/λ' : regime === 'contact' ? 'contact: g ≤ λ' : 'far field: g > W²/λ', L.W < wMin(lam, L.gap) ? 'the opening is below W_min: it blurs away' : 'edges ring', [48, 6, 0], 'right'),
@@ -267,7 +267,7 @@ function Fresnel() {
 function Resist() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const L = useAtlas((s) => s.litho)
+  const L = useApp((s) => s.litho)
   const s = L.rstep
   const t = resistThickness(L.rpm) * 30 // units, ×3 exaggeration of 0.1 µm units
   const exposedXs = [-12, 12]
@@ -277,7 +277,7 @@ function Resist() {
   const hot = s === 1 || s === 4 || s === 6 || s === 8
   const waves = s >= 5 && s < 6 // standing waves until the PEB smooths them
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     const cur = RESIST_STEPS[Math.max(0, s - 1)]
     publish([
       label(camera, size, 'r-step', s === 0 ? 'bare wafer' : `${s}. ${cur.t}`, s === 0 ? 'press next' : cur.p, [0, 28, 0], 'top'),
@@ -357,7 +357,7 @@ function Resist() {
 function Roadmap() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const year = useAtlas((s) => s.litho.year)
+  const year = useApp((s) => s.litho.year)
   const row = [...ROADMAP].reverse().find((r) => r.year <= year) ?? ROADMAP[0]
   const lam = roadmapLambda(row.year)
   const u = 5 // nm per unit
@@ -368,7 +368,7 @@ function Roadmap() {
     return [x, 34 + 4 * Math.sin((2 * Math.PI * x * u) / lam), 0] as [number, number, number]
   }), [lam])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'rm-node', `${row.year}: ${row.node} nm half pitch`, row.gate ? `gate ${row.gate} nm · ${row.tech}` : row.tech, [0, 16, 0], 'top'),
       label(camera, size, 'rm-lam', `λ = ${lam} nm`, 'the exposure wavelength, to the same scale', [-60, 34, 0], 'side'),
@@ -397,11 +397,11 @@ function Roadmap() {
 function Ngl() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const keV = useAtlas((s) => s.litho.keV)
+  const keV = useApp((s) => s.litho.keV)
   const e = useMemo(() => simulate(Math.min(keV, 10), 24, 400, 11), [keV])
   const xs = [-48, -16, 16, 48]
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'n-ph', 'photons', 'spread ~½ µm', [xs[0], 24, 0], 'top'),
       label(camera, size, 'n-e', 'electrons (10 keV)', 'scatter and backscatter', [xs[1], 24, 0], 'top'),
@@ -467,9 +467,9 @@ const HOMES: Record<string, { target: [number, number, number]; polar: number; a
 const UNITS: Record<string, number | null> = { tool: null, optics: 0.3e-6 / 10, mtf: null, fresnel: 0.25e-6, resist: 5e-8, roadmap: 5e-9, ngl: 5e-8 }
 
 export default function LithoLayer() {
-  const tab = useAtlas((s) => s.tab) || 'tool'
+  const tab = useApp((s) => s.tab) || 'tool'
   useDive('cleanroom', null)
-  const feature = useAtlas((s) => s.litho.feature)
+  const feature = useApp((s) => s.litho.feature)
   useUnits(tab === 'mtf' ? (6 * feature * 1e-9) / 84 : UNITS[tab] ?? null)
   useTabHome('litho', HOMES[tab] ?? HOMES.tool, tab)
   return (

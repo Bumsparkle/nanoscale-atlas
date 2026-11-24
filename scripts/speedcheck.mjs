@@ -7,8 +7,8 @@ const b = await chromium.launch({ args: ['--enable-unsafe-webgpu', '--enable-fea
 const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage()
 const out = []
 const ok = (name, cond, detail) => out.push(`${cond ? 'PASS' : 'FAIL'} ${name}${detail ? ' · ' + detail : ''}`)
-const st = (k) => p.evaluate((k) => window.__atlas[k], k)
-const set = (patch) => p.evaluate((x) => window.__atlas_set(x), patch)
+const st = (k) => p.evaluate((k) => window.__app[k], k)
+const set = (patch) => p.evaluate((x) => window.__app_set(x), patch)
 const wait = (ms) => p.waitForTimeout(ms)
 
 // device physics clock: always 1×
@@ -29,7 +29,7 @@ const fabStep = async (speed) => {
   await set({ speed })
   await p.getByTestId('play').click()
   const t0 = Date.now()
-  await p.waitForFunction(() => window.__atlas.step >= 4, null, { timeout: 20000 })
+  await p.waitForFunction(() => window.__app.step >= 4, null, { timeout: 20000 })
   const dt = (Date.now() - t0) / 1000
   await p.getByTestId('play').click()
   return dt

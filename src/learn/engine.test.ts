@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { QUESTIONS } from './bank'
 import { applySceneNow, checkTarget, correctResponse, grade, stepIndex } from './engine'
-import { useAtlas, type AtlasState } from '../state/store'
+import { useApp, type AppState } from '../state/store'
 import { layoutState } from '../chapters/cmos/layout'
 import { processFor } from '../chapters/cmos/recipe'
 import { mesh } from '../sim/mesher'
@@ -11,10 +11,10 @@ import { LAYER_NODES } from '../chapters/cmos/nodes'
 import type { Question } from './schema'
 
 /** a fresh app state, as on first load of /cmos/inverter */
-const initial = useAtlas.getState()
-const store = { getState: () => useAtlas.getState(), setState: (p: Partial<AtlasState>) => useAtlas.setState(p) }
+const initial = useApp.getState()
+const store = { getState: () => useApp.getState(), setState: (p: Partial<AppState>) => useApp.setState(p) }
 beforeEach(() => {
-  useAtlas.setState({ ...initial, page: 'atlas' }, true)
+  useApp.setState({ ...initial, page: 'study' }, true)
   layoutState.reset()
 })
 
@@ -24,10 +24,10 @@ describe('"do" questions are checked against real app state', () => {
   for (const q of ofType('do')) {
     it(q.id, () => {
       if (q.scene) applySceneNow(q.scene, store)
-      expect(checkTarget(q.answer.target, useAtlas.getState(), layoutState.get()), 'already solved by its own setup').toBe(false)
+      expect(checkTarget(q.answer.target, useApp.getState(), layoutState.get()), 'already solved by its own setup').toBe(false)
       applySceneNow(q.answer.solve, store)
-      expect(checkTarget(q.answer.target, useAtlas.getState(), layoutState.get()), 'solution does not reach the target').toBe(true)
-      expect(grade(q, { kind: 'state' }, useAtlas.getState(), layoutState.get())).toBe(true)
+      expect(checkTarget(q.answer.target, useApp.getState(), layoutState.get()), 'solution does not reach the target').toBe(true)
+      expect(grade(q, { kind: 'state' }, useApp.getState(), layoutState.get())).toBe(true)
     })
   }
 })
@@ -58,8 +58,8 @@ describe('"label" answers are clickable objects in the scene the question sets u
         }
       }
       // the correct click grades correct, a click on something else does not
-      expect(grade(q, { kind: 'click', object: q.answer.objects[0] }, useAtlas.getState(), layoutState.get())).toBe(true)
-      expect(grade(q, { kind: 'click', object: 'not-it' }, useAtlas.getState(), layoutState.get())).toBe(false)
+      expect(grade(q, { kind: 'click', object: q.answer.objects[0] }, useApp.getState(), layoutState.get())).toBe(true)
+      expect(grade(q, { kind: 'click', object: 'not-it' }, useApp.getState(), layoutState.get())).toBe(false)
     })
   }
 })
@@ -68,9 +68,9 @@ describe('"predict" reveals actually change the scene', () => {
   for (const q of ofType('predict')) {
     it(q.id, () => {
       if (q.scene) applySceneNow(q.scene, store)
-      const before = JSON.stringify(useAtlas.getState())
+      const before = JSON.stringify(useApp.getState())
       applySceneNow(q.answer.reveal, store)
-      const after = JSON.stringify(useAtlas.getState())
+      const after = JSON.stringify(useApp.getState())
       // a junction reveal may re-show the same bias: it then just brings the bench into view
       if (q.scene?.bench?.tab !== 'junction') expect(after, 'reveal changes nothing').not.toBe(before)
     })
@@ -81,19 +81,19 @@ describe('grading', () => {
   it('every question accepts its own correct response', () => {
     for (const q of QUESTIONS) {
       if (q.type === 'do') continue
-      expect(grade(q, correctResponse(q), useAtlas.getState(), layoutState.get()), q.id).toBe(true)
+      expect(grade(q, correctResponse(q), useApp.getState(), layoutState.get()), q.id).toBe(true)
     }
   })
   it('calc answers respect tolerance', () => {
     for (const q of ofType('calc')) {
-      expect(grade(q, { kind: 'number', value: q.answer.value + q.answer.tol * 0.9 }, useAtlas.getState(), layoutState.get()), q.id).toBe(true)
-      expect(grade(q, { kind: 'number', value: q.answer.value + q.answer.tol * 3 + Math.abs(q.answer.value) * 0.2 + 0.01 }, useAtlas.getState(), layoutState.get()), q.id).toBe(false)
+      expect(grade(q, { kind: 'number', value: q.answer.value + q.answer.tol * 0.9 }, useApp.getState(), layoutState.get()), q.id).toBe(true)
+      expect(grade(q, { kind: 'number', value: q.answer.value + q.answer.tol * 3 + Math.abs(q.answer.value) * 0.2 + 0.01 }, useApp.getState(), layoutState.get()), q.id).toBe(false)
     }
   })
   it('short answers are case- and punctuation-insensitive', () => {
     const q = QUESTIONS.find((x) => x.id === 'q-s02-cmos')!
-    expect(grade(q, { kind: 'text', text: '  Complementary Metal-Oxide-Semiconductor ' }, useAtlas.getState(), layoutState.get())).toBe(true)
-    expect(grade(q, { kind: 'text', text: 'complementary metal' }, useAtlas.getState(), layoutState.get())).toBe(false)
+    expect(grade(q, { kind: 'text', text: '  Complementary Metal-Oxide-Semiconductor ' }, useApp.getState(), layoutState.get())).toBe(true)
+    expect(grade(q, { kind: 'text', text: 'complementary metal' }, useApp.getState(), layoutState.get())).toBe(false)
   })
   it('scene fab steps exist in the recipe', () => {
     for (const q of QUESTIONS) for (const sc of [q.scene, q.type === 'do' ? q.answer.solve : undefined, q.type === 'predict' ? q.answer.reveal : undefined]) if (sc?.step) expect(stepIndex(sc.step), `${q.id}: ${sc.step}`).toBeGreaterThanOrEqual(0)

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { alignment, confinedLevels, Ec, Ev, MAT, SAMPLE, spans, type Heterostructure } from '../../chapters/nano/hetero'
 import { Line } from './nanoShared'
 import { P } from '../../theme/scene'
@@ -59,7 +59,7 @@ function Edges({ h, x0, e0 }: { h: Heterostructure; x0: number; e0: number }) {
 function Bands() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const sampleId = useAtlas((s) => s.nano.sample)
+  const sampleId = useApp((s) => s.nano.sample)
   const h = SAMPLE[sampleId] ?? SAMPLE.qw
   const sp = spans(h)
   const total = sp[sp.length - 1].z1
@@ -77,7 +77,7 @@ function Bands() {
       )
     })
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     const e1 = lv.e.levels[0]
     const h1 = lv.h.levels[0]
     publish([
@@ -100,8 +100,8 @@ function Bands() {
 function Align() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const well = useAtlas((s) => s.nano.well)
-  const barrier = useAtlas((s) => s.nano.barrier)
+  const well = useApp((s) => s.nano.well)
+  const barrier = useApp((s) => s.nano.barrier)
   const h = alignSample(well, barrier)
   const a = alignment(MAT[well], MAT[barrier])
   const total = 75
@@ -115,7 +115,7 @@ function Align() {
   const ex = a.electronIn === 'well' ? 0 : -26
   const hx = a.holeIn === 'well' ? 0 : 26
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     t.current = Math.min(1, t.current + (st.reducedMotion ? 1 : dt * 0.6))
     const k = 1 - Math.pow(1 - t.current, 3)
     if (eRef.current) eRef.current.position.set(ex * k + -10 * (1 - k), (minEc + 0.03) * EV + (1 - k) * 40, DEPTH / 2 + 2)
@@ -153,7 +153,7 @@ function Align() {
 }
 
 export default function QbandsLayer() {
-  const tab = useAtlas((s) => s.tab) || 'bands'
+  const tab = useApp((s) => s.tab) || 'bands'
   useDive('hetero', 'qwave', { home: [0, 0, 0] })
   useTabHome('qbands', { target: [24, -8, 0], polar: 1.5, azimuth: 0.15, dist: 330 }, tab)
   return (

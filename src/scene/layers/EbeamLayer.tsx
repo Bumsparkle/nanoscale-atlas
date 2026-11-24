@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome, useUnits } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { kanayaRangeNm, PMMA, SI, simulate } from '../../chapters/litho/ebeam'
 import { Line } from './nanoShared'
 import { LIFTOFF } from '../../chapters/litho/resist'
@@ -55,7 +55,7 @@ function Write() {
   const t = useRef(0)
   const dot = useMemo(() => new THREE.Object3D(), [])
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     t.current = (t.current + (st.reducedMotion ? 0 : dt) * 60) % path.length
     const k = Math.floor(t.current)
     const p = path[k]
@@ -139,11 +139,11 @@ function Write() {
 function Liftoff() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const s = useAtlas((st) => st.litho.eb)
+  const s = useApp((st) => st.litho.eb)
   const openings = [[-20, -12], [10, 18]]
   const pm = 10
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([label(camera, size, 'lo', s === 0 ? 'start' : `${s}. ${LIFTOFF[s - 1]}`, s === 6 ? 'only the metal in the openings stays' : undefined, [0, 30, 0], 'top')])
   })
   const resistSpans = s >= 4 ? [[-40, -20], [-12, 10], [18, 40]] : [[-40, 40]]
@@ -205,12 +205,12 @@ function Liftoff() {
 function Proximity() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const keV = useAtlas((s) => s.litho.keV)
+  const keV = useApp((s) => s.litho.keV)
   const sim = useMemo(() => simulate(keV, 70, 500, 21), [keV])
   const u = 50
   const tNm = 500
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'p-kev', `${keV} keV`, `backscattered ${(sim.backscatter * 100).toFixed(0)} % · reach ${(sim.maxRadiusNm / 1000).toFixed(1)} µm sideways`, [0, 6, 0], 'top'),
       label(camera, size, 'p-res', 'PMMA', 'secondaries (2–50 eV) expose it within nm', [-28, -(tNm / u) / 2, 0], 'side'),
@@ -255,7 +255,7 @@ const HOMES: Record<string, { target: [number, number, number]; polar: number; a
 }
 
 export default function EbeamLayer() {
-  const tab = useAtlas((s) => s.tab) || 'write'
+  const tab = useApp((s) => s.tab) || 'write'
   useDive('litho', null)
   useUnits(tab === 'liftoff' ? 1e-8 : tab === 'proximity' ? 5e-8 : null)
   useTabHome('ebeam', HOMES[tab] ?? HOMES.write, tab)

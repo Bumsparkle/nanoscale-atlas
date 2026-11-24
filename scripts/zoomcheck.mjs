@@ -8,7 +8,7 @@ p.on('pageerror', (e) => errors.push(String(e)))
 await p.goto(base + '/growth/sand'); await p.waitForTimeout(4000)
 const seen = []
 for (let i = 0; i < 160 && seen.length < 12; i++) {
-  const layer = await p.evaluate(() => window.__atlas.layer)
+  const layer = await p.evaluate(() => window.__app.layer)
   if (seen[seen.length - 1]?.layer !== layer) {
     await p.waitForTimeout(1800)
     const field = await p.locator('.scalebar-meta span').first().textContent()

@@ -1,10 +1,10 @@
-# Nanoscale Atlas — Build Brief
+# Nanoscale Revision — Build Brief
 
 Nov 20, 2026 · @felix arkle
 
 ## Vision
 
-Nanoscale Atlas is a single-page 3D site where every concept in ELEC0031 is a physical place you can zoom into. Chapter 1 is the CMOS inverter from Topic 2, taken all the way down: wafer, die, inverter cell, transistor, gate oxide, silicon lattice.
+Nanoscale Revision is a single-page 3D site where every concept in ELEC0031 is a physical place you can zoom into. Chapter 1 is the CMOS inverter from Topic 2, taken all the way down: wafer, die, inverter cell, transistor, gate oxide, silicon lattice.
 
 Three interactions carry the whole experience:
 

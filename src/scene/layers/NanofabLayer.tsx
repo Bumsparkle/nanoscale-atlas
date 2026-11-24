@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive, useTabHome, useUnits } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { colloidColour, colloidGapEv, qdLaserThreshold, skState, VLS_STEPS } from '../../chapters/nano/fab'
 import { P } from '../../theme/scene'
 
@@ -31,7 +31,7 @@ function Wires() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'w-a', '(a) etching', 'the ridge walls confine the well sideways', [-40, 34, 0], 'top'),
       label(camera, size, 'w-b', '(b) split gates', 'negative gates deplete all but a strip under the gap', [40, 34, 0], 'top'),
@@ -65,14 +65,14 @@ function Wires() {
 function Vls() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const { fstep, seed } = useAtlas((s) => s.nano)
+  const { fstep, seed } = useApp((s) => s.nano)
   const s = Math.min(fstep, VLS_STEPS.length - 1)
   const H = [0, 0, 3, 40, 60][s]
   const r = 4
   const drop = seed === 'au' ? C.au : C.ga
   const dropR = s === 0 ? 3 : 4.6
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([label(camera, size, 'v', `${s + 1}. ${VLS_STEPS[s].t}`, `${seed === 'au' ? 'Au seed' : 'self-catalysed: Ga droplet'} · ${VLS_STEPS[s].p}`, [-8, H / 2 + 6, 0], 'side')])
   })
   return (
@@ -107,9 +107,9 @@ function Vls() {
 function Pillars() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const etched = useAtlas((s) => s.nano.fstep) >= 1
+  const etched = useApp((s) => s.nano.fstep) >= 1
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([label(camera, size, 'p', etched ? 'pillars etched after e-beam lithography' : 'quantum-well wafer', etched ? 'the well confines vertically, the pillar walls sideways · damaged walls (red)' : 'press next to pattern and etch', [0, 34, 0], 'top')])
   })
   const xs = etched ? [-30, -10, 10, 30] : [0]
@@ -137,14 +137,14 @@ function Pillars() {
 function Colloid() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const d = useAtlas((s) => s.nano.dotNm)
+  const d = useApp((s) => s.nano.dotNm)
   const col = colloidColour(d)
   const dots = useMemo(() => {
     const r = rand(4)
     return Array.from({ length: 40 }, () => ({ p: [(r() - 0.5) * 60, (r() - 0.5) * 30, (r() - 0.5) * 30] as [number, number, number], s: 1 + (r() - 0.5) * 0.3 }))
   }, [])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     const E = colloidGapEv(d)
     publish([label(camera, size, 'c', `${d} nm CdSe core, ZnS shell`, `emits ≈ ${(1239.84 / E).toFixed(0)} nm · size dispersion ±15 %`, [0, 22, 0], 'top')])
   })
@@ -171,9 +171,9 @@ function Colloid() {
 function Patterned() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const grown = useAtlas((s) => s.nano.fstep) >= 1
+  const grown = useApp((s) => s.nano.fstep) >= 1
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([label(camera, size, 'pg', grown ? 'GaAs dots at the pyramid tips' : 'SiO₂ mask with triangular openings', 'the density is set by the mask pattern', [0, 26, 0], 'top')])
   })
   const sites = [[-24, -12], [0, -12], [24, -12], [-12, 12], [12, 12]]
@@ -203,7 +203,7 @@ function Patterned() {
 function Sk() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const ml = useAtlas((s) => s.nano.fstep) * 0.5
+  const ml = useApp((s) => s.nano.fstep) * 0.5
   const st = skState(ml)
   const islands = useMemo(() => {
     const r = rand(9)
@@ -215,7 +215,7 @@ function Sk() {
     return out
   }, [])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([label(camera, size, 'sk', `${ml.toFixed(1)} ML of InAs on GaAs`, st.islands ? `islands ~${st.h.toFixed(0)} nm high, ~${st.w.toFixed(0)} nm wide on the wetting layer` : 'a strained 2D wetting layer', [0, 22, 0], 'top')])
   })
   return (
@@ -242,11 +242,11 @@ function Sk() {
 function Laser() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const T = useAtlas((s) => s.nano.T)
+  const T = useApp((s) => s.nano.T)
   const qd = qdLaserThreshold(T, 'qd')
   const qw = qdLaserThreshold(T, 'qw')
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'l-t', `${T} °C`, `threshold: QD ${qd.toFixed(0)} mA · QW ${qw.toFixed(0)} mA`, [0, 40, 0], 'top'),
       label(camera, size, 'l-len', '1 mm cavity', 'In₀.₄Ga₀.₆As with quantum dots', [-52, 10, 0], 'side'),
@@ -283,7 +283,7 @@ const HOMES: Record<string, { target: [number, number, number]; polar: number; a
 }
 
 export default function NanofabLayer() {
-  const tab = useAtlas((s) => s.tab) || 'wires'
+  const tab = useApp((s) => s.tab) || 'wires'
   useDive('cleanroom', null)
   useUnits(tab === 'vls' ? 1e-8 : null)
   useTabHome('nanofab', HOMES[tab] ?? HOMES.wires, tab)

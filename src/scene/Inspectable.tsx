@@ -2,7 +2,7 @@ import * as THREE from 'three/webgpu'
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { CONTENT, CONTENT_BY_ID } from '../chapters/cmos/content'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { selection } from './Pipeline'
 import { rig } from './rig'
 
@@ -25,18 +25,18 @@ export function Inspectable({ node, children, fit = 1.5, minDist }: { node: stri
   const over = (e: ThreeEvent<PointerEvent>) => {
     if (rig.owner) return
     e.stopPropagation()
-    if (useAtlas.getState().hover !== contentId) useAtlas.getState().set({ hover: contentId })
+    if (useApp.getState().hover !== contentId) useApp.getState().set({ hover: contentId })
   }
   return (
     <group
       ref={ref}
       name={node}
       onPointerMove={over}
-      onPointerOut={() => useAtlas.getState().hover === contentId && useAtlas.getState().set({ hover: null })}
+      onPointerOut={() => useApp.getState().hover === contentId && useApp.getState().set({ hover: null })}
       onClick={(e) => {
         if (e.delta > 5 || rig.owner) return
         e.stopPropagation()
-        useAtlas.getState().set({ focus: contentId })
+        useApp.getState().set({ focus: contentId })
       }}
     >
       {children}
@@ -60,7 +60,7 @@ export function InspectSync() {
   const size = useThree((s) => s.size)
   useEffect(() => {
     const refresh = () => {
-      const st = useAtlas.getState()
+      const st = useApp.getState()
       const hov = st.hover && st.hover !== st.focus ? meshesOf(st.hover) : []
       selection.set('hover', st.hint ? [...hov, ...meshesOf(st.hint)] : hov)
       selection.set('focus', meshesOf(st.focus))
@@ -72,7 +72,7 @@ export function InspectSync() {
       if (box.isEmpty()) return
       rig.focusBox(box, camera.fov, size.width / size.height, { padding: g.userData.fit ?? 1.5, minDist: g.userData.minDist })
     }
-    const unsub = useAtlas.subscribe((s, p) => {
+    const unsub = useApp.subscribe((s, p) => {
       if (s.hover !== p.hover || s.focus !== p.focus || s.hint !== p.hint) refresh()
       if (s.look !== p.look && s.look && registry.has(s.look)) focus(s.look)
       if (s.focus !== p.focus) {
@@ -82,7 +82,7 @@ export function InspectSync() {
         else if (!s.focus && p.focus) rig.goHome()
       }
     })
-    const f = useAtlas.getState().focus
+    const f = useApp.getState().focus
     const t = setTimeout(() => {
       if (f) focus(f)
       refresh()
@@ -104,7 +104,7 @@ export function ClearOnMiss({ radius = 4000 }: { radius?: number }) {
     <mesh
       onClick={(e) => {
         if (e.delta > 5 || rig.owner) return
-        if (useAtlas.getState().focus) useAtlas.getState().set({ focus: null })
+        if (useApp.getState().focus) useApp.getState().set({ focus: null })
       }}
     >
       <sphereGeometry args={[radius, 8, 8]} />

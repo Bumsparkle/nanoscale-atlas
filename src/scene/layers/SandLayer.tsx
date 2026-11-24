@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { P } from '../../theme/scene'
 
 /**
@@ -62,7 +62,7 @@ export default function SandLayer() {
   useDive(null, 'polysilicon', { home: [10, 14, 0] })
 
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 's-sand', 'SiO₂ sand grains', '0.2–1.3 mm', [-30, 34, 10], 'top'),
       label(camera, size, 's-mgs', 'metallurgical-grade Si', 'SiO₂ + 2C → Si + 2CO', [92, 26, -6], 'top'),

@@ -49,7 +49,7 @@ function checkApp(app, label) {
 
 // dist/ is checked when guarding an app build; checking a given .app or .dmg looks only at that
 if (!arg('--bundle') && !arg('--dmg')) checkTree('dist', 'dist/')
-if (args.includes('--binary')) checkApp('src-tauri/target/release/bundle/macos/Nanoscale Atlas.app', 'local app')
+if (args.includes('--binary')) checkApp('src-tauri/target/release/bundle/macos/Nanoscale Revision.app', 'local app')
 if (arg('--bundle')) checkApp(arg('--bundle'), 'bundle')
 if (arg('--dmg')) {
   const out = execFileSync('hdiutil', ['attach', '-nobrowse', '-readonly', arg('--dmg')]).toString()

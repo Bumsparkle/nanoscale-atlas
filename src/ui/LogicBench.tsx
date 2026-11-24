@@ -1,4 +1,4 @@
-import { useAtlas, type BenchTab } from '../state/store'
+import { useApp, type BenchTab } from '../state/store'
 import { evaluate, GATES, conducts, nmosOn, pmosOn, type Bit, type Gate } from '../chapters/cmos/device'
 import { junction, V0 } from '../chapters/cmos/junction'
 import './logic.css'
@@ -120,7 +120,7 @@ function Schematic({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bit
 
 function TruthTable({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bit> }) {
   // while a question is open the table would give the answer away
-  const quiz = useAtlas((s) => s.quiz)
+  const quiz = useApp((s) => s.quiz)
   const rows: Record<'A' | 'B', Bit>[] = gate.inputs.length === 1 ? [{ A: 0, B: 0 }, { A: 1, B: 0 }] : [{ A: 0, B: 0 }, { A: 0, B: 1 }, { A: 1, B: 0 }, { A: 1, B: 1 }]
   return (
     <table className="tt">
@@ -150,8 +150,8 @@ function TruthTable({ gate, inputs }: { gate: Gate; inputs: Record<'A' | 'B', Bi
 }
 
 function Inputs({ names }: { names: ('A' | 'B')[] }) {
-  const inputs = useAtlas((s) => s.inputs)
-  const set = useAtlas((s) => s.set)
+  const inputs = useApp((s) => s.inputs)
+  const set = useApp((s) => s.set)
   return (
     <div className="inputs">
       {names.map((n) => {
@@ -169,8 +169,8 @@ function Inputs({ names }: { names: ('A' | 'B')[] }) {
 
 /* ───────────── slide 14: switch model ───────────── */
 function SwitchModel() {
-  const g = useAtlas((s) => s.bench.g)
-  const setG = (v: Bit) => useAtlas.setState((s) => ({ bench: { ...s.bench, g: v } }))
+  const g = useApp((s) => s.bench.g)
+  const setG = (v: Bit) => useApp.setState((s) => ({ bench: { ...s.bench, g: v } }))
   return (
     <div>
       <div className="inputs">
@@ -195,10 +195,10 @@ function SwitchModel() {
 
 /* ───────────── slides 6–9: p-n junction ───────────── */
 function Junction() {
-  const v = useAtlas((s) => s.bench.v)
-  const ratio = useAtlas((s) => s.bench.ratio)
-  const setV = (x: number) => useAtlas.setState((s) => ({ bench: { ...s.bench, v: x } }))
-  const setRatio = (x: number) => useAtlas.setState((s) => ({ bench: { ...s.bench, ratio: x } }))
+  const v = useApp((s) => s.bench.v)
+  const ratio = useApp((s) => s.bench.ratio)
+  const setV = (x: number) => useApp.setState((s) => ({ bench: { ...s.bench, v: x } }))
+  const setRatio = (x: number) => useApp.setState((s) => ({ bench: { ...s.bench, ratio: x } }))
   // the junction eases to the new bias
   const j = junction(useTween(v, 0.4), 10 ** useTween(Math.log10(ratio), 0.4))
   const W = 300
@@ -285,11 +285,11 @@ function Junction() {
 }
 
 export function LogicBench() {
-  const layer = useAtlas((s) => s.layer)
-  const view = useAtlas((s) => s.view)
-  const inputs = useAtlas((s) => s.inputs)
-  const tab = useAtlas((s) => s.bench.tab)
-  const setTab = (t: Tab) => useAtlas.setState((s) => ({ bench: { ...s.bench, tab: t } }))
+  const layer = useApp((s) => s.layer)
+  const view = useApp((s) => s.view)
+  const inputs = useApp((s) => s.inputs)
+  const tab = useApp((s) => s.bench.tab)
+  const setTab = (t: Tab) => useApp.setState((s) => ({ bench: { ...s.bench, tab: t } }))
   if (layer !== 'cell' || view !== 'logic') return null
   const ins = { A: inputs.a, B: inputs.b }
   const gate = tab === 'nand' ? GATES.NAND : tab === 'nor' ? GATES.NOR : GATES.INV

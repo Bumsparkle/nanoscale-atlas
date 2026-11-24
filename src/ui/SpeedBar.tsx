@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { SPEED_SNAPS, setSpeed } from '../state/timescale'
 import { playPause, speedDown, speedUp, stepFab } from './play'
 
@@ -9,19 +9,19 @@ const fmt = (v: number) => (v < 1 ? String(v).replace(/^0/, '') : String(v)) + '
  * Fab replay controls, shown only in the Fab view: previous / play-pause /
  * next step, and the replay speed (0.25–2×, snapping at ¼, ½, 1, 2). Keys:
  * [ and ] step the speed, space plays or pauses when the scene has focus.
- * Everything else in the atlas always runs at its natural speed.
+ * Everything else in the app always runs at its natural speed.
  */
 export function SpeedBar() {
-  const speed = useAtlas((s) => s.speed)
-  const playing = useAtlas((s) => s.playing)
+  const speed = useApp((s) => s.speed)
+  const playing = useApp((s) => s.playing)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return
       const t = e.target as HTMLElement
       if (t?.closest?.('input, textarea, select')) return
-      const st = useAtlas.getState()
-      if (st.page !== 'atlas' || st.layer !== 'cell' || st.view !== 'fab') return
+      const st = useApp.getState()
+      if (st.page !== 'study' || st.layer !== 'cell' || st.view !== 'fab') return
       if (e.key === '[') speedDown()
       else if (e.key === ']') speedUp()
       else if (e.key === ' ' && (t === document.body || t?.tagName === 'CANVAS' || t?.closest?.('.stage'))) {

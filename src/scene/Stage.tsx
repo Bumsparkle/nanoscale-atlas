@@ -3,7 +3,7 @@ import { IS_APP } from '../platform'
 import * as THREE from 'three/webgpu'
 import { Canvas, extend, useFrame, useThree, type ThreeToJSXElements } from '@react-three/fiber'
 import { Suspense, useEffect, useRef } from 'react'
-import { live, useAtlas } from '../state/store'
+import { live, useApp } from '../state/store'
 import { rig } from './rig'
 import { Spring, SPRINGS } from './spring'
 import { transition } from './transition'
@@ -24,7 +24,7 @@ function RigDriver() {
   const size = useThree((s) => s.size)
   const gl = useThree((s) => s.gl)
   const setDpr = useThree((s) => s.setDpr)
-  const reduced = useAtlas((s) => s.reducedMotion)
+  const reduced = useApp((s) => s.reducedMotion)
   const frames = useRef({ t: 0, n: 0, slow: 0 })
   const film = useRef(new Spring(0, SPRINGS.camera))
   useEffect(() => {
@@ -32,9 +32,9 @@ function RigDriver() {
   }, [reduced])
 
   useFrame((_, dt) => {
-    if (!useAtlas.getState().boot.frame && frames.current.n > 8) useAtlas.setState((s) => ({ boot: { ...s.boot, frame: true } }))
+    if (!useApp.getState().boot.frame && frames.current.n > 8) useApp.setState((s) => ({ boot: { ...s.boot, frame: true } }))
     // keep the focused object centred in the space left of the inspect panel
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const layoutView = st.view === 'layout' && st.layer === 'cell'
     const desktop = size.width > 720
     const panelOpen = ((!!st.focus && st.mode === 'explore') || layoutView) && desktop
@@ -158,7 +158,7 @@ function Input() {
 
 export function Stage() {
   const setRenderer = (backend: 'webgpu' | 'webgl2' | 'failed', detail?: string) =>
-    useAtlas.getState().set({ renderer: { backend, detail } })
+    useApp.getState().set({ renderer: { backend, detail } })
 
   return (
     <Canvas
@@ -182,7 +182,7 @@ export function Stage() {
         }
         const isGPU = (renderer.backend as { isWebGPUBackend?: boolean }).isWebGPUBackend === true
         setRenderer(isGPU ? 'webgpu' : 'webgl2', isGPU ? 'WebGPU backend' : 'WebGL 2 fallback backend')
-        useAtlas.setState((s) => ({ boot: { ...s.boot, gpu: true } }))
+        useApp.setState((s) => ({ boot: { ...s.boot, gpu: true } }))
         renderer.toneMapping = THREE.AgXToneMapping
         renderer.toneMappingExposure = P.k.exposure
         renderer.shadowMap.enabled = false
@@ -190,7 +190,7 @@ export function Stage() {
       }}
       onCreated={(state) => {
         ;(window as unknown as { __three: unknown }).__three = state
-        rig.setLayer(LAYER_BY_ID[useAtlas.getState().layer])
+        rig.setLayer(LAYER_BY_ID[useApp.getState().layer])
       }}
     >
       <RigDriver />

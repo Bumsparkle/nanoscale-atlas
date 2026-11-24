@@ -8,7 +8,7 @@ import { transition } from '../transition'
 import { atomsMesh, bondsMesh, diamond, neighbours, rng, setBonds, A_SI, BOND_SI, type V3 } from '../atoms'
 import { overlay, type ScreenLabel } from '../cellRuntime'
 import { Spring, SPRINGS } from '../spring'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { CrystalTabs } from './CrystalTabs'
 import { P } from '../../theme/scene'
 
@@ -63,7 +63,7 @@ function StructureView() {
   const o = useMemo(() => new THREE.Object3D(), [])
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const { structure, dopant: dop } = st.lattice
     w.current.amorph.target = structure === 'amorphous' ? 1 : 0
     w.current.poly.target = structure === 'poly' ? 1 : 0
@@ -182,6 +182,6 @@ function StructureView() {
 
 /** the Chapter 1 structure view, or one of the Chapter 2 crystal tabs */
 export default function LatticeLayer() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   return !tab || tab === 'structure' ? <StructureView /> : <CrystalTabs tab={tab} />
 }

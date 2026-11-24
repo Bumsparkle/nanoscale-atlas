@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { FACTS, QUESTIONS, SLIDES_OF } from '../bank'
 import { TOPIC_IDS, TOPIC_SLIDES, type TopicId } from '../../sources'
 import { boxCounts, DRILL_GAP, factMastered, pickNext, progress, queue, type Filter } from '../progress'
@@ -27,9 +27,9 @@ const DECK: Record<TopicId, string> = { topic2: 'T2 · CMOS', topic3: 'T3 · gro
  * timed paper of calc and recall questions.
  */
 export function RevisePanel() {
-  const rv = useAtlas((s) => s.revise)
-  const set = useAtlas((s) => s.set)
-  const pv = useAtlas((s) => s.progressVersion)
+  const rv = useApp((s) => s.revise)
+  const set = useApp((s) => s.set)
+  const pv = useApp((s) => s.progressVersion)
   const filter: Filter = { topic: rv.topic, from: rv.from, to: rv.to, area: rv.area }
   const fkey = `${rv.topic}-${rv.from}-${rv.to}-${rv.area}`
   const SLIDES = rv.topic ? SLIDES_OF(rv.topic) : []
@@ -143,7 +143,7 @@ export function RevisePanel() {
                   q={q}
                   onFirst={(ok) => {
                     progress.record(q.id, ok === 'right')
-                    set({ progressVersion: useAtlas.getState().progressVersion + 1 })
+                    set({ progressVersion: useApp.getState().progressVersion + 1 })
                   }}
                   onDone={() => setAnswered(true)}
                 />

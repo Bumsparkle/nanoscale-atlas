@@ -3,7 +3,7 @@ import { realise, sci } from '../calcs'
 import type { Question } from '../schema'
 import { checkTarget, grade, type Response } from '../engine'
 import { driveScene } from '../drive'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { layoutState } from '../../chapters/cmos/layout'
 import { CONTENT_BY_ID } from '../../chapters/cmos/content'
 import { SourceButton } from '../../ui/source/Source'
@@ -67,7 +67,7 @@ function QuestionCardInner({
   const done = useRef(false)
   const peekRef = useRef(peeked)
   peekRef.current = peeked
-  const st = () => useAtlas.getState()
+  const st = () => useApp.getState()
 
   const report = (correct: boolean) => {
     if (first.current == null) {
@@ -133,7 +133,7 @@ function QuestionCardInner({
       if (checkTarget(q.answer.target, st(), layoutState.get())) succeed()
     }
     check()
-    const a = useAtlas.subscribe(check)
+    const a = useApp.subscribe(check)
     const b = layoutState.subscribe(check)
     return () => (a(), b())
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,7 +142,7 @@ function QuestionCardInner({
   // "label": watch what gets clicked in the model
   useEffect(() => {
     if (q.type !== 'label' || !answerable) return
-    return useAtlas.subscribe((s, p) => {
+    return useApp.subscribe((s, p) => {
       if (!s.focus || s.focus === p.focus) return
       const obj = s.focus
       setLastClick(obj)
@@ -150,7 +150,7 @@ function QuestionCardInner({
       else {
         miss()
         // let the camera settle back; the wrong part is not the answer
-        setTimeout(() => useAtlas.getState().set({ focus: null }), 350)
+        setTimeout(() => useApp.getState().set({ focus: null }), 350)
       }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

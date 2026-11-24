@@ -1,4 +1,4 @@
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { SourceButton } from '../source/Source'
 import { T4 } from '../../sources'
 import { transition } from '../../scene/transition'
@@ -6,11 +6,11 @@ import { CLASSES, COUPLE_BY_ID, COUPLES, CYCLE, GETTER, metalFate, nbYield, pois
 import '../growth/growth.css'
 
 /** Chapter 3 controls (Topic 4). Numbers come from chapters/clean/physics.ts. */
-type Clean = ReturnType<typeof useAtlas.getState>['clean']
+type Clean = ReturnType<typeof useApp.getState>['clean']
 function useClean() {
-  const c = useAtlas((s) => s.clean)
-  const set = useAtlas((s) => s.set)
-  return [c, (p: Partial<Clean>) => set({ clean: { ...useAtlas.getState().clean, ...p } })] as const
+  const c = useApp((s) => s.clean)
+  const set = useApp((s) => s.set)
+  return [c, (p: Partial<Clean>) => set({ clean: { ...useApp.getState().clean, ...p } })] as const
 }
 
 const CONTAM: Record<string, string> = { organic: 'organic film', oxide: 'oxide', metal: 'heavy metals', alkali: 'alkali ions', particle: 'particles' }
@@ -40,7 +40,7 @@ function RoomPanel() {
         Air control matters most: room air recirculates through ceiling HEPA filters, falls through the bay, leaves through the floor and returns up the service chase. Small particles stay airborne and coagulate; large ones settle.
       </p>
       <div className="lc-quick">
-        <button className="chip" onClick={() => (set({ rca: 0 }), useAtlas.getState().set({ tab: 'wetbench' }))}>level 2 · wafer cleaning →</button>
+        <button className="chip" onClick={() => (set({ rca: 0 }), useApp.getState().set({ tab: 'wetbench' }))}>level 2 · wafer cleaning →</button>
         <button className="chip" onClick={() => void transition.go('wafer', { tab: 'gettering' })}>level 3 · gettering →</button>
       </div>
       <div className="lc-quick">
@@ -219,13 +219,13 @@ function YieldPanel() {
 }
 
 export function CleanroomPanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'wetbench') return <BenchPanel />
   if (tab === 'redox') return <RedoxPanel />
   return <RoomPanel />
 }
 export function CleanWaferPanels() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   if (tab === 'gettering') return <GetterPanel />
   if (tab === 'yield') return <YieldPanel />
   return null

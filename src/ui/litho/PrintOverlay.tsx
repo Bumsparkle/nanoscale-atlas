@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { layoutState, BOUNDS } from '../../chapters/cmos/layout'
 import { printState } from '../../chapters/cmos/recipe'
 import { fitFeature, opticsOf, polyImage, printsOk } from '../../chapters/litho/print'
@@ -17,8 +17,8 @@ import { Seg, Slider } from '../controls'
  * are rebuilt with the same optical exposure (printState in recipe.ts).
  */
 export function usePrint() {
-  const L = useAtlas((s) => s.litho)
-  const ver = useAtlas((s) => s.layoutVersion)
+  const L = useApp((s) => s.litho)
+  const ver = useApp((s) => s.layoutVersion)
   const o = opticsOf(L)
   const layout = layoutState.get()
   const f = useMemo(() => (L.print && L.fit ? fitFeature(layout, o) : L.fNm), [L.print, L.fit, L.fNm, o.lambdaNm, o.NA, o.k1, o.S, ver]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -31,8 +31,8 @@ export function usePrint() {
 
 /** the printed polysilicon, in 0.5λ cells, drawn over the masks */
 export function PrintCells({ f }: { f: LayoutFrame }) {
-  const L = useAtlas((s) => s.litho)
-  const ver = useAtlas((s) => s.layoutVersion)
+  const L = useApp((s) => s.litho)
+  const ver = useApp((s) => s.layoutVersion)
   const p = usePrint()
   const d = useMemo(() => {
     if (!p.on) return ''
@@ -53,8 +53,8 @@ export function PrintCells({ f }: { f: LayoutFrame }) {
 }
 
 export function PrintBox() {
-  const L = useAtlas((s) => s.litho)
-  const setL = (p: Partial<typeof L>) => useAtlas.getState().set({ litho: { ...useAtlas.getState().litho, ...p } })
+  const L = useApp((s) => s.litho)
+  const setL = (p: Partial<typeof L>) => useApp.getState().set({ litho: { ...useApp.getState().litho, ...p } })
   const p = usePrint()
   return (
     <section className="lp-print" aria-label="Print with an exposure tool">

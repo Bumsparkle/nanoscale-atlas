@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
 import { P } from '../../theme/scene'
 
@@ -23,8 +23,8 @@ const NODE_OF: Record<string, string> = { substrate: 'hs-substrate', buffer: 'hs
 export default function HeteroLayer() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const tab = useAtlas((s) => s.tab) || 'stack'
-  const sampleId = useAtlas((s) => s.nano.sample)
+  const tab = useApp((s) => s.tab) || 'stack'
+  const sampleId = useApp((s) => s.nano.sample)
   const h = SAMPLE[sampleId] ?? SAMPLE.qw
   const sp = spans(h)
   const total = sp[sp.length - 1].z1
@@ -32,7 +32,7 @@ export default function HeteroLayer() {
   useDive('qsample', 'qbands', { home: [0, total / 2, 0] })
   useTabHome('hetero', tem ? { target: [30, total / 2, 0], polar: Math.PI / 2 - 0.02, azimuth: 0, dist: total * 2.4 + 90 } : { target: [30, total / 2, 0], polar: 1.3, azimuth: 0.5, dist: total * 2.6 + 90 }, `${tab}|${total}`)
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish(sp.filter((l) => l.role !== 'substrate').map((l, i) =>
       label(camera, size, `h-${i}`, `${MAT[l.mat].name} · ${l.nm} nm`, `${l.role} · Eg ${MAT[l.mat].Eg.toFixed(2)} eV`, [62, (l.z0 + l.z1) / 2, tem ? 1 : 30], 'right'),
     ).concat(tem ? [label(camera, size, 'h-bar', '50 nm', 'scale bar', [-25, -6, 1], 'bottom')] : []))

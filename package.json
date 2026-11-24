@@ -1,5 +1,5 @@
 {
-  "name": "nanoscale-atlas",
+  "name": "nanoscale-revision",
   "private": true,
   "version": "0.2.0",
   "type": "module",
@@ -11,8 +11,8 @@
     "typecheck": "tsc -b",
     "shots": "node scripts/shots.mjs",
     "slides": "node scripts/render-slides.mjs",
-    "dev:app": "ATLAS_APP=1 vite",
-    "build:app": "tsc -b && ATLAS_APP=1 vite build && node scripts/check-app-slides.mjs",
+    "dev:app": "NANOSCALE_APP=1 vite",
+    "build:app": "tsc -b && NANOSCALE_APP=1 vite build && node scripts/check-app-slides.mjs",
     "tauri": "tauri",
     "app:check": "node scripts/check-app-slides.mjs --binary",
     "test:db": "vitest run --config vitest.db.config.ts",

@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { cvdRate, meanFreePath, pow10, stepCoverage } from '../../chapters/films/physics'
 import { P } from '../../theme/scene'
 
@@ -28,7 +28,7 @@ const tracers = (n: number, seed: number) => {
 function Cvd() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const f = useAtlas((s) => s.films)
+  const f = useApp((s) => s.films)
   const lp = f.P < 50
   const rate = cvdRate(f.T, f.P, f.Y)
   const gas = useMemo(() => tracers(260, 3), [])
@@ -36,7 +36,7 @@ function Cvd() {
   const t = useRef(0)
   const glow = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.heat.susceptor, emissive: P.heat.susceptorGlow, emissiveIntensity: 0.4, roughness: 0.8 }), [])
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     t.current += st.reducedMotion ? 0 : dt
     glow.emissiveIntensity = 0.15 + 0.6 * Math.min(1, Math.max(0, (st.films.T - 400) / 800))
     // a tracer reaches the wafers (drops to the surface) with a probability set by how the
@@ -114,14 +114,14 @@ function Cvd() {
 function Plasma() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const mode = useAtlas((s) => s.films.plasma)
+  const mode = useApp((s) => s.films.plasma)
   const sputter = mode !== 'pecvd'
   const glowMat = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.plasma, transparent: true, opacity: 0.45 * P.k.sheet, depthWrite: false }), [])
   const ions = useMemo(() => tracers(160, 7), [])
   const o = useMemo(() => new THREE.Object3D(), [])
   const t = useRef(0)
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     t.current += st.reducedMotion ? 0 : dt
     glowMat.opacity = 0.35 + 0.08 * Math.sin(t.current * 13) + (st.films.plasma === 'magnetron' ? 0.1 : 0)
     ions.lanes.forEach(([u, w, ph], i) => {
@@ -200,8 +200,8 @@ function Plasma() {
 function Evaporator() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const ebeam = useAtlas((s) => s.films.ebeam)
-  const logP = useAtlas((s) => s.films.logP)
+  const ebeam = useApp((s) => s.films.ebeam)
+  const logP = useApp((s) => s.films.logP)
   const mfp = meanFreePath(Math.pow(10, logP)) * 100 // cm
   const ballistic = mfp > 60
   // vapour rays: straight when ballistic, scattered (zig-zag) otherwise
@@ -228,7 +228,7 @@ function Evaporator() {
     return g
   }, [ballistic, mfp])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'e-p', `P = ${pow10(logP)} Torr`, `mean free path ${mfp >= 100 ? (mfp / 100).toPrecision(2) + ' m' : mfp.toPrecision(2) + ' cm'}`, [30, 40, 0], 'right'),
       label(camera, size, 'e-s', ebeam ? 'e-beam hearth' : 'hot W boat', ballistic ? 'atoms fly straight: a point source' : 'atoms scatter off the gas', [0, 4, 0], 'bottom'),
@@ -277,7 +277,7 @@ function Evaporator() {
 function Coverage() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const f = useAtlas((s) => s.films)
+  const f = useApp((s) => s.films)
   const cov = stepCoverage(f.method, f.aspect, f.Sc)
   const W = 10
   const D = W * f.aspect
@@ -316,7 +316,7 @@ function Coverage() {
     return { sub: new THREE.ExtrudeGeometry(sub, opts), film: new THREE.ExtrudeGeometry(film, opts) }
   }, [D, cov.side, cov.bottom, cov.overhang])
   useFrame(() => {
-    if (useAtlas.getState().quiz) return publish([])
+    if (useApp.getState().quiz) return publish([])
     publish([
       label(camera, size, 'v-side', `sidewall ${Math.round(cov.side * 100)} %`, 'of the top thickness', [W / 2, 0, 10], 'right'),
       label(camera, size, 'v-bot', `bottom ${Math.round(cov.bottom * 100)} %`, cov.overhang > 0.4 ? 'overhang may seal a void' : undefined, [0, -D / 2, 10], 'bottom'),
@@ -341,7 +341,7 @@ function Barrel() {
   const size = useThree((s) => s.size)
   const susc = useRef<THREE.Group>(null)
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     if (susc.current && !st.reducedMotion) susc.current.rotation.y += dt * 0.3
     if (st.quiz) return publish([])
     publish([
@@ -396,7 +396,7 @@ function Barrel() {
 }
 
 export default function DepositionLayer() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   useDive('cleanroom', null, { home: tab === 'coverage' ? [0, 0, 0] : tab === 'siepi' ? [25, 25, 0] : [0, tab === 'cvd' ? 2 : 18, 0] })
   return (
     <>

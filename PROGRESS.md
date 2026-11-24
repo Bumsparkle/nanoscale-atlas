@@ -1,4 +1,4 @@
-# Nanoscale Atlas — progress log
+# Nanoscale Revision — progress log
 
 Spec: [BRIEF.md](BRIEF.md). Physics source: the ELEC0031 Topic 2 lecture slides (49 slides; PDF page = slide number). The PDF is UCL course material and is not in this repository; locally it lives at `docs/topic2-cmos.pdf`, which is gitignored.
 Decisions: [DECISIONS.md](DECISIONS.md).
@@ -524,7 +524,7 @@ The old lesson had 1,662 words of narration and 51 questions; the new one has 6,
 
 ### Desktop app — done (2026-11-21)
 
-**The app.** Tauri v2 packages the atlas as a Mac app with a native glass window (vibrancy, following the system appearance), a hidden title bar, inset traffic lights and a draggable top strip. In the app, the scene floats on the glass over a faint tint, and the panels are more opaque. The web build is unchanged.
+**The app.** Tauri v2 packages the app as a Mac app with a native glass window (vibrancy, following the system appearance), a hidden title bar, inset traffic lights and a draggable top strip. In the app, the scene floats on the glass over a faint tint, and the panels are more opaque. The web build is unchanged.
 
 **Verified in the installed app** (installed from the .dmg into /Applications):
 - it launches;

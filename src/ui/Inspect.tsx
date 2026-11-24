@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { MasteryToggle } from '../learn/ui/LearnHost'
 import { CONTENT, CONTENT_BY_ID } from '../chapters/cmos/content'
 import { LAYER_BY_ID } from '../chapters/cmos/layers'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { objectMastery } from '../learn/progress'
 
 const FAB_ONLY = new Set(['aluminium-film', 'photoresist', 'mask-oxide'])
 
 /** title + one-liner next to the pointer while hovering an object */
 export function HoverLabel() {
-  const hover = useAtlas((s) => s.hover)
-  const focus = useAtlas((s) => s.focus)
+  const hover = useApp((s) => s.hover)
+  const focus = useApp((s) => s.focus)
   const el = useRef<HTMLDivElement>(null)
   const [overCanvas, setOverCanvas] = useState(false)
   useEffect(() => {
@@ -24,7 +24,7 @@ export function HoverLabel() {
     window.addEventListener('pointermove', move)
     return () => window.removeEventListener('pointermove', move)
   }, [])
-  const quiz = useAtlas((s) => s.quiz)
+  const quiz = useApp((s) => s.quiz)
   const c = hover && hover !== focus && overCanvas && !quiz ? CONTENT_BY_ID[hover] : null
   return (
     <div ref={el} className="hover-label" style={{ visibility: c ? 'visible' : 'hidden' }} aria-hidden>
@@ -44,16 +44,16 @@ export function HoverLabel() {
  * panel. Doubles as the screen-reader description of the layer.
  */
 export function SceneOutline() {
-  const layer = useAtlas((s) => s.layer)
-  const view = useAtlas((s) => s.view)
-  const focus = useAtlas((s) => s.focus)
-  const set = useAtlas((s) => s.set)
+  const layer = useApp((s) => s.layer)
+  const view = useApp((s) => s.view)
+  const focus = useApp((s) => s.focus)
+  const set = useApp((s) => s.set)
   const [open, setOpen] = useState(false)
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   const items = CONTENT.filter((c) => c.layer === layer && (view === 'fab' || !FAB_ONLY.has(c.id)) && (!c.tabs || c.tabs.includes(tab)))
-  const mode = useAtlas((s) => s.mode)
-  const mastery = useAtlas((s) => s.mastery)
-  useAtlas((s) => s.progressVersion)
+  const mode = useApp((s) => s.mode)
+  const mastery = useApp((s) => s.mastery)
+  useApp((s) => s.progressVersion)
   if (view === 'layout' || mode !== 'explore') return null
   if (!items.length) return null
   const def = LAYER_BY_ID[layer]

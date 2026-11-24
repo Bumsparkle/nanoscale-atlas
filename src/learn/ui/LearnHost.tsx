@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAtlas, type Mode } from '../../state/store'
+import { useApp, type Mode } from '../../state/store'
 import { LessonPanel } from './LessonPanel'
 import { RevisePanel } from './RevisePanel'
 import { progress } from '../progress'
@@ -15,7 +15,7 @@ const MODES: { id: Mode; label: string; hint: string }[] = [
 
 /** resume the lesson of the chapter you are looking at */
 function lessonStart() {
-  const st = useAtlas.getState()
+  const st = useApp.getState()
   const ch = chapterOf(st.layer, st.tab)
   const at = progress.lesson().at
   if (chapterOfPosition(at) === ch) return at
@@ -25,7 +25,7 @@ function lessonStart() {
 
 /** switch mode, keeping each mode's own entry state (the lesson resumes where you were) */
 export function enterMode(id: Mode) {
-  const st = useAtlas.getState()
+  const st = useApp.getState()
   st.set({
     mode: id,
     lessonAt: id === 'lesson' ? lessonStart() : st.lessonAt,
@@ -41,9 +41,9 @@ export { MODES }
 
 /** Explore: tint the model by mastery */
 export function MasteryToggle() {
-  const mode = useAtlas((s) => s.mode)
-  const on = useAtlas((s) => s.mastery)
-  const set = useAtlas((s) => s.set)
+  const mode = useApp((s) => s.mode)
+  const on = useApp((s) => s.mastery)
+  const set = useApp((s) => s.set)
   if (mode !== 'explore') return null
   return (
     <button className="tool" aria-pressed={on} onClick={() => set({ mastery: !on, view: 'explore' })} title="Tint each part by how well you know its facts">
@@ -53,9 +53,9 @@ export function MasteryToggle() {
 }
 
 function MasteryLegend() {
-  const on = useAtlas((s) => s.mastery)
-  const mode = useAtlas((s) => s.mode)
-  const layer = useAtlas((s) => s.layer)
+  const on = useApp((s) => s.mastery)
+  const mode = useApp((s) => s.mode)
+  const layer = useApp((s) => s.layer)
   if (!on || mode !== 'explore') return null
   return (
     <aside className="mastery-legend" aria-label="Mastery legend">
@@ -72,11 +72,11 @@ function MasteryLegend() {
 }
 
 export function LearnHost() {
-  const mode = useAtlas((s) => s.mode)
+  const mode = useApp((s) => s.mode)
   // Esc closes a revise sheet before anything else
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const st = useAtlas.getState()
+      const st = useApp.getState()
       if (e.key === 'Escape' && st.mode === 'revise' && st.revise.tab !== 'drill') {
         e.stopImmediatePropagation()
         st.set({ revise: { ...st.revise, tab: 'drill' } })

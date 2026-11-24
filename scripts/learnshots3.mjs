@@ -19,7 +19,7 @@ await open('/growth/czochralski?mode=lesson&at=g-seg-k0')
 await shot('01-c2-step-teach')
 await startCheck()
 await shot('02-c2-do-open')
-await p.evaluate(() => window.__atlasSet({ growth: { k0: 0.8, frac: 0.3, dopant: 'B', passes: 1 } })); await wait(1200)
+await p.evaluate(() => window.__appSet({ growth: { k0: 0.8, frac: 0.3, dopant: 'B', passes: 1 } })); await wait(1200)
 await shot('03-c2-do-solved')
 
 // a parameterised calculation, answered wrong then opened

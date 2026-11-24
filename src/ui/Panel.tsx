@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { CONTENT_BY_ID } from '../chapters/cmos/content'
 import type { Content } from '../chapters/content-schema'
 import { inverterProcess } from '../chapters/cmos/recipe'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { transition } from '../scene/transition'
 import { Spring, SPRINGS } from '../scene/spring'
 import './panel.css'
@@ -13,9 +13,9 @@ import { SourceButton } from './source/Source'
  * on a spring; the world stays visible behind it.
  */
 export function Panel() {
-  const focus = useAtlas((s) => s.focus)
-  const reduced = useAtlas((s) => s.reducedMotion)
-  const set = useAtlas((s) => s.set)
+  const focus = useApp((s) => s.focus)
+  const reduced = useApp((s) => s.reducedMotion)
+  const set = useApp((s) => s.set)
   const [shown, setShown] = useState<string | null>(focus)
   const el = useRef<HTMLElement>(null)
   const spring = useRef(new Spring(focus ? 1 : 0, SPRINGS.ui))
@@ -37,10 +37,10 @@ export function Panel() {
     return () => cancelAnimationFrame(raf)
   }, [focus, reduced])
 
-  const inLayout = useAtlas((s) => s.view === 'layout' && s.layer === 'cell')
+  const inLayout = useApp((s) => s.view === 'layout' && s.layer === 'cell')
   const c = shown ? CONTENT_BY_ID[shown] : null
   // in the Layout view the same content renders inline in the layout panel
-  const mode = useAtlas((s) => s.mode)
+  const mode = useApp((s) => s.mode)
   if (!c || inLayout || mode !== 'explore') return null
 
   return (
@@ -59,7 +59,7 @@ export function Panel() {
 
 /** the four-part panel body (what / how made / what it does / slides), shared with the Layout view */
 export function ContentBody({ c }: { c: Content }) {
-  const set = useAtlas((s) => s.set)
+  const set = useApp((s) => s.set)
   const P = inverterProcess()
   const stepIndex = c.fabStep ? P.indexOf(c.fabStep) : -1
   const step = stepIndex >= 0 ? P.steps[stepIndex] : null

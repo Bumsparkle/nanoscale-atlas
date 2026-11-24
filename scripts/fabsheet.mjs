@@ -16,7 +16,7 @@ for (let k = 0; k < n; k++) {
     const rt = window.__cellRuntime
     const target = mid && k > 0 ? k - 0.5 : k
     rt.fab.snap(target)
-    window.__atlas_set({ step: Math.round(target), playing: false })
+    window.__app_set({ step: Math.round(target), playing: false })
   }, [k, mid])
   await p.waitForTimeout(500)
   const f = `shots/fab/${mid ? 'mid-' : ''}${String(k).padStart(2, '0')}.png`

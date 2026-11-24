@@ -72,15 +72,15 @@ jobs:
           mkdir -p out
           cp "$B"/dmg/*.dmg out/Nanoscale-Atlas-macOS.dmg
           cp "$B"/dmg/*.dmg "out/Nanoscale-Atlas-${GITHUB_REF_NAME}-macOS-universal.dmg"
-          cp "$B/macos/Nanoscale Atlas.app.tar.gz" out/Nanoscale-Atlas-macOS.app.tar.gz
-          cp "$B/macos/Nanoscale Atlas.app.tar.gz.sig" out/Nanoscale-Atlas-macOS.app.tar.gz.sig
-          echo "app=$B/macos/Nanoscale Atlas.app" >> "$GITHUB_OUTPUT"
+          cp "$B/macos/Nanoscale Revision.app.tar.gz" out/Nanoscale-Atlas-macOS.app.tar.gz
+          cp "$B/macos/Nanoscale Revision.app.tar.gz.sig" out/Nanoscale-Atlas-macOS.app.tar.gz.sig
+          echo "app=$B/macos/Nanoscale Revision.app" >> "$GITHUB_OUTPUT"
 
       - name: Fail if any slide image or PDF is in the bundle
         run: |
           node scripts/check-app-slides.mjs --bundle "${{ steps.files.outputs.app }}" --dmg out/Nanoscale-Atlas-macOS.dmg
           mkdir -p /tmp/tarcheck && tar -xzf out/Nanoscale-Atlas-macOS.app.tar.gz -C /tmp/tarcheck
-          node scripts/check-app-slides.mjs --bundle "/tmp/tarcheck/Nanoscale Atlas.app"
+          node scripts/check-app-slides.mjs --bundle "/tmp/tarcheck/Nanoscale Revision.app"
 
       - name: Release notes from the commits since the last tag
         run: |
@@ -100,4 +100,4 @@ jobs:
       - name: Publish the GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" out/* --title "Nanoscale Atlas ${GITHUB_REF_NAME}" --notes-file notes.md --verify-tag
+        run: gh release create "${GITHUB_REF_NAME}" out/* --title "Nanoscale Revision ${GITHUB_REF_NAME}" --notes-file notes.md --verify-tag

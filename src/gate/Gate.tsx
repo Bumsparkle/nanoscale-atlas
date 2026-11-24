@@ -157,14 +157,14 @@ export function Gate({ app = false, onDone }: { app?: boolean; onDone?: () => vo
   }
 
   return (
-    <main className="home gate" aria-label="Nanoscale Atlas: access">
+    <main className="home gate" aria-label="Nanoscale Revision: access">
       <DoorLeaves />
       <div className="home-theme">
         <ThemeIcon />
       </div>
       <section className="home-card gate-card" data-step={step}>
         <p className="eyebrow">ELEC0031 · UCL · access controlled</p>
-        <h1>Nanoscale Atlas</h1>
+        <h1>Nanoscale Revision</h1>
 
         {step === 'checking' && <p className="gate-note mono">checking the door…</p>}
 

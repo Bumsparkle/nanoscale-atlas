@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { slidePath, sourceLabel, uniqueRefs, type SourceRef } from '../../sources'
 import { slideUrls } from '../../account/slides'
 import './source.css'
@@ -11,7 +11,7 @@ import './source.css'
  * signed URLs, for signed-in users only (see DECISIONS.md).
  */
 export function SourceButton({ refs, className = '' }: { refs: SourceRef[]; className?: string }) {
-  const set = useAtlas((s) => s.set)
+  const set = useApp((s) => s.set)
   const list = uniqueRefs(refs)
   if (!list.length) return null
   const label = list.length === 1 ? sourceLabel(list[0]) : `${sourceLabel(list[0])} +${list.length - 1}`
@@ -27,8 +27,8 @@ export function SourceButton({ refs, className = '' }: { refs: SourceRef[]; clas
 }
 
 export function SourceModal() {
-  const src = useAtlas((s) => s.source)
-  const set = useAtlas((s) => s.set)
+  const src = useApp((s) => s.source)
+  const set = useApp((s) => s.set)
   const [state, setState] = useState<'loading' | 'ok' | 'missing'>('loading')
   const [url, setUrl] = useState<string | null>(null)
   const close = useRef<HTMLButtonElement>(null)

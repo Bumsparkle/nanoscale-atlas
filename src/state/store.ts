@@ -4,7 +4,7 @@ import type { Device, LayerId } from '../chapters/cmos/layers'
 import { MASK_IDS, type MaskId } from '../chapters/cmos/layout'
 import type { SourceRef, TopicId } from '../sources'
 
-export type Page = 'home' | 'atlas' | 'style' | 'debug'
+export type Page = 'home' | 'study' | 'style' | 'debug'
 export type View = 'explore' | 'section' | 'masks' | 'fab' | 'logic' | 'layout'
 export type CutTarget = 'slide27' | 'ngate' | 'pgate'
 export type CutAxis = 'x' | 'y'
@@ -54,7 +54,7 @@ export interface ProcState {
   metalNm: number
 }
 
-export interface AtlasState {
+export interface AppState {
   page: Page
   layer: LayerId
   device: Device
@@ -230,7 +230,7 @@ export interface AtlasState {
   renderer: { backend: 'webgpu' | 'webgl2' | 'pending' | 'failed'; detail?: string }
   /** real loading milestones, used by the gowning sequence */
   boot: { shell: boolean; gpu: boolean; frame: boolean; layers: number }
-  set: (p: Partial<AtlasState>) => void
+  set: (p: Partial<AppState>) => void
   setSection: (p: Partial<SectionState>) => void
 }
 
@@ -253,25 +253,25 @@ export const PROC_DEFAULT: ProcState = {
   dopant: 'B', preT: 950, preMin: 30, driveT: 1100, driveMin: 60, species: 'B', keV: 50, annealed: false,
   epi: 'cvd', epiMin: 30, metalNm: 500,
 }
-export const FILMS_DEFAULT: AtlasState['films'] = { T: 900, P: 760, Y: 0.01, plasma: 'pecvd', logP: -6, ebeam: false, method: 'cvd', aspect: 2, Sc: 0.1 }
-export const EPI_DEFAULT: AtlasState['epi'] = {
+export const FILMS_DEFAULT: AppState['films'] = { T: 900, P: 760, Y: 0.01, plasma: 'pecvd', logP: -6, ebeam: false, method: 'cvd', aspect: 2, Sc: 0.1 }
+export const EPI_DEFAULT: AppState['epi'] = {
   T: 1100, rate: 1, sub: 'As', seal: false, rp: false, logGa: -3.5, shutter: true, ml: 0, mode: 'fvdm', coverage: 1.5,
   film: 'InAs', substrate: 'GaAs', thick: 1, soi: 0,
 }
-export const LITHO_DEFAULT: AtlasState['litho'] = {
+export const LITHO_DEFAULT: AppState['litho'] = {
   system: 'projection', source: 'krf', NA: 0.6, k1: 0.75, k2: 0.5, S: 0.6, sep: 1.6, feature: 300, gap: 10, W: 4,
   rstep: 0, rpm: 4000, dose: 150, year: 2004, keV: 20, eb: 0, print: false, fit: false, fNm: 600,
 }
-export const NANO_DEFAULT: AtlasState['nano'] = {
+export const NANO_DEFAULT: AppState['nano'] = {
   sample: 'qw', grown: 5, well: 'GaAs', barrier: 'AlGaAs', L: 10, V0: 0.3, m: 0.067, finite: false, level: 1, prob: false, k: 0.5,
   dims: 1, a: 10, b: 10, c: 10, dof: 3, E: 60, fstep: 0, seed: 'au', dotNm: 4, T: 25, logSize: -8,
 }
-export const CLEAN_DEFAULT: AtlasState['clean'] = {
+export const CLEAN_DEFAULT: AppState['clean'] = {
   cls: 100, sources: { person: false, book: false, gloves: false }, rca: 0, metal: 'Fe', solution: 'water',
   cycle: 0, getter: 0, D0: 0.5, A: 1, C: 2, seed: 1,
 }
 
-export const useAtlas = create<AtlasState>((set) => ({
+export const useApp = create<AppState>((set) => ({
   page: 'home',
   layer: 'cell',
   device: 'nmos',

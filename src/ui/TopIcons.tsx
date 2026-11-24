@@ -1,4 +1,4 @@
-import { useAtlas, type Mode } from '../state/store'
+import { useApp, type Mode } from '../state/store'
 import { ThemeIcon } from './ThemeIcon'
 import { AccountIcon } from '../account/AccountMenu'
 import { enterMode, MODES } from '../learn/ui/LearnHost'
@@ -39,7 +39,7 @@ const MODE_ICON: Record<Mode, () => React.JSX.Element> = {
 
 /** one icon for the three modes: it shows the current mode, a click moves to the next */
 export function ModeIcon() {
-  const mode = useAtlas((s) => s.mode)
+  const mode = useApp((s) => s.mode)
   const i = MODES.findIndex((m) => m.id === mode)
   const cur = MODES[i]
   const next = MODES[(i + 1) % MODES.length]

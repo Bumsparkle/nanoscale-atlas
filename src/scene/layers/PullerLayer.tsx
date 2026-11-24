@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { dopingColour, label, publish, useDive } from './shared'
-import { useAtlas } from '../../state/store'
+import { useApp } from '../../state/store'
 import { clOverC0, csOverC0, zoneRefine } from '../../chapters/growth/physics'
 import { P } from '../../theme/scene'
 
@@ -107,8 +107,8 @@ function fzGeometry(profile: number[], from: number, to: number, seedCone: boole
 function Czochralski() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const k0 = useAtlas((s) => s.growth.k0)
-  const frac = useAtlas((s) => s.growth.frac)
+  const k0 = useApp((s) => s.growth.k0)
+  const frac = useApp((s) => s.growth.frac)
   const { geo, body } = useMemo(() => crystalGeometry(k0, frac), [k0, frac])
   useEffect(() => () => geo.dispose(), [geo])
   const crystal = useRef<THREE.Group>(null)
@@ -124,7 +124,7 @@ function Czochralski() {
   }, [k0, frac, meltMat])
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const w = st.reducedMotion ? 0 : dt
     if (crystal.current) crystal.current.rotation.y += w * 0.5 // seed: counter-clockwise seen from above
     if (crucible.current) crucible.current.rotation.y -= w * 0.25 // crucible: the other way
@@ -208,9 +208,9 @@ function Czochralski() {
 function FloatZone() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
-  const k0 = useAtlas((s) => s.growth.k0)
-  const frac = useAtlas((s) => s.growth.frac)
-  const passes = useAtlas((s) => s.growth.passes)
+  const k0 = useApp((s) => s.growth.k0)
+  const frac = useApp((s) => s.growth.frac)
+  const passes = useApp((s) => s.growth.passes)
   const zoneY = 30 + frac * 180
   const now = useMemo(() => zoneRefine(Math.min(k0, 0.99), passes), [k0, passes])
   const before = useMemo(() => zoneRefine(Math.min(k0, 0.99), passes - 1), [k0, passes])
@@ -219,7 +219,7 @@ function FloatZone() {
   useEffect(() => () => (crystalGeo.dispose(), rodGeo.dispose()), [crystalGeo, rodGeo])
   const coil = useRef<THREE.Group>(null)
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     if (coil.current && !st.reducedMotion) coil.current.rotation.y += dt * 0.2
     if (st.quiz) return publish([])
     const i = Math.round(((zoneY - 20) / 200) * 119)
@@ -273,7 +273,7 @@ function FloatZone() {
 const fmt = (v: number) => (v >= 10 ? v.toFixed(0) : v >= 0.1 ? v.toFixed(2) : v.toPrecision(2))
 
 export default function PullerLayer() {
-  const tab = useAtlas((s) => s.tab)
+  const tab = useApp((s) => s.tab)
   useDive('polysilicon', 'ingot', { home: tab === 'fz' ? [0, 120, 0] : [0, 140, 0] })
   return (
     <>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { live } from '../state/store'
 import { CONTENT_BY_ID } from '../chapters/cmos/content'
 import { BOUNDS, layoutState, MASK_IDS, MASK_NAME, moveEdge, transistors, URL_LAYER, type MaskId, type Side } from '../chapters/cmos/layout'
@@ -71,14 +71,14 @@ function Dim({ f, c, tone }: { f: LayoutFrame; c: RuleCheck; tone: 'hover' | 'ba
 }
 
 export function LayoutView() {
-  const layer = useAtlas((s) => s.layer)
-  const view = useAtlas((s) => s.view)
-  const layers = useAtlas((s) => s.layoutLayers)
-  const edit = useAtlas((s) => s.layoutEdit)
-  const focus = useAtlas((s) => s.focus)
-  const reduced = useAtlas((s) => s.reducedMotion)
-  useAtlas((s) => s.layoutVersion)
-  const set = useAtlas((s) => s.set)
+  const layer = useApp((s) => s.layer)
+  const view = useApp((s) => s.view)
+  const layers = useApp((s) => s.layoutLayers)
+  const edit = useApp((s) => s.layoutEdit)
+  const focus = useApp((s) => s.focus)
+  const reduced = useApp((s) => s.reducedMotion)
+  useApp((s) => s.layoutVersion)
+  const set = useApp((s) => s.set)
   const { w, h } = useViewport()
   const [hover, setHover] = useState<Hover>(null)
   const [pointer, setPointer] = useState<[number, number]>([0, 0])
@@ -96,8 +96,8 @@ export function LayoutView() {
   const bad = shown.filter((c) => !c.ok)
   const tight = shown.filter((c) => c.tight && !c.exact)
   const fets = transistors(layout)
-  const learn = useAtlas((s) => s.mode !== 'explore')
-  const quiz = useAtlas((s) => s.quiz)
+  const learn = useApp((s) => s.mode !== 'explore')
+  const quiz = useApp((s) => s.quiz)
   const f = layoutFrame(w, h, learn ? LEARN_PANEL_W + 16 : 0)
   const active = layer === 'cell' && view === 'layout'
   /** narrow screens: one-line callouts */

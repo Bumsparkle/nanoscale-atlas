@@ -7,7 +7,7 @@ import { MESH_OPTS } from '../../chapters/cmos/display'
 import { resolveComponents, CONTENT_BY_ID, CONTENT } from '../../chapters/cmos/content'
 import { stepForObject, objectMastery } from '../../learn/progress'
 import { mesh } from '../../sim/mesher'
-import { SNAP_TARGETS, useAtlas, type CutAxis } from '../../state/store'
+import { SNAP_TARGETS, useApp, type CutAxis } from '../../state/store'
 import { CellModel, TIER_NAMES, TIER_SPACING, type CellView } from '../CellModel'
 import { gridMaterial, matUniforms, type Lit } from '../materials'
 import { StudioLights } from '../Lighting'
@@ -91,7 +91,7 @@ export default function CellLayer() {
   const tmp = useMemo(() => new THREE.Vector3(), [])
 
   const refreshSelection = () => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const hov = st.hover && st.hover !== st.focus ? model.meshesFor(st.hover) : []
     selection.set('hover', st.hint ? [...hov, ...model.meshesFor(st.hint)] : hov)
     selection.set('focus', model.meshesFor(st.focus))
@@ -128,7 +128,7 @@ export default function CellLayer() {
   }
 
   useFrame((_, dt) => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const reduced = st.reducedMotion
     const fdt = fabDt(dt)
 
@@ -174,7 +174,7 @@ export default function CellLayer() {
         rt.plane.cfg = SPRINGS.snap
         rt.plane.target = SNAP_TARGETS[sec.locked].offset
       }
-      rt.gapS.target = useAtlas.getState().section.locked ? 1 : 0
+      rt.gapS.target = useApp.getState().section.locked ? 1 : 0
     } else rt.gapS.target = 0
     rt.plane.step(dt, reduced)
     rt.gapS.step(dt, reduced)
@@ -206,7 +206,7 @@ export default function CellLayer() {
   })
 
   useEffect(() => {
-    const st0 = useAtlas.getState()
+    const st0 = useApp.getState()
     if (st0.section.locked) {
       rt.plane.snap(SNAP_TARGETS[st0.section.locked].offset)
       rt.gapS.snap(1)
@@ -230,7 +230,7 @@ export default function CellLayer() {
     }
     /** straight down, near-orthographic, framed to match the SVG drawing */
     const layoutCamera = () => {
-      const f = layoutFrame(size.width, size.height, useAtlas.getState().mode !== 'explore' ? LEARN_PANEL_W + 16 : 0)
+      const f = layoutFrame(size.width, size.height, useApp.getState().mode !== 'explore' ? LEARN_PANEL_W + 16 : 0)
       const Hworld = size.height / f.s
       rig.locked = true
       rig.fov.target = ORTHO_FOV
@@ -249,7 +249,7 @@ export default function CellLayer() {
       const b = model.boundsFor(id)
       if (b) rig.focusBox(b, camera.fov, size.width / size.height, { padding: 1.6, minDist: 30 })
     }
-    const unsub = useAtlas.subscribe((s, p) => {
+    const unsub = useApp.subscribe((s, p) => {
       if (s.hover !== p.hover || s.focus !== p.focus || s.hint !== p.hint) refreshSelection()
       if (s.look !== p.look && s.look && CONTENT_BY_ID[s.look]?.layer === 'cell') focusOn(s.look)
       if (s.focus !== p.focus) {
@@ -296,7 +296,7 @@ export default function CellLayer() {
       for (const m of ms) box.expandByObject(m)
       const c = box.getCenter(new THREE.Vector3())
       // aim at the top or the front face, whichever the camera sees
-      if (useAtlas.getState().view === 'section') c.z = box.max.z - 0.05 // the cut face, middle height
+      if (useApp.getState().view === 'section') c.z = box.max.z - 0.05 // the cut face, middle height
       else {
         c.y = Math.min(box.max.y, c.y + (box.max.y - box.min.y) * 0.3)
         c.z = Math.max(c.z, box.max.z - 0.4)
@@ -318,7 +318,7 @@ export default function CellLayer() {
     rig.goHome()
     rig.handlers = {
       onDiveIn: () => {
-        const st = useAtlas.getState()
+        const st = useApp.getState()
         const c = st.focus ? CONTENT_BY_ID[st.focus] : null
         const device = c?.dive?.device ?? (rig.target.x.value < -3 ? 'nmos' : 'pmos')
         const via: [number, number, number] = device === 'nmos' ? [-15, 0.5, 0] : [9, 0.5, 0]
@@ -332,7 +332,7 @@ export default function CellLayer() {
     let drag: { mode: DragMode; startY: number; start: [number, number] | null; decided: boolean } | null = null
     const onMove = (e: PointerEvent) => {
       if (!drag) return
-      const st = useAtlas.getState()
+      const st = useApp.getState()
       if (drag.mode === 'section') {
         const p = pointerToLayout(e, camera, el)
         if (!p) return
@@ -349,7 +349,7 @@ export default function CellLayer() {
           }
           rt.dragging = true
         }
-        const ax = useAtlas.getState().section.axis
+        const ax = useApp.getState().section.axis
         const [lo, hi] = PLANE_RANGE[ax]
         rt.raw = clamp(ax === 'y' ? p[1] : p[0], lo, hi)
       } else {
@@ -361,7 +361,7 @@ export default function CellLayer() {
       if (!drag) return
       if (drag.mode === 'section') {
         rt.dragging = false
-        const st = useAtlas.getState()
+        const st = useApp.getState()
         if (!st.section.locked && rt.raw != null) {
           rt.plane.target = rt.raw
           st.setSection({ offset: Math.round(rt.raw * 10) / 10 })
@@ -375,7 +375,7 @@ export default function CellLayer() {
     }
     beginDrag = (mode, e) => {
       rig.owner = mode
-      useAtlas.getState().set({ hover: null })
+      useApp.getState().set({ hover: null })
       drag = { mode, startY: e.clientY, start: pointerToLayout(e, camera, el), decided: false }
     }
     window.addEventListener('pointermove', onMove)
@@ -384,7 +384,7 @@ export default function CellLayer() {
 
     return () => {
       unsub()
-      if (useAtlas.getState().view !== 'layout') rig.locked = false
+      if (useApp.getState().view !== 'layout') rig.locked = false
       rig.fov.target = 32
       beginDrag = null
       rig.handlers = {}
@@ -400,7 +400,7 @@ export default function CellLayer() {
   }, [model, camera, size, gl])
 
   const onDown = (e: ThreeEvent<PointerEvent>) => {
-    const v = useAtlas.getState().view
+    const v = useApp.getState().view
     if (v !== 'section' && v !== 'masks') return
     e.stopPropagation()
     beginDrag?.(v, e.nativeEvent)
@@ -409,10 +409,10 @@ export default function CellLayer() {
     if (rig.owner) return
     e.stopPropagation()
     const id = (e.object.userData.content as string | null) ?? null
-    if (useAtlas.getState().hover !== id) useAtlas.getState().set({ hover: id })
+    if (useApp.getState().hover !== id) useApp.getState().set({ hover: id })
   }
   const onOut = () => {
-    if (useAtlas.getState().hover) useAtlas.getState().set({ hover: null })
+    if (useApp.getState().hover) useApp.getState().set({ hover: null })
   }
   const onClick = (e: ThreeEvent<MouseEvent>) => {
     // a press that did not move is a click, even in Section/Masks views where pressing starts a drag
@@ -420,7 +420,7 @@ export default function CellLayer() {
     e.stopPropagation()
     const id = (e.object.userData.content as string | null) ?? null
     if (!id) return
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     // mastery overlay: a weak object opens the lesson step that teaches it
     if (st.mastery && st.mode === 'explore') {
       const m = objectMastery(id)
@@ -454,7 +454,7 @@ function PlaneGuide() {
   }, [])
   const mat = useMemo(() => new THREE.LineBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.85 }), [])
   useFrame(() => {
-    const st = useAtlas.getState()
+    const st = useApp.getState()
     const l = ref.current
     if (!l) return
     l.visible = st.view === 'section' && rt.gap < 0.95
@@ -479,7 +479,7 @@ function BackgroundClick() {
       position={[0, 0, -200]}
       onClick={(e) => {
         if (e.delta > 5 || rig.owner) return
-        if (useAtlas.getState().focus) useAtlas.getState().set({ focus: null })
+        if (useApp.getState().focus) useApp.getState().set({ focus: null })
       }}
     >
       <sphereGeometry args={[400, 8, 8]} />

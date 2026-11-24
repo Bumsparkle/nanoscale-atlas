@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { IS_APP, MAC_DOWNLOAD_URL } from '../platform'
-import { useAtlas } from '../state/store'
+import { useApp } from '../state/store'
 import { db } from '../sync/db'
 import { navigate } from '../state/url'
 import './home.css'
@@ -57,8 +57,8 @@ function useDoorSpring(open: boolean, reduced: boolean, onDone: () => void) {
 }
 
 export function Home() {
-  const boot = useAtlas((s) => s.boot)
-  const reduced = useAtlas((s) => s.reducedMotion)
+  const boot = useApp((s) => s.boot)
+  const reduced = useApp((s) => s.reducedMotion)
   const [phase, setPhase] = useState<'door' | 'gowning' | 'opening'>('door')
   const [step, setStep] = useState(0)
   const stepStart = useRef(0)
@@ -104,7 +104,7 @@ export function Home() {
   const progress = (i: number) => (i < step ? 1 : i > step ? 0 : ready[i] ? 1 : 0.4)
 
   return (
-    <main className={'home phase-' + phase} ref={doors} aria-label="Nanoscale Atlas">
+    <main className={'home phase-' + phase} ref={doors} aria-label="Nanoscale Revision">
       <DoorLeaves />
       {phase !== 'opening' && (
         <div className="home-theme">
@@ -114,7 +114,7 @@ export function Home() {
 
       <section className="home-card">
         <p className="eyebrow">ELEC0031 · Topics 2–4 · three chapters</p>
-        <h1>Nanoscale Atlas</h1>
+        <h1>Nanoscale Revision</h1>
         <p className="home-lede">
           From quartz sand to the 5.43 Å silicon lattice: growing the crystal, keeping the wafer clean, and building a CMOS
           inverter from the lecture's six masks and 45 fabrication steps.

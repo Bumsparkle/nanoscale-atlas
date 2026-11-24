@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAtlas, type CellKind } from '../../state/store'
+import { useApp, type CellKind } from '../../state/store'
 import { SourceButton } from '../source/Source'
 import { T3 } from '../../sources'
 import { transition } from '../../scene/transition'
@@ -71,8 +71,8 @@ export function PolyPanel() {
 }
 
 function DopantChips() {
-  const g = useAtlas((s) => s.growth)
-  const set = useAtlas((s) => s.set)
+  const g = useApp((s) => s.growth)
+  const set = useApp((s) => s.set)
   return (
     <div className="gp-chips" role="group" aria-label="Dopant">
       {K0_TABLE.map((d) => (
@@ -85,8 +85,8 @@ function DopantChips() {
 }
 
 function K0Slider({ label = 'segregation coefficient k0' }: { label?: string }) {
-  const g = useAtlas((s) => s.growth)
-  const set = useAtlas((s) => s.set)
+  const g = useApp((s) => s.growth)
+  const set = useApp((s) => s.set)
   return (
     <label className="lc-slider">
       <span className="eyebrow">{label}</span>
@@ -104,9 +104,9 @@ function K0Slider({ label = 'segregation coefficient k0' }: { label?: string }) 
 }
 
 export function PullerPanel() {
-  const tab = useAtlas((s) => s.tab)
-  const g = useAtlas((s) => s.growth)
-  const set = useAtlas((s) => s.set)
+  const tab = useApp((s) => s.tab)
+  const g = useApp((s) => s.growth)
+  const set = useApp((s) => s.set)
   if (tab === 'fz') {
     const prof = zoneRefine(Math.min(g.k0, 0.99), g.passes)
     return (
@@ -163,7 +163,7 @@ export function PullerPanel() {
 }
 
 export function IngotPanel() {
-  const g = useAtlas((s) => s.growth)
+  const g = useApp((s) => s.growth)
   return (
     <section className="lc gp" aria-label="Ingot">
       <span className="eyebrow lc-head">from ingot to wafers <SourceButton refs={[T3(23)]} /></span>
@@ -198,8 +198,8 @@ export function WafersPanel() {
 /* ───────────── lattice tabs ───────────── */
 
 export function CellsPanel() {
-  const c = useAtlas((s) => s.crystal)
-  const set = useAtlas((s) => s.set)
+  const c = useApp((s) => s.crystal)
+  const set = useApp((s) => s.set)
   const C = (p: Partial<typeof c>) => set({ crystal: { ...c, ...p } })
   return (
     <section className="lc gp" aria-label="Unit cells">
@@ -233,8 +233,8 @@ export function CellsPanel() {
 
 const PRESETS: [number, number, number][] = [[1, 0, 0], [1, 1, 0], [1, 1, 1], [2, 1, 0]]
 export function MillerPanel() {
-  const c = useAtlas((s) => s.crystal)
-  const set = useAtlas((s) => s.set)
+  const c = useApp((s) => s.crystal)
+  const set = useApp((s) => s.set)
   const [h, k, l] = c.hkl
   const zero = h === 0 && k === 0 && l === 0
   const setHkl = (hkl: [number, number, number]) => set({ crystal: { ...c, hkl } })
@@ -307,8 +307,8 @@ export function MillerPanel() {
 }
 
 export function BandsPanel() {
-  const c = useAtlas((s) => s.crystal)
-  const set = useAtlas((s) => s.set)
+  const c = useApp((s) => s.crystal)
+  const set = useApp((s) => s.set)
   const b = bandsAt(c.r)
   const text = {
     isolated: 'Far apart (r = d): no interaction. Each atom keeps its 3s and 3p levels.',
@@ -339,8 +339,8 @@ export function BandsPanel() {
 }
 
 export function DefectsPanel() {
-  const c = useAtlas((s) => s.crystal)
-  const set = useAtlas((s) => s.set)
+  const c = useApp((s) => s.crystal)
+  const set = useApp((s) => s.set)
   const ci = cI(c.T)
   const cv = cV(c.T)
   const show = (v: number) => (v < 1 ? '≈ 0' : sci(v))

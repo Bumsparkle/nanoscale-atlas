@@ -1,5 +1,5 @@
 /**
- * Where the atlas is running. The desktop app (Tauri) floats the scene on a
+ * Where the app is running. The desktop app (Tauri) floats the scene on a
  * native glass window; the web build is unchanged. Detected at runtime, so
  * `npm run tauri dev` (which serves the web dev build) also gets app mode.
  */
