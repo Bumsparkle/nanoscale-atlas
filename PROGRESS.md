@@ -721,3 +721,19 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
 - **Open:**
   - the Mac app's gate and Keychain were not driven by hand. The Rust side builds and the app launched, but window control was declined.
   - the deployed site needs the hosted Supabase project, Vercel env vars and the repository variables (README "Supabase setup") before it works end to end. Until then the new middleware fails closed (503).
+- **Deployed (2026-11-24)** to https://nanoscale-atlas.vercel.app on the integration's Supabase project `fsrhpubygmipnenlgsbq`:
+  - migrations pushed; auth config pushed (site URL, redirects, 6-digit codes, the UCL hook) without the email templates (see below);
+  - `SITE_ACCESS_CODE` and `ACCESS_COOKIE_SECRET` set for production and preview (the code is in the gitignored `ACCESS-CODE.local.txt`);
+  - 242 slides in the private bucket; GitHub variables `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SITE_URL` set for the Mac release build.
+- **Outage:** the first deploy returned 500 everywhere for about 10 minutes (extensionless server imports under Vercel's Node ESM). Fixed in c06fb85 and guarded by a test.
+- **Live checks, 14/14:**
+  - wrong code 401; right code gives a Secure httpOnly cookie; the app gets a token with CORS;
+  - signed-in page served; gated asset refused with either gate alone;
+  - signed slide URL works and the slide is not public;
+  - RLS read and write blocked across two users; non-UCL sign-up refused;
+  - account deletion removes the rows.
+  Run with throwaway admin-created users, deleted afterwards.
+- **Open on the live site:**
+  1. **Email delivery.** Supabase's built-in mailer only sends to members of the Supabase organisation and only a few an hour, so students won't receive sign-in emails until a custom SMTP sender is configured (Authentication → SMTP). After that, `supabase config push` the templates so the emails also carry the 6-digit code the Mac app needs.
+  2. The Mac app's sign-in hasn't been driven by hand.
+  3. `SITE_PASSWORD`, `SLIDES_ARCHIVE_URL` and `SLIDES_TOKEN` are still set on Vercel but no longer read.

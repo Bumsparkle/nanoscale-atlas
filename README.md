@@ -1,6 +1,6 @@
 # Nanoscale Atlas
 
-**Live site:** _(add the Vercel URL here)_
+**Live site:** https://nanoscale-atlas.vercel.app (access code and a UCL account required)
 
 A single-page 3D atlas of ELEC0031 (Nanoscale Processing and Characterisation). The processing (“Make”) half is complete, in seven chapters:
 - **Ch.1 CMOS inverter** (Topic 2): from a 300 mm wafer down to the 5.43 Å silicon lattice.
@@ -158,6 +158,8 @@ Then in the dashboard check: **Authentication → Hooks**: *Before User Created*
 ```bash
 ENV_FILE=.env.production.local npm run slides:upload
 ```
+
+**The live project** is `supabase-coral-lamp` (`fsrhpubygmipnenlgsbq`), created by Vercel's Supabase integration, which also sets `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET` and the publishable key on Vercel. The builds copy the URL and publishable key to the `VITE_` names themselves (`server/publicEnv.ts`), so only `SITE_ACCESS_CODE` and `ACCESS_COOKIE_SECRET` were added by hand. Those integration values are marked sensitive and can't be pulled back with `vercel env pull`, so CLI work goes through `npx supabase login` instead. When pushing auth config, push a copy of `supabase/config.jsonc` with the production `site_url` and redirect URLs, never the localhost ones.
 
 ### Environment variables
 
