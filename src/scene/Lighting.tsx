@@ -1,18 +1,20 @@
 import * as THREE from 'three/webgpu'
 import { useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
+import { P, useSceneTheme } from '../theme/scene'
 
 /**
- * A custom environment instead of a stock HDRI: a dark room with long
- * strip lights overhead, like cleanroom ceiling fixtures. Metals reflect
- * these strips as clean bands.
+ * A custom environment instead of a stock HDRI: a room with long strip
+ * lights overhead, like cleanroom ceiling fixtures. Metals reflect these
+ * strips as clean bands. Dark theme: a dark room; light theme: a mid-grey
+ * room, so metals still show bands instead of reflecting a white page.
  */
 function buildEnvScene(warm: boolean) {
   const s = new THREE.Scene()
-  s.background = new THREE.Color(0x1a1d1f)
-  const strip = new THREE.MeshBasicMaterial({ color: warm ? 0xffe2a8 : 0xf2f5f7 })
-  const soft = new THREE.MeshBasicMaterial({ color: warm ? 0x5a4a30 : 0x50565b })
-  const dim = new THREE.MeshBasicMaterial({ color: 0x2c3034 })
+  s.background = new THREE.Color(P.env.bg)
+  const strip = new THREE.MeshBasicMaterial({ color: warm ? P.env.stripWarm : P.env.strip })
+  const soft = new THREE.MeshBasicMaterial({ color: warm ? P.env.softWarm : P.env.soft })
+  const dim = new THREE.MeshBasicMaterial({ color: P.env.dim })
   const g = new THREE.BoxGeometry(1, 1, 1)
   // ceiling: a broad soft panel with bright strip fixtures, as in a cleanroom
   const ceiling = new THREE.Mesh(g, soft)
@@ -29,7 +31,7 @@ function buildEnvScene(warm: boolean) {
   wall.scale.set(14, 3, 0.1)
   wall.position.set(0, 0.5, -6)
   s.add(wall)
-  const floorGlow = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: 0x15181a }))
+  const floorGlow = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: P.env.floor }))
   floorGlow.scale.set(20, 0.1, 20)
   floorGlow.position.set(0, -3, 0)
   s.add(floorGlow)
@@ -41,8 +43,9 @@ const envCache = new Map<string, THREE.Texture>()
 export function useLabEnvironment(warm = false, intensity = 0.9) {
   const gl = useThree((s) => s.gl) as unknown as THREE.WebGPURenderer
   const scene = useThree((s) => s.scene)
+  const theme = useSceneTheme()
   useEffect(() => {
-    const k = warm ? 'warm' : 'cool'
+    const k = (warm ? 'warm:' : 'cool:') + theme
     let tex = envCache.get(k)
     if (!tex) {
       const pm = new THREE.PMREMGenerator(gl)
@@ -54,17 +57,17 @@ export function useLabEnvironment(warm = false, intensity = 0.9) {
     return () => {
       scene.environment = null
     }
-  }, [gl, scene, warm, intensity])
+  }, [gl, scene, warm, intensity, theme])
 }
 
 export function StudioLights({ scale = 1 }: { scale?: number }) {
-  useLabEnvironment(false, 1.25)
+  useLabEnvironment(false, P.k.envIntensity)
   return (
     <>
-      <hemisphereLight args={['#cfd6dc', '#0b0c0d', 0.35]} />
-      <directionalLight position={[30 * scale, 60 * scale, 45 * scale]} intensity={2.1} color="#fff3e2" />
-      <directionalLight position={[-45 * scale, 25 * scale, -40 * scale]} intensity={0.9} color="#a9bed0" />
-      <directionalLight position={[0, -30 * scale, 50 * scale]} intensity={0.25} color="#ffffff" />
+      <hemisphereLight args={[P.light.hemiSky, P.light.hemiGround, P.k.hemi]} />
+      <directionalLight position={[30 * scale, 60 * scale, 45 * scale]} intensity={P.k.key} color={P.light.key} />
+      <directionalLight position={[-45 * scale, 25 * scale, -40 * scale]} intensity={P.k.fill} color={P.light.fill} />
+      <directionalLight position={[0, -30 * scale, 50 * scale]} intensity={P.k.rim} color={P.light.rim} />
     </>
   )
 }

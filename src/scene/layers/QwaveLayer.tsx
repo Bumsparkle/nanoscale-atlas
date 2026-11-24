@@ -7,6 +7,7 @@ import { label, publish, useDive, useTabHome } from './shared'
 import { useAtlas } from '../../state/store'
 import { boxLevels, countStates, finitePsi, finiteWell, freeEnergy, HB, infiniteLevel, infinitePsi } from '../../chapters/nano/quantum'
 import { Line } from './nanoShared'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 7 (Topic 8 slides 4–13, 23–31): wavefunctions, exactly.
@@ -38,16 +39,16 @@ function Free() {
   return (
     <group>
       <Inspectable node="qv-dispersion" fit={1.6}>
-        <Line pts={par} r={0.5} color="#7dd3fc" emissive="#7dd3fc" />
+        <Line pts={par} r={0.5} color={P.signal.beam} emissive={P.signal.beam} />
         <mesh position={[k * KX, E * EY, 0]}>
           <sphereGeometry args={[1.8, 16, 12]} />
-          <meshStandardNodeMaterial color="#f0b43c" emissive="#f0b43c" emissiveIntensity={0.6} />
+          <meshStandardNodeMaterial color={P.signal.amber} emissive={P.signal.amber} emissiveIntensity={0.6} />
         </mesh>
-        <Line pts={[[-kmax * KX, 0, 0], [kmax * KX, 0, 0]]} r={0.15} color="#8a949a" segs={4} />
-        <Line pts={[[0, -2, 0], [0, 75, 0]]} r={0.15} color="#8a949a" segs={4} />
+        <Line pts={[[-kmax * KX, 0, 0], [kmax * KX, 0, 0]]} r={0.15} color={P.obj.steel} segs={4} />
+        <Line pts={[[0, -2, 0], [0, 75, 0]]} r={0.15} color={P.obj.steel} segs={4} />
       </Inspectable>
       <Inspectable node="qv-psi" fit={1.6}>
-        <Line pts={wave} r={0.35} color="#b3e5ff" />
+        <Line pts={wave} r={0.35} color={P.signal.beamPale} />
       </Inspectable>
     </group>
   )
@@ -93,32 +94,32 @@ function Well() {
           [-1, 1].map((s) => (
             <mesh key={s} position={[s * (half + (span * XS) / 4), (n.V0 * EY) / 2, -2]}>
               <boxGeometry args={[(span * XS) / 2 - 0.1, n.V0 * EY, 4]} />
-              <meshStandardNodeMaterial color="#5f7486" transparent opacity={0.6} />
+              <meshStandardNodeMaterial color={P.obj.substrate} transparent opacity={0.6} />
             </mesh>
           ))
         ) : (
           [-1, 1].map((s) => (
             <mesh key={s} position={[s * (half + 3), (Etop * EY) / 2 + 5, -2]}>
               <boxGeometry args={[6, Etop * EY + 10, 4]} />
-              <meshStandardNodeMaterial color="#5f7486" />
+              <meshStandardNodeMaterial color={P.obj.substrate} />
             </mesh>
           ))
         )}
         <mesh position={[0, -0.5, -2]}>
           <boxGeometry args={[span * XS, 1, 4]} />
-          <meshStandardNodeMaterial color="#3d4a57" />
+          <meshStandardNodeMaterial color={P.obj.barrier} />
         </mesh>
       </Inspectable>
       <Inspectable node="qv-level" fit={2}>
         {levels.map((lv) => (
-          <Line key={lv.n} pts={[[-(n.finite ? span * XS * 0.5 : half), lv.E * EY, 0.3], [n.finite ? span * XS * 0.5 : half, lv.E * EY, 0.3]]} r={lv.n === n.level ? 0.35 : 0.18} color={lv.n === n.level ? '#f0b43c' : '#c0c8ce'} segs={4} />
+          <Line key={lv.n} pts={[[-(n.finite ? span * XS * 0.5 : half), lv.E * EY, 0.3], [n.finite ? span * XS * 0.5 : half, lv.E * EY, 0.3]]} r={lv.n === n.level ? 0.35 : 0.18} color={lv.n === n.level ? P.signal.amber : P.signal.level} segs={4} />
         ))}
         {n.finite && levels.map((lv) => (
-          <Line key={`inf${lv.n}`} pts={[[-half, infiniteLevel(lv.n, n.L, n.m) * EY, -0.5], [half, infiniteLevel(lv.n, n.L, n.m) * EY, -0.5]]} r={0.1} color="#6f7a84" segs={4} />
+          <Line key={`inf${lv.n}`} pts={[[-half, infiniteLevel(lv.n, n.L, n.m) * EY, -0.5], [half, infiniteLevel(lv.n, n.L, n.m) * EY, -0.5]]} r={0.1} color={P.signal.ghost} segs={4} />
         ))}
       </Inspectable>
       <Inspectable node="qv-psi" fit={2}>
-        {curves.map((pts, i) => <Line key={i} pts={pts} r={i + 1 === n.level ? 0.4 : 0.22} color={n.prob ? '#ffd27a' : '#7dd3fc'} emissive={i + 1 === n.level ? (n.prob ? '#ffd27a' : '#7dd3fc') : undefined} />)}
+        {curves.map((pts, i) => <Line key={i} pts={pts} r={i + 1 === n.level ? 0.4 : 0.22} color={n.prob ? P.signal.holeWarm : P.signal.beam} emissive={i + 1 === n.level ? (n.prob ? P.signal.holeWarm : P.signal.beam) : undefined} />)}
       </Inspectable>
     </group>
   )
@@ -149,21 +150,21 @@ function Confine() {
       <Inspectable node="qv-box" fit={1.5}>
         <mesh>
           <boxGeometry args={[sx, sy, sz]} />
-          <meshStandardNodeMaterial color="#d08a4a" transparent opacity={0.35} roughness={0.3} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.obj.well} transparent opacity={0.35} roughness={0.3} depthWrite={false} />
         </mesh>
         <mesh ref={glow} scale={[dims >= 3 ? sx * 0.3 : sx * 0.48, sy * 0.3, dims >= 2 ? sz * 0.3 : sz * 0.48]}>
           <sphereGeometry args={[1, 24, 16]} />
-          <meshBasicNodeMaterial color="#7dd3fc" transparent opacity={0.45} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.signal.beam} transparent opacity={0.45} depthWrite={false} />
         </mesh>
       </Inspectable>
       <Inspectable node="qv-level" fit={2}>
         {lv.map((l, i) => (
           <group key={i}>
-            <Line pts={[[Math.max(sx, 40) / 2 + 12, l.E * EY - 40, 0], [Math.max(sx, 40) / 2 + 28, l.E * EY - 40, 0]]} r={0.35} color="#f0b43c" segs={4} />
+            <Line pts={[[Math.max(sx, 40) / 2 + 12, l.E * EY - 40, 0], [Math.max(sx, 40) / 2 + 28, l.E * EY - 40, 0]]} r={0.35} color={P.signal.amber} segs={4} />
             {dims < 3 && (
               <mesh position={[Math.max(sx, 40) / 2 + 20, l.E * EY - 40 + 4, -0.5]} raycast={() => null}>
                 <planeGeometry args={[16, 8]} />
-                <meshBasicNodeMaterial color="#f0b43c" transparent opacity={0.12} />
+                <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.12} />
               </mesh>
             )}
           </group>
@@ -197,8 +198,8 @@ function Dos() {
     const m = inst.current
     if (!m) return
     const o = new THREE.Object3D()
-    const cIn = new THREE.Color('#f0b43c')
-    const cOut = new THREE.Color('#4a5560')
+    const cIn = new THREE.Color(P.signal.amber)
+    const cOut = new THREE.Color(P.signal.off)
     pts.forEach((p, i) => {
       o.position.set(p[0] * U, p[2] * U, p[1] * U)
       o.updateMatrix()
@@ -221,31 +222,31 @@ function Dos() {
       <Inspectable node="qv-kspace" fit={1.4}>
         <instancedMesh key={dims} ref={inst} args={[undefined, undefined, Math.max(1, pts.length)]}>
           <sphereGeometry args={[0.9, 8, 6]} />
-          <meshStandardNodeMaterial color="#ffffff" />
+          <meshStandardNodeMaterial color={P.obj.white} />
         </instancedMesh>
         {dims === 3 && (
           <mesh raycast={() => null}>
             <sphereGeometry args={[Math.max(0.1, R), 40, 24, Math.PI / 2, Math.PI / 2, 0, Math.PI / 2]} />
-            <meshStandardNodeMaterial color="#7dd3fc" transparent opacity={0.22} side={THREE.DoubleSide} depthWrite={false} />
+            <meshStandardNodeMaterial color={P.signal.beam} transparent opacity={0.22} side={THREE.DoubleSide} depthWrite={false} />
           </mesh>
         )}
         {dims === 2 && (
           <mesh rotation-x={Math.PI / 2} raycast={() => null}>
             <circleGeometry args={[Math.max(0.1, R), 48, 0, Math.PI / 2]} />
-            <meshBasicNodeMaterial color="#7dd3fc" transparent opacity={0.25} side={THREE.DoubleSide} depthWrite={false} />
+            <meshBasicNodeMaterial color={P.signal.beam} transparent opacity={0.25} side={THREE.DoubleSide} depthWrite={false} />
           </mesh>
         )}
-        {dims === 1 && <Line pts={[[0, 0, 0], [Math.max(0.1, R), 0, 0]]} r={0.6} color="#7dd3fc" segs={4} />}
+        {dims === 1 && <Line pts={[[0, 0, 0], [Math.max(0.1, R), 0, 0]]} r={0.6} color={P.signal.beam} segs={4} />}
         {dims === 0 && [1, 2, 3].map((k) => (
           <mesh key={k} position={[k * 18, 10, 0]}>
             <boxGeometry args={[1.2, 30, 1.2]} />
-            <meshStandardNodeMaterial color="#f0b43c" emissive="#f0b43c" emissiveIntensity={0.5} />
+            <meshStandardNodeMaterial color={P.signal.amber} emissive={P.signal.amber} emissiveIntensity={0.5} />
           </mesh>
         ))}
         {/* axes */}
-        <Line pts={[[0, 0, 0], [(M + 1) * U, 0, 0]]} r={0.2} color="#8a949a" segs={4} />
-        {dims >= 2 && <Line pts={[[0, 0, 0], [0, 0, (M + 1) * U]]} r={0.2} color="#8a949a" segs={4} />}
-        {dims >= 3 && <Line pts={[[0, 0, 0], [0, (M + 1) * U, 0]]} r={0.2} color="#8a949a" segs={4} />}
+        <Line pts={[[0, 0, 0], [(M + 1) * U, 0, 0]]} r={0.2} color={P.obj.steel} segs={4} />
+        {dims >= 2 && <Line pts={[[0, 0, 0], [0, 0, (M + 1) * U]]} r={0.2} color={P.obj.steel} segs={4} />}
+        {dims >= 3 && <Line pts={[[0, 0, 0], [0, (M + 1) * U, 0]]} r={0.2} color={P.obj.steel} segs={4} />}
       </Inspectable>
     </group>
   )

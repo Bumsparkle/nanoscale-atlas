@@ -670,3 +670,21 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
     - the 3D cell not picking up the print settings outside the Layout view.
 - **Slides:** the seven-deck archive (242 slides) is uploaded to the private release as asset 786861401. To show Topics 3–8 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786861401` and redeploy.
 
+## Light theme (2026-11-24)
+- **Shipped:** a light "cleanroom" theme beside the dark one, with a sun/moon icon and a single mode icon (Explore → Lesson → Revise) floating at the top right. It follows the system until chosen, is saved in localStorage, and doesn't flash on load. The Mac window's glass follows the theme. Design and reasoning are in DECISIONS.md.
+- **Coverage:** every hard-coded colour in the UI and scene code moved to tokens:
+  - about 80 CSS literals onto CSS custom properties;
+  - about 600 scene literals onto the 334-token scene palette;
+  - the 2D plots, band diagrams, layout view, process-lab sections, skill map and slide viewer read CSS tokens.
+- **Tests:** 783 unit tests pass, with three new suites: contrast for both themes, palette rules, and no stray colour literals.
+- **Checked in the browser:**
+  - live theme switching, with no console errors;
+  - persistence across reloads;
+  - System following an OS appearance change. The first emulated change in the browser pane didn't fire, but every later one did; most likely an emulation quirk, but not confirmed.
+  - the mode cycle;
+  - phone layout at 375 px.
+- **Screenshots:** `scripts/themeshots.mjs` now shoots every layer and every tab (70 screens: 3D scenes, plots, band diagrams, lesson, Revise, the skill map, slides, home) in both themes at 1440 and 375, and pairs them with `scripts/montage.mjs`. A first five-screen dark/light review (cell, section, cleanroom, band diagram, skill map) looked right.
+- **Open:**
+  - The full 280-shot pass was still running when this was pushed and hasn't been reviewed. Contrast fixes from it will follow.
+  - The Mac app itself hasn't been run with the new theme.
+

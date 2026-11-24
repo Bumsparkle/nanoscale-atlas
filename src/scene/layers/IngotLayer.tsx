@@ -6,6 +6,7 @@ import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { dopingColour, label, publish, useDive } from './shared'
 import { useAtlas } from '../../state/store'
 import { csOverC0 } from '../../chapters/growth/physics'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 2, layer 4: the ingot (1 unit = 1 cm), Topic 3 slide 23.
@@ -97,19 +98,19 @@ export default function IngotLayer() {
       </Inspectable>
       <Inspectable node="ingot-ground" fit={1.2}>
         <mesh geometry={round} rotation-z={-Math.PI / 2} position={[0, 0, 0]}>
-          <meshStandardNodeMaterial color="#8ea2b2" metalness={0.75} roughness={0.18} />
+          <meshStandardNodeMaterial color={P.obj.siliconBright} metalness={0.75} roughness={0.18} />
         </mesh>
         <mesh geometry={flat} rotation-z={Math.PI / 2} position={[0, 0, 45]}>
-          <meshStandardNodeMaterial color="#8ea2b2" metalness={0.75} roughness={0.18} />
+          <meshStandardNodeMaterial color={P.obj.siliconBright} metalness={0.75} roughness={0.18} />
         </mesh>
       </Inspectable>
       <mesh position={[0, -R - 2, 0]}>
         <boxGeometry args={[280, 2, 150]} />
-        <meshStandardNodeMaterial color="#3a4045" roughness={0.6} metalness={0.3} />
+        <meshStandardNodeMaterial color={P.obj.cradle} roughness={0.6} metalness={0.3} />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, -R - 3.1, 0]}>
         <circleGeometry args={[1200, 48]} />
-        <meshStandardNodeMaterial color="#25292c" roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.floor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={6000} />

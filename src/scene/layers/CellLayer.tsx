@@ -22,6 +22,7 @@ import { cutLabels, PLANE_RANGE, snapFor, type CutLabel } from '../section'
 import { CELL_CENTRE } from '../cellGeometry'
 import { layoutFrame, ORTHO_FOV, LEARN_PANEL_W } from '../../ui/layoutFrame'
 import { FabEffects } from '../FabEffects'
+import { P } from '../../theme/scene'
 
 /**
  * Inverter conducting path for input A (slides 16–17): A = 1 turns the
@@ -451,7 +452,7 @@ function PlaneGuide() {
     g.setAttribute('position', new THREE.Float32BufferAttribute(new Array(8 * 3).fill(0), 3))
     return g
   }, [])
-  const mat = useMemo(() => new THREE.LineBasicNodeMaterial({ color: '#f0b43c', transparent: true, opacity: 0.85 }), [])
+  const mat = useMemo(() => new THREE.LineBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.85 }), [])
   useFrame(() => {
     const st = useAtlas.getState()
     const l = ref.current

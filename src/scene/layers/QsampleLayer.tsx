@@ -6,6 +6,7 @@ import { label, publish, useDive, useTabHome } from './shared'
 import { useAtlas } from '../../state/store'
 import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
 import { regime, SCALE_OBJECTS } from '../../chapters/nano/scale'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 7 (Topic 8 slides 2–3): the grown sample.
@@ -32,14 +33,14 @@ function Scale() {
   })
   const shape = (id: string) => {
     switch (id) {
-      case 'water': return <mesh><sphereGeometry args={[1.6, 16, 12]} /><meshStandardNodeMaterial color="#9ad0ec" roughness={0.2} /></mesh>
-      case 'glucose': return <group>{[[0, 0], [2, 1], [-1.6, 1.4], [1, -1.8]].map(([x, y], i) => <mesh key={i} position={[x, y, 0]}><sphereGeometry args={[1, 12, 8]} /><meshStandardNodeMaterial color={i % 2 ? '#e0453c' : '#d9d9d9'} /></mesh>)}</group>
-      case 'antibody': return <group>{[[0, -1.5, 0, 0], [-1.3, 1.2, 0, 0.7], [1.3, 1.2, 0, -0.7]].map(([x, y, z, rz], i) => <mesh key={i} position={[x, y, z]} rotation-z={rz}><capsuleGeometry args={[0.6, 2.6, 4, 8]} /><meshStandardNodeMaterial color="#e07a5f" /></mesh>)}</group>
-      case 'virus': return <mesh><icosahedronGeometry args={[2.4, 1]} /><meshStandardNodeMaterial color="#5b8bd6" flatShading /></mesh>
-      case 'bacteria': return <mesh rotation-z={0.6}><capsuleGeometry args={[1.2, 3.6, 6, 12]} /><meshStandardNodeMaterial color="#b8b6c8" /></mesh>
-      case 'cell': return <mesh><sphereGeometry args={[2.6, 20, 14]} /><meshStandardNodeMaterial color="#d9a9c9" roughness={0.6} /></mesh>
-      case 'stop': return <mesh rotation-x={Math.PI / 2}><cylinderGeometry args={[1.2, 1.2, 0.3, 20]} /><meshStandardNodeMaterial color="#111" /></mesh>
-      default: return <mesh><sphereGeometry args={[3, 24, 16]} /><meshStandardNodeMaterial color="#d8e04a" roughness={0.9} /></mesh>
+      case 'water': return <mesh><sphereGeometry args={[1.6, 16, 12]} /><meshStandardNodeMaterial color={P.sample.water} roughness={0.2} /></mesh>
+      case 'glucose': return <group>{[[0, 0], [2, 1], [-1.6, 1.4], [1, -1.8]].map(([x, y], i) => <mesh key={i} position={[x, y, 0]}><sphereGeometry args={[1, 12, 8]} /><meshStandardNodeMaterial color={i % 2 ? P.signal.bad : P.sample.glucose} /></mesh>)}</group>
+      case 'antibody': return <group>{[[0, -1.5, 0, 0], [-1.3, 1.2, 0, 0.7], [1.3, 1.2, 0, -0.7]].map(([x, y, z, rz], i) => <mesh key={i} position={[x, y, z]} rotation-z={rz}><capsuleGeometry args={[0.6, 2.6, 4, 8]} /><meshStandardNodeMaterial color={P.sample.antibody} /></mesh>)}</group>
+      case 'virus': return <mesh><icosahedronGeometry args={[2.4, 1]} /><meshStandardNodeMaterial color={P.sample.virus} flatShading /></mesh>
+      case 'bacteria': return <mesh rotation-z={0.6}><capsuleGeometry args={[1.2, 3.6, 6, 12]} /><meshStandardNodeMaterial color={P.sample.bacteria} /></mesh>
+      case 'cell': return <mesh><sphereGeometry args={[2.6, 20, 14]} /><meshStandardNodeMaterial color={P.sample.cell} roughness={0.6} /></mesh>
+      case 'stop': return <mesh rotation-x={Math.PI / 2}><cylinderGeometry args={[1.2, 1.2, 0.3, 20]} /><meshStandardNodeMaterial color={P.obj.black} /></mesh>
+      default: return <mesh><sphereGeometry args={[3, 24, 16]} /><meshStandardNodeMaterial color={P.sample.ball} roughness={0.9} /></mesh>
     }
   }
   return (
@@ -48,12 +49,12 @@ function Scale() {
         {/* the axis, ten orders of magnitude */}
         <mesh position={[X(1e3), 0, 0]} rotation-z={Math.PI / 2}>
           <cylinderGeometry args={[0.3, 0.3, X(1e9) - X(0.05), 8]} />
-          <meshStandardNodeMaterial color="#8a949a" />
+          <meshStandardNodeMaterial color={P.obj.steel} />
         </mesh>
         {Array.from({ length: 11 }, (_, i) => (
           <mesh key={i} position={[X(Math.pow(10, i - 1)), 0, 0]}>
             <boxGeometry args={[0.3, 2.4, 0.3]} />
-            <meshStandardNodeMaterial color="#c0c8ce" />
+            <meshStandardNodeMaterial color={P.obj.ruler} />
           </mesh>
         ))}
         {SCALE_OBJECTS.map((o) => <group key={o.id} position={[X(o.nm), 5, 0]}>{shape(o.id)}</group>)}
@@ -61,12 +62,12 @@ function Scale() {
       <Inspectable node="qs-nanoband" fit={1.6}>
         <mesh position={[(X(1) + X(100)) / 2, 0, 0]}>
           <boxGeometry args={[X(100) - X(1), 1.6, 8]} />
-          <meshStandardNodeMaterial color="#f0b43c" transparent opacity={0.55} emissive="#f0b43c" emissiveIntensity={0.3} />
+          <meshStandardNodeMaterial color={P.signal.amber} transparent opacity={0.55} emissive={P.signal.amber} emissiveIntensity={0.3} />
         </mesh>
       </Inspectable>
       <mesh position={[X(nm), -3, 0]} raycast={() => null}>
         <coneGeometry args={[1.2, 2.6, 16]} />
-        <meshBasicNodeMaterial color="#7dd3fc" />
+        <meshBasicNodeMaterial color={P.signal.beam} />
       </mesh>
     </group>
   )
@@ -92,7 +93,7 @@ function Sample() {
       <Inspectable node="qs-sample" fit={1.4}>
         <mesh position={[0, -0.25, 0]}>
           <boxGeometry args={[10, 0.5, 10]} />
-          <meshStandardNodeMaterial color="#5f7486" metalness={0.5} roughness={0.25} />
+          <meshStandardNodeMaterial color={P.obj.substrate} metalness={0.5} roughness={0.25} />
         </mesh>
       </Inspectable>
       <Inspectable node="qs-edge" fit={2}>
@@ -117,7 +118,7 @@ export default function QsampleLayer() {
       {tab === 'sample' ? <Sample /> : <Scale />}
       <mesh rotation-x={-Math.PI / 2} position={[0, -12, 0]}>
         <circleGeometry args={[600, 48]} />
-        <meshStandardNodeMaterial color="#25292c" roughness={1} side={THREE.DoubleSide} />
+        <meshStandardNodeMaterial color={P.stage.floor} roughness={1} side={THREE.DoubleSide} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={4000} />

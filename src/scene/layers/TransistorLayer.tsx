@@ -16,6 +16,7 @@ import { transition } from '../transition'
 import { overlay, type ScreenLabel } from '../cellRuntime'
 import { Spring, SPRINGS } from '../spring'
 import { channelStrength } from '../../chapters/cmos/device'
+import { P } from '../../theme/scene'
 
 /**
  * Layer 4: one transistor, cut along the slide 27 line (1 unit = λ).
@@ -23,8 +24,8 @@ import { channelStrength } from '../../chapters/cmos/device'
  * pMOS) and carriers stream from source to drain.
  */
 const DEV = {
-  nmos: { gate: 10, window: { x0: 2.5, x1: 17.5, y0: -3.5, y1: 8.5 }, src: 6, drn: 14, carrier: '#8fd0ff' },
-  pmos: { gate: 34, window: { x0: 26.5, x1: 41.5, y0: -3.5, y1: 8.5 }, src: 38, drn: 30, carrier: '#ffb56b' },
+  nmos: { gate: 10, window: { x0: 2.5, x1: 17.5, y0: -3.5, y1: 8.5 }, src: 6, drn: 14, carrier: 'carrierN' as const },
+  pmos: { gate: 34, window: { x0: 26.5, x1: 41.5, y0: -3.5, y1: 8.5 }, src: 38, drn: 30, carrier: 'carrierP' as const },
 }
 
 export default function TransistorLayer() {
@@ -43,7 +44,7 @@ export default function TransistorLayer() {
     return m
   }, [d])
   const on = useMemo(() => uniform(0), [])
-  const tint = useMemo(() => uniform(new THREE.Color(d.carrier)), [d])
+  const tint = useMemo(() => uniform(new THREE.Color(P.signal[d.carrier])), [d])
   const sheet = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })
     const flow = sin(positionWorld.x.mul(device === 'nmos' ? -5 : 5).add(matUniforms.time.mul(9))).mul(0.25).add(0.75)
@@ -53,7 +54,7 @@ export default function TransistorLayer() {
   }, [on, tint, device])
   const depletion = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false })
-    m.colorNode = color('#e8eef2')
+    m.colorNode = color(P.signal.channel)
     m.opacityNode = on.mul(0.16)
     return m
   }, [on])
@@ -140,10 +141,10 @@ export default function TransistorLayer() {
         </mesh>
         <mesh ref={gateRef} position={[cx, 1.55, -1]} raycast={() => null} renderOrder={7}>
           <boxGeometry args={[2.02, 0.04, 2.02]} />
-          <meshBasicNodeMaterial color="#f0b43c" transparent opacity={0.2} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.2} depthWrite={false} />
         </mesh>
         <instancedMesh ref={carriers} args={[new THREE.SphereGeometry(0.09, 8, 6), undefined, N]} frustumCulled={false} raycast={() => null}>
-          <meshBasicNodeMaterial color={d.carrier} />
+          <meshBasicNodeMaterial color={P.signal[d.carrier]} />
         </instancedMesh>
       </group>
       <InspectSync />

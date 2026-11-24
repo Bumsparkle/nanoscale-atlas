@@ -14,6 +14,7 @@
  * InGaAs/InP ΔEc ≈ 0.25 eV. Strain shifts are ignored.
  */
 import { solveProfile } from './quantum'
+import { P } from '../../theme/scene'
 
 export interface Material {
   id: string
@@ -32,15 +33,15 @@ export interface Material {
 }
 
 export const MATERIALS: Material[] = [
-  { id: 'GaAs', name: 'GaAs', Eg: 1.424, VBO: -0.8, me: 0.067, mh: 0.5, a: 5.653, col: '#5f7486' },
-  { id: 'AlGaAs', name: 'Al₀.₃Ga₀.₇As', Eg: 1.798, VBO: -0.95, me: 0.092, mh: 0.55, a: 5.655, col: '#9aa7b4' },
-  { id: 'InGaAs', name: 'In₀.₂Ga₀.₈As', Eg: 1.134, VBO: -0.684, me: 0.058, mh: 0.45, a: 5.734, col: '#d08a4a' },
-  { id: 'InGaAs40', name: 'In₀.₄Ga₀.₆As', Eg: 0.882, VBO: -0.583, me: 0.048, mh: 0.43, a: 5.815, col: '#e0a35a' },
-  { id: 'InAs', name: 'InAs', Eg: 0.354, VBO: -0.59, me: 0.023, mh: 0.41, a: 6.058, col: '#c8553d' },
-  { id: 'GaSb', name: 'GaSb', Eg: 0.726, VBO: -0.03, me: 0.039, mh: 0.4, a: 6.096, col: '#7d9a5a' },
-  { id: 'InP', name: 'InP', Eg: 1.344, VBO: -0.94, me: 0.08, mh: 0.6, a: 5.869, col: '#6a7fa0' },
-  { id: 'InGaAsP', name: 'In₀.₅₃Ga₀.₄₇As', Eg: 0.75, VBO: -0.6, me: 0.041, mh: 0.45, a: 5.869, col: '#c9774a' },
-  { id: 'InAlAs', name: 'In₀.₅₂Al₀.₄₈As', Eg: 1.46, VBO: -0.79, me: 0.075, mh: 0.5, a: 5.869, col: '#a9b48a' },
+  { id: 'GaAs', name: 'GaAs', Eg: 1.424, VBO: -0.8, me: 0.067, mh: 0.5, a: 5.653, col: P.hetero.gaas },
+  { id: 'AlGaAs', name: 'Al₀.₃Ga₀.₇As', Eg: 1.798, VBO: -0.95, me: 0.092, mh: 0.55, a: 5.655, col: P.hetero.algaas },
+  { id: 'InGaAs', name: 'In₀.₂Ga₀.₈As', Eg: 1.134, VBO: -0.684, me: 0.058, mh: 0.45, a: 5.734, col: P.hetero.ingaas },
+  { id: 'InGaAs40', name: 'In₀.₄Ga₀.₆As', Eg: 0.882, VBO: -0.583, me: 0.048, mh: 0.43, a: 5.815, col: P.hetero.ingaas40 },
+  { id: 'InAs', name: 'InAs', Eg: 0.354, VBO: -0.59, me: 0.023, mh: 0.41, a: 6.058, col: P.hetero.inas },
+  { id: 'GaSb', name: 'GaSb', Eg: 0.726, VBO: -0.03, me: 0.039, mh: 0.4, a: 6.096, col: P.hetero.gasb },
+  { id: 'InP', name: 'InP', Eg: 1.344, VBO: -0.94, me: 0.08, mh: 0.6, a: 5.869, col: P.hetero.inp },
+  { id: 'InGaAsP', name: 'In₀.₅₃Ga₀.₄₇As', Eg: 0.75, VBO: -0.6, me: 0.041, mh: 0.45, a: 5.869, col: P.hetero.ingaasp },
+  { id: 'InAlAs', name: 'In₀.₅₂Al₀.₄₈As', Eg: 1.46, VBO: -0.79, me: 0.075, mh: 0.5, a: 5.869, col: P.hetero.inalas },
 ]
 export const MAT: Record<string, Material> = Object.fromEntries(MATERIALS.map((m) => [m.id, m]))
 export const Ec = (m: Material) => m.VBO + m.Eg

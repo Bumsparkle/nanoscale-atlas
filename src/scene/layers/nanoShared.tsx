@@ -1,5 +1,6 @@
 import * as THREE from 'three/webgpu'
 import { useEffect, useMemo } from 'react'
+import { P } from '../../theme/scene'
 
 /**
  * Small geometry helpers shared by the Chapter 6 and 7 scenes: a height
@@ -7,7 +8,7 @@ import { useEffect, useMemo } from 'react'
  * and a polyline tube (wavefunctions, band edges, trajectories).
  */
 
-const INTENSITY = [new THREE.Color('#1b2833'), new THREE.Color('#3d6a7a'), new THREE.Color('#d9b45a'), new THREE.Color('#fff3c4')]
+const INTENSITY = [new THREE.Color(P.ramp.intensity0), new THREE.Color(P.ramp.intensity1), new THREE.Color(P.ramp.intensity2), new THREE.Color(P.ramp.intensity3)]
 export function intensityColour(v: number, out = new THREE.Color()) {
   const x = Math.min(1, Math.max(0, v)) * (INTENSITY.length - 1)
   const i = Math.min(INTENSITY.length - 2, Math.floor(x))
@@ -59,7 +60,7 @@ export function HeightField({ w, d, nx, nz, height, shade, deps, position, opaci
 }
 
 /** a thin tube through points (world units) */
-export function Line({ pts, r = 0.25, color = '#f0b43c', emissive, segs }: { pts: [number, number, number][]; r?: number; color?: string; emissive?: string; segs?: number }) {
+export function Line({ pts, r = 0.25, color = P.signal.amber, emissive, segs }: { pts: [number, number, number][]; r?: number; color?: string; emissive?: string; segs?: number }) {
   const geo = useMemo(() => {
     if (pts.length < 2) return null
     const curve = new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p)), false, 'catmullrom', 0.1)
@@ -75,7 +76,7 @@ export function Line({ pts, r = 0.25, color = '#f0b43c', emissive, segs }: { pts
 }
 
 /** a straight segment as a cylinder */
-export function Seg({ a, b, r = 0.2, color = '#9aa3aa', opacity = 1 }: { a: [number, number, number]; b: [number, number, number]; r?: number; color?: string; opacity?: number }) {
+export function Seg({ a, b, r = 0.2, color = P.signal.axis, opacity = 1 }: { a: [number, number, number]; b: [number, number, number]; r?: number; color?: string; opacity?: number }) {
   const { pos, quat, len } = useMemo(() => {
     const A = new THREE.Vector3(...a)
     const B = new THREE.Vector3(...b)
@@ -91,4 +92,4 @@ export function Seg({ a, b, r = 0.2, color = '#9aa3aa', opacity = 1 }: { a: [num
 }
 
 /** colour of a light source, drawn visible even in the UV */
-export const LIGHT_COLOUR: Record<string, string> = { g: '#7f9cff', i: '#a58cff', krf: '#c4a8ff', arf: '#dccbff', f2: '#efe6ff' }
+export const LIGHT_COLOUR: Record<string, string> = { g: P.litho.gLine, i: P.litho.iLine, krf: P.litho.krf, arf: P.litho.arf, f2: P.litho.f2 }

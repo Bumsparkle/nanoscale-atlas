@@ -83,7 +83,7 @@
   position: relative;
   min-height: 240px;
   overflow: auto;
-  background: #000;
+  background: var(--sunken);
   display: grid;
   place-items: center;
 }

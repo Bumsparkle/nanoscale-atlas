@@ -9,6 +9,7 @@ import { airy, depthOfFocus, fresnelRegime, fresnelSlit, gratingImage, resolutio
 import { simulate } from '../../chapters/litho/ebeam'
 import { HeightField, LIGHT_COLOUR, Line, Seg } from './nanoShared'
 import { clearedFraction, RESIST_STEPS, resistThickness } from '../../chapters/litho/resist'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 6 (Topic 7): the lithography bay. Tabs:
@@ -54,7 +55,7 @@ function Tool() {
       <Inspectable node="litho-source" fit={2}>
         <mesh position={[0, 80, 0]}>
           <boxGeometry args={[18, 10, 18]} />
-          <meshStandardNodeMaterial color="#3b4248" metalness={0.6} roughness={0.4} />
+          <meshStandardNodeMaterial color={P.obj.housing} metalness={0.6} roughness={0.4} />
         </mesh>
         <mesh position={[0, 74.6, 0]}>
           <cylinderGeometry args={[4, 4, 1, 24]} />
@@ -64,7 +65,7 @@ function Tool() {
       <Inspectable node="litho-condenser" fit={2}>
         <mesh position={[0, 62, 0]} scale={[1, 0.18, 1]}>
           <sphereGeometry args={[16, 32, 16]} />
-          <meshStandardNodeMaterial color="#cfe3ee" transparent opacity={0.45} roughness={0.05} metalness={0.1} />
+          <meshStandardNodeMaterial color={P.litho.lens} transparent opacity={0.45} roughness={0.05} metalness={0.1} />
         </mesh>
       </Inspectable>
       {/* source → condenser → mask: a plane-ish beam */}
@@ -75,12 +76,12 @@ function Tool() {
         <group position={[0, maskY, 0]}>
           <mesh>
             <boxGeometry args={[30, 0.8, 30]} />
-            <meshStandardNodeMaterial color="#dfeaf0" transparent opacity={0.5} roughness={0.05} />
+            <meshStandardNodeMaterial color={P.litho.mask} transparent opacity={0.5} roughness={0.05} />
           </mesh>
           {[-9, -3, 3, 9].map((x) => (
             <mesh key={x} position={[x, -0.5, 0]}>
               <boxGeometry args={[3, 0.2, 24]} />
-              <meshStandardNodeMaterial color="#2a2d31" metalness={0.9} roughness={0.25} />
+              <meshStandardNodeMaterial color={P.obj.chrome} metalness={0.9} roughness={0.25} />
             </mesh>
           ))}
         </group>
@@ -93,11 +94,11 @@ function Tool() {
           <Inspectable node="litho-lens" fit={2}>
             <mesh position={[0, lensY, 0]} scale={[1, 0.22, 1]}>
               <sphereGeometry args={[18, 32, 16]} />
-              <meshStandardNodeMaterial color="#d6ecf5" transparent opacity={0.5} roughness={0.05} />
+              <meshStandardNodeMaterial color={P.litho.pellicle} transparent opacity={0.5} roughness={0.05} />
             </mesh>
             <mesh position={[0, lensY, 0]} rotation-x={Math.PI / 2}>
               <torusGeometry args={[18.5, 1.4, 10, 40]} />
-              <meshStandardNodeMaterial color="#59626a" metalness={0.8} roughness={0.3} />
+              <meshStandardNodeMaterial color={P.obj.aperture} metalness={0.8} roughness={0.3} />
             </mesh>
           </Inspectable>
           {/* converging cone, half-angle α = asin NA */}
@@ -107,7 +108,7 @@ function Tool() {
           {/* the depth of focus, exaggerated */}
           <mesh position={[0, waferY + 1.2, 0]} raycast={() => null}>
             <cylinderGeometry args={[3, 3, Math.max(0.3, dof / 120), 24]} />
-            <meshBasicNodeMaterial color="#f0b43c" transparent opacity={0.35} depthWrite={false} />
+            <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.35} depthWrite={false} />
           </mesh>
         </>
       )}
@@ -119,17 +120,17 @@ function Tool() {
       <Inspectable node="litho-wafer" fit={2}>
         <mesh position={[0, waferY - 1, 0]}>
           <cylinderGeometry args={[22, 22, 1.2, 48]} />
-          <meshStandardNodeMaterial color="#5f7486" metalness={0.5} roughness={0.25} />
+          <meshStandardNodeMaterial color={P.obj.substrate} metalness={0.5} roughness={0.25} />
         </mesh>
         <mesh position={[0, waferY - 5, 0]}>
           <boxGeometry args={[52, 6, 52]} />
-          <meshStandardNodeMaterial color="#30363b" metalness={0.5} roughness={0.5} />
+          <meshStandardNodeMaterial color={P.obj.stageDark} metalness={0.5} roughness={0.5} />
         </mesh>
       </Inspectable>
       <Inspectable node="litho-resist" fit={3}>
         <mesh position={[0, waferY - 0.2, 0]}>
           <cylinderGeometry args={[21.6, 21.6, 0.5, 48]} />
-          <meshStandardNodeMaterial color="#e0a238" roughness={0.35} transparent opacity={0.9} />
+          <meshStandardNodeMaterial color={P.obj.resist} roughness={0.35} transparent opacity={0.9} />
         </mesh>
       </Inspectable>
     </group>
@@ -162,7 +163,7 @@ function Optics() {
       {(sep > 0 ? [-sep / 2, sep / 2] : [0]).map((x) => (
         <mesh key={x} position={[(x / span) * 40, 0.15, 0]} rotation-x={-Math.PI / 2} raycast={() => null}>
           <ringGeometry args={[(1 / span) * 40 - 0.25, (1 / span) * 40 + 0.25, 64]} />
-          <meshBasicNodeMaterial color="#8ad0ff" />
+          <meshBasicNodeMaterial color={P.signal.electronSpot} />
         </mesh>
       ))}
     </Inspectable>
@@ -198,12 +199,12 @@ function Mtf() {
         {Array.from({ length: periods }, (_, i) => (
           <mesh key={i} position={[-42 + pw * (i + 0.75), 41.2, 0]}>
             <boxGeometry args={[pw / 2, 1.2, 40]} />
-            <meshStandardNodeMaterial color="#2a2d31" metalness={0.9} roughness={0.25} />
+            <meshStandardNodeMaterial color={P.obj.chrome} metalness={0.9} roughness={0.25} />
           </mesh>
         ))}
         <mesh position={[0, 40.3, 0]}>
           <boxGeometry args={[86, 0.4, 42]} />
-          <meshStandardNodeMaterial color="#dfeaf0" transparent opacity={0.15} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.litho.mask} transparent opacity={0.15} depthWrite={false} />
         </mesh>
       </Inspectable>
       <Inspectable node="mtf-image" fit={1.5}>
@@ -212,11 +213,11 @@ function Mtf() {
       <Inspectable node="litho-resist" fit={2}>
         <mesh position={[0, 11, 0]}>
           <boxGeometry args={[86, 0.15, 42]} />
-          <meshBasicNodeMaterial color={prints ? '#f0b43c' : '#e0453c'} transparent opacity={0.28} depthWrite={false} />
+          <meshBasicNodeMaterial color={prints ? P.signal.amber : P.signal.bad} transparent opacity={0.28} depthWrite={false} />
         </mesh>
         <mesh position={[0, -2, 0]}>
           <boxGeometry args={[86, 3, 42]} />
-          <meshStandardNodeMaterial color="#e0a238" roughness={0.4} />
+          <meshStandardNodeMaterial color={P.obj.resist} roughness={0.4} />
         </mesh>
       </Inspectable>
     </group>
@@ -247,16 +248,16 @@ function Fresnel() {
         {[-1, 1].map((s) => (
           <mesh key={s} position={[s * ((L.W * u2x) / 2 + 25), gapU, 0]}>
             <boxGeometry args={[50, 1, 30]} />
-            <meshStandardNodeMaterial color="#2a2d31" metalness={0.9} roughness={0.25} />
+            <meshStandardNodeMaterial color={P.obj.chrome} metalness={0.9} roughness={0.25} />
           </mesh>
         ))}
-        <Seg a={[-50, gapU / 2 + 0.5, 16]} b={[-50, gapU - 0.5, 16]} r={0.25} color="#8ad0ff" />
+        <Seg a={[-50, gapU / 2 + 0.5, 16]} b={[-50, gapU - 0.5, 16]} r={0.25} color={P.signal.electronSpot} />
       </Inspectable>
       <HeightField w={96} d={30} nx={241} nz={3} position={[0, 0.6, 0]} height={(u) => I[Math.round(u * 240)] * 10} shade={(u) => Math.min(1, I[Math.round(u * 240)] * 0.8)} deps={[I]} />
       <Inspectable node="litho-resist" fit={2}>
         <mesh position={[0, -1.5, 0]}>
           <boxGeometry args={[100, 3, 32]} />
-          <meshStandardNodeMaterial color="#e0a238" roughness={0.4} />
+          <meshStandardNodeMaterial color={P.obj.resist} roughness={0.4} />
         </mesh>
       </Inspectable>
     </group>
@@ -289,14 +290,14 @@ function Resist() {
       <Inspectable node="litho-wafer" fit={2}>
         <mesh position={[0, -8, 0]}>
           <boxGeometry args={[80, 16, 30]} />
-          <meshStandardNodeMaterial color="#5f7486" metalness={0.4} roughness={0.35} emissive="#7a2a10" emissiveIntensity={hot ? 0.35 : 0} />
+          <meshStandardNodeMaterial color={P.obj.substrate} metalness={0.4} roughness={0.35} emissive={P.heat.hotGlow} emissiveIntensity={hot ? 0.35 : 0} />
         </mesh>
       </Inspectable>
       {s >= 2 && (
         <Inspectable node="hmds-layer" fit={3}>
           <mesh position={[0, 0.3, 0]}>
             <boxGeometry args={[80, 0.6, 30]} />
-            <meshStandardNodeMaterial color="#56b5a8" roughness={0.3} />
+            <meshStandardNodeMaterial color={P.litho.developer} roughness={0.3} />
           </mesh>
         </Inspectable>
       )}
@@ -306,14 +307,14 @@ function Resist() {
           {(developed ? [[-40, -17], [-7, 7], [17, 40]] : [[-40, 40]]).map(([a, b]) => (
             <mesh key={a} position={[(a + b) / 2, 0.6 + t / 2, 0]}>
               <boxGeometry args={[b - a, t, 30]} />
-              <meshStandardNodeMaterial color={s >= 8 ? '#b9782a' : '#e0a238'} roughness={0.35} emissive="#7a3a10" emissiveIntensity={hot ? 0.25 : 0} />
+              <meshStandardNodeMaterial color={s >= 8 ? P.obj.resistBaked : P.obj.resist} roughness={0.35} emissive={P.heat.bakeGlow} emissiveIntensity={hot ? 0.25 : 0} />
             </mesh>
           ))}
           {/* scum left in an under-exposed opening */}
           {developed && clear < 1 && exposedXs.map((x) => (
             <mesh key={x} position={[x, 0.6 + (t * (1 - clear)) / 2, 0]}>
               <boxGeometry args={[openW, Math.max(0.05, t * (1 - clear)), 30]} />
-              <meshStandardNodeMaterial color="#e0a238" roughness={0.35} />
+              <meshStandardNodeMaterial color={P.obj.resist} roughness={0.35} />
             </mesh>
           ))}
         </Inspectable>
@@ -325,7 +326,7 @@ function Resist() {
               {Array.from({ length: waves ? 6 : 1 }, (_, i) => (
                 <mesh key={i} position={[x, 0.6 + (waves ? ((i + 0.5) / 6) * t : t / 2), 15.1]}>
                   <planeGeometry args={[openW, waves ? t / 12 : t]} />
-                  <meshBasicNodeMaterial color="#8f6bd8" transparent opacity={waves ? 0.9 : 0.45} />
+                  <meshBasicNodeMaterial color={P.litho.wave} transparent opacity={waves ? 0.9 : 0.45} />
                 </mesh>
               ))}
             </group>
@@ -337,13 +338,13 @@ function Resist() {
           {[[-40, -17], [-7, 7], [17, 40]].map(([a, b]) => (
             <mesh key={a} position={[(a + b) / 2, t + 12, 0]}>
               <boxGeometry args={[b - a, 0.8, 30]} />
-              <meshStandardNodeMaterial color="#2a2d31" metalness={0.9} roughness={0.25} />
+              <meshStandardNodeMaterial color={P.obj.chrome} metalness={0.9} roughness={0.25} />
             </mesh>
           ))}
           {exposedXs.map((x) => (
             <mesh key={x} position={[x, t / 2 + 6.5, 0]} raycast={() => null}>
               <boxGeometry args={[openW, 11, 28]} />
-              <meshBasicNodeMaterial color="#a58cff" transparent opacity={0.22} depthWrite={false} />
+              <meshBasicNodeMaterial color={P.signal.uv} transparent opacity={0.22} depthWrite={false} />
             </mesh>
           ))}
         </Inspectable>
@@ -379,15 +380,15 @@ function Roadmap() {
         {Array.from({ length: n }, (_, i) => (
           <mesh key={i} position={[(i - (n - 1) / 2) * 2 * hp, 4, 0]}>
             <boxGeometry args={[hp, 8, 30]} />
-            <meshStandardNodeMaterial color="#d9d9d9" roughness={0.6} />
+            <meshStandardNodeMaterial color={P.litho.substrate} roughness={0.6} />
           </mesh>
         ))}
         <mesh position={[0, -1, 0]}>
           <boxGeometry args={[Math.max(130, 2 * hp * n + 10), 2, 34]} />
-          <meshStandardNodeMaterial color="#5f7486" roughness={0.4} />
+          <meshStandardNodeMaterial color={P.obj.substrate} roughness={0.4} />
         </mesh>
       </Inspectable>
-      <Line pts={wave} r={0.45} color="#a58cff" emissive="#a58cff" />
+      <Line pts={wave} r={0.45} color={P.signal.uv} emissive={P.signal.uv} />
     </group>
   )
 }
@@ -415,39 +416,39 @@ function Ngl() {
         {/* photons: a diffraction-spread cone */}
         <mesh position={[xs[0], 5, 0]} raycast={() => null}>
           <cylinderGeometry args={[1, 5, 10, 24, 1, true]} />
-          <meshBasicNodeMaterial color="#a58cff" transparent opacity={0.35} side={THREE.DoubleSide} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.signal.uv} transparent opacity={0.35} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
-        <Seg a={[xs[0], 10, 0]} b={[xs[0], 22, 0]} r={1} color="#a58cff" opacity={0.6} />
+        <Seg a={[xs[0], 10, 0]} b={[xs[0], 22, 0]} r={1} color={P.signal.uv} opacity={0.6} />
         {/* electrons: Monte Carlo paths in 400 nm of resist on Si */}
         {e.trajs.map((tr, i) => (
-          <Line key={i} pts={tr.pts.filter((_, k) => k % 2 === 0).map(([x, z]) => [xs[1] + x / 100, 10 - z / 100, (i % 5) - 2] as [number, number, number])} r={0.12} color={tr.backscattered ? '#7dd3fc' : '#e7f3ff'} />
+          <Line key={i} pts={tr.pts.filter((_, k) => k % 2 === 0).map(([x, z]) => [xs[1] + x / 100, 10 - z / 100, (i % 5) - 2] as [number, number, number])} r={0.12} color={tr.backscattered ? P.signal.beam : P.signal.beamIce} />
         ))}
-        <Seg a={[xs[1], 10, 0]} b={[xs[1], 22, 0]} r={0.3} color="#e7f3ff" />
+        <Seg a={[xs[1], 10, 0]} b={[xs[1], 22, 0]} r={0.3} color={P.signal.beamIce} />
         {/* X-rays: straight through a mask opening */}
         <mesh position={[xs[2] - 6, 13, 0]}>
           <boxGeometry args={[8, 0.8, 10]} />
-          <meshStandardNodeMaterial color="#c9a227" metalness={0.9} roughness={0.3} />
+          <meshStandardNodeMaterial color={P.obj.goldDark} metalness={0.9} roughness={0.3} />
         </mesh>
         <mesh position={[xs[2] + 6, 13, 0]}>
           <boxGeometry args={[8, 0.8, 10]} />
-          <meshStandardNodeMaterial color="#c9a227" metalness={0.9} roughness={0.3} />
+          <meshStandardNodeMaterial color={P.obj.goldDark} metalness={0.9} roughness={0.3} />
         </mesh>
         <mesh position={[xs[2], 11, 0]} raycast={() => null}>
           <boxGeometry args={[4, 22, 4]} />
-          <meshBasicNodeMaterial color="#f5f0d0" transparent opacity={0.4} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.litho.xray} transparent opacity={0.4} depthWrite={false} />
         </mesh>
         {/* ions: a thin straight track */}
-        <Seg a={[xs[3], 2, 0]} b={[xs[3], 22, 0]} r={0.35} color="#f0b43c" />
+        <Seg a={[xs[3], 2, 0]} b={[xs[3], 22, 0]} r={0.35} color={P.signal.amber} />
       </Inspectable>
       <Inspectable node="litho-resist" fit={2}>
         <mesh position={[0, 6, 0]}>
           <boxGeometry args={[130, 8, 12]} />
-          <meshStandardNodeMaterial color="#e0a238" roughness={0.4} transparent opacity={0.55} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.obj.resist} roughness={0.4} transparent opacity={0.55} depthWrite={false} />
         </mesh>
       </Inspectable>
       <mesh position={[0, -10, 0]}>
         <boxGeometry args={[130, 24, 12]} />
-        <meshStandardNodeMaterial color="#5f7486" roughness={0.4} transparent opacity={0.6} depthWrite={false} />
+        <meshStandardNodeMaterial color={P.obj.substrate} roughness={0.4} transparent opacity={0.6} depthWrite={false} />
       </mesh>
     </group>
   )
@@ -477,7 +478,7 @@ export default function LithoLayer() {
       {tab === 'optics' ? <Optics /> : tab === 'mtf' ? <Mtf /> : tab === 'fresnel' ? <Fresnel /> : tab === 'resist' ? <Resist /> : tab === 'roadmap' ? <Roadmap /> : tab === 'ngl' ? <Ngl /> : <Tool />}
       <mesh rotation-x={-Math.PI / 2} position={[0, -40, 0]}>
         <circleGeometry args={[800, 48]} />
-        <meshStandardNodeMaterial color="#2b2a24" roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.bayFloor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={6000} />

@@ -15,6 +15,7 @@ import { CELL_CENTRE } from './cellGeometry'
 import { post } from './Pipeline'
 import { Spring, SPRINGS } from './spring'
 import type { Step } from '../sim/recipe'
+import { P } from '../theme/scene'
 
 /**
  * Per-step fab effects, driven by the fractional timeline position:
@@ -62,7 +63,7 @@ function IonRain() {
       })),
     [],
   )
-  const tint = useMemo(() => uniform(new THREE.Color('#9fd0ff')), [])
+  const tint = useMemo(() => uniform(new THREE.Color(P.fab.ionN)), [])
   const mat = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })
     m.colorNode = tint
@@ -94,7 +95,7 @@ function IonRain() {
         p.depth = kind === 'implant' && !h.blocked ? depth * (0.35 + 0.65 * p.jitter) : 0
       }
       lastK.current = k
-      tint.value.set(kind === 'implant' ? (step.id.startsWith('p') ? '#ffc58a' : '#9fd0ff') : kind === 'sputter' ? '#e8edf2' : '#d9cbb8')
+      tint.value.set(kind === 'implant' ? (step.id.startsWith('p') ? P.fab.ionP : P.fab.ionN) : kind === 'sputter' ? P.fab.sputter : P.fab.vapour)
     }
     const fast = kind === 'implant' ? 1.4 : kind === 'sputter' ? 1.0 : 0.45
     for (let i = 0; i < N; i++) {
@@ -186,10 +187,10 @@ function Exposure() {
   const glass = useRef<THREE.Mesh>(null)
   const beam = useRef<THREE.Mesh>(null)
   const intensity = useMemo(() => uniform(0), [])
-  const chromeMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#2a2d30', metalness: 0.9, roughness: 0.25 }), [])
+  const chromeMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.fab.chuck, metalness: 0.9, roughness: 0.25 }), [])
   const glassMat = useMemo(() => {
     const m = new THREE.MeshPhysicalNodeMaterial({ transparent: true, depthWrite: false, roughness: 0.05 })
-    m.colorNode = color('#9fb4c4')
+    m.colorNode = color(P.fab.reticle)
     m.opacityNode = float(0.12)
     return m
   }, [])
@@ -252,7 +253,7 @@ function Ambience() {
     const m = new THREE.MeshPhysicalNodeMaterial({ transparent: true, depthWrite: false, roughness: 0.02, metalness: 0 })
     // long, slow swell across the bath rather than a grid of ripples
     const ripple = sin(positionWorld.x.mul(0.22).add(positionWorld.z.mul(0.13)).add(time.mul(0.9))).mul(0.5).add(0.5)
-    m.colorNode = mix(color('#2f4552'), color('#7aa3b8'), ripple)
+    m.colorNode = mix(color(P.fab.bathDeep), color(P.fab.bathCrest), ripple)
     m.opacityNode = wet.mul(0.13)
     return m
   }, [wet])
@@ -282,7 +283,7 @@ function Ambience() {
   })
   return (
     <>
-      <pointLight ref={light} position={[0, 18, 10]} color="#ff7a2a" intensity={0} distance={120} decay={1.6} />
+      <pointLight ref={light} position={[0, 18, 10]} color={P.fab.furnaceLight} intensity={0} distance={120} decay={1.6} />
       <mesh ref={sheet} material={sheetMat} rotation-x={-Math.PI / 2} raycast={() => null} renderOrder={8}>
         <planeGeometry args={[62, 28]} />
       </mesh>

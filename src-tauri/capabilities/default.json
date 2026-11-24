@@ -1,13 +1,14 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "main window: core APIs, dragging the window by the top bar, checking for and installing updates",
+  "description": "main window: core APIs, dragging the window by the top bar, matching the window appearance to the theme, checking for and installing updates",
   "windows": [
     "main"
   ],
   "permissions": [
     "core:default",
     "core:window:allow-start-dragging",
+    "core:window:allow-set-theme",
     "updater:default",
     "process:allow-restart"
   ]

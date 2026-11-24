@@ -6,6 +6,7 @@ import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
 import { useAtlas } from '../../state/store'
 import { cvdRate, meanFreePath, pow10, stepCoverage } from '../../chapters/films/physics'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 4 (Topic 5): the deposition bay, 1 unit = 1 cm.
@@ -18,7 +19,7 @@ import { cvdRate, meanFreePath, pow10, stepCoverage } from '../../chapters/films
  * a lamp-heated barrel reactor and an epi wafer.
  */
 const tracers = (n: number, seed: number) => {
-  const im = new THREE.InstancedMesh(new THREE.SphereGeometry(0.5, 6, 4), new THREE.MeshBasicNodeMaterial({ color: '#a8d8f0', transparent: true, opacity: 0.7 }), n)
+  const im = new THREE.InstancedMesh(new THREE.SphereGeometry(0.5, 6, 4), new THREE.MeshBasicNodeMaterial({ color: P.films.gas, transparent: true, opacity: 0.7 }), n)
   im.raycast = () => null
   const r = rand(seed)
   return { im, lanes: Array.from({ length: n }, () => [r(), r(), r()]) }
@@ -33,7 +34,7 @@ function Cvd() {
   const gas = useMemo(() => tracers(260, 3), [])
   const o = useMemo(() => new THREE.Object3D(), [])
   const t = useRef(0)
-  const glow = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#3b2f2a', emissive: '#ff6a1a', emissiveIntensity: 0.4, roughness: 0.8 }), [])
+  const glow = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.heat.susceptor, emissive: P.heat.susceptorGlow, emissiveIntensity: 0.4, roughness: 0.8 }), [])
   useFrame((_, dt) => {
     const st = useAtlas.getState()
     t.current += st.reducedMotion ? 0 : dt
@@ -65,7 +66,7 @@ function Cvd() {
       <Inspectable node="cvd-tube" fit={1.2}>
         <mesh rotation-z={Math.PI / 2}>
           <cylinderGeometry args={[16, 16, 160, 48, 1, true, Math.PI * 0.15, Math.PI * 1.7]} />
-          <meshPhysicalNodeMaterial color="#e9f0f3" roughness={0.05} transmission={0.7} transparent opacity={0.35} side={THREE.DoubleSide} />
+          <meshPhysicalNodeMaterial color={P.obj.quartz} roughness={0.05} transmission={0.7} transparent opacity={0.35} side={THREE.DoubleSide} />
         </mesh>
       </Inspectable>
       <Inspectable node="cvd-heater" fit={1.3}>
@@ -80,19 +81,19 @@ function Cvd() {
           ? Array.from({ length: 24 }, (_, i) => (
               <mesh key={i} position={[-46 + i * 4, 0, 0]} rotation-z={Math.PI / 2}>
                 <cylinderGeometry args={[10, 10, 0.4, 40]} />
-                <meshStandardNodeMaterial color="#6f7e8a" metalness={0.6} roughness={0.25} />
+                <meshStandardNodeMaterial color={P.obj.steelBlue} metalness={0.6} roughness={0.25} />
               </mesh>
             ))
           : (
             <group rotation-z={0.05}>
               <mesh position={[0, -8, 0]}>
                 <boxGeometry args={[110, 3, 20]} />
-                <meshStandardNodeMaterial color="#2c2f31" roughness={0.8} />
+                <meshStandardNodeMaterial color={P.films.boat} roughness={0.8} />
               </mesh>
               {[-40, -20, 0, 20, 40].map((x) => (
                 <mesh key={x} position={[x, -6.3, 0]}>
                   <cylinderGeometry args={[8, 8, 0.4, 40]} />
-                  <meshStandardNodeMaterial color="#6f7e8a" metalness={0.6} roughness={0.25} />
+                  <meshStandardNodeMaterial color={P.obj.steelBlue} metalness={0.6} roughness={0.25} />
                 </mesh>
               ))}
             </group>
@@ -105,7 +106,7 @@ function Cvd() {
           <meshBasicNodeMaterial />
         </mesh>
       </Inspectable>
-      <pointLight position={[0, 0, 0]} intensity={2000 * (rate.v > 0 ? 1 : 0)} distance={90} color="#ff8a3a" />
+      <pointLight position={[0, 0, 0]} intensity={2000 * (rate.v > 0 ? 1 : 0)} distance={90} color={P.heat.furnaceLight} />
     </>
   )
 }
@@ -115,7 +116,7 @@ function Plasma() {
   const size = useThree((s) => s.size)
   const mode = useAtlas((s) => s.films.plasma)
   const sputter = mode !== 'pecvd'
-  const glowMat = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: '#d98af0', transparent: true, opacity: 0.45, depthWrite: false }), [])
+  const glowMat = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.plasma, transparent: true, opacity: 0.45, depthWrite: false }), [])
   const ions = useMemo(() => tracers(160, 7), [])
   const o = useMemo(() => new THREE.Object3D(), [])
   const t = useRef(0)
@@ -147,17 +148,17 @@ function Plasma() {
     <>
       <mesh position={[0, 15, 0]} raycast={() => null}>
         <cylinderGeometry args={[40, 40, 44, 48, 1, true, Math.PI * 0.2, Math.PI * 1.5]} />
-        <meshStandardNodeMaterial color="#8a949a" metalness={0.6} roughness={0.4} side={THREE.DoubleSide} />
+        <meshStandardNodeMaterial color={P.obj.steel} metalness={0.6} roughness={0.4} side={THREE.DoubleSide} />
       </mesh>
       <Inspectable node="rf-electrode" fit={1.4}>
         <mesh position={[0, -1, 0]}>
           <cylinderGeometry args={[30, 30, 2, 48]} />
-          <meshStandardNodeMaterial color="#3a3f43" metalness={0.7} roughness={0.3} />
+          <meshStandardNodeMaterial color={P.films.electrode} metalness={0.7} roughness={0.3} />
         </mesh>
         {!sputter && (
           <mesh position={[0, 31, 0]}>
             <cylinderGeometry args={[30, 30, 2, 48]} />
-            <meshStandardNodeMaterial color="#3a3f43" metalness={0.7} roughness={0.3} />
+            <meshStandardNodeMaterial color={P.films.electrode} metalness={0.7} roughness={0.3} />
           </mesh>
         )}
       </Inspectable>
@@ -165,7 +166,7 @@ function Plasma() {
         <Inspectable node="sputter-target" fit={2}>
           <mesh position={[0, 31, 0]}>
             <cylinderGeometry args={[26, 26, 3, 48]} />
-            <meshStandardNodeMaterial color="#b9c0c6" metalness={0.9} roughness={0.25} />
+            <meshStandardNodeMaterial color={P.films.target} metalness={0.9} roughness={0.25} />
           </mesh>
         </Inspectable>
       )}
@@ -174,7 +175,7 @@ function Plasma() {
           {[10, 20].map((r) => (
             <mesh key={r} position={[0, 34, 0]} rotation-x={Math.PI / 2}>
               <torusGeometry args={[r, 1.4, 8, 48]} />
-              <meshStandardNodeMaterial color="#b0503c" metalness={0.5} roughness={0.4} />
+              <meshStandardNodeMaterial color={P.films.magnet} metalness={0.5} roughness={0.4} />
             </mesh>
           ))}
         </Inspectable>
@@ -182,7 +183,7 @@ function Plasma() {
       {[-16, 0, 16].map((x) => (
         <mesh key={x} position={[x, 0.3, 0]} raycast={() => null}>
           <cylinderGeometry args={[6, 6, 0.6, 32]} />
-          <meshStandardNodeMaterial color="#6f7e8a" metalness={0.6} roughness={0.25} />
+          <meshStandardNodeMaterial color={P.obj.steelBlue} metalness={0.6} roughness={0.25} />
         </mesh>
       ))}
       <Inspectable node="plasma-glow" fit={1.5}>
@@ -191,7 +192,7 @@ function Plasma() {
         </mesh>
         <primitive object={ions.im} />
       </Inspectable>
-      <pointLight position={[0, 15, 0]} intensity={2500} distance={80} color="#d98af0" />
+      <pointLight position={[0, 15, 0]} intensity={2500} distance={80} color={P.signal.plasma} />
     </>
   )
 }
@@ -238,35 +239,35 @@ function Evaporator() {
       <Inspectable node="bell-jar" fit={1.2}>
         <mesh position={[0, 30, 0]}>
           <sphereGeometry args={[42, 40, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <meshPhysicalNodeMaterial color="#e9f0f3" roughness={0.05} transmission={0.7} transparent opacity={0.25} side={THREE.DoubleSide} />
+          <meshPhysicalNodeMaterial color={P.obj.quartz} roughness={0.05} transmission={0.7} transparent opacity={0.25} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[0, 15, 0]}>
           <cylinderGeometry args={[42, 42, 30, 40, 1, true]} />
-          <meshPhysicalNodeMaterial color="#e9f0f3" roughness={0.05} transmission={0.7} transparent opacity={0.25} side={THREE.DoubleSide} />
+          <meshPhysicalNodeMaterial color={P.obj.quartz} roughness={0.05} transmission={0.7} transparent opacity={0.25} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[0, 52, 0]}>
           <sphereGeometry args={[30, 32, 8, 0, Math.PI * 2, 0, 0.7]} />
-          <meshStandardNodeMaterial color="#8a949a" metalness={0.7} roughness={0.3} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.obj.steel} metalness={0.7} roughness={0.3} side={THREE.DoubleSide} />
         </mesh>
       </Inspectable>
       <Inspectable node="evap-source" fit={4}>
         <mesh position={[0, 2, 0]}>
           <boxGeometry args={[8, 1.5, 3]} />
-          <meshStandardNodeMaterial color="#ffd27a" emissive="#ff8a1a" emissiveIntensity={1.2} />
+          <meshStandardNodeMaterial color={P.heat.source} emissive={P.heat.emberGlow} emissiveIntensity={1.2} />
         </mesh>
         {ebeam && (
           <mesh position={[6, 2, 0]} rotation-z={Math.PI / 2}>
             <torusGeometry args={[6, 0.4, 8, 32, Math.PI * 1.3]} />
-            <meshBasicNodeMaterial color="#9fd8ff" />
+            <meshBasicNodeMaterial color={P.signal.electron} />
           </mesh>
         )}
       </Inspectable>
       <lineSegments geometry={rays} raycast={() => null}>
-        <lineBasicNodeMaterial color="#f39477" transparent opacity={0.7} />
+        <lineBasicNodeMaterial color={P.signal.warn} transparent opacity={0.7} />
       </lineSegments>
       <mesh position={[0, -1, 0]} raycast={() => null}>
         <cylinderGeometry args={[46, 46, 2, 48]} />
-        <meshStandardNodeMaterial color="#4b5258" metalness={0.7} roughness={0.35} />
+        <meshStandardNodeMaterial color={P.obj.steelDark} metalness={0.7} roughness={0.35} />
       </mesh>
     </>
   )
@@ -324,11 +325,11 @@ function Coverage() {
   return (
     <group position={[0, D / 2, -10]}>
       <mesh geometry={shapes.sub} raycast={() => null}>
-        <meshStandardNodeMaterial color="#5f7486" roughness={0.7} />
+        <meshStandardNodeMaterial color={P.obj.substrate} roughness={0.7} />
       </mesh>
       <Inspectable node="trench-film" fit={1.3}>
         <mesh geometry={shapes.film}>
-          <meshStandardNodeMaterial color="#f0b43c" roughness={0.4} metalness={0.2} />
+          <meshStandardNodeMaterial color={P.signal.amber} roughness={0.4} metalness={0.2} />
         </mesh>
       </Inspectable>
     </group>
@@ -354,7 +355,7 @@ function Barrel() {
         <group ref={susc}>
           <mesh position={[0, 25, 0]}>
             <cylinderGeometry args={[16, 20, 44, 6]} />
-            <meshStandardNodeMaterial color="#2c2f31" roughness={0.7} />
+            <meshStandardNodeMaterial color={P.films.boat} roughness={0.7} />
           </mesh>
           {Array.from({ length: 6 }, (_, i) =>
             [12, 25, 38].map((y) => {
@@ -362,7 +363,7 @@ function Barrel() {
               return (
                 <mesh key={`${i}-${y}`} position={[Math.cos(a) * 17.8, y, Math.sin(a) * 17.8]} rotation-y={-a + Math.PI / 2} rotation-x={-0.08}>
                   <cylinderGeometry args={[5, 5, 0.4, 32]} />
-                  <meshStandardNodeMaterial color="#6f7e8a" metalness={0.6} roughness={0.25} />
+                  <meshStandardNodeMaterial color={P.obj.steelBlue} metalness={0.6} roughness={0.25} />
                 </mesh>
               )
             }),
@@ -370,26 +371,26 @@ function Barrel() {
         </group>
         <mesh position={[0, 26, 0]}>
           <cylinderGeometry args={[27, 27, 56, 40, 1, true, 0.4, Math.PI * 1.6]} />
-          <meshPhysicalNodeMaterial color="#e9f0f3" roughness={0.05} transmission={0.7} transparent opacity={0.25} side={THREE.DoubleSide} />
+          <meshPhysicalNodeMaterial color={P.obj.quartz} roughness={0.05} transmission={0.7} transparent opacity={0.25} side={THREE.DoubleSide} />
         </mesh>
         {Array.from({ length: 10 }, (_, i) => (
           <mesh key={i} position={[Math.cos(0.4 + i * 0.5) * 31, 26, Math.sin(0.4 + i * 0.5) * 31]}>
             <cylinderGeometry args={[0.8, 0.8, 50, 8]} />
-            <meshStandardNodeMaterial color="#fff2d0" emissive="#ffb04a" emissiveIntensity={1.4} />
+            <meshStandardNodeMaterial color={P.heat.lamp} emissive={P.heat.lampGlow} emissiveIntensity={1.4} />
           </mesh>
         ))}
       </Inspectable>
       <Inspectable node="epi-layer" fit={2}>
         <mesh position={[62, 0, 0]}>
           <boxGeometry args={[20, 6, 12]} />
-          <meshStandardNodeMaterial color="#c98a5a" roughness={0.6} />
+          <meshStandardNodeMaterial color={P.films.step} roughness={0.6} />
         </mesh>
         <mesh position={[62, 4.5, 0]}>
           <boxGeometry args={[20, 3, 12]} />
-          <meshStandardNodeMaterial color="#8ea2b2" roughness={0.6} />
+          <meshStandardNodeMaterial color={P.obj.siliconBright} roughness={0.6} />
         </mesh>
       </Inspectable>
-      <pointLight position={[0, 25, 30]} intensity={4000} distance={120} color="#ffb04a" />
+      <pointLight position={[0, 25, 30]} intensity={4000} distance={120} color={P.heat.lampGlow} />
     </>
   )
 }
@@ -403,7 +404,7 @@ export default function DepositionLayer() {
       {tab === 'plasma' ? <Plasma /> : tab === 'pvd' ? <Evaporator /> : tab === 'coverage' ? <Coverage /> : tab === 'siepi' ? <Barrel /> : <Cvd />}
       <mesh rotation-x={-Math.PI / 2} position={[0, -30, 0]}>
         <circleGeometry args={[800, 48]} />
-        <meshStandardNodeMaterial color="#25292c" roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.floor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={6000} />

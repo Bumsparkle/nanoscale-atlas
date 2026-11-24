@@ -52,14 +52,14 @@ function KineticsChart({ T, P, Y }: { T: number; P: number; Y: number }) {
           <text x={34} y={y(v) + 4} className="tick" textAnchor="end">{v >= 1 ? v : v.toExponential(0)}</text>
         </g>
       ))}
-      <path d={pts((i) => um(kS(T_of(i)) * scale(T_of(i), P)))} className="ref" stroke="#e48a8a" strokeDasharray="4 3" />
-      <path d={pts((i) => um(hG(760) * scale(T_of(i), 760)))} className="ref" stroke="#8aa6e4" strokeDasharray="4 3" />
-      {P < 700 && <path d={pts((i) => um(hG(P) * scale(T_of(i), P)))} className="ref" stroke="#8ae4c4" strokeDasharray="4 3" />}
+      <path d={pts((i) => um(kS(T_of(i)) * scale(T_of(i), P)))} className="ref" stroke="var(--series-red)" strokeDasharray="4 3" />
+      <path d={pts((i) => um(hG(760) * scale(T_of(i), 760)))} className="ref" stroke="var(--series-blue)" strokeDasharray="4 3" />
+      {P < 700 && <path d={pts((i) => um(hG(P) * scale(T_of(i), P)))} className="ref" stroke="var(--series-teal)" strokeDasharray="4 3" />}
       <path d={pts((i) => um(cvdRate(T_of(i), P, Y).v))} className="cur" />
       <circle cx={x(1000 / (T + 273.15))} cy={y(um(here.v))} r={4} className="dot" />
-      <text x={290} y={22} className="tick" textAnchor="end" fill="#e48a8a">kS term</text>
-      <text x={290} y={36} className="tick" textAnchor="end" fill="#8aa6e4">hG at 760 torr</text>
-      {P < 700 && <text x={290} y={50} className="tick" textAnchor="end" fill="#8ae4c4">hG at {P.toPrecision(2)} torr</text>}
+      <text x={290} y={22} className="tick" textAnchor="end" fill="var(--series-red)">kS term</text>
+      <text x={290} y={36} className="tick" textAnchor="end" fill="var(--series-blue)">hG at 760 torr</text>
+      {P < 700 && <text x={290} y={50} className="tick" textAnchor="end" fill="var(--series-teal)">hG at {P.toPrecision(2)} torr</text>}
       <text x={164} y={H - 4} className="axis" textAnchor="middle">1000/T (K⁻¹) · growth µm/min (log)</text>
     </svg>
   )
@@ -268,7 +268,7 @@ function StrainPanel() {
         <line x1={x(SEMI_BY_ID[e.substrate].a)} x2={x(SEMI_BY_ID[e.substrate].a)} y1={12} y2={172} className="marker" />
         {SEMIS.map((m) => (
           <g key={m.id} style={{ cursor: 'pointer' }} onClick={() => set({ film: m.id })}>
-            <rect x={x(m.a) - 4} y={y(m.gap) - 4} width={8} height={8} fill={m.id === e.film ? '#f0b43c' : m.id === e.substrate ? '#6f8aa0' : 'none'} stroke={m.direct ? '#f2f4f3' : '#919a97'} />
+            <rect x={x(m.a) - 4} y={y(m.gap) - 4} width={8} height={8} fill={m.id === e.film ? 'var(--amber-ink)' : m.id === e.substrate ? 'var(--plot-a)' : 'none'} stroke={m.direct ? 'var(--ink-0)' : 'var(--ink-3)'} />
             <text x={x(m.a) + 6} y={y(m.gap) - 5} className={'tick' + (m.id === e.film ? ' hi' : '')}>{m.id}</text>
           </g>
         ))}

@@ -5,6 +5,7 @@ import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive } from './shared'
 import { useAtlas } from '../../state/store'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 2, layer 1: quartz sand, SiO₂ (1 unit = 0.1 mm). A heap of
@@ -24,10 +25,10 @@ function grains(n: number) {
     pos.setXYZ(i, v.x * f, v.y * f * 0.82, v.z * f)
   }
   geo.computeVertexNormals()
-  const mat = new THREE.MeshPhysicalNodeMaterial({ color: '#d8ccb4', roughness: 0.38, metalness: 0, clearcoat: 0.5, clearcoatRoughness: 0.3 })
+  const mat = new THREE.MeshPhysicalNodeMaterial({ color: P.sand.grain, roughness: 0.38, metalness: 0, clearcoat: 0.5, clearcoatRoughness: 0.3 })
   const im = new THREE.InstancedMesh(geo, mat, n)
   const o = new THREE.Object3D()
-  const tints = ['#dccfb6', '#cbbd9f', '#e6dccb', '#bfae8e', '#d4c7ae', '#efe8da']
+  const tints = [P.sand.t0, P.sand.t1, P.sand.t2, P.sand.t3, P.sand.t4, P.sand.t5]
   const c = new THREE.Color()
   for (let i = 0; i < n; i++) {
     // a heap: a cone of radius 70 units (7 mm), height 32
@@ -76,12 +77,12 @@ export default function SandLayer() {
       </Inspectable>
       <Inspectable node="mg-silicon" fit={2.2} minDist={20}>
         <mesh geometry={mgs} position={[92, 11, -6]} scale={[16, 14, 15]} rotation={[0.3, 0.8, 0.1]}>
-          <meshStandardNodeMaterial color="#6f767c" metalness={0.75} roughness={0.38} />
+          <meshStandardNodeMaterial color={P.sand.tray} metalness={0.75} roughness={0.38} />
         </mesh>
       </Inspectable>
       <mesh rotation-x={-Math.PI / 2} position={[0, -0.2, 0]}>
         <circleGeometry args={[400, 64]} />
-        <meshStandardNodeMaterial color="#2a2f33" roughness={0.95} />
+        <meshStandardNodeMaterial color={P.stage.table} roughness={0.95} />
       </mesh>
       <InspectSync />
       <ClearOnMiss />

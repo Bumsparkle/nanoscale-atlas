@@ -93,7 +93,7 @@ function MtfPanel() {
       <Slider label="coherence S" value={L.S} min={0} max={1} step={0.05} on={(S) => set({ S })} fmt={(v) => v.toFixed(2)} />
       <Slider label="NA" value={L.NA} min={0.2} max={0.95} step={0.01} on={(NA) => set({ NA })} fmt={(v) => v.toFixed(2)} />
       <Chart label="MTF against line width" xl="line width (nm, log)" yl="MTF" x={{ min: 60, max: 1500, log: true, ticks: [100, 300, 1000] }} y={{ min: 0, max: 1, ticks: [0, 0.5, 1] }}
-        series={[...curves.map((c, i) => ({ pts: ws.map((w, k) => [w, c[k]] as [number, number]), cls: 'ref', stroke: ['#8aa6e4', '#8ae4c4', '#e48a8a'][i], dash: true })), { pts: ws.map((w, k) => [w, cur[k]] as [number, number]) }]}
+        series={[...curves.map((c, i) => ({ pts: ws.map((w, k) => [w, c[k]] as [number, number]), cls: 'ref', stroke: ['var(--series-blue)', 'var(--series-teal)', 'var(--series-red)'][i], dash: true })), { pts: ws.map((w, k) => [w, cur[k]] as [number, number]) }]}
         marks={[{ x: L.feature, y: here.mtf }]} />
       <p className="lc-fine">Dashed: S = 0, 0.5, 0.9. MTF above ≈ 0.5 is needed for the resist to recognise a feature. More incoherent light (larger S) lowers the MTF of larger features but helps very small ones; S ≈ 0.5–0.7, since S → 0 costs intensity. S = s/d = NA_condenser/NA_projection.</p>
       <dl className="gp-read mono">
@@ -120,7 +120,7 @@ function FresnelPanel() {
       <Slider label="opening W" value={L.W} min={0.5} max={10} step={0.1} unit="µm" on={(W) => set({ W })} />
       <Slider label="incoherence S" value={L.S} min={0} max={1} step={0.05} on={(S) => set({ S })} fmt={(v) => v.toFixed(2)} />
       <Chart label="Intensity at the resist surface" xl="position (µm)" x={{ min: -8, max: 8, ticks: [-6, -3, 0, 3, 6] }} y={{ min: 0, max: 1.6, ticks: [0, 0.5, 1, 1.5] }}
-        series={[{ pts: [[-L.W / 2, 0], [-L.W / 2, 1], [L.W / 2, 1], [L.W / 2, 0]], cls: 'ref', stroke: '#8a949a', dash: true }, { pts: xs.map((x, i) => [x, I[i]] as [number, number]) }]} />
+        series={[{ pts: [[-L.W / 2, 0], [-L.W / 2, 1], [L.W / 2, 1], [L.W / 2, 0]], cls: 'ref', stroke: 'var(--ink-3)', dash: true }, { pts: xs.map((x, i) => [x, I[i]] as [number, number]) }]} />
       <dl className="gp-read mono">
         <dt>W_min</dt><dd>{wMin(lam, L.gap).toFixed(2)} µm</dd>
         <dt>regime</dt><dd>{reg === 'fresnel' ? 'Fresnel (near field)' : reg === 'contact' ? 'contact (g ≤ λ)' : 'beyond W²/λ: far field'}</dd>
@@ -157,8 +157,8 @@ function RoadmapPanel() {
       <Chart label="Node against year" xl="year" yl="nm (log)" x={{ min: 1998, max: 2018, ticks: [2000, 2005, 2010, 2015] }} y={{ min: 8, max: 300, log: true, ticks: [10, 30, 100, 250] }}
         series={[
           { pts: ROADMAP.map((r) => [r.year, r.node] as [number, number]) },
-          { pts: ROADMAP.filter((r) => r.gate).map((r) => [r.year, r.gate!] as [number, number]), cls: 'ref', stroke: '#e48a8a' },
-          { pts: Array.from({ length: 21 }, (_, i) => [1998 + i, roadmapNode(250, i)] as [number, number]), cls: 'ref', stroke: '#8a949a', dash: true },
+          { pts: ROADMAP.filter((r) => r.gate).map((r) => [r.year, r.gate!] as [number, number]), cls: 'ref', stroke: 'var(--series-red)' },
+          { pts: Array.from({ length: 21 }, (_, i) => [1998 + i, roadmapNode(250, i)] as [number, number]), cls: 'ref', stroke: 'var(--ink-3)', dash: true },
         ]}
         marks={[{ x: row.year, y: row.node, text: `${row.node} nm` }]} />
       <p className="lc-fine">Solid: half pitch; red: printed gate length; dashed: 0.7× every 3 years from 250 nm.</p>

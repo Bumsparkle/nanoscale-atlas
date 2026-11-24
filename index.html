@@ -1,11 +1,22 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <!-- desktop app (Tauri): flag it before first paint so the page starts transparent -->
     <script>if ('__TAURI_INTERNALS__' in window) document.documentElement.dataset.app = '1'</script>
-    <meta charset="UTF-8" />
+    <!-- theme before first paint (no flash): ?theme= wins, then the saved preference (atlas.theme.v1), then the system appearance. Keep in step with src/theme/theme.ts -->
+    <script>
+      ;(function () {
+        var t = new URLSearchParams(location.search).get('theme'), p
+        try { p = localStorage.getItem('atlas.theme.v1') } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = p === 'light' || p === 'dark' ? p : matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        var d = document.documentElement
+        d.dataset.theme = t
+        d.style.colorScheme = t
+        document.write('<meta name="theme-color" content="' + (t === 'light' ? '#e4e8ea' : '#1d2124') + '" />')
+      })()
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#1d2124" />
     <title>Nanoscale Atlas — the CMOS inverter, from wafer to atoms</title>
     <meta name="description" content="An explorable 3D model of the CMOS inverter from ELEC0031 Topic 2: wafer, die, cell, transistor, gate oxide and silicon lattice, built from the six masks and the fab recipe." />
     <meta property="og:title" content="Nanoscale Atlas — the CMOS inverter" />

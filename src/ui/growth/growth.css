@@ -152,10 +152,10 @@
   stroke: none;
 }
 .chart .band.vb {
-  fill: rgba(127, 178, 224, 0.55);
+  fill: color-mix(in srgb, var(--plot-a) 55%, transparent);
 }
 .chart .band.cb {
-  fill: rgba(240, 180, 60, 0.4);
+  fill: color-mix(in srgb, var(--plot-b) 40%, transparent);
 }
 .chart .level {
   stroke: var(--ink-3);
@@ -245,7 +245,7 @@
 .xsec {
   width: 100%;
   height: auto;
-  background: #15181a;
+  background: var(--sunken);
   border: var(--hair);
   border-radius: var(--radius);
   font-family: var(--mono);
@@ -281,7 +281,7 @@
   border-radius: 2px;
 }
 .lab-legend i.hatch {
-  background: repeating-linear-gradient(45deg, #6b7884 0 3px, #1d2124 3px 5px);
+  background: repeating-linear-gradient(45deg, var(--ink-3) 0 3px, var(--bg-0) 3px 5px);
 }
 .lab-scrub {
   display: grid;
@@ -322,7 +322,7 @@
   stroke-width: 2;
 }
 .evap .evap-vap {
-  stroke: #e0453c;
+  stroke: var(--plot-bad);
   stroke-dasharray: 3 3;
 }
 
@@ -354,9 +354,9 @@
 /* Chapters 6–7 */
 .gp-steps li.done { opacity: 0.6; }
 .gp-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 6px 0; }
-.gp-table th, .gp-table td { text-align: left; padding: 2px 4px; border-bottom: 1px solid var(--line, rgba(255,255,255,0.08)); }
+.gp-table th, .gp-table td { text-align: left; padding: 2px 4px; border-bottom: 1px solid var(--line); }
 .gp-table th { font-weight: 500; opacity: 0.7; }
-.gp-table tr.on td { color: var(--amber, #f0b43c); }
+.gp-table tr.on td { color: var(--amber-ink); }
 .gp-table tbody tr { cursor: pointer; }
 .gp-chips .chip { text-align: left; }
-.lc-slider select { background: transparent; color: inherit; border: 1px solid var(--line, rgba(255,255,255,0.15)); border-radius: 4px; padding: 2px 4px; font: inherit; }
+.lc-slider select { background: transparent; color: inherit; border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; font: inherit; }

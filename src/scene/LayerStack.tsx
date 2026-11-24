@@ -1,8 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { IS_APP } from '../platform'
 import { useThree } from '@react-three/fiber'
-import { SCENE } from './sceneTheme'
-import * as THREE from 'three/webgpu'
+import { useSceneTheme } from '../theme/scene'
 import { useAtlas } from '../state/store'
 import { LAYER_BY_ID, type LayerId } from '../chapters/cmos/layers'
 import { rig } from './rig'
@@ -48,9 +46,10 @@ export function LayerStack() {
   const layer = useAtlas((s) => s.layer)
   const scene = useThree((s) => s.scene)
   const Comp = LAYER_COMPONENTS[layer]
+  // a theme change rebuilds the layer: its materials, lights and labels read the palette as they build
+  const theme = useSceneTheme()
 
   useEffect(() => {
-    scene.background = IS_APP ? null : new THREE.Color(SCENE.background)
     // warm every layer chunk in the background so no dive ever waits on the network
     const ids = Object.keys(IMPORTS) as LayerId[]
     ids.forEach((id) => prefetchLayers([id]).then(() => useAtlas.setState((s) => ({ boot: { ...s.boot, layers: s.boot.layers + 1 } }))))
@@ -64,7 +63,7 @@ export function LayerStack() {
 
   return (
     <Suspense fallback={null}>
-      <Comp key={layer} />
+      <Comp key={layer + ':' + theme} />
     </Suspense>
   )
 }

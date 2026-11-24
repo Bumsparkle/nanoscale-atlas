@@ -97,8 +97,8 @@
   font-size: 13px;
 }
 .path-hl {
-  fill: rgba(159, 211, 162, 0.07);
-  stroke: rgba(159, 211, 162, 0.35);
+  fill: color-mix(in srgb, var(--on) 8%, transparent);
+  stroke: color-mix(in srgb, var(--on) 40%, transparent);
   stroke-dasharray: 3 3;
 }
 .tt {
@@ -126,13 +126,13 @@
   color: var(--ink-0);
 }
 .junction .p-side {
-  fill: #3a2f26;
+  fill: var(--bench-p);
 }
 .junction .n-side {
-  fill: #23323d;
+  fill: var(--bench-n);
 }
 .junction .depl {
-  fill: #e9ecec;
+  fill: var(--bench-ox);
   opacity: 0.13;
 }
 .ion {
@@ -140,10 +140,10 @@
   text-anchor: middle;
 }
 .ion.pos {
-  fill: #ffb0a0;
+  fill: var(--bench-hole);
 }
 .ion.neg {
-  fill: #a8c8ff;
+  fill: var(--bench-electron);
 }
 @media (max-width: 720px) {
   .bench {

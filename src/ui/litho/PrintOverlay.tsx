@@ -49,7 +49,7 @@ export function PrintCells({ f }: { f: LayoutFrame }) {
     return path
   }, [p.on, p.f, p.o.lambdaNm, p.o.NA, p.o.k1, p.o.S, ver, f.s, f.cx, f.cy]) // eslint-disable-line react-hooks/exhaustive-deps
   if (!L.print) return null
-  return <path d={d} className="printed-poly" fill="rgba(240,180,60,0.45)" stroke="#f0b43c" strokeWidth={0.6} />
+  return <path d={d} className="printed-poly" fill="color-mix(in srgb, var(--amber) 45%, transparent)" stroke="var(--amber-ink)" strokeWidth={0.6} />
 }
 
 export function PrintBox() {

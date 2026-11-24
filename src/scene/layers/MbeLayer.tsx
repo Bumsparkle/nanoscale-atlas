@@ -7,6 +7,7 @@ import { label, publish, useDive } from './shared'
 import { useAtlas } from '../../state/store'
 import { flux, mlPerSecond, rheedIntensity } from '../../chapters/films/physics'
 import { mbeLive } from '../../chapters/films/live'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 5 (Topic 6): an MBE growth chamber, 1 unit = 1 cm (slides 17–25).
@@ -15,10 +16,10 @@ import { mbeLive } from '../../chapters/films/live'
  * monolayer while the Ga shutter is open. Scroll in to the growing surface.
  */
 const CELLS = [
-  { id: 'Ga', col: '#c9ced2', a: -0.55 },
-  { id: 'As', col: '#8a8f6a', a: -0.18 },
-  { id: 'Al', col: '#d8dde2', a: 0.18 },
-  { id: 'Si', col: '#6f7e8a', a: 0.55 },
+  { id: 'Ga', col: P.obj.gallium, a: -0.55 },
+  { id: 'As', col: P.obj.arsenic, a: -0.18 },
+  { id: 'Al', col: P.obj.aluminium, a: 0.18 },
+  { id: 'Si', col: P.obj.steelBlue, a: 0.55 },
 ]
 
 export default function MbeLayer() {
@@ -27,8 +28,8 @@ export default function MbeLayer() {
   const shutter = useAtlas((s) => s.epi.shutter)
   useDive('cleanroom', 'surface', { home: [0, 8, 0] })
   const sub = useRef<THREE.Group>(null)
-  const streaks = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: '#7dff9a', transparent: true, opacity: 0.8 }), [])
-  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: '#f0b43c', transparent: true, opacity: 0.18, depthWrite: false }), [])
+  const streaks = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.rheed, transparent: true, opacity: 0.8 }), [])
+  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.18, depthWrite: false }), [])
 
   useFrame((_, dt) => {
     const st = useAtlas.getState()
@@ -58,22 +59,22 @@ export default function MbeLayer() {
         {/* the cut-away opens towards the default camera */}
         <mesh rotation-y={Math.PI / 2}>
           <sphereGeometry args={[40, 48, 24, Math.PI * 0.35, Math.PI * 1.3]} />
-          <meshStandardNodeMaterial color="#9aa3aa" metalness={0.8} roughness={0.3} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.obj.steelLight} metalness={0.8} roughness={0.3} side={THREE.DoubleSide} />
         </mesh>
         <mesh rotation-y={Math.PI / 2}>
           <sphereGeometry args={[36, 40, 20, Math.PI * 0.35, Math.PI * 1.3]} />
-          <meshStandardNodeMaterial color="#3f5566" metalness={0.4} roughness={0.6} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.obj.chamberWall} metalness={0.4} roughness={0.6} side={THREE.DoubleSide} />
         </mesh>
       </Inspectable>
       <group ref={sub} position={[0, 12, 0]}>
         <Inspectable node="mbe-substrate" fit={3}>
           <mesh>
             <cylinderGeometry args={[6, 6, 0.8, 40]} />
-            <meshStandardNodeMaterial color="#6f7e8a" metalness={0.6} roughness={0.2} emissive="#5a2a10" emissiveIntensity={0.3} />
+            <meshStandardNodeMaterial color={P.obj.steelBlue} metalness={0.6} roughness={0.2} emissive={P.heat.cellGlow} emissiveIntensity={0.3} />
           </mesh>
           <mesh position={[0, 3, 0]}>
             <cylinderGeometry args={[7, 7, 4, 40]} />
-            <meshStandardNodeMaterial color="#5a6066" metalness={0.8} roughness={0.35} />
+            <meshStandardNodeMaterial color={P.obj.cryoPanel} metalness={0.8} roughness={0.35} />
           </mesh>
         </Inspectable>
       </group>
@@ -86,11 +87,11 @@ export default function MbeLayer() {
             <group key={c.id} position={pos.toArray()} quaternion={q}>
               <mesh>
                 <cylinderGeometry args={[2.6, 2.6, 14, 20]} />
-                <meshStandardNodeMaterial color="#b0b8be" metalness={0.8} roughness={0.3} />
+                <meshStandardNodeMaterial color={P.obj.shutter} metalness={0.8} roughness={0.3} />
               </mesh>
               <mesh position={[0, 7.2, 0]}>
                 <cylinderGeometry args={[1.8, 1.8, 0.6, 20]} />
-                <meshStandardNodeMaterial color={c.col} emissive="#ff8a1a" emissiveIntensity={0.5} />
+                <meshStandardNodeMaterial color={c.col} emissive={P.heat.emberGlow} emissiveIntensity={0.5} />
               </mesh>
             </group>
           )
@@ -105,7 +106,7 @@ export default function MbeLayer() {
           return (
             <mesh key={c.id} position={at.toArray()} rotation={[open ? 1.2 : 0, 0, c.a]}>
               <boxGeometry args={[6, 0.3, 6]} />
-              <meshStandardNodeMaterial color="#c58a4a" metalness={0.8} roughness={0.3} />
+              <meshStandardNodeMaterial color={P.obj.copper} metalness={0.8} roughness={0.3} />
             </mesh>
           )
         })}
@@ -125,17 +126,17 @@ export default function MbeLayer() {
       <Inspectable node="rheed-gun" fit={3}>
         <mesh position={[32, 13, -6]} rotation-z={Math.PI / 2 - 0.05}>
           <cylinderGeometry args={[1.6, 1.6, 14, 16]} />
-          <meshStandardNodeMaterial color="#8a949a" metalness={0.8} roughness={0.3} />
+          <meshStandardNodeMaterial color={P.obj.steel} metalness={0.8} roughness={0.3} />
         </mesh>
         <mesh position={[16, 12.6, -3]} rotation-z={Math.PI / 2 - 0.05} raycast={() => null}>
           <cylinderGeometry args={[0.15, 0.15, 32, 6]} />
-          <meshBasicNodeMaterial color="#9fd8ff" />
+          <meshBasicNodeMaterial color={P.signal.electron} />
         </mesh>
       </Inspectable>
       <Inspectable node="rheed-screen" fit={3}>
         <mesh position={[-34, 13, -6]} rotation-y={Math.PI / 2}>
           <circleGeometry args={[6, 32]} />
-          <meshStandardNodeMaterial color="#0e1a12" />
+          <meshStandardNodeMaterial color={P.mbe.screen} />
         </mesh>
         {[-2.4, -0.8, 0.8, 2.4].map((z) => (
           <mesh key={z} position={[-33.8, 13, -6 + z]} rotation-y={Math.PI / 2} material={streaks}>

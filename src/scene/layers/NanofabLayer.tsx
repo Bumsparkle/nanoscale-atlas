@@ -6,6 +6,7 @@ import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, rand, useDive, useTabHome, useUnits } from './shared'
 import { useAtlas } from '../../state/store'
 import { colloidColour, colloidGapEv, qdLaserThreshold, skState, VLS_STEPS } from '../../chapters/nano/fab'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 7 (Topic 8 slides 14–22, 32–33): making nanostructures.
@@ -14,7 +15,7 @@ import { colloidColour, colloidGapEv, qdLaserThreshold, skState, VLS_STEPS } fro
  * synthesis (19), patterned growth (20) and Stranski–Krastanov self-assembly
  * (21–22); and the quantum-dot laser (32–33).
  */
-const C = { gaas: '#5f7486', algaas: '#9aa7b4', ingaas: '#d08a4a', inas: '#c8553d', au: '#e8c547', ga: '#c9ced2', sio2: '#c9d6dc', gate: '#b0b8be' }
+const C = { gaas: P.hetero.gaas, algaas: P.hetero.algaas, ingaas: P.hetero.ingaas, inas: P.hetero.inas, au: P.obj.gold, ga: P.obj.gallium, sio2: P.obj.oxideFilm, gate: P.obj.shutter }
 
 function Box({ p, s, c, o = 1, e }: { p: [number, number, number]; s: [number, number, number]; c: string; o?: number; e?: number }) {
   return (
@@ -54,7 +55,7 @@ function Wires() {
         {stack(40, 50)}
         <Box p={[27, 21, 0]} s={[18, 2, 50]} c={C.gate} />
         <Box p={[53, 21, 0]} s={[18, 2, 50]} c={C.gate} />
-        <Box p={[40, 10, 0]} s={[6, 4.2, 50.5]} c="#7dd3fc" o={0.6} e={0.4} />
+        <Box p={[40, 10, 0]} s={[6, 4.2, 50.5]} c={P.signal.beam} o={0.6} e={0.4} />
       </Inspectable>
     </group>
   )
@@ -95,7 +96,7 @@ function Vls() {
       {s >= 1 && s <= 3 && [[-12, 1], [12, 0], [-8, 0], [9, 1]].map(([x, as], i) => (
         <mesh key={i} position={[x, H + 12 + i * 2, (i % 2) * 6 - 3]}>
           <sphereGeometry args={[0.9, 10, 8]} />
-          <meshBasicNodeMaterial color={as ? '#8a8f6a' : C.ga} />
+          <meshBasicNodeMaterial color={as ? P.obj.arsenic : C.ga} />
         </mesh>
       ))}
     </group>
@@ -124,7 +125,7 @@ function Pillars() {
             <Box p={[0, 11, 0]} s={[w, 2, etched ? w : 60]} c={C.ingaas} e={0.2} />
             <Box p={[0, 14, 0]} s={[w, 4, etched ? w : 60]} c={C.algaas} />
             <Box p={[0, 18, 0]} s={[w, 4, etched ? w : 60]} c={C.gaas} />
-            {etched && <Box p={[0, 10, 0]} s={[w + 0.6, 20, w + 0.6]} c="#e0453c" o={0.18} />}
+            {etched && <Box p={[0, 10, 0]} s={[w + 0.6, 20, w + 0.6]} c={P.signal.bad} o={0.18} />}
           </group>
         )))}
       </Inspectable>
@@ -157,7 +158,7 @@ function Colloid() {
           </mesh>
           <mesh>
             <sphereGeometry args={[1.35, 16, 12]} />
-            <meshStandardNodeMaterial color="#e8eef2" transparent opacity={0.25} depthWrite={false} />
+            <meshStandardNodeMaterial color={P.obj.frost} transparent opacity={0.25} depthWrite={false} />
           </mesh>
         </group>
       ))}
@@ -260,11 +261,11 @@ function Laser() {
         const ridge = i >= 4
         return <Box key={n + i} p={[0, yy, 0]} s={[100, h, ridge ? 12 : 50]} c={c} e={n === 'dots' ? Math.min(1, 40 / qd) : 0} />
       })}
-      <Box p={[0, y + 1, 0]} s={[100, 2, 9]} c="#e8c547" />
+      <Box p={[0, y + 1, 0]} s={[100, 2, 9]} c={P.obj.gold} />
       {/* light out of the facet */}
       <mesh position={[58, 13, 0]} rotation-z={Math.PI / 2} raycast={() => null}>
         <coneGeometry args={[3, 16, 20, 1, true]} />
-        <meshBasicNodeMaterial color="#e0453c" transparent opacity={0.4} side={THREE.DoubleSide} depthWrite={false} />
+        <meshBasicNodeMaterial color={P.signal.bad} transparent opacity={0.4} side={THREE.DoubleSide} depthWrite={false} />
       </mesh>
     </Inspectable>
   )
@@ -291,7 +292,7 @@ export default function NanofabLayer() {
       {tab === 'vls' ? <Vls /> : tab === 'pillars' ? <Pillars /> : tab === 'colloid' ? <Colloid /> : tab === 'patterned' ? <Patterned /> : tab === 'sk' ? <Sk /> : tab === 'laser' ? <Laser /> : <Wires />}
       <mesh rotation-x={-Math.PI / 2} position={[0, -12, 0]}>
         <circleGeometry args={[800, 48]} />
-        <meshStandardNodeMaterial color="#25292c" roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.floor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={6000} />

@@ -1,6 +1,5 @@
 import * as THREE from 'three/webgpu'
 import { IS_APP } from '../../platform'
-import { SCENE } from '../sceneTheme'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { overlay } from '../cellRuntime'
@@ -10,6 +9,7 @@ import { StudioLights } from '../Lighting'
 import { Inspectable, InspectSync, ClearOnMiss } from '../Inspectable'
 import { rig } from '../rig'
 import { transition } from '../transition'
+import { P } from '../../theme/scene'
 
 /**
  * Layer 2: one die (1 unit = 10 µm), 4 mm square, illustrative floorplan.
@@ -29,10 +29,10 @@ function floorplan() {
   c.width = c.height = N
   const g = c.getContext('2d')!
   const s = N / SIZE
-  g.fillStyle = '#1f2427'
+  g.fillStyle = P.die.field
   g.fillRect(0, 0, N, N)
   // pad ring: aluminium bond pads, 100 µm
-  g.fillStyle = '#c9ced2'
+  g.fillStyle = P.die.pad
   for (let i = 20; i < SIZE - 20; i += 18) {
     for (const [x, y] of [[i, 6], [i, SIZE - 16], [6, i], [SIZE - 16, i]]) g.fillRect(x * s, y * s, 10 * s, 10 * s)
   }
@@ -49,13 +49,13 @@ function floorplan() {
       g.stroke()
     }
   }
-  block(40, 40, 150, 120, '#2e353a', 2.2, '#3d464c') // SRAM-like array
-  block(210, 40, 150, 120, '#2a3136', 1.68, '#384147') // logic rows
-  block(40, 180, 320, 70, '#2b3237', 1.68, '#3a4349')
-  block(40, 270, 140, 90, '#33393e', 3, '#454d53')
-  block(200, 270, 160, 90, '#283035', 1.68, '#374046')
+  block(40, 40, 150, 120, P.die.sram, 2.2, P.die.sramLine) // SRAM-like array
+  block(210, 40, 150, 120, P.die.logic, 1.68, P.die.logicLine) // logic rows
+  block(40, 180, 320, 70, P.die.io, 1.68, P.die.ioLine)
+  block(40, 270, 140, 90, P.die.analog, 3, P.die.analogLine)
+  block(200, 270, 160, 90, P.die.periph, 1.68, P.die.periphLine)
   // routing channels
-  g.fillStyle = '#59636a'
+  g.fillStyle = P.die.rail
   for (const y of [168, 262]) g.fillRect(40 * s, y * s, 320 * s, 2 * s)
   const t = new THREE.CanvasTexture(c)
   t.anisotropy = 8
@@ -71,10 +71,10 @@ function cellRows(cols: number, rows: number) {
   c.width = Math.ceil(W)
   c.height = Math.ceil(H)
   const g = c.getContext('2d')!
-  g.fillStyle = '#3e464c'
+  g.fillStyle = P.die.cellRow
   g.fillRect(0, 0, W, H)
   const colours: Record<string, string> = {
-    nwell: '#4d6273', nplus: '#6f97b8', pplus: '#b08a62', poly: '#a2553f', contact: '#111', metal: 'rgba(205,212,222,0.78)',
+    nwell: P.die.nwell, nplus: P.die.nplus, pplus: P.die.pplus, poly: P.die.poly, contact: P.die.contact, metal: P.die.metal,
   }
   for (let r = 0; r < rows; r++)
     for (let k = 0; k < cols; k++) {
@@ -117,7 +117,7 @@ function Beacon() {
   const pulse = useMemo(() => uniform(0), [])
   const mat = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false })
-    m.colorNode = color('#f0b43c')
+    m.colorNode = color(P.signal.amber)
     m.opacityNode = float(0.9).sub(pulse.mul(0.9))
     return m
   }, [pulse])
@@ -150,7 +150,7 @@ export default function DieLayer() {
     m.colorNode = texture(floorplan(), uv())
     return m
   }, [])
-  const side = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#2a2f33', roughness: 0.7, metalness: 0.3 }), [])
+  const side = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.die.side, roughness: 0.7, metalness: 0.3 }), [])
   const near = useMemo(() => uniform(0), [])
   const detail = useMemo(() => {
     const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.45, metalness: 0.45, transparent: true, depthWrite: false })
@@ -160,7 +160,7 @@ export default function DieLayer() {
   }, [near])
   const frame = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false })
-    m.colorNode = color('#f0b43c')
+    m.colorNode = color(P.signal.amber)
     m.opacityNode = mix(float(0.9), float(0.6), near)
     return m
   }, [near])
@@ -210,7 +210,7 @@ export default function DieLayer() {
       </Inspectable>
       <mesh position={[0, -THICK - 2, 0]} rotation-x={-Math.PI / 2} visible={!IS_APP}>
         <planeGeometry args={[4000, 4000]} />
-        <meshStandardNodeMaterial color={SCENE.floor} roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.bg} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss />

@@ -1,26 +1,6 @@
 /* Lesson and Revise: same instrument-panel language as the inspect panel and the layout panel.
    Amber is the only accent; --on for correct, --warn for wrong; numbers in Plex Mono. */
 
-.modes {
-  display: flex;
-  padding: 2px;
-  border: var(--hair);
-  border-radius: var(--radius);
-  background: var(--glass);
-}
-.modes button {
-  padding: var(--pad-chip);
-  font-size: var(--t-12);
-  color: var(--ink-1);
-  border-radius: var(--radius);
-}
-.modes button:hover {
-  color: var(--ink-0);
-}
-.modes button[aria-pressed='true'] {
-  color: var(--on-amber);
-  background: var(--amber);
-}
 
 /* the left-hand panel */
 .learn-panel {
@@ -263,11 +243,11 @@
 }
 .qopt.ok {
   border-color: var(--on);
-  background: rgba(159, 211, 162, 0.08);
+  background: var(--tint-on);
 }
 .qopt.no {
   border-color: var(--warn);
-  background: rgba(228, 120, 90, 0.08);
+  background: var(--tint-warn);
 }
 .qopt.picked {
   border-color: var(--amber-ink);
@@ -670,9 +650,6 @@
 }
 
 @media (max-width: 720px) {
-  .modes button {
-    padding: var(--pad-chip);
-  }
   .learn-panel {
     left: 0;
     right: 0;
@@ -922,7 +899,7 @@ html[data-mode='revise'] .layout-panel {
 .cov-skill i {
   position: absolute;
   inset: 0 auto 0 0;
-  background: rgba(159, 211, 162, 0.22);
+  background: color-mix(in srgb, var(--on) 22%, transparent);
 }
 .cov-skill b {
   position: relative;

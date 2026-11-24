@@ -6,6 +6,7 @@ import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { dopingColour, label, publish, useDive } from './shared'
 import { useAtlas } from '../../state/store'
 import { clOverC0, csOverC0, zoneRefine } from '../../chapters/growth/physics'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 2, layer 3: the crystal puller (1 unit = 1 cm).
@@ -112,14 +113,14 @@ function Czochralski() {
   useEffect(() => () => geo.dispose(), [geo])
   const crystal = useRef<THREE.Group>(null)
   const crucible = useRef<THREE.Group>(null)
-  const meltMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#ffb347', emissive: '#ff7a1a', emissiveIntensity: 1.1, roughness: 0.25, metalness: 0.1 }), [])
-  const heaterMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#2a2624', emissive: '#ff5a10', emissiveIntensity: 0.35, roughness: 0.9, side: THREE.DoubleSide }), [])
+  const meltMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.heat.melt, emissive: P.heat.meltGlow, emissiveIntensity: 1.1, roughness: 0.25, metalness: 0.1 }), [])
+  const heaterMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.heat.heater, emissive: P.heat.heaterGlow, emissiveIntensity: 0.35, roughness: 0.9, side: THREE.DoubleSide }), [])
   const hm = MELT_H0 * (1 - frac)
   const surface = MELT_Y0 + hm
   // the melt gets richer in dopant as the crystal grows (k0 < 1)
   useEffect(() => {
     const c = dopingColour(clOverC0(k0, frac))
-    meltMat.color.copy(new THREE.Color('#ffb347').lerp(c, 0.35))
+    meltMat.color.copy(new THREE.Color(P.heat.melt).lerp(c, 0.35))
   }, [k0, frac, meltMat])
 
   useFrame((_, dt) => {
@@ -144,15 +145,15 @@ function Czochralski() {
       <Inspectable node="cz-jacket" fit={1.1}>
         <mesh position={[0, 62, 0]}>
           <cylinderGeometry args={[78, 78, 124, 72, 1, true, cut.thetaStart, cut.thetaLength]} />
-          <meshStandardNodeMaterial color="#5d566b" metalness={0.55} roughness={0.4} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.puller.chamber} metalness={0.55} roughness={0.4} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[0, 62, 0]}>
           <cylinderGeometry args={[60, 60, 92, 64, 1, true, cut.thetaStart, cut.thetaLength]} />
-          <meshStandardNodeMaterial color="#9aa3aa" metalness={0.7} roughness={0.35} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.obj.steelLight} metalness={0.7} roughness={0.35} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[0, 230, 0]}>
           <cylinderGeometry args={[23, 23, 212, 40, 1, true, cut.thetaStart, cut.thetaLength]} />
-          <meshStandardNodeMaterial color="#5d566b" metalness={0.55} roughness={0.4} side={THREE.DoubleSide} transparent opacity={0.45} />
+          <meshStandardNodeMaterial color={P.puller.chamber} metalness={0.55} roughness={0.4} side={THREE.DoubleSide} transparent opacity={0.45} />
         </mesh>
       </Inspectable>
       <Inspectable node="cz-heater" fit={1.6}>
@@ -164,11 +165,11 @@ function Czochralski() {
         <Inspectable node="cz-crucible" fit={1.6}>
           <mesh position={[0, 58, 0]}>
             <cylinderGeometry args={[42, 41, 40, 64, 1, true]} />
-            <meshPhysicalNodeMaterial color="#f1f3f4" roughness={0.15} transmission={0.4} thickness={2} transparent opacity={0.6} side={THREE.DoubleSide} />
+            <meshPhysicalNodeMaterial color={P.obj.glassClear} roughness={0.15} transmission={0.4} thickness={2} transparent opacity={0.6} side={THREE.DoubleSide} />
           </mesh>
           <mesh position={[0, 37.5, 0]}>
             <cylinderGeometry args={[45, 45, 5, 64]} />
-            <meshStandardNodeMaterial color="#3b3f42" roughness={0.8} />
+            <meshStandardNodeMaterial color={P.puller.shaft} roughness={0.8} />
           </mesh>
         </Inspectable>
         <Inspectable node="cz-melt" fit={2}>
@@ -186,20 +187,20 @@ function Czochralski() {
         <Inspectable node="cz-seed" fit={4} minDist={45}>
           <mesh position={[0, body + SHOULDER + NECK + 4, 0]}>
             <cylinderGeometry args={[1.3, 1.3, 8, 12]} />
-            <meshStandardNodeMaterial color="#9fb0bf" metalness={0.6} roughness={0.3} />
+            <meshStandardNodeMaterial color={P.puller.seed} metalness={0.6} roughness={0.3} />
           </mesh>
           <mesh position={[0, body + SHOULDER + NECK + 11, 0]}>
             <cylinderGeometry args={[3.2, 3.2, 6, 16]} />
-            <meshStandardNodeMaterial color="#5b6168" metalness={0.8} roughness={0.35} />
+            <meshStandardNodeMaterial color={P.puller.chuck} metalness={0.8} roughness={0.35} />
           </mesh>
         </Inspectable>
         {/* pull shaft */}
         <mesh position={[0, body + SHOULDER + NECK + 14 + 80, 0]} raycast={() => null}>
           <cylinderGeometry args={[0.6, 0.6, 160, 8]} />
-          <meshStandardNodeMaterial color="#8d969c" metalness={0.9} roughness={0.3} />
+          <meshStandardNodeMaterial color={P.puller.crucible} metalness={0.9} roughness={0.3} />
         </mesh>
       </group>
-      <pointLight position={[0, surface + 6, 0]} intensity={9000} distance={180} color="#ff8a32" />
+      <pointLight position={[0, surface + 6, 0]} intensity={9000} distance={180} color={P.heat.meltLight} />
     </>
   )
 }
@@ -244,7 +245,7 @@ function FloatZone() {
       <Inspectable node="fz-zone" fit={3}>
         <mesh position={[0, zoneY, 0]}>
           <cylinderGeometry args={[9.2, 9.2, 10, 40]} />
-          <meshStandardNodeMaterial color="#ffc061" emissive="#ff7a1a" emissiveIntensity={1.2} roughness={0.2} />
+          <meshStandardNodeMaterial color={P.heat.zone} emissive={P.heat.meltGlow} emissiveIntensity={1.2} roughness={0.2} />
         </mesh>
       </Inspectable>
       <group ref={coil} position={[0, zoneY, 0]}>
@@ -252,7 +253,7 @@ function FloatZone() {
           {[-3, 0, 3].map((dy) => (
             <mesh key={dy} position={[0, dy, 0]} rotation-x={Math.PI / 2}>
               <torusGeometry args={[17, 1.2, 10, 48]} />
-              <meshStandardNodeMaterial color="#c58a4a" metalness={0.9} roughness={0.25} />
+              <meshStandardNodeMaterial color={P.obj.copper} metalness={0.9} roughness={0.25} />
             </mesh>
           ))}
         </Inspectable>
@@ -261,10 +262,10 @@ function FloatZone() {
       {[14, 226].map((y) => (
         <mesh key={y} position={[0, y, 0]} raycast={() => null}>
           <cylinderGeometry args={[6, 6, 12, 20]} />
-          <meshStandardNodeMaterial color="#596066" metalness={0.8} roughness={0.35} />
+          <meshStandardNodeMaterial color={P.puller.coilMount} metalness={0.8} roughness={0.35} />
         </mesh>
       ))}
-      <pointLight position={[0, zoneY, 24]} intensity={3500} distance={120} color="#ff9a3a" />
+      <pointLight position={[0, zoneY, 24]} intensity={3500} distance={120} color={P.heat.zoneLight} />
     </>
   )
 }
@@ -280,7 +281,7 @@ export default function PullerLayer() {
       {tab === 'fz' ? <FloatZone /> : <Czochralski />}
       <mesh rotation-x={-Math.PI / 2} position={[0, -0.1, 0]}>
         <circleGeometry args={[900, 64]} />
-        <meshStandardNodeMaterial color="#25292c" roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.floor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={8000} />

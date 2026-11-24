@@ -6,6 +6,7 @@ import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive } from './shared'
 import { useAtlas } from '../../state/store'
 import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 7 (Topic 8): a III–V MBE chamber growing a heterostructure layer by
@@ -14,12 +15,12 @@ import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
  * stack grown so far, to scale. Scroll in to the sample.
  */
 const CELLS = [
-  { id: 'Ga', col: '#c9ced2', a: -0.66 },
-  { id: 'Al', col: '#d8dde2', a: -0.22 },
-  { id: 'In', col: '#b7a9c9', a: 0.22 },
-  { id: 'As', col: '#8a8f6a', a: 0.66 },
-  { id: 'P', col: '#c87a5a', a: 1.1 },
-  { id: 'Sb', col: '#9aa58a', a: -1.1 },
+  { id: 'Ga', col: P.obj.gallium, a: -0.66 },
+  { id: 'Al', col: P.obj.aluminium, a: -0.22 },
+  { id: 'In', col: P.obj.indium, a: 0.22 },
+  { id: 'As', col: P.obj.arsenic, a: 0.66 },
+  { id: 'P', col: P.obj.phosphorus, a: 1.1 },
+  { id: 'Sb', col: P.obj.antimony, a: -1.1 },
 ]
 /** elements in each material (which shutters are open while it grows) */
 export const ELEMENTS: Record<string, string[]> = {
@@ -37,7 +38,7 @@ export default function QmbeLayer() {
   const growing = grown > 0 ? h.layers[Math.min(grown, h.layers.length) - 1] : null
   const open = new Set(growing ? ELEMENTS[growing.mat] ?? [] : [])
   const sub = useRef<THREE.Group>(null)
-  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: '#f0b43c', transparent: true, opacity: 0.16, depthWrite: false }), [])
+  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.16, depthWrite: false }), [])
   const sp = spans(h)
   const total = sp.length ? sp[sp.length - 1].z1 : 1
   const scale = 22 / total
@@ -56,22 +57,22 @@ export default function QmbeLayer() {
       <Inspectable node="qmbe-chamber" fit={1.1}>
         <mesh rotation-y={Math.PI / 2}>
           <sphereGeometry args={[40, 48, 24, Math.PI * 0.35, Math.PI * 1.3]} />
-          <meshStandardNodeMaterial color="#9aa3aa" metalness={0.8} roughness={0.3} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.obj.steelLight} metalness={0.8} roughness={0.3} side={THREE.DoubleSide} />
         </mesh>
         <mesh rotation-y={Math.PI / 2}>
           <sphereGeometry args={[36, 40, 20, Math.PI * 0.35, Math.PI * 1.3]} />
-          <meshStandardNodeMaterial color="#3f5566" metalness={0.4} roughness={0.6} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.obj.chamberWall} metalness={0.4} roughness={0.6} side={THREE.DoubleSide} />
         </mesh>
       </Inspectable>
       <group ref={sub} position={[0, 12, 0]}>
         <Inspectable node="qmbe-substrate" fit={3}>
           <mesh>
             <cylinderGeometry args={[6, 6, 0.8, 40]} />
-            <meshStandardNodeMaterial color="#5f7486" metalness={0.6} roughness={0.2} emissive="#5a2a10" emissiveIntensity={0.3} />
+            <meshStandardNodeMaterial color={P.obj.substrate} metalness={0.6} roughness={0.2} emissive={P.heat.cellGlow} emissiveIntensity={0.3} />
           </mesh>
           <mesh position={[0, 3, 0]}>
             <cylinderGeometry args={[7, 7, 4, 40]} />
-            <meshStandardNodeMaterial color="#5a6066" metalness={0.8} roughness={0.35} />
+            <meshStandardNodeMaterial color={P.obj.cryoPanel} metalness={0.8} roughness={0.35} />
           </mesh>
         </Inspectable>
       </group>
@@ -80,12 +81,12 @@ export default function QmbeLayer() {
         {sp.slice(0, grown).map((l, i) => (
           <mesh key={i} position={[22, 2 + (l.z0 + l.z1) * scale * 0.5, 0]}>
             <boxGeometry args={[8, Math.max(0.15, l.nm * scale), 8]} />
-            <meshStandardNodeMaterial color={MAT[l.mat].col} roughness={0.4} emissive={i === grown - 1 ? '#f0b43c' : '#000000'} emissiveIntensity={i === grown - 1 ? 0.25 : 0} />
+            <meshStandardNodeMaterial color={MAT[l.mat].col} roughness={0.4} emissive={i === grown - 1 ? P.signal.amber : P.signal.none} emissiveIntensity={i === grown - 1 ? 0.25 : 0} />
           </mesh>
         ))}
         <mesh position={[22, 1.5, 0]}>
           <boxGeometry args={[9, 1, 9]} />
-          <meshStandardNodeMaterial color="#30363b" />
+          <meshStandardNodeMaterial color={P.obj.stageDark} />
         </mesh>
       </Inspectable>
       <Inspectable node="qmbe-cells" fit={1.6}>
@@ -98,15 +99,15 @@ export default function QmbeLayer() {
             <group key={c.id} position={pos.toArray()} quaternion={q}>
               <mesh>
                 <cylinderGeometry args={[2.6, 2.6, 14, 20]} />
-                <meshStandardNodeMaterial color="#b0b8be" metalness={0.8} roughness={0.3} />
+                <meshStandardNodeMaterial color={P.obj.shutter} metalness={0.8} roughness={0.3} />
               </mesh>
               <mesh position={[0, 7.2, 0]}>
                 <cylinderGeometry args={[1.8, 1.8, 0.6, 20]} />
-                <meshStandardNodeMaterial color={c.col} emissive="#ff8a1a" emissiveIntensity={isOpen ? 0.9 : 0.2} />
+                <meshStandardNodeMaterial color={c.col} emissive={P.heat.emberGlow} emissiveIntensity={isOpen ? 0.9 : 0.2} />
               </mesh>
               <mesh position={[0, 10, 0]} rotation={[isOpen ? 1.2 : 0, 0, 0]}>
                 <boxGeometry args={[6, 0.3, 6]} />
-                <meshStandardNodeMaterial color="#c58a4a" metalness={0.8} roughness={0.3} />
+                <meshStandardNodeMaterial color={P.obj.copper} metalness={0.8} roughness={0.3} />
               </mesh>
             </group>
           )

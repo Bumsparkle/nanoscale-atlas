@@ -117,7 +117,7 @@ html[data-view='fab'] {
   .topbar {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'brand modes' 'crumbs tools';
+    grid-template-areas: 'brand modes' 'crumbs crumbs';
     gap: var(--s-2) var(--s-3);
     padding: var(--s-3) var(--s-4);
   }
@@ -126,9 +126,6 @@ html[data-view='fab'] {
   }
   .brand-ch {
     display: none;
-  }
-  .modes {
-    grid-area: modes;
   }
   .crumbs {
     grid-area: crumbs;

@@ -5,6 +5,7 @@ import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive, useTabHome } from './shared'
 import { useAtlas } from '../../state/store'
 import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 7 (Topic 8 slides 9, 14): the heterostructure, 1 unit = 1 nm.
@@ -15,7 +16,7 @@ import { MAT, SAMPLE, spans } from '../../chapters/nano/hetero'
  */
 /** TEM-like grey: layers with heavier atoms scatter more and look darker (illustrative) */
 export const TEM_GREY: Record<string, string> = {
-  GaAs: '#8e8e8e', AlGaAs: '#b8b8b8', InGaAs: '#4a4a4a', InGaAs40: '#3a3a3a', InAs: '#2a2a2a', GaSb: '#5a5a5a', InP: '#7a7a7a', InGaAsP: '#4f4f4f', InAlAs: '#9a9a9a',
+  GaAs: P.tem.gaas, AlGaAs: P.tem.algaas, InGaAs: P.tem.ingaas, InGaAs40: P.tem.ingaas40, InAs: P.tem.inas, GaSb: P.tem.gasb, InP: P.tem.inp, InGaAsP: P.tem.ingaasp, InAlAs: P.tem.inalas,
 }
 const NODE_OF: Record<string, string> = { substrate: 'hs-substrate', buffer: 'hs-substrate', barrier: 'hs-barrier', cladding: 'hs-barrier', spacer: 'hs-barrier', well: 'hs-well', dots: 'hs-well', cap: 'hs-cap' }
 
@@ -46,7 +47,7 @@ export default function HeteroLayer() {
           {sp.filter((l) => NODE_OF[l.role] === node).map((l, i) => (
             <mesh key={i} position={[0, (l.z0 + l.z1) / 2, 0]}>
               <boxGeometry args={[120, l.nm, tem ? 1 : 60]} />
-              {tem ? <meshBasicNodeMaterial color={TEM_GREY[l.mat] ?? '#888'} /> : <meshStandardNodeMaterial color={MAT[l.mat].col} roughness={0.45} />}
+              {tem ? <meshBasicNodeMaterial color={TEM_GREY[l.mat] ?? P.obj.fallback} /> : <meshStandardNodeMaterial color={MAT[l.mat].col} roughness={0.45} />}
             </mesh>
           ))}
         </Inspectable>
@@ -55,11 +56,11 @@ export default function HeteroLayer() {
         <group position={[-50, -6, 1]} userData={{ scaleBar: '50 nm' }}>
           <mesh position={[25, 0, 0]}>
             <boxGeometry args={[50, 1.2, 0.2]} />
-            <meshBasicNodeMaterial color="#111" />
+            <meshBasicNodeMaterial color={P.obj.black} />
           </mesh>
         </group>
       )}
-      {tem && <mesh position={[0, total / 2, -1]}><planeGeometry args={[150, total + 30]} /><meshBasicNodeMaterial color="#cfcfcf" side={THREE.DoubleSide} /></mesh>}
+      {tem && <mesh position={[0, total / 2, -1]}><planeGeometry args={[150, total + 30]} /><meshBasicNodeMaterial color={P.tem.film} side={THREE.DoubleSide} /></mesh>}
       <InspectSync />
       <ClearOnMiss radius={4000} />
     </>

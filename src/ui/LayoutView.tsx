@@ -21,12 +21,12 @@ import { PrintBox, PrintCells, usePrint } from './litho/PrintOverlay'
 
 /** slide 25 legend, adapted for a dark drawing surface; order = drawing order (slide 27) */
 const STYLE: Record<MaskId, { fill: string; stroke: string; opacity: number; pattern?: string; label: string }> = {
-  nwell: { fill: '#e3e3e3', stroke: '#c9c9c9', opacity: 0.13, label: 'n-well' },
-  pplus: { fill: '#6a6a6a', stroke: '#9a9a9a', opacity: 0.95, label: 'p+ diffusion' },
-  nplus: { fill: '#b4b4b4', stroke: '#d4d4d4', opacity: 0.85, label: 'n+ diffusion' },
-  poly: { fill: '#d9d9d9', stroke: '#ededed', opacity: 0.9, pattern: 'url(#hatch-poly)', label: 'polysilicon' },
-  metal: { fill: '#dfe2ff', stroke: '#7a84ff', opacity: 0.9, pattern: 'url(#hatch-metal)', label: 'metal1' },
-  contact: { fill: '#0b0c0d', stroke: '#ececec', opacity: 1, label: 'contact' },
+  nwell: { fill: 'var(--leg-nwell)', stroke: 'var(--lay-nwell-line)', opacity: 0.13, label: 'n-well' },
+  pplus: { fill: 'var(--leg-pplus)', stroke: 'var(--lay-pplus-line)', opacity: 0.95, label: 'p+ diffusion' },
+  nplus: { fill: 'var(--leg-nplus)', stroke: 'var(--lay-nplus-line)', opacity: 0.85, label: 'n+ diffusion' },
+  poly: { fill: 'var(--leg-poly)', stroke: 'var(--lay-poly-line)', opacity: 0.9, pattern: 'url(#hatch-poly)', label: 'polysilicon' },
+  metal: { fill: 'var(--leg-metal)', stroke: 'var(--leg-metal-line)', opacity: 0.9, pattern: 'url(#hatch-metal)', label: 'metal1' },
+  contact: { fill: 'var(--lay-contact)', stroke: 'var(--lay-contact-line)', opacity: 1, label: 'contact' },
 }
 const DRAW_ORDER: MaskId[] = ['nwell', 'pplus', 'nplus', 'poly', 'metal', 'contact']
 
@@ -170,12 +170,12 @@ export function LayoutView() {
               <path d={`M ${f.s * 4} 0 L 0 0 0 ${f.s * 4}`} className="grid-major" />
             </pattern>
             <pattern id="hatch-poly" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <rect width="6" height="6" fill="#bdbdbd" />
-              <line x1="0" y1="0" x2="0" y2="6" stroke="#f2f2f2" strokeWidth="1.6" />
+              <rect width="6" height="6" fill="var(--leg-nplus)" />
+              <line x1="0" y1="0" x2="0" y2="6" stroke="var(--leg-psub)" strokeWidth="1.6" />
             </pattern>
             <pattern id="hatch-metal" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-              <rect width="7" height="7" fill="rgba(223,226,255,0.14)" />
-              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(122,132,255,0.75)" strokeWidth="1" />
+              <rect width="7" height="7" fill="color-mix(in srgb, var(--leg-metal) 14%, transparent)" />
+              <line x1="0" y1="0" x2="0" y2="7" stroke="var(--leg-metal-hatch)" strokeWidth="1" />
             </pattern>
           </defs>
 

@@ -7,11 +7,19 @@ import { describe, expect, it } from 'vitest'
  * no font-size token or literal below 12px anywhere in the CSS.
  */
 const css = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8')
-const tok = (name: string) => {
-  const m = css.match(new RegExp(`--${name}:\\s*([^;]+);`))
-  if (!m) throw new Error('no token ' + name)
-  return m[1].trim()
+/** the declarations of one rule block */
+const block = (selector: string) => {
+  const i = css.indexOf(selector + ' {')
+  if (i < 0) throw new Error('no block ' + selector)
+  return css.slice(i, css.indexOf('\n}', i))
 }
+const decls = (b: string) => Object.fromEntries([...b.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]))
+/** dark is :root; light is :root overridden by :root[data-theme='light'] */
+const THEMES: Record<string, Record<string, string>> = {
+  dark: decls(block(':root')),
+  light: { ...decls(block(':root')), ...decls(block(":root[data-theme='light']")) },
+}
+
 const rgb = (c: string): [number, number, number] => {
   const h = c.match(/^#([0-9a-f]{6})$/i)
   if (h) return [0, 2, 4].map((i) => parseInt(h[1].slice(i, i + 2), 16)) as [number, number, number]
@@ -36,33 +44,44 @@ const ratio = (a: number[], b: number[]) => {
   return (x + 0.05) / (y + 0.05)
 }
 
-const scene = tok('scene')
-const SURFACES: Record<string, number[]> = {
-  scene: rgb(scene),
-  'bg-1': rgb(tok('bg-1')),
-  'bg-2': rgb(tok('bg-2')),
-  'bg-3': rgb(tok('bg-3')),
-  glass: over(tok('glass'), scene),
-  'glass-strong': over(tok('glass-strong'), scene),
-}
+for (const theme of Object.keys(THEMES)) {
+  describe(`${theme} theme`, () => {
+    const tok = (name: string) => {
+      const v = THEMES[theme][name]
+      if (!v) throw new Error('no token ' + name)
+      return v
+    }
+    const scene = tok('scene')
+    const SURFACES: Record<string, number[]> = {
+      scene: rgb(scene),
+      'bg-1': rgb(tok('bg-1')),
+      'bg-2': rgb(tok('bg-2')),
+      'bg-3': rgb(tok('bg-3')),
+      glass: over(tok('glass'), scene),
+      'glass-strong': over(tok('glass-strong'), scene),
+    }
 
-describe('text contrast (WCAG)', () => {
-  for (const ink of ['ink-0', 'ink-1', 'ink-2', 'amber-ink', 'warn'])
-    it(`${ink} is AA (4.5:1) on every surface`, () => {
-      for (const [name, s] of Object.entries(SURFACES)) expect(ratio(rgb(tok(ink)), s), `${ink} on ${name}`).toBeGreaterThanOrEqual(4.5)
+    describe('text contrast (WCAG)', () => {
+      for (const ink of ['ink-0', 'ink-1', 'ink-2', 'amber-ink', 'warn'])
+        it(`${ink} is AA (4.5:1) on every surface`, () => {
+          for (const [name, s] of Object.entries(SURFACES)) expect(ratio(rgb(tok(ink)), s), `${ink} on ${name}`).toBeGreaterThanOrEqual(4.5)
+        })
+      for (const ink of ['ink-3', 'on', 'lo', 'hi'])
+        it(`${ink} (labels, readouts, signals) is at least 3:1 on every surface`, () => {
+          for (const [name, s] of Object.entries(SURFACES)) expect(ratio(rgb(tok(ink)), s), `${ink} on ${name}`).toBeGreaterThanOrEqual(3)
+        })
+      it('text on amber buttons is AA', () => {
+        expect(ratio(rgb(tok('on-amber')), rgb(tok('amber')))).toBeGreaterThanOrEqual(4.5)
+      })
+      it('panels separate from the scene backdrop', () => {
+        expect(lum(SURFACES['bg-1'])).toBeGreaterThan(lum(SURFACES.scene))
+        if (theme === 'dark') expect(lum(SURFACES.scene)).toBeGreaterThan(lum([16, 18, 20]))
+        // light: a pale cleanroom grey, never pure white
+        else expect(lum(SURFACES.scene)).toBeLessThan(lum([240, 240, 240]))
+      })
     })
-  for (const ink of ['ink-3', 'on', 'lo', 'hi'])
-    it(`${ink} (labels, readouts, signals) is at least 3:1 on every surface`, () => {
-      for (const [name, s] of Object.entries(SURFACES)) expect(ratio(rgb(tok(ink)), s), `${ink} on ${name}`).toBeGreaterThanOrEqual(3)
-    })
-  it('text on amber buttons is AA', () => {
-    expect(ratio(rgb(tok('on-amber')), rgb(tok('amber')))).toBeGreaterThanOrEqual(4.5)
   })
-  it('panels separate from the scene backdrop', () => {
-    expect(lum(SURFACES['bg-1'])).toBeGreaterThan(lum(SURFACES.scene))
-    expect(lum(SURFACES.scene)).toBeGreaterThan(lum([16, 18, 20]))
-  })
-})
+}
 
 describe('type size', () => {
   it('no font size below 12px in any stylesheet', () => {

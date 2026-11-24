@@ -4,6 +4,7 @@ import { overlay, type ScreenLabel } from '../cellRuntime'
 import { rig } from '../rig'
 import { transition } from '../transition'
 import type { LayerId } from '../../chapters/cmos/layers'
+import { P } from '../../theme/scene'
 
 /**
  * Helpers shared by the hand-built layers of Chapters 2 and 3: dive
@@ -49,12 +50,12 @@ export function publish(labels: ScreenLabel[]) {
  * pale silicon grey for lightly doped, through amber, to red for heavily doped.
  */
 const STOPS: [number, THREE.Color][] = [
-  [-2, new THREE.Color('#3d4a57')],
-  [-1, new THREE.Color('#5a6d80')],
-  [-0.4, new THREE.Color('#8ea2b2')],
-  [0, new THREE.Color('#d9b45a')],
-  [0.5, new THREE.Color('#f08a3c')],
-  [1, new THREE.Color('#e0453c')],
+  [-2, new THREE.Color(P.ramp.dopant0)],
+  [-1, new THREE.Color(P.ramp.dopant1)],
+  [-0.4, new THREE.Color(P.ramp.dopant2)],
+  [0, new THREE.Color(P.ramp.dopant3)],
+  [0.5, new THREE.Color(P.ramp.dopant4)],
+  [1, new THREE.Color(P.ramp.dopant5)],
 ]
 export function dopingColour(ratio: number, out = new THREE.Color()) {
   const x = Math.log10(Math.max(1e-3, ratio))

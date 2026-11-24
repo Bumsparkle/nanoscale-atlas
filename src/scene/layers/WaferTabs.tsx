@@ -6,6 +6,7 @@ import { Inspectable } from '../Inspectable'
 import { label, publish, rand } from './shared'
 import { useAtlas } from '../../state/store'
 import { scatter } from '../../chapters/clean/physics'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 3 tabs of the wafer layer.
@@ -106,50 +107,50 @@ export function Gettering() {
       <Inspectable node="psg-layer" fit={1.6}>
         <mesh position={[0, TOP + 3, 0]}>
           <boxGeometry args={[WIDTH, 6, DEPTH]} />
-          <meshStandardNodeMaterial color="#e6a9c8" roughness={0.6} transparent opacity={0.85} />
+          <meshStandardNodeMaterial color={P.gettering.psg} roughness={0.6} transparent opacity={0.85} />
         </mesh>
       </Inspectable>
       <Inspectable node="device-layer" fit={2}>
         {Array.from({ length: 6 }, (_, i) => (
           <mesh key={i} position={[-WIDTH / 2 + 30 + i * 48, TOP - 1, 0]}>
             <boxGeometry args={[18, 2, DEPTH - 6]} />
-            <meshStandardNodeMaterial color="#1d2124" roughness={0.5} />
+            <meshStandardNodeMaterial color={P.gettering.device} roughness={0.5} />
           </mesh>
         ))}
       </Inspectable>
       <Inspectable node="denuded-zone" fit={2}>
         <mesh position={[0, TOP - DZ / 2, 0]}>
           <boxGeometry args={[WIDTH, DZ, DEPTH]} />
-          <meshStandardNodeMaterial color="#e9eef2" roughness={0.6} />
+          <meshStandardNodeMaterial color={P.gettering.bulk} roughness={0.6} />
         </mesh>
       </Inspectable>
       <Inspectable node="ig-region" fit={1.1}>
         <mesh position={[0, (TOP - DZ - (-TOP + 8)) / 2 + (-TOP + 8), 0]}>
           <boxGeometry args={[WIDTH, THICK - DZ - 8, DEPTH]} />
-          <meshStandardNodeMaterial color="#5f8fc7" roughness={0.6} transparent opacity={0.55} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.gettering.denuded} roughness={0.6} transparent opacity={0.55} depthWrite={false} />
         </mesh>
       </Inspectable>
       <Inspectable node="backside-region" fit={2}>
         <mesh position={[0, -TOP + 4, 0]}>
           <boxGeometry args={[WIDTH, 8, DEPTH]} />
-          <meshStandardNodeMaterial color="#8a3b3b" roughness={0.95} />
+          <meshStandardNodeMaterial color={P.gettering.backside} roughness={0.95} />
         </mesh>
       </Inspectable>
       <Inspectable node="oxide-precipitate" fit={4}>
         <instancedMesh ref={pRef} args={[undefined, undefined, precs.length]}>
           <icosahedronGeometry args={[2.4, 1]} />
-          <meshStandardNodeMaterial color="#f2f4f3" roughness={0.4} />
+          <meshStandardNodeMaterial color={P.gettering.oxide} roughness={0.4} />
         </instancedMesh>
       </Inspectable>
       <Inspectable node="metal-atom" fit={6}>
         <instancedMesh ref={mRef} args={[undefined, undefined, metals.length]}>
           <sphereGeometry args={[1.8, 12, 8]} />
-          <meshStandardNodeMaterial color="#f0b43c" emissive="#7a5a10" emissiveIntensity={0.6} metalness={0.6} roughness={0.3} />
+          <meshStandardNodeMaterial color={P.signal.amber} emissive={P.gettering.trapGlow} emissiveIntensity={0.6} metalness={0.6} roughness={0.3} />
         </instancedMesh>
       </Inspectable>
       <instancedMesh ref={aRef} args={[undefined, undefined, alkali.length]} raycast={() => null}>
         <sphereGeometry args={[1.4, 10, 6]} />
-        <meshBasicNodeMaterial color="#c58af0" />
+        <meshBasicNodeMaterial color={P.signal.metalIon} />
       </instancedMesh>
     </>
   )
@@ -177,11 +178,11 @@ export function YieldDies() {
     const hits = scatter(dies.length, A, D0, C, seed, (i) => Math.floor((dies[i][0] + R) / block) * 1000 + Math.floor((dies[i][1] + R) / block))
     return { dies, hits, side }
   }, [A, D0, C, seed])
-  const good = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#7f9a86', roughness: 0.4, metalness: 0.3 }), [])
-  const bad = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#c0503c', roughness: 0.5, emissive: '#5a1a10', emissiveIntensity: 0.5 }), [])
+  const good = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.yield.good, roughness: 0.4, metalness: 0.3 }), [])
+  const bad = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.yield.bad, roughness: 0.5, emissive: P.yield.badGlow, emissiveIntensity: 0.5 }), [])
   const goodIm = useMemo(() => new THREE.InstancedMesh(new THREE.BoxGeometry(1, 0.3, 1), good, 4000), [good])
   const badIm = useMemo(() => new THREE.InstancedMesh(new THREE.BoxGeometry(1, 0.3, 1), bad, 4000), [bad])
-  const dots = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1, 8, 6), new THREE.MeshBasicNodeMaterial({ color: '#f2f4f3' }), 4000), [])
+  const dots = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1, 8, 6), new THREE.MeshBasicNodeMaterial({ color: P.gettering.oxide }), 4000), [])
   useMemo(() => {
     const o = new THREE.Object3D()
     const r = rand(seed * 31 + 7)
@@ -271,32 +272,32 @@ export function SmartCut() {
         <group ref={bulk} visible={step < 5}>
           <mesh position={[0, -13, 0]}>
             <boxGeometry args={[W, 20, D]} />
-            <meshStandardNodeMaterial color="#9fc0d8" roughness={0.6} />
+            <meshStandardNodeMaterial color={P.soi.box} roughness={0.6} />
           </mesh>
         </group>
         <Inspectable node="soi-si" fit={1.4}>
           <mesh position={[0, -1.5, 0]}>
             <boxGeometry args={[W, 3, D]} />
-            <meshStandardNodeMaterial color="#7fb0d0" roughness={0.5} />
+            <meshStandardNodeMaterial color={P.soi.handle} roughness={0.5} />
           </mesh>
         </Inspectable>
         <Inspectable node="soi-box" fit={1.4}>
           <mesh position={[0, 2, 0]} visible={oxideOn}>
             <boxGeometry args={[W, 4, D]} />
-            <meshStandardNodeMaterial color="#e6e8ea" roughness={0.5} />
+            <meshStandardNodeMaterial color={P.soi.top} roughness={0.5} />
           </mesh>
         </Inspectable>
         <Inspectable node="soi-split" fit={1.4}>
           <mesh position={[0, -3.2, 0]} visible={hOn}>
             <boxGeometry args={[W + 0.2, 0.6, D + 0.2]} />
-            <meshStandardNodeMaterial color="#e070b0" emissive="#801860" emissiveIntensity={0.5} />
+            <meshStandardNodeMaterial color={P.soi.implant} emissive={P.soi.implantGlow} emissiveIntensity={0.5} />
           </mesh>
         </Inspectable>
       </group>
       <Inspectable node="soi-handle" fit={1.4}>
         <mesh ref={handle} position={[0, -44, 0]} visible={step >= 3}>
           <boxGeometry args={[W, 20, D]} />
-          <meshStandardNodeMaterial color="#6f8496" roughness={0.6} />
+          <meshStandardNodeMaterial color={P.soi.base} roughness={0.6} />
         </mesh>
       </Inspectable>
     </>

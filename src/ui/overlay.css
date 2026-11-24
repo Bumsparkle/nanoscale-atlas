@@ -9,7 +9,7 @@
   inset: 0;
 }
 .label-overlay polyline {
-  stroke: rgba(236, 238, 236, 0.55);
+  stroke: var(--wire);
   stroke-width: 1;
 }
 .label-overlay circle {
@@ -72,14 +72,14 @@
 .legend i {
   width: 22px;
   height: 11px;
-  border: 1px solid #444;
+  border: 1px solid var(--leg-edge);
 }
 .legend i.hatched {
-  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, rgba(60, 60, 60, 0.6) 3px 4px) !important;
+  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, var(--leg-hatch) 3px 4px) !important;
 }
 .legend i.hatched.metal {
   border-color: var(--leg-metal-edge);
-  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, rgba(43, 54, 217, 0.65) 3px 4px) !important;
+  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, var(--leg-metal-hatch) 3px 4px) !important;
 }
 @media (max-width: 720px) {
   .legend {

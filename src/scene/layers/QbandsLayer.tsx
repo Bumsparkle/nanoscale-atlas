@@ -7,6 +7,7 @@ import { label, publish, useDive, useTabHome } from './shared'
 import { useAtlas } from '../../state/store'
 import { alignment, confinedLevels, Ec, Ev, MAT, SAMPLE, spans, type Heterostructure } from '../../chapters/nano/hetero'
 import { Line } from './nanoShared'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 7 (Topic 8 slides 9–11): the layers become a potential.
@@ -49,8 +50,8 @@ function Edges({ h, x0, e0 }: { h: Heterostructure; x0: number; e0: number }) {
     ))
   return (
     <>
-      <Inspectable node="qb-cb" fit={1.6}>{slab((m) => Ec(MAT[m]), '#7dd3fc')}<Line pts={pts((m) => Ec(MAT[m]))} r={0.3} color="#7dd3fc" segs={sp.length * 40} /></Inspectable>
-      <Inspectable node="qb-vb" fit={1.6}>{slab((m) => Ev(MAT[m]), '#f0b43c')}<Line pts={pts((m) => Ev(MAT[m]))} r={0.3} color="#f0b43c" segs={sp.length * 40} /></Inspectable>
+      <Inspectable node="qb-cb" fit={1.6}>{slab((m) => Ec(MAT[m]), P.signal.beam)}<Line pts={pts((m) => Ec(MAT[m]))} r={0.3} color={P.signal.beam} segs={sp.length * 40} /></Inspectable>
+      <Inspectable node="qb-vb" fit={1.6}>{slab((m) => Ev(MAT[m]), P.signal.amber)}<Line pts={pts((m) => Ev(MAT[m]))} r={0.3} color={P.signal.amber} segs={sp.length * 40} /></Inspectable>
     </>
   )
 }
@@ -89,8 +90,8 @@ function Bands() {
     <group>
       <Edges h={h} x0={-total / 2} e0={e0} />
       <Inspectable node="qb-level" fit={2}>
-        {curves(lv.e, '#b3e5ff', 1)}
-        {curves(lv.h, '#ffd27a', -1)}
+        {curves(lv.e, P.signal.beamPale, 1)}
+        {curves(lv.h, P.signal.holeWarm, -1)}
       </Inspectable>
     </group>
   )
@@ -131,13 +132,13 @@ function Align() {
       <Inspectable node="qb-electron" fit={3}>
         <mesh ref={eRef}>
           <sphereGeometry args={[2.2, 20, 14]} />
-          <meshStandardNodeMaterial color="#7dd3fc" emissive="#7dd3fc" emissiveIntensity={0.6} />
+          <meshStandardNodeMaterial color={P.signal.beam} emissive={P.signal.beam} emissiveIntensity={0.6} />
         </mesh>
       </Inspectable>
       <Inspectable node="qb-hole" fit={3}>
         <mesh ref={hRef}>
           <sphereGeometry args={[2.2, 20, 14]} />
-          <meshStandardNodeMaterial color="#f0b43c" emissive="#f0b43c" emissiveIntensity={0.5} transparent opacity={0.85} />
+          <meshStandardNodeMaterial color={P.signal.amber} emissive={P.signal.amber} emissiveIntensity={0.5} transparent opacity={0.85} />
         </mesh>
       </Inspectable>
       {/* layer bands behind, so the materials are named in space */}

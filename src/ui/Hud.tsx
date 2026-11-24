@@ -12,11 +12,12 @@ import { Timeline } from './Timeline'
 import { LayerControls } from './LayerControls'
 import { LogicBench } from './LogicBench'
 import { LayoutView } from './LayoutView'
-import { LearnHost, ModeSwitch } from '../learn/ui/LearnHost'
+import { LearnHost } from '../learn/ui/LearnHost'
 import { SourceModal } from './source/Source'
 import '../ui/layercontrols.css'
 import { LabelOverlay, SectionLegend } from './Overlay'
 import './hud.css'
+import { TopIcons } from './TopIcons'
 
 export function Breadcrumbs() {
   const layer = useAtlas((s) => s.layer)
@@ -91,7 +92,7 @@ export function TopBar() {
       </a>
       <ChapterMenu />
       <Breadcrumbs />
-      <ModeSwitch />
+      <TopIcons />
     </header>
   )
 }

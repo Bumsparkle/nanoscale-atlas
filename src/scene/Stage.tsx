@@ -1,4 +1,4 @@
-import { SCENE } from './sceneTheme'
+import { P, useSceneTheme } from '../theme/scene'
 import { IS_APP } from '../platform'
 import * as THREE from 'three/webgpu'
 import { Canvas, extend, useFrame, useThree, type ThreeToJSXElements } from '@react-three/fiber'
@@ -68,6 +68,19 @@ function RigDriver() {
       f.n = 0
     }
   })
+  return null
+}
+
+/** Keeps the renderer's exposure and the backdrop on the current theme. */
+function ThemeSync() {
+  const theme = useSceneTheme()
+  const gl = useThree((s) => s.gl) as unknown as THREE.WebGPURenderer
+  const scene = useThree((s) => s.scene)
+  useEffect(() => {
+    gl.toneMappingExposure = P.k.exposure
+    // the desktop app floats the scene on window glass: no backdrop
+    scene.background = IS_APP ? null : new THREE.Color(P.stage.bg)
+  }, [gl, scene, theme])
   return null
 }
 
@@ -171,7 +184,7 @@ export function Stage() {
         setRenderer(isGPU ? 'webgpu' : 'webgl2', isGPU ? 'WebGPU backend' : 'WebGL 2 fallback backend')
         useAtlas.setState((s) => ({ boot: { ...s.boot, gpu: true } }))
         renderer.toneMapping = THREE.AgXToneMapping
-        renderer.toneMappingExposure = SCENE.exposure
+        renderer.toneMappingExposure = P.k.exposure
         renderer.shadowMap.enabled = false
         return renderer as never
       }}
@@ -181,6 +194,7 @@ export function Stage() {
       }}
     >
       <RigDriver />
+      <ThemeSync />
       <Input />
       <Suspense fallback={null}>
         <LayerStack />

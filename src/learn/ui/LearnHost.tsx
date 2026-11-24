@@ -23,34 +23,21 @@ function lessonStart() {
   return list.find((p) => !progress.lesson().done.includes(p)) ?? list[0]
 }
 
-export function ModeSwitch() {
-  const mode = useAtlas((s) => s.mode)
-  const set = useAtlas((s) => s.set)
-  return (
-    <nav className="modes" aria-label="Mode">
-      {MODES.map((m) => (
-        <button
-          key={m.id}
-          aria-pressed={mode === m.id}
-          title={m.hint}
-          onClick={() =>
-            set({
-              mode: m.id,
-              lessonAt: m.id === 'lesson' ? lessonStart() : useAtlas.getState().lessonAt,
-              hint: null,
-              look: null,
-              quiz: false,
-              focus: null,
-              mastery: m.id === 'explore' ? useAtlas.getState().mastery : false,
-            })
-          }
-        >
-          {m.label}
-        </button>
-      ))}
-    </nav>
-  )
+/** switch mode, keeping each mode's own entry state (the lesson resumes where you were) */
+export function enterMode(id: Mode) {
+  const st = useAtlas.getState()
+  st.set({
+    mode: id,
+    lessonAt: id === 'lesson' ? lessonStart() : st.lessonAt,
+    hint: null,
+    look: null,
+    quiz: false,
+    focus: null,
+    mastery: id === 'explore' ? st.mastery : false,
+  })
 }
+
+export { MODES }
 
 /** Explore: tint the model by mastery */
 export function MasteryToggle() {

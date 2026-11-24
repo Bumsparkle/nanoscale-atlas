@@ -10,6 +10,7 @@ import { overlay, type ScreenLabel } from '../cellRuntime'
 import { Spring, SPRINGS } from '../spring'
 import { useAtlas } from '../../state/store'
 import { CrystalTabs } from './CrystalTabs'
+import { P } from '../../theme/scene'
 
 /**
  * Layer 6: the silicon lattice (1 unit = 1 Å). Diamond cubic, a = 5.43 Å.
@@ -49,9 +50,9 @@ function StructureView() {
   const camera = useThree((s) => s.camera)
   const size = useThree((s) => s.size)
   const b = useMemo(() => build(), [])
-  const atoms = useMemo(() => atomsMesh(b.p0, 0.62, '#8ea2b2'), [b])
-  const bonds = useMemo(() => bondsMesh(b.pairs.map(([i, j]) => [b.p0[i], b.p0[j]]), 0.17, '#5f6f7b'), [b])
-  const hiBonds = useMemo(() => bondsMesh([], 0.24, '#f0b43c', 8), [])
+  const atoms = useMemo(() => atomsMesh(b.p0, 0.62, P.atom.si), [b])
+  const bonds = useMemo(() => bondsMesh(b.pairs.map(([i, j]) => [b.p0[i], b.p0[j]]), 0.17, P.atom.siBond), [b])
+  const hiBonds = useMemo(() => bondsMesh([], 0.24, P.signal.amber, 8), [])
   const dopant = useRef<THREE.Mesh>(null)
   const carrier = useRef<THREE.Mesh>(null)
   const hole = useRef<THREE.Mesh>(null)
@@ -90,7 +91,7 @@ function StructureView() {
     if (dopant.current) {
       dopant.current.visible = dop !== 'none'
       dopant.current.position.copy(c)
-      ;(dopant.current.material as THREE.MeshStandardNodeMaterial).color.set(dop === 'P' ? '#d9822b' : '#e79bb0')
+      ;(dopant.current.material as THREE.MeshStandardNodeMaterial).color.set(dop === 'P' ? P.atom.phosphorus : P.atom.boron)
     }
     const wk = walk.current
     if (dop === 'none') wk.t = 0
@@ -157,21 +158,21 @@ function StructureView() {
         <primitive object={hiBonds} />
       </Inspectable>
       <lineSegments ref={edges} geometry={edgeGeo} raycast={() => null}>
-        <lineBasicNodeMaterial color="#f0b43c" transparent opacity={0.5} />
+        <lineBasicNodeMaterial color={P.signal.amber} transparent opacity={0.5} />
       </lineSegments>
       <Inspectable node="lattice-dopant" fit={3} minDist={10}>
         <mesh ref={dopant} visible={false}>
           <icosahedronGeometry args={[0.85, 2]} />
-          <meshStandardNodeMaterial color="#d9822b" roughness={0.35} />
+          <meshStandardNodeMaterial color={P.atom.phosphorus} roughness={0.35} />
         </mesh>
       </Inspectable>
       <mesh ref={carrier} visible={false} raycast={() => null}>
         <sphereGeometry args={[0.32, 12, 8]} />
-        <meshBasicNodeMaterial color="#9fd8ff" />
+        <meshBasicNodeMaterial color={P.signal.electron} />
       </mesh>
       <mesh ref={hole} visible={false} raycast={() => null}>
         <torusGeometry args={[0.36, 0.08, 8, 24]} />
-        <meshBasicNodeMaterial color="#ffc58a" />
+        <meshBasicNodeMaterial color={P.signal.hole} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={400} />

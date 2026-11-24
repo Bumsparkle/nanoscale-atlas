@@ -178,11 +178,11 @@ function YieldChart({ A, D0, C }: { A: number; D0: number; C: number }) {
           <text x={33} y={y(v) + 4} className="tick" textAnchor="end">{v}</text>
         </g>
       ))}
-      <path d={path((a) => poissonYield(a, D0))} className="ref" stroke="#e48a8a" />
+      <path d={path((a) => poissonYield(a, D0))} className="ref" stroke="var(--series-red)" />
       <path d={path((a) => nbYield(a, D0, C))} className="cur" />
       <line x1={x(A)} x2={x(A)} y1={10} y2={122} className="marker" />
       <text x={290} y={22} className="tick" textAnchor="end">negative binomial (C = {C})</text>
-      <text x={290} y={36} className="tick" textAnchor="end" fill="#e48a8a">Poisson</text>
+      <text x={290} y={36} className="tick" textAnchor="end" fill="var(--series-red)">Poisson</text>
       <text x={164} y={Hh - 2} className="axis" textAnchor="middle">chip area Ac (cm²) · D0 = {D0} cm⁻²</text>
     </svg>
   )

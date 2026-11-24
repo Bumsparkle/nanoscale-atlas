@@ -5,6 +5,7 @@ import { StudioLights } from '../Lighting'
 import { ClearOnMiss, Inspectable, InspectSync } from '../Inspectable'
 import { label, publish, useDive } from './shared'
 import { useAtlas } from '../../state/store'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 2, layer 5: ingot to wafers (1 unit = 1 mm), Topic 3 slide 23.
@@ -30,9 +31,9 @@ function idTexture() {
   c.width = 512
   c.height = 128
   const g = c.getContext('2d')!
-  g.fillStyle = '#000'
+  g.fillStyle = P.tex.black
   g.fillRect(0, 0, 512, 128)
-  g.fillStyle = '#fff'
+  g.fillStyle = P.tex.white
   g.font = '600 64px "IBM Plex Mono", monospace'
   g.textAlign = 'center'
   g.textBaseline = 'middle'
@@ -60,7 +61,7 @@ export default function WafersLayer() {
   const bladeGeo = useMemo(() => blade(), [])
   const wafer = useMemo(() => waferGeo(), [])
   const idTex = useMemo(() => idTexture(), [])
-  const waferMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#7d8a95', metalness: 0.55, roughness: 0.22 }), [])
+  const waferMat = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.wafers.wafer, metalness: 0.55, roughness: 0.22 }), [])
   useDive('ingot', 'cleanroom', { home: [180, 160, 220] })
 
   useFrame((_, dt) => {
@@ -81,24 +82,24 @@ export default function WafersLayer() {
       {/* the ingot runs along x and ends in the blade's hole */}
       <mesh position={[-450, R + 20, 0]} rotation-z={Math.PI / 2}>
         <cylinderGeometry args={[R, R, 900, 96]} />
-        <meshStandardNodeMaterial color="#8ea2b2" metalness={0.75} roughness={0.2} />
+        <meshStandardNodeMaterial color={P.obj.siliconBright} metalness={0.75} roughness={0.2} />
       </mesh>
       <Inspectable node="id-saw" fit={1.2}>
         <mesh ref={saw} geometry={bladeGeo} position={[0, R + 20, 0]} rotation-y={Math.PI / 2}>
-          <meshStandardNodeMaterial color="#b9c1c8" metalness={0.5} roughness={0.32} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.wafers.saw} metalness={0.5} roughness={0.32} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[0, R + 20, 0]} rotation-y={Math.PI / 2} raycast={() => null}>
           <ringGeometry args={[175, 182, 96]} />
-          <meshStandardNodeMaterial color="#e9e2c8" metalness={0.5} roughness={0.6} side={THREE.DoubleSide} />
+          <meshStandardNodeMaterial color={P.wafers.slurry} metalness={0.5} roughness={0.6} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[60, R + 20, 0]}>
           <boxGeometry args={[100, 980, 980]} />
-          <meshStandardNodeMaterial color="#4d555b" metalness={0.5} roughness={0.5} transparent opacity={0.0} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.wafers.ghost} metalness={0.5} roughness={0.5} transparent opacity={0.0} depthWrite={false} />
         </mesh>
       </Inspectable>
       <mesh position={[-60, R + 20, -520]} raycast={() => null}>
         <boxGeometry args={[140, 1000, 60]} />
-        <meshStandardNodeMaterial color="#3e454b" metalness={0.5} roughness={0.5} />
+        <meshStandardNodeMaterial color={P.wafers.base} metalness={0.5} roughness={0.5} />
       </mesh>
       {/* the carrier with a batch of slices */}
       <group position={[560, 0, 0]}>
@@ -108,7 +109,7 @@ export default function WafersLayer() {
           ))}
           <mesh position={[0, 60, 0]}>
             <boxGeometry args={[140, 120, 300]} />
-            <meshStandardNodeMaterial color="#d6d0c4" roughness={0.6} transparent opacity={0.55} />
+            <meshStandardNodeMaterial color={P.wafers.cassette} roughness={0.6} transparent opacity={0.55} />
           </mesh>
         </Inspectable>
       </group>
@@ -126,7 +127,7 @@ export default function WafersLayer() {
       </group>
       <mesh rotation-x={-Math.PI / 2} position={[0, -1, 0]}>
         <circleGeometry args={[9000, 48]} />
-        <meshStandardNodeMaterial color="#25292c" roughness={1} />
+        <meshStandardNodeMaterial color={P.stage.floor} roughness={1} />
       </mesh>
       <InspectSync />
       <ClearOnMiss radius={40000} />

@@ -7,6 +7,7 @@ import { label, publish, rand, useDive } from './shared'
 import { useAtlas } from '../../state/store'
 import { rig } from '../rig'
 import { SEMI_BY_ID, strainState } from '../../chapters/films/physics'
+import { P } from '../../theme/scene'
 
 /**
  * Chapter 5 (Topic 6): the growing surface, 1 unit = 1 Å, atoms on a simple
@@ -20,7 +21,8 @@ import { SEMI_BY_ID, strainState } from '../../chapters/films/physics'
 const N = 14
 const A = 3
 const PER_ML = N * N
-const HEIGHT_COLOURS = ['#f0b43c', '#e8902c', '#d8682a', '#c04a2a', '#a8352a'].map((c) => new THREE.Color(c))
+/** island height ramp, amber at the first layer (built per mount: the first stop follows the theme) */
+const heightColours = () => [P.signal.amber, P.ramp.height1, P.ramp.height2, P.ramp.height3, P.ramp.height4].map((c) => new THREE.Color(c))
 
 function order(mode: 'fvdm' | 'sk' | 'vw') {
   const r = rand(mode === 'vw' ? 5 : mode === 'sk' ? 7 : 9)
@@ -57,9 +59,10 @@ function Modes() {
   const mode = useAtlas((s) => s.epi.mode)
   const coverage = useAtlas((s) => s.epi.coverage)
   const seq = useMemo(() => order(mode), [mode])
-  const film = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: '#ffffff', roughness: 0.4 }), PER_ML * 5), [])
+  const heights = useMemo(heightColours, [])
+  const film = useMemo(() => new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: P.obj.white, roughness: 0.4 }), PER_ML * 5), [])
   const subst = useMemo(() => {
-    const im = new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: '#6f8aa0', roughness: 0.4 }), PER_ML * 2)
+    const im = new THREE.InstancedMesh(new THREE.SphereGeometry(1.25, 12, 8), new THREE.MeshStandardNodeMaterial({ color: P.atom.substrate, roughness: 0.4 }), PER_ML * 2)
     const o = new THREE.Object3D()
     let k = 0
     for (let h = 0; h < 2; h++)
@@ -80,13 +83,13 @@ function Modes() {
       o.updateMatrix()
       film.setMatrixAt(k, o.matrix)
       // shade by height so islands stand out from the layer beneath
-      film.setColorAt(k, HEIGHT_COLOURS[Math.min(s.h, HEIGHT_COLOURS.length - 1)])
+      film.setColorAt(k, heights[Math.min(s.h, heights.length - 1)])
     }
     film.count = n
     film.instanceMatrix.needsUpdate = true
     if (film.instanceColor) film.instanceColor.needsUpdate = true
     film.computeBoundingSphere()
-  }, [seq, coverage, film])
+  }, [seq, coverage, film, heights])
   const ad = useRef<THREE.Mesh>(null)
   const t = useRef(0)
   useFrame((_, dt) => {
@@ -106,7 +109,7 @@ function Modes() {
       <Inspectable node="adatom" fit={4}>
         <mesh ref={ad}>
           <sphereGeometry args={[1.3, 14, 10]} />
-          <meshStandardNodeMaterial color="#9fd8ff" emissive="#2a6a9a" emissiveIntensity={0.6} />
+          <meshStandardNodeMaterial color={P.signal.electron} emissive={P.atom.adatomGlow} emissiveIntensity={0.6} />
         </mesh>
       </Inspectable>
     </>
@@ -152,8 +155,8 @@ function Strain() {
     im.computeBoundingSphere()
     return im
   }
-  const subIm = useMemo(() => mk(geom.subAtoms, '#6f8aa0'), [geom])
-  const filmIm = useMemo(() => mk(geom.filmAtoms, '#f0b43c'), [geom])
+  const subIm = useMemo(() => mk(geom.subAtoms, P.atom.substrate), [geom])
+  const filmIm = useMemo(() => mk(geom.filmAtoms, P.signal.amber), [geom])
   useFrame(() => {
     if (useAtlas.getState().quiz) return publish([])
     publish([
@@ -171,7 +174,7 @@ function Strain() {
         {geom.disl.map((x) => (
           <mesh key={x} position={[x, -A / 2, 0]}>
             <boxGeometry args={[0.6, 2.4, 6]} />
-            <meshStandardNodeMaterial color="#e0453c" emissive="#7a1a10" emissiveIntensity={0.6} />
+            <meshStandardNodeMaterial color={P.signal.bad} emissive={P.atom.misfitGlow} emissiveIntensity={0.6} />
           </mesh>
         ))}
         {!geom.disl.length && (

@@ -26,9 +26,9 @@ export function SegregationChart({ k0, frac }: { k0: number; frac: number }) {
     return d
   }
   const refs = [
-    { k: K0_OF.B, name: 'B 0.8', col: '#e48a8a' },
-    { k: K0_OF.P, name: 'P, As ~0.3', col: '#d98ad0' },
-    { k: K0_OF.Sb, name: 'Sb 0.023', col: '#8aa6e4' },
+    { k: K0_OF.B, name: 'B 0.8', col: 'var(--series-red)' },
+    { k: K0_OF.P, name: 'P, As ~0.3', col: 'var(--series-magenta)' },
+    { k: K0_OF.Sb, name: 'Sb 0.023', col: 'var(--series-blue)' },
   ]
   const here = csOverC0(k0, frac)
   return (
@@ -194,7 +194,7 @@ export function ProfileChart({ pre, drive, background, xjPre, xjDrive }: { pre: 
         </g>
       ))}
       <line x1={M.l} x2={W - M.r} y1={y(background)} y2={y(background)} className="marker" />
-      <path d={path(pre)} className="ref" stroke="#d98ad0" />
+      <path d={path(pre)} className="ref" stroke="var(--series-magenta)" />
       <path d={path(drive)} className="cur" />
       <text x={x(xjPre)} y={y(background) - 4} className="tick" textAnchor="middle">xj</text>
       <text x={x(xjDrive)} y={y(background) - 4} className="tick hi" textAnchor="middle">xj</text>
@@ -210,8 +210,8 @@ export function ProfileChart({ pre, drive, background, xjPre, xjDrive }: { pre: 
 
 /** colours for the 2D cross-section, after the slide 25 legend */
 const FILL: Record<string, string> = {
-  'si:p': '#6b7884', 'si:nwell': '#4f7190', 'si:n+': '#8cc4e2', 'si:p+': '#c98a5a',
-  ox: '#d9dee1', gox: '#e6eaec', fox: '#cdd3d6', poly: '#8d6f55', resist: '#d7932b', 'resist:exposed': '#f1cf8f', al: '#b9c2ff',
+  'si:p': 'var(--xs-si-p)', 'si:nwell': 'var(--xs-si-nwell)', 'si:n+': 'var(--xs-si-nplus)', 'si:p+': 'var(--xs-si-pplus)',
+  ox: 'var(--xs-ox)', gox: 'var(--xs-gox)', fox: 'var(--xs-fox)', poly: 'var(--xs-poly)', resist: 'var(--xs-resist)', 'resist:exposed': 'var(--xs-resist-exposed)', al: 'var(--xs-al)',
 }
 const keyOf = (iv: Interval) => (iv.mat === 'si' ? 'si:' + iv.dop : iv.mat === 'resist' && (iv.dose ?? 0) > 0 ? 'resist:exposed' : iv.mat)
 
@@ -236,9 +236,9 @@ export function CrossSection({ model, pitchNm, showOrigin, height = 190 }: { mod
       if (iv.z1 < lo) continue
       const k = keyOf(iv)
       const z0 = Math.max(iv.z0, lo)
-      rects.push(<rect key={`${i}-${iv.z0}`} x={i * (width / cols.length)} width={width / cols.length + 0.4} y={y(iv.z1)} height={Math.max(0.6, y(z0) - y(iv.z1))} fill={FILL[k] ?? '#888'} />)
+      rects.push(<rect key={`${i}-${iv.z0}`} x={i * (width / cols.length)} width={width / cols.length + 0.4} y={y(iv.z1)} height={Math.max(0.6, y(z0) - y(iv.z1))} fill={FILL[k] ?? 'var(--xs-fallback)'} />)
       if (iv.dmg) rects.push(<rect key={`d${i}-${iv.z0}`} x={i * (width / cols.length)} width={width / cols.length + 0.4} y={y(iv.z1)} height={Math.max(0.6, y(z0) - y(iv.z1))} fill="url(#dmg)" />)
-      if (iv.epi && iv.z0 > lo) rects.push(<rect key={`e${i}`} x={i * (width / cols.length)} width={width / cols.length + 0.4} y={y(iv.z0) - 0.5} height={1} fill="#f2f4f3" opacity={0.5} />)
+      if (iv.epi && iv.z0 > lo) rects.push(<rect key={`e${i}`} x={i * (width / cols.length)} width={width / cols.length + 0.4} y={y(iv.z0) - 0.5} height={1} fill="var(--xs-gox)" opacity={0.5} />)
     }
   })
   // a scale bar: a round number of nm close to a quarter of the width
@@ -249,7 +249,7 @@ export function CrossSection({ model, pitchNm, showOrigin, height = 190 }: { mod
     <svg className="xsec" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Cross-section of the wafer">
       <defs>
         <pattern id="dmg" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="5" stroke="#1d2124" strokeWidth="1.6" />
+          <line x1="0" y1="0" x2="0" y2="5" stroke="var(--xs-damage)" strokeWidth="1.6" />
         </pattern>
       </defs>
       <g shapeRendering="crispEdges">{rects}</g>

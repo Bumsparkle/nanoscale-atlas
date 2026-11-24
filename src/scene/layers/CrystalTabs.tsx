@@ -7,6 +7,7 @@ import { A_SI, atomsMesh, bondsMesh, setBonds, type V3 } from '../atoms'
 import { label, publish, rand, useDive } from './shared'
 import { useAtlas, type CellKind } from '../../state/store'
 import { bandsAt, cI, cV, distanceToPlane, FCC, planeInCube, reduceHkl, SI_ATOMS } from '../../chapters/growth/physics'
+import { P } from '../../theme/scene'
 
 /**
  * The Chapter 2 tabs of the lattice layer (1 unit = 1 Å).
@@ -18,8 +19,7 @@ import { bandsAt, cI, cV, distanceToPlane, FCC, planeInCube, reduceHkl, SI_ATOMS
  * Defects (slides 21–22): a vacancy and an interstitial; their equilibrium
  * concentrations follow the temperature.
  */
-const A_COL = '#8ea2b2'
-const B_COL = '#f0b43c'
+const A_COL = P.atom.si
 const toWorld = (p: number[]): V3 => [(p[0] - 0.5) * A_SI, (p[2] - 0.5) * A_SI, (p[1] - 0.5) * A_SI]
 
 /** lattice points of one FCC/BCC/SC cube including its boundary, in units of a */
@@ -53,8 +53,8 @@ function Cells() {
   const aKind: Exclude<CellKind, 'diamond'> = kind === 'diamond' ? 'fcc' : kind
   const A = useMemo(() => atomsMesh(cubePoints(aKind).map(toWorld), 0.55, A_COL), [aKind])
   const bPts = useMemo(() => cubePoints('fcc'), [])
-  const B = useMemo(() => atomsMesh(bPts.map(toWorld), 0.55, B_COL), [bPts])
-  const bonds = useMemo(() => bondsMesh([], 0.14, '#c9a45a', 32), [])
+  const B = useMemo(() => atomsMesh(bPts.map(toWorld), 0.55, P.signal.amber), [bPts])
+  const bonds = useMemo(() => bondsMesh([], 0.14, P.atom.bondHi, 32), [])
   const edgeA = useMemo(() => edges(), [])
   const edgeB = useMemo(() => edges(), [])
   const edgeBRef = useRef<THREE.LineSegments>(null)
@@ -116,7 +116,7 @@ function Cells() {
         <primitive object={B} />
         <primitive object={bonds} />
         <lineSegments ref={edgeBRef} geometry={edgeB}>
-          <lineBasicNodeMaterial color={B_COL} transparent opacity={0.7} />
+          <lineBasicNodeMaterial color={P.signal.amber} transparent opacity={0.7} />
         </lineSegments>
       </Inspectable>
     </>
@@ -141,15 +141,15 @@ function Miller() {
     return g
   }, [poly])
   const onPlane = useMemo(() => DIAMOND_CUBE.map((p) => valid && Math.abs(distanceToPlane(h, k, l, p as V3)) < 1e-6), [h, k, l, valid])
-  const lit = useMemo(() => atomsMesh(DIAMOND_CUBE.filter((_, i) => onPlane[i]).map(toWorld), 0.7, B_COL), [onPlane])
-  const dim = useMemo(() => atomsMesh(DIAMOND_CUBE.filter((_, i) => !onPlane[i]).map(toWorld), 0.42, '#5d6b77'), [onPlane])
+  const lit = useMemo(() => atomsMesh(DIAMOND_CUBE.filter((_, i) => onPlane[i]).map(toWorld), 0.7, P.signal.amber), [onPlane])
+  const dim = useMemo(() => atomsMesh(DIAMOND_CUBE.filter((_, i) => !onPlane[i]).map(toWorld), 0.42, P.atom.dim), [onPlane])
   useEffect(() => () => (planeGeo.dispose(), lit.dispose(), dim.dispose()), [planeGeo, lit, dim])
   const edge = useMemo(() => edges(), [])
   const arrow = useMemo(() => {
     if (!valid) return null
     const [rh, rk, rl] = reduceHkl(h, k, l)
     const dir = new THREE.Vector3(rh, rl, rk).normalize()
-    return new THREE.ArrowHelper(dir, new THREE.Vector3(...toWorld([0.5, 0.5, 0.5])), A_SI * 0.9, 0xf0b43c, 0.9, 0.5)
+    return new THREE.ArrowHelper(dir, new THREE.Vector3(...toWorld([0.5, 0.5, 0.5])), A_SI * 0.9, P.signal.amber, 0.9, 0.5)
   }, [h, k, l, valid])
 
   useFrame(() => {
@@ -165,12 +165,12 @@ function Miller() {
   return (
     <>
       <lineSegments geometry={edge}>
-        <lineBasicNodeMaterial color="#9aa6ad" />
+        <lineBasicNodeMaterial color={P.signal.axisCool} />
       </lineSegments>
       <primitive object={dim} />
       <Inspectable node="miller-plane" fit={1.6}>
         <mesh geometry={planeGeo}>
-          <meshStandardNodeMaterial color="#f0b43c" transparent opacity={0.32} side={THREE.DoubleSide} depthWrite={false} roughness={0.6} />
+          <meshStandardNodeMaterial color={P.signal.amber} transparent opacity={0.32} side={THREE.DoubleSide} depthWrite={false} roughness={0.6} />
         </mesh>
         <primitive object={lit} />
       </Inspectable>
@@ -194,8 +194,8 @@ function Bands() {
   const size = useThree((s) => s.size)
   const base = useMemo(() => block(), [])
   const atoms = useMemo(() => atomsMesh(base, 0.55, A_COL), [base])
-  const clouds = useMemo(() => atomsMesh(base, 1.55, '#7fb2e0', new THREE.MeshStandardNodeMaterial({ color: '#7fb2e0', transparent: true, opacity: 0.14, depthWrite: false, roughness: 1 })), [base])
-  const bonds = useMemo(() => bondsMesh([], 0.14, '#5f6f7b', 400), [])
+  const clouds = useMemo(() => atomsMesh(base, 1.55, P.atom.cloud, new THREE.MeshStandardNodeMaterial({ color: P.atom.cloud, transparent: true, opacity: 0.14, depthWrite: false, roughness: 1 })), [base])
+  const bonds = useMemo(() => bondsMesh([], 0.14, P.atom.siBond, 400), [])
   const pairs = useMemo(() => {
     const out: [number, number][] = []
     base.forEach((p, i) => base.forEach((q, j) => j > i && Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]) < 2.5 && out.push([i, j])))
@@ -243,7 +243,7 @@ function Defects() {
   const bonds = useMemo(() => {
     const pairs: [V3, V3][] = []
     kept.forEach((p, i) => kept.forEach((q, j) => j > i && Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]) < 2.5 && pairs.push([p, q])))
-    return bondsMesh(pairs, 0.13, '#5f6f7b')
+    return bondsMesh(pairs, 0.13, P.atom.siBond)
   }, [kept])
   const o = useMemo(() => new THREE.Object3D(), [])
   const r = useMemo(() => rand(3), [])
@@ -277,13 +277,13 @@ function Defects() {
       <Inspectable node="vacancy" fit={4} minDist={14}>
         <mesh position={base[vac]}>
           <icosahedronGeometry args={[0.6, 1]} />
-          <meshBasicNodeMaterial color="#f2f4f3" wireframe />
+          <meshBasicNodeMaterial color={P.signal.mark} wireframe />
         </mesh>
       </Inspectable>
       <Inspectable node="interstitial" fit={4} minDist={14}>
         <mesh ref={iRef} position={inter}>
           <icosahedronGeometry args={[0.62, 2]} />
-          <meshStandardNodeMaterial color="#e07a5f" roughness={0.35} emissive="#7a2a18" emissiveIntensity={0.4} />
+          <meshStandardNodeMaterial color={P.atom.defect} roughness={0.35} emissive={P.atom.defectGlow} emissiveIntensity={0.4} />
         </mesh>
       </Inspectable>
     </>

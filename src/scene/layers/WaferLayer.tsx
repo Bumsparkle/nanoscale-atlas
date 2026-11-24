@@ -7,6 +7,7 @@ import { rig } from '../rig'
 import { transition } from '../transition'
 import { Gettering, SmartCut, YieldDies } from './WaferTabs'
 import { useAtlas } from '../../state/store'
+import { P } from '../../theme/scene'
 
 /**
  * Layer 1: a 300 mm wafer on the chuck under yellow light (1 unit = 1 mm).
@@ -22,7 +23,7 @@ function dieTexture() {
   c.width = c.height = N
   const g = c.getContext('2d')!
   const s = N / (2 * R) // px per mm
-  g.fillStyle = '#000'
+  g.fillStyle = P.tex.black
   g.fillRect(0, 0, N, N)
   for (let x = -R; x < R; x += DIE)
     for (let y = -R; y < R; y += DIE) {
@@ -32,13 +33,13 @@ function dieTexture() {
       const px = (x + R) * s
       const py = (y + R) * s
       const d = DIE * s
-      g.fillStyle = '#d0d0d0'
+      g.fillStyle = P.tex.die
       g.fillRect(px + 1.2, py + 1.2, d - 2.4, d - 2.4) // die (scribe lines stay dark)
-      g.fillStyle = '#7a7a7a'
+      g.fillStyle = P.tex.memory
       g.fillRect(px + d * 0.18, py + d * 0.18, d * 0.38, d * 0.3) // memory block
-      g.fillStyle = '#9c9c9c'
+      g.fillStyle = P.tex.logic
       g.fillRect(px + d * 0.18, py + d * 0.55, d * 0.64, d * 0.27) // logic
-      g.fillStyle = '#b8b8b8'
+      g.fillStyle = P.tex.analog
       g.fillRect(px + d * 0.6, py + d * 0.18, d * 0.22, d * 0.3)
     }
   const t = new THREE.CanvasTexture(c)
@@ -57,7 +58,7 @@ function waferMaterial() {
   const t = dot(ref, vec3(0.42, 0.18, 0.61)).mul(2.4).add(positionWorld.x.mul(0.004)).add(positionWorld.z.mul(0.003))
   const rainbow = vec3(0.5).add(cos(vec3(t, t, t).add(vec3(0, 2.1, 4.2)).mul(6.283)).mul(0.5))
   const grazing = clamp(float(1).sub(abs(dot(normalWorld, V))), 0, 1)
-  const base = mix(color('#2b3238'), color('#5f6a73'), pattern)
+  const base = mix(color(P.wafer.scribe), color(P.wafer.die), pattern)
   m.colorNode = mix(base, rainbow.mul(0.75), pattern.mul(0.35).add(grazing.mul(0.25)).mul(pattern))
   m.roughnessNode = mix(float(0.08), float(0.3), pattern)
   return m
@@ -67,11 +68,11 @@ function WaferScene() {
   useLabEnvironment(true, 1.2)
   const tab = useAtlas((s) => s.tab)
   const wafer = useMemo(() => waferMaterial(), [])
-  const plain = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#3a434a', metalness: 0.8, roughness: 0.2 }), [])
-  const chuck = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: '#16181a', roughness: 0.55, metalness: 0.4 }), [])
+  const plain = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.wafer.plain, metalness: 0.8, roughness: 0.2 }), [])
+  const chuck = useMemo(() => new THREE.MeshStandardNodeMaterial({ color: P.wafer.chuck, roughness: 0.55, metalness: 0.4 }), [])
   const target = useMemo(() => {
     const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false })
-    m.colorNode = color('#f0b43c')
+    m.colorNode = color(P.signal.amber)
     m.opacity = 0.55
     return m
   }, [])
@@ -89,9 +90,9 @@ function WaferScene() {
   // UV mapping of the top face: cylinder caps map uv to the unit disc
   return (
     <>
-      <hemisphereLight args={['#ffd9a0', '#120c06', 0.5]} />
-      <directionalLight position={[120, 260, 160]} intensity={2.4} color="#ffc76b" />
-      <directionalLight position={[-200, 120, -80]} intensity={0.6} color="#ffae4a" />
+      <hemisphereLight args={[P.light.bayHemiSky, P.light.bayHemiGround, 0.5]} />
+      <directionalLight position={[120, 260, 160]} intensity={2.4} color={P.light.bayKey} />
+      <directionalLight position={[-200, 120, -80]} intensity={0.6} color={P.light.bayFill} />
       <Inspectable node="wafer" fit={1.05}>
         <mesh material={tab === 'yield' ? plain : wafer} position={[0, 0, 0]}>
           <cylinderGeometry args={[R, R, 0.775, 160, 1]} />
@@ -100,7 +101,7 @@ function WaferScene() {
       <Inspectable node="wafer-notch" fit={6} minDist={70}>
         <mesh position={[0, 0.2, R - 0.6]} rotation-y={Math.PI / 4}>
           <boxGeometry args={[2.2, 0.9, 2.2]} />
-          <meshStandardNodeMaterial color="#0b0c0d" roughness={0.9} />
+          <meshStandardNodeMaterial color={P.stage.void} roughness={0.9} />
         </mesh>
       </Inspectable>
       {tab === 'yield' && <YieldDies />}

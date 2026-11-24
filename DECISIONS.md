@@ -147,7 +147,7 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
   - **Signals.** Amber lithography light, the --on conducting-path glow, implant ions and the logic-1 node are emissive. They read as light on grey and as stains on white.
   - **Identity.** The dark instrument-panel look and the amber accent survive intact.
   
-  The light tokens, the `?theme=` switch and the scene branch were removed, so nothing toggles.
+  The light tokens, the `?theme=` switch and the scene branch were removed, so nothing toggles. *(Superseded 2026-11-24: a light theme now ships alongside the dark one; see "Light theme" below. The two reasons it failed here are what that design answers.)*
 - **Lifted, not just brightened.**
   - **Background:** the scene sits on #1d2124 instead of #0b0c0d. Panels float a step lighter (#262a2e, translucent `--glass`, a soft shadow), so the background, panels and model are three distinct planes.
   - **Lights:** every layer uses one key / fill / rim set. The key is warm, high and front-right; the fill is cool from the left at half the key; the rim comes from behind to separate edges; a weak bounce from below means no face goes black. A stronger hemisphere light and a brighter lab environment (strip ceiling, lit walls and floor) complete it. Exposure is 1.18 (AgX).
@@ -423,4 +423,40 @@ At the user's request the top bar's "motion full / motion reduced" button is gon
 
 ## Drill: a missed card comes back later (2026-11-24)
 A miss sends a card to Leitner box 1, due at once, and the drill puts missed cards first, so the same card used to reappear immediately. Now the drill remembers the cards shown this session. A card seen within the last three (`DRILL_GAP` in `progress.ts`, chosen by `pickNext`) waits while other due cards go first, and if fewer cards are due, cards not yet due fill the gap. It repeats sooner only when nothing else exists in the selection. A skipped card waits the same way. Tested in `progress.test.ts` and checked in the browser.
+
+## Light theme (2026-11-24)
+At the user's request a light "cleanroom" theme now ships alongside the dark one. The 2026-11-21 trial was never committed; only its comparison sheets survived (`docs/screenshots/theme/trial-dark-vs-light-*.jpg`). The new theme answers the two reasons the trial lost:
+- **Backdrop contrast.** The page is a pale grey (`#e4e8ea`), never white. The environment is a mid-grey room (not a white one), so metals still show bands. Exposure is 0.86, down from 1.0. Cut faces are shaded darker (legend × 0.56 instead of 0.62, with less emissive lift), and their legend edges and hatching are darker. The legend's own greys are unchanged: they are the slide 25 colours.
+- **Signals.** Additive glows don't read on a pale page, so:
+  - the hover and focus outlines are painted over the image in a dark amber instead of being added as light;
+  - the logic-path and mastery tints pull the part's surface colour toward the tint (same hue, darker) and keep only a little glow for the pulse;
+  - layer swaps fade to the page colour, not to black;
+  - glowing lines and particles (beams, carriers, UV, dust, ions) take a darker shade of the same hue.
+
+**Tokens, not literals.** Every colour now goes through a token:
+- **CSS:** `styles/tokens.css` has a `:root[data-theme='light']` block. New tokens cover what used to be literals: legend edges and hatching, grids and wires, chart series, cross-section fills, the logic bench, the home door.
+- **Scenes:** `theme/scene.ts` holds the scene palette, 334 named tokens grouped by meaning (stage, env, light, signal, mastery, legend, phys, obj, atom, …). Dark is the reference; light overrides only the stage, lights, environment, exposure, outlines and signal colours.
+- **Live switching:** `P` always holds the current theme's values. LayerStack keys the active layer by theme, so a switch rebuilds its materials, lights and textures. The material cache clears, and the environment map is cached per theme.
+
+**Material meaning is fixed.** The phys, legend, obj, atom and hetero groups are identical in both themes: n+ sky blue, p+ copper, oxide pale glass, poly brown, aluminium metal, p-substrate cool grey vs n-well steel blue.
+
+**Tests:**
+- `contrast.test.ts` runs every text and signal check on both themes; all text is AA.
+- `theme/palette.test.ts`:
+  - material groups are identical across themes;
+  - each light signal colour stays within 25° of its dark hue;
+  - n-well and p-substrate differ in both themes;
+  - no module-level constant captures a theme-dependent token (it would keep the old theme after a switch).
+- `theme/literals.test.ts` fails on any hex or rgb() literal outside the token files.
+
+**Switching and storage:**
+- **Default:** the theme follows the system (`prefers-color-scheme`) until the user picks one. The choice is stored in localStorage (`atlas.theme.v1`). Choosing the theme the system already has goes back to following the system.
+- **No flash:** an inline script in `index.html` sets `data-theme`, `color-scheme` and `theme-color` before first paint. `?theme=light|dark` forces a theme for one load (screenshot scripts).
+- **Mac app:** the window appearance follows the theme through `setTheme`, so the vibrancy glass is pale under light and dark under dark. This needs the new `core:window:allow-set-theme` permission. The tint behind the scene and the panel glass have light and dark values.
+
+**Top bar controls** (revised the same day at the user's request). The theme and the mode are two floating icons at the right of the top bar, with no button chrome:
+- **Theme:** a sun on the light theme, a moon on the dark one; a click switches to the other.
+- **Mode:** one icon that cycles Explore → Lesson → Revise. It shows a compass, an open book or stacked cards, in amber because it marks where you are; the tooltip names the next mode.
+
+The text System / Light / Dark switch and the three mode buttons are gone. On phones both icons sit on the brand row.
 

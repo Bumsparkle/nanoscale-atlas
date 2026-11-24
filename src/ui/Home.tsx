@@ -3,6 +3,7 @@ import { IS_APP, MAC_DOWNLOAD_URL } from '../platform'
 import { useAtlas } from '../state/store'
 import { navigate } from '../state/url'
 import './home.css'
+import { ThemeIcon } from './TopIcons'
 
 /**
  * "Enter the cleanroom": the home page is the bay door. The call to action
@@ -128,6 +129,11 @@ export function Home() {
         </div>
       </div>
       <div className="door-seam" aria-hidden />
+      {phase !== 'opening' && (
+        <div className="home-theme">
+          <ThemeIcon />
+        </div>
+      )}
 
       <section className="home-card">
         <p className="eyebrow">ELEC0031 · Topics 2–4 · three chapters</p>

@@ -1,0 +1,39 @@
+/* the theme and mode icons, floating at the right of the top bar: no button chrome */
+.top-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin-left: auto;
+}
+.top-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: var(--ink-1);
+  border-radius: 50%;
+  transition: color 0.15s, transform 0.25s var(--ease-settle);
+  /* lift off busy scenes without drawing a button */
+  filter: drop-shadow(0 0 3px var(--scene)) drop-shadow(0 0 1px var(--scene));
+}
+.top-icon:hover {
+  color: var(--amber-ink);
+  transform: scale(1.08);
+}
+.top-icon:active {
+  transform: scale(0.94);
+}
+/* the mode icon carries the accent: it is where you are */
+.top-icon-mode {
+  color: var(--amber-ink);
+}
+.top-icon-mode:hover {
+  color: var(--ink-0);
+}
+@media (max-width: 720px) {
+  .top-icons {
+    grid-area: modes;
+    margin-left: 0;
+    justify-self: end;
+  }
+}

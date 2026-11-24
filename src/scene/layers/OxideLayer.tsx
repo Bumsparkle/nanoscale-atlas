@@ -7,6 +7,7 @@ import { rig } from '../rig'
 import { transition } from '../transition'
 import { amorphousSiO2, atomsMesh, bondsMesh, diamond, neighbours, rng, BOND_SI, type V3 } from '../atoms'
 import { overlay, type ScreenLabel } from '../cellRuntime'
+import { P } from '../../theme/scene'
 
 /**
  * Layer 5: the gate stack at atomic scale (1 unit = 1 Å).
@@ -48,13 +49,13 @@ export default function OxideLayer() {
   const g = useMemo(() => {
     const b = build()
     return {
-      crystal: atomsMesh(b.crystal, 0.62, '#8ea2b2'),
-      crystalBonds: bondsMesh(b.crystalBonds, 0.16, '#5f6f7b'),
-      oxSi: atomsMesh(b.ox.si, 0.6, '#c8b48a'),
-      oxO: atomsMesh(b.ox.o, 0.5, '#c8553f'),
-      oxBonds: bondsMesh(b.ox.bonds, 0.14, '#7a6a58'),
-      poly: atomsMesh(b.poly, 0.62, '#a59686'),
-      polyBonds: bondsMesh(b.polyBonds, 0.16, '#6e645a'),
+      crystal: atomsMesh(b.crystal, 0.62, P.atom.si),
+      crystalBonds: bondsMesh(b.crystalBonds, 0.16, P.atom.siBond),
+      oxSi: atomsMesh(b.ox.si, 0.6, P.atom.oxSi),
+      oxO: atomsMesh(b.ox.o, 0.5, P.atom.oxO),
+      oxBonds: bondsMesh(b.ox.bonds, 0.14, P.atom.oxBond),
+      poly: atomsMesh(b.poly, 0.62, P.atom.poly),
+      polyBonds: bondsMesh(b.polyBonds, 0.16, P.atom.polyBond),
     }
   }, [])
 
@@ -105,12 +106,12 @@ export default function OxideLayer() {
       <group position={[X[1] + 3, 0, Z[1]]} name="gauge">
         <mesh position={[0, OX_TOP / 2, 0]}>
           <boxGeometry args={[0.15, OX_TOP, 0.15]} />
-          <meshBasicNodeMaterial color="#f0b43c" />
+          <meshBasicNodeMaterial color={P.signal.amber} />
         </mesh>
         {[0, OX_TOP].map((y) => (
           <mesh key={y} position={[0, y, 0]}>
             <boxGeometry args={[1.6, 0.15, 0.15]} />
-            <meshBasicNodeMaterial color="#f0b43c" />
+            <meshBasicNodeMaterial color={P.signal.amber} />
           </mesh>
         ))}
       </group>

@@ -245,10 +245,10 @@ function DosPanel() {
       <Slider label="energy E" value={n.E} min={2} max={250} step={1} unit="meV" on={(E) => set({ E })} />
       <Chart label="Density of states for bulk, well, wire and dot on one energy axis" xl="E (eV) above the bulk band edge" yl="ρ" x={{ min: 0, max: Emax, ticks: [0, 0.1, 0.2, 0.3] }} y={{ min: 0, max: top }}
         series={[
-          { pts: Es.map((E, i) => [E, ser.bulk[i]] as [number, number]), cls: hi(3), stroke: '#8aa6e4' },
-          { pts: Es.map((E, i) => [E, ser.well[i]] as [number, number]), cls: hi(2), stroke: '#e48a8a' },
-          { pts: Es.map((E, i) => [E, Math.min(top, ser.wire[i])] as [number, number]), cls: hi(1), stroke: '#8ae4c4' },
-          ...ser.dot.filter((e) => e < Emax).map((e) => ({ pts: [[e, 0], [e, top * 0.95]] as [number, number][], cls: hi(0), stroke: '#f0b43c' })),
+          { pts: Es.map((E, i) => [E, ser.bulk[i]] as [number, number]), cls: hi(3), stroke: 'var(--series-blue)' },
+          { pts: Es.map((E, i) => [E, ser.well[i]] as [number, number]), cls: hi(2), stroke: 'var(--series-red)' },
+          { pts: Es.map((E, i) => [E, Math.min(top, ser.wire[i])] as [number, number]), cls: hi(1), stroke: 'var(--series-teal)' },
+          ...ser.dot.filter((e) => e < Emax).map((e) => ({ pts: [[e, 0], [e, top * 0.95]] as [number, number][], cls: hi(0), stroke: 'var(--amber-ink)' })),
         ]}
         marks={[{ x: n.E / 1000, y: 0, cls: 'marker' }]} />
       <p className="lc-fine">Blue: bulk ∝ E^½. Red: a 10 nm well, a step at each subband. Green: a 10 × 10 nm wire, ∝ (E − Eₙ)^−½ spikes. Amber: a 10 nm dot, delta functions. {m === 1 ? 'Free-electron mass.' : 'GaAs mass.'}</p>
@@ -355,7 +355,7 @@ function LaserPanel() {
       <span className="eyebrow lc-head">the quantum-dot laser <SourceButton refs={[T8(32), T8(33)]} /></span>
       <Slider label="temperature" value={n.T} min={-40} max={100} step={5} unit="°C" on={(T) => set({ T })} />
       <Chart label="Output power against current" xl="current (mA)" yl="mW" x={{ min: 0, max: 70, ticks: [0, 20, 40, 60] }} y={{ min: 0, max: 10, ticks: [0, 5, 10] }}
-        series={[{ pts: pi(qd, 0.25) }, { pts: pi(qw, 0.25 * Math.exp(-(n.T - 25) / 150)), cls: 'ref', stroke: '#e48a8a' }]} />
+        series={[{ pts: pi(qd, 0.25) }, { pts: pi(qw, 0.25 * Math.exp(-(n.T - 25) / 150)), cls: 'ref', stroke: 'var(--series-red)' }]} />
       <dl className="gp-read mono"><dt>threshold QD · QW</dt><dd>{qd.toFixed(0)} mA · {qw.toFixed(0)} mA</dd><dt>kT</dt><dd>{(KT300 * (n.T + 273.15) / 300 * 1000).toFixed(0)} meV</dd></dl>
       <p className="lc-fine">Why dots: δ-function DoS → narrow emission; large level spacing (≫ kT) → carriers stay in the ground state → temperature-independent lasing; tiny active volume → very low threshold. Also: single-photon sources, QD infrared photodetectors, solar cells. Curves illustrative (characteristic-temperature model), after slide 33.</p>
     </section>

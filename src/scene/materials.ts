@@ -1,4 +1,4 @@
-import { SCENE } from './sceneTheme'
+import { P, onSceneTheme } from '../theme/scene'
 import * as THREE from 'three/webgpu'
 import {
   attribute, clamp, color, cos, dot, float, mix, mx_worley_noise_float, normalWorld, positionWorld,
@@ -13,27 +13,28 @@ import {
  * greys, with oxide and metal hatched like the hand-drawn sections.
  */
 
-export const LEGEND: Record<string, string> = {
-  'si:p': '#f2f2f2',
-  'si:nwell': '#c6c6c6',
-  'si:n+': '#acacac',
-  'si:p+': '#646464',
-  poly: '#cfcfcf',
-  gox: '#e9e9e9',
-  ox: '#e9e9e9',
-  fox: '#e9e9e9',
-  al: '#d6daff',
-  'al:plug': '#d6daff',
-  resist: '#e8b25a',
-  'resist:exposed': '#f4dcae',
+/** slide 25 legend colour of each material's cut face (the same in both themes) */
+export function legendOf(key: string): string {
+  const L = P.legend
+  const map: Record<string, string> = {
+    'si:p': L.siP,
+    'si:nwell': L.siNwell,
+    'si:n+': L.siNplus,
+    'si:p+': L.siPplus,
+    poly: L.poly,
+    gox: L.oxide,
+    ox: L.oxide,
+    fox: L.oxide,
+    al: L.metal,
+    'al:plug': L.metal,
+    resist: L.resist,
+    'resist:exposed': L.resistExposed,
+  }
+  return map[key] ?? L.fallback
 }
 
-const PHYS: Record<string, string> = {
-  'si:p': '#4b555e',
-  'si:nwell': '#3f5a6c',
-  'si:n+': '#5b88ad',
-  'si:p+': '#a07a55',
-}
+const physOf = (key: string) =>
+  ({ 'si:p': P.phys.siP, 'si:nwell': P.phys.siNwell, 'si:n+': P.phys.siNplus, 'si:p+': P.phys.siPplus })[key] ?? P.phys.siP
 
 /** shared uniforms the scene animates */
 export const matUniforms = {
@@ -56,17 +57,17 @@ const hatch = (density: number, width: number) =>
 type N = any
 
 function withCap(m: THREE.MeshStandardNodeMaterial, key: string, phys: N, hatched = false) {
-  const leg = color(LEGEND[key] ?? '#cccccc')
-  const edge = key.startsWith('al') ? color('#3a46d8') : color('#5a5a5a')
+  const leg = color(legendOf(key))
+  const edge = key.startsWith('al') ? color(P.legend.metalEdge) : color(P.legend.edge)
   const legendCol: N = hatched ? mix(leg as N, edge as N, hatch(2.6, 0.16).mul(0.75)) : leg
-  m.colorNode = mix(phys as N, legendCol.mul(0.62), cap())
-  m.emissiveNode = legendCol.mul(cap()).mul(0.2)
+  m.colorNode = mix(phys as N, legendCol.mul(P.k.capShade), cap())
+  m.emissiveNode = legendCol.mul(cap()).mul(P.k.capLift)
   return m
 }
 
 function silicon(key: string) {
   const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.42, metalness: 0.32 })
-  withCap(m, key, color(PHYS[key]))
+  withCap(m, key, color(physOf(key)))
   m.roughnessNode = mix(float(0.42), float(1), cap())
   m.metalnessNode = mix(float(0.32), float(0), cap())
   return m
@@ -97,7 +98,7 @@ function oxide(key: string) {
   // desaturate: interference colours are real but should read as a sheen, not paint
   const lum = dot(film, vec3(0.3, 0.55, 0.15))
   const sheen = mix(film, vec3(lum, lum, lum), 0.35)
-  const phys = mix(vec3(0.03, 0.035, 0.04), sheen, 0.55)
+  const phys = mix(color(P.phys.oxideDark), sheen, 0.55)
   withCap(m, key, phys as never, true)
   const base = float(key === 'gox' ? 0.75 : 0.16).add(fres.mul(0.45))
   const faded = key === 'fox' ? base.mul(float(1).sub(max(matUniforms.xray, matUniforms.foxFade).mul(0.8))) : base
@@ -115,9 +116,9 @@ function poly() {
   const f2 = mx_worley_noise_float(positionWorld.mul(1.7), 1, 1)
   const edge = f2.sub(f1)
   const facet = mx_worley_noise_float(positionWorld.mul(1.7).add(31.7))
-  const base = mix(color('#7a6d61'), color('#a29483'), facet)
+  const base = mix(color(P.phys.polyLo), color(P.phys.polyHi), facet)
   const boundary = smoothstep(0.12, 0.02, edge)
-  withCap(m, 'poly', mix(base, color('#4a423b'), boundary.mul(0.55)) as never)
+  withCap(m, 'poly', mix(base, color(P.phys.polyBoundary), boundary.mul(0.55)) as never)
   m.roughnessNode = mix(mix(float(0.35), float(0.7), facet), float(1), cap())
   return m
 }
@@ -125,7 +126,7 @@ function poly() {
 function aluminium(key: string) {
   const m = new THREE.MeshStandardNodeMaterial({ roughness: 0.3, metalness: 1 })
   const grain = mx_worley_noise_float(positionWorld.mul(1.3)).mul(0.05)
-  const base = key === 'al:plug' ? color('#b9bfc5') : color('#e4e7ea')
+  const base = key === 'al:plug' ? color(P.phys.alPlug) : color(P.phys.al)
   withCap(m, key, base.sub(grain) as never, true)
   m.roughnessNode = mix(float(0.34).add(grain), float(1), cap())
   m.metalnessNode = mix(float(1), float(0), cap())
@@ -139,14 +140,16 @@ function aluminium(key: string) {
 function resist(key: string) {
   const m = new THREE.MeshPhysicalNodeMaterial({ roughness: 0.35, metalness: 0, transparent: true, depthWrite: false })
   const dose = attribute('dose', 'float')
-  const phys = mix(color('#c97f1e'), color('#f0d39a'), dose)
+  const phys = mix(color(P.phys.resistLo), color(P.phys.resistHi), dose)
   withCap(m, key, phys as never)
-  m.emissiveNode = mix(color('#2b1500'), color('#3a2a10'), dose).add(color(LEGEND[key]).mul(cap()).mul(0.2))
+  m.emissiveNode = mix(color(P.phys.resistGlowLo), color(P.phys.resistGlowHi), dose).add(color(legendOf(key)).mul(cap()).mul(P.k.capLift))
   m.opacityNode = mix(float(0.86), float(1), cap())
   return m
 }
 
 const cache = new Map<string, THREE.Material>()
+// a theme change rebuilds every material from the new palette
+onSceneTheme(() => cache.clear())
 
 /** the near half of a parted section: same look, fading to a ghost */
 function ghostOf(base: THREE.Material): THREE.Material {
@@ -161,22 +164,39 @@ function ghostOf(base: THREE.Material): THREE.Material {
 }
 
 export type Lit = 'on' | 'hi' | 'm-weak' | 'm-learning' | 'm-strong' | 'm-untested'
-const MASTERY_TINT: Record<string, [string, number]> = {
-  'm-weak': ['#e4785a', 0.5],
-  'm-learning': ['#f0b43c', 0.38],
-  'm-strong': ['#9fd3a2', 0.4],
-  'm-untested': ['#5b6260', 0.12],
+function masteryTint(kind: string): [string, number] | undefined {
+  const tints: Record<string, [string, number]> = {
+    'm-weak': [P.mastery.weak, 0.5],
+    'm-learning': [P.mastery.learning, 0.38],
+    'm-strong': [P.mastery.strong, 0.4],
+    'm-untested': [P.mastery.untested, 0.12],
+  }
+  return tints[kind]
 }
 
-/** logic view: conducting path glows (--on), a logic-1 node glows amber; mastery: steady tint by level */
+/**
+ * Logic view: the conducting path glows (--on) and a logic-1 node glows amber;
+ * mastery: a steady tint by level. On the dark theme the tint is emitted
+ * light. On the light theme emitted light washes out against a pale page, so
+ * the surface colour itself is pulled toward the tint (same hue, darker), with
+ * only a little glow left for the pulse.
+ */
 function litOf(base: THREE.Material, kind: Lit): THREE.Material {
   const m = base.clone() as THREE.MeshStandardNodeMaterial
   const b = base as THREE.MeshStandardNodeMaterial
   for (const k of ['colorNode', 'roughnessNode', 'metalnessNode', 'opacityNode'] as const) (m as N)[k] = (b as N)[k]
   const pulse = sin(matUniforms.time.mul(3.2)).mul(0.25).add(0.75)
-  const tint = MASTERY_TINT[kind]
-  const glow: N = tint ? color(tint[0]).mul(tint[1]) : color(kind === 'on' ? '#9fd3a2' : '#f0b43c').mul(pulse).mul(kind === 'on' ? 0.55 : 0.45)
-  m.emissiveNode = ((b as N).emissiveNode ?? vec3(0)).add(glow.mul(float(1).sub(cap())))
+  const tint = masteryTint(kind)
+  const tintCol = color(tint ? tint[0] : kind === 'on' ? P.signal.on : P.signal.amber)
+  const strength = tint ? tint[1] : kind === 'on' ? 0.55 : 0.45
+  const glow: N = tint ? tintCol.mul(strength) : tintCol.mul(pulse).mul(strength)
+  const surface = float(1).sub(cap())
+  if (P.k.light) {
+    const baseCol: N = (b as N).colorNode ?? color((b as N).color ?? P.obj.fallback)
+    const amount = tint ? strength * 1.3 : 0.75
+    m.colorNode = mix(baseCol, tintCol as N, surface.mul(tint ? amount : pulse.mul(amount)))
+  }
+  m.emissiveNode = ((b as N).emissiveNode ?? vec3(0)).add(glow.mul(P.k.light ? 0.25 : 1).mul(surface))
   if (b.transparent) {
     m.transparent = true
     m.opacityNode = max((b as N).opacityNode ?? float(1), float(0.55))
@@ -208,7 +228,7 @@ export function materialFor(key: string, near = false, lit: Lit | null = null): 
   else if (key === 'poly') m = poly()
   else if (key.startsWith('al')) m = aluminium(key)
   else if (key.startsWith('resist')) m = resist(key)
-  else m = new THREE.MeshStandardNodeMaterial({ color: '#888' })
+  else m = new THREE.MeshStandardNodeMaterial({ color: P.obj.fallback })
   m.name = key
   cache.set(key, m)
   return m
@@ -233,7 +253,7 @@ export function gridMaterial() {
   }
   const fade = smoothstep(90, 25, p.length())
   const a = max(line(1, 0.025).mul(0.035), line(10, 0.05).mul(0.09)).mul(fade)
-  m.colorNode = color(SCENE.grid)
-  m.opacityNode = a.mul(SCENE.gridAlpha)
+  m.colorNode = color(P.stage.grid)
+  m.opacityNode = a.mul(P.k.gridAlpha)
   return m
 }

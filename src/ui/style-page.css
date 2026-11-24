@@ -75,21 +75,7 @@
 }
 .sw-chip.thinfilm {
   /* sampled from the oxide shader's 0–600 nm response at normal incidence */
-  background: linear-gradient(
-    90deg,
-    #a8a39b 0%,
-    #b48a58 8%,
-    #7a4a8a 17%,
-    #3e5fb8 25%,
-    #6fa7c8 33%,
-    #c8c27a 45%,
-    #c0786d 55%,
-    #6e4f9f 62%,
-    #4c87b0 70%,
-    #7bb98a 80%,
-    #c6b45f 90%,
-    #b87068 100%
-  );
+  background: var(--film-chart);
 }
 .legend-strip {
   display: flex;
@@ -99,16 +85,16 @@
 .leg {
   width: 120px;
   height: 64px;
-  border: 1px solid #333;
+  border: 1px solid var(--leg-edge);
   display: flex;
   align-items: flex-end;
   padding: var(--pad-btn);
   font-size: var(--t-12);
-  color: #111;
+  color: var(--on-amber);
 }
 .leg.hatched {
   border-color: var(--leg-metal-edge);
-  background-image: repeating-linear-gradient(-45deg, transparent 0 4px, rgba(43, 54, 217, 0.5) 4px 5px) !important;
+  background-image: repeating-linear-gradient(-45deg, transparent 0 4px, var(--leg-metal-hatch) 4px 5px) !important;
   background-color: var(--leg-metal) !important;
 }
 .marks {
