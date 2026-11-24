@@ -353,3 +353,29 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 
 ### Slides
 `npm run slides` renders all five decks (137 slides with Topic 2) into `private/slides/` and packs `private/slides-all.tar.gz` (28.7 MB). Both stay gitignored. The archive replaced `slides-all.tar.gz` in the private release on 2026-11-24 (clobbered, so asset 778978728 no longer exists). Its API URL is `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786486636`. To show Topics 3–6 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it and redeploy. The Topic 2 asset (776184764) is untouched.
+
+## Chapters 6 and 7 (Topics 7 and 8, 2026-11-24)
+
+### Inventories
+- `content/topic7/facts.json` (*Lithography and Patterning*, 22 slides): **92 facts, 76 key**. `content/topic8/facts.json` (*Semiconductor III–V nanostructures*, 34 slides): **72 facts, 61 key**. Areas: roadmap, lightsource, exposure, optics, resist, ngl, ebeam; and nano, quantum, hetero, confinement, nanofab, dos, qdots.
+- **Linked, not duplicated.** T7 slide 3 links to Topic 2's mask facts; slide 15's resist polarity and coat–expose–develop sequence link to Topics 2 and 3; slide 20's lift-off links to Topic 5's evaporation table. T8 slide 3 links to Topic 3's levels-into-bands facts; slides 11, 14, 21 and 22 link to Topic 6 (the bandgap chart, MBE layers and superlattice, the Stranski–Krastanov mode, MBE's sharp interfaces).
+- **No facts:** T8 slide 34 (summary of the deck).
+- **Read with care** (listed as `unreadable` in the files): T7 slide 5's "5–25 µm" label sits beside the projection printer but is the proximity gap; T7 slide 17's Socha chart values are read to ±1 nm (they agree with R = k₁λ/(n sin θ)); T7 slide 20's "Cheaper, but also slower" is unattached and read with the SEM schematic beside it; T7 slide 21's Monte Carlo extents are read to ±0.5 µm; T8 slide 33's ridge labels are small.
+
+### Slide errors corrected
+
+Every one is checked from first principles; `facts.test.ts` re-derives the numbers.
+
+| Deck · slide | The slide says | The Atlas teaches |
+|---|---|---|
+| T7 · 4 | The 157 nm source is "FF" | The F₂ (molecular fluorine) excimer laser |
+| T7 · 7 | Φ = 1.22λf/d drawn across the whole central disk | 1.22λf/d is the radius to the first dark ring (the slide's own profile marks it from the centre); the disk is 2.44λf/d across |
+| T7 · 9 | DOF = ±λ/2(NA)² = ±k₂/2(NA)² in the inline formula | DOF = ±λ/(2NA²) = ±k₂λ/NA² (the boxed form). It reproduces the worked example: KrF 248 nm, NA 0.6 → R = 0.75 × 0.248/0.6 = 0.31 µm, DOF = 0.5 × 0.248/0.36 = ±0.34 µm. The other form drops λ |
+| T7 · 18 | Electrons 0.62 Å at 20 keV, ions 0.12 Å at 100 keV | Those are λ = hc/E, the photon relation, which doesn't apply to particles with mass. The de Broglie λ = h/p: 0.086 Å for 20 keV electrons (relativistic; 0.087 Å without the correction) and ≈ 9 × 10⁻⁴ Å for 100 keV protons, less for heavier ions |
+| T7 · 19 | "Resolution < 1 nm" | The beam can be focused to ~1 nm; slide 22 gives the printed resolution as scattering-limited, typically 10 nm |
+| T8 · 7 | k = ±nπ/L; "the bonding conditions" | Boundary conditions. −n is the same state as n (sin(−x) = −sin x), so n = 1, 2, 3… |
+| T8 · 12–13 | Quantum numbers l, n (and j) = ±1, ±2, ±3… | 1, 2, 3… for the same reason |
+| T8 · 12–13 | The wire and dot wavefunctions use n in every sine factor | Each direction has its own quantum number (n, l, j), matching the energy formulas |
+| T8 · 30 | ρ(E) = 2σ(E − E_c) | ρ(E) = 2δ(E − E_c), the Dirac delta, as the slide's own text says |
+
+**Checked and correct:** the 3D, 2D and 1D DoS. Re-derived: 3D N = k³V/(3π²) → ρ = (1/2π²)(2m/ħ²)^(3/2)E^(1/2); 2D N = k²A/(2π) → ρ = m/(πħ²); 1D N = kL/π → ρ = (1/2π)√(2m/ħ²)E^(−1/2). The slide 8 plot matches Eₙ = n² × 3.76 meV for a 10 nm well with the free-electron mass. Slide 14's W_min = √(0.365 × 10) = 1.9 ≈ 2 µm. The slide 18 photon rows (3.1, 4.96, 2480 eV) are right.

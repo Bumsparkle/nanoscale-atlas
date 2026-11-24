@@ -20,13 +20,17 @@ export const TOPICS = [
   'deposition', 'cvd', 'safety', 'plasma', 'pvd',
   // Topic 6
   'epitaxy', 'heteroepitaxy', 'siepi', 'mbe', 'soi',
+  // Topic 7
+  'roadmap', 'lightsource', 'exposure', 'optics', 'resist', 'ngl', 'ebeam',
+  // Topic 8
+  'nano', 'quantum', 'hetero', 'confinement', 'nanofab', 'dos', 'qdots',
   'summary',
 ] as const
 export type Topic = (typeof TOPICS)[number]
 
 export const FactSchema = z.object({
   /** s07-… for Topic 2; t3-s07-… and t4-s07-… for the later decks */
-  id: z.string().regex(/^(t[3-6]-)?s\d\d-[a-z0-9-]+$/),
+  id: z.string().regex(/^(t[3-8]-)?s\d\d-[a-z0-9-]+$/),
   source: SourceRefSchema,
   statement: z.string().min(8),
   kind: z.enum(FACT_KINDS),

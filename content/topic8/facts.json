@@ -1,0 +1,1250 @@
+{
+ "source": "ELEC0031 Topic 8, Semiconductor III–V nanostructures (34 slides). Facts are paraphrased from the slides; slide = PDF page. Where a slide is wrong the fact teaches the correct statement and records the slide wording in \"corrects\".",
+ "topic": "topic8",
+ "slides": [
+  {
+   "slide": 1,
+   "title": "Title",
+   "area": "intro"
+  },
+  {
+   "slide": 2,
+   "title": "Nanotechnology",
+   "area": "nano"
+  },
+  {
+   "slide": 3,
+   "title": "Size dependent properties",
+   "area": "nano"
+  },
+  {
+   "slide": 4,
+   "title": "Schrödinger equation",
+   "area": "quantum"
+  },
+  {
+   "slide": 5,
+   "title": "Free electrons",
+   "area": "quantum"
+  },
+  {
+   "slide": 6,
+   "title": "The infinite well",
+   "area": "quantum"
+  },
+  {
+   "slide": 7,
+   "title": "Infinite well: boundary conditions",
+   "area": "quantum"
+  },
+  {
+   "slide": 8,
+   "title": "Infinite well: levels and wavefunctions",
+   "area": "quantum"
+  },
+  {
+   "slide": 9,
+   "title": "Quantum well",
+   "area": "quantum"
+  },
+  {
+   "slide": 10,
+   "title": "Infinite and finite wells",
+   "area": "quantum"
+  },
+  {
+   "slide": 11,
+   "title": "Heterostructures",
+   "area": "hetero"
+  },
+  {
+   "slide": 12,
+   "title": "Quantum wire",
+   "area": "confinement"
+  },
+  {
+   "slide": 13,
+   "title": "Quantum dot",
+   "area": "confinement"
+  },
+  {
+   "slide": 14,
+   "title": "Semiconductor quantum wells",
+   "area": "nanofab"
+  },
+  {
+   "slide": 15,
+   "title": "Quantum wire fabrication",
+   "area": "nanofab"
+  },
+  {
+   "slide": 16,
+   "title": "Vapour–liquid–solid growth",
+   "area": "nanofab"
+  },
+  {
+   "slide": 17,
+   "title": "Quantum dot fabrication methods",
+   "area": "nanofab"
+  },
+  {
+   "slide": 18,
+   "title": "Lithography",
+   "area": "nanofab"
+  },
+  {
+   "slide": 19,
+   "title": "Colloidal particles",
+   "area": "nanofab"
+  },
+  {
+   "slide": 20,
+   "title": "Patterned growth",
+   "area": "nanofab"
+  },
+  {
+   "slide": 21,
+   "title": "Self-organised growth",
+   "area": "nanofab"
+  },
+  {
+   "slide": 22,
+   "title": "InAs/GaAs quantum dots",
+   "area": "nanofab"
+  },
+  {
+   "slide": 23,
+   "title": "Density of states",
+   "area": "dos"
+  },
+  {
+   "slide": 24,
+   "title": "DoS for 3D",
+   "area": "dos"
+  },
+  {
+   "slide": 25,
+   "title": "DoS for 3D: counting",
+   "area": "dos"
+  },
+  {
+   "slide": 26,
+   "title": "DoS for 2D",
+   "area": "dos"
+  },
+  {
+   "slide": 27,
+   "title": "DoS for 2D: result",
+   "area": "dos"
+  },
+  {
+   "slide": 28,
+   "title": "DoS for 1D",
+   "area": "dos"
+  },
+  {
+   "slide": 29,
+   "title": "DoS for 1D: result",
+   "area": "dos"
+  },
+  {
+   "slide": 30,
+   "title": "DoS for 0D",
+   "area": "dos"
+  },
+  {
+   "slide": 31,
+   "title": "DoS compared",
+   "area": "dos"
+  },
+  {
+   "slide": 32,
+   "title": "Why quantum dots",
+   "area": "qdots"
+  },
+  {
+   "slide": 33,
+   "title": "Quantum-dot laser",
+   "area": "qdots"
+  },
+  {
+   "slide": 34,
+   "title": "Summary",
+   "area": "qdots"
+  }
+ ],
+ "unreadable": [
+  {
+   "slide": 8,
+   "what": "Level energies are read off the plotted axis (meV) and agree with Eₙ = n²·3.76 meV for a 10 nm well and the free-electron mass."
+  },
+  {
+   "slide": 22,
+   "what": "The STM, TEM and AFM images carry only scale bars; sizes come from the slide text."
+  },
+  {
+   "slide": 31,
+   "what": "The DoS plot’s y-axis (states, ×10²⁰) is read only for its shapes, not its values."
+  },
+  {
+   "slide": 33,
+   "what": "Ridge width and cavity labels are small; only \"1 mm\" is read with confidence. Temperatures on the P–I curves are read from their legends."
+  }
+ ],
+ "links": [
+  {
+   "slide": 3,
+   "facts": [
+    "t3-s08-solid",
+    "t3-s08-pauli"
+   ],
+   "note": "Topic 3: interacting atoms turn levels into bands."
+  },
+  {
+   "slide": 11,
+   "facts": [
+    "t6-s06-chart",
+    "t6-s06-matched"
+   ],
+   "note": "Topic 6: bandgap against lattice constant and the lattice-matched alloys."
+  },
+  {
+   "slide": 14,
+   "facts": [
+    "t6-s17-cake",
+    "t6-s27-superlattice"
+   ],
+   "note": "Topic 6: MBE grows the layers, as in the AlGaAs/GaAs superlattice."
+  },
+  {
+   "slide": 21,
+   "facts": [
+    "t6-s09-modes"
+   ],
+   "note": "Topic 6: the Stranski–Krastanov growth mode."
+  },
+  {
+   "slide": 22,
+   "facts": [
+    "t6-s22-chars"
+   ],
+   "note": "Topic 6: MBE’s low rate and sharp interfaces."
+  }
+ ],
+ "noFacts": [
+  {
+   "slide": 34,
+   "why": "Summary slide: it lists the topics already covered (wavefunctions and levels, DoS, why QDs are better laser materials)."
+  }
+ ],
+ "facts": [
+  {
+   "id": "t8-s01-topic",
+   "source": {
+    "topic": "topic8",
+    "slide": 1
+   },
+   "statement": "ELEC0031 Topic 8 is \"Semiconductor III–V nanostructures\".",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t8-s02-nano",
+   "source": {
+    "topic": "topic8",
+    "slide": 2
+   },
+   "statement": "Nanotechnology is the understanding and control of matter at dimensions of roughly 1 to 100 nm, where unique properties emerge that enable new technologies and products.",
+   "kind": "number",
+   "area": "nano",
+   "key": true,
+   "objects": [
+    "qs-sample"
+   ]
+  },
+  {
+   "id": "t8-s02-differ",
+   "source": {
+    "topic": "topic8",
+    "slide": 2
+   },
+   "statement": "At the nanoscale, physical, chemical and biological properties differ from those of single atoms and of everyday-sized matter.",
+   "kind": "cause-effect",
+   "area": "nano",
+   "key": true,
+   "objects": [
+    "qs-sample"
+   ]
+  },
+  {
+   "id": "t8-s02-scale",
+   "source": {
+    "topic": "topic8",
+    "slide": 2
+   },
+   "statement": "On the nanometre scale: water ~0.1 nm, glucose ~1 nm, an antibody ~10 nm, a virus ~100 nm, bacteria ~1 µm, a cancer cell ~10 µm, a full stop ~1 mm (10⁶ nm), a tennis ball ~10⁸ nm; nanodevices include nanopores, dendrimers, nanotubes, quantum dots and nanoshells.",
+   "kind": "number",
+   "area": "nano",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t8-s03-sizes",
+   "source": {
+    "topic": "topic8",
+    "slide": 3
+   },
+   "statement": "Typical sizes: a bulk (volume) semiconductor ~1 cm; a waveguide ~1 µm, the wavelength of light; a quantum dot ~10 nm, the de Broglie wavelength of electrons at 300 K; an atom ~1 Å.",
+   "kind": "number",
+   "area": "nano",
+   "key": true,
+   "objects": [
+    "qs-sample"
+   ]
+  },
+  {
+   "id": "t8-s03-bands",
+   "source": {
+    "topic": "topic8",
+    "slide": 3
+   },
+   "statement": "Large crystals have continuous band structure; as the size falls to the de Broglie wavelength the bands break up into the discrete levels of an atom.",
+   "kind": "cause-effect",
+   "area": "nano",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s04-tise",
+   "source": {
+    "topic": "topic8",
+    "slide": 4
+   },
+   "statement": "The Schrödinger equation separates as Ψ(x,t) = ψ(x)T(t), with ∇²ψ + (2m/ħ²)(E − V)ψ = 0 and T(t) = e^(−iEt/ħ); ψ is the wavefunction, m the electron mass, E the total energy and V the potential.",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s04-1d",
+   "source": {
+    "topic": "topic8",
+    "slide": 4
+   },
+   "statement": "In one dimension: d²ψ/dx² + (2m/ħ²)(E − V)ψ = 0.",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s05-free",
+   "source": {
+    "topic": "topic8",
+    "slide": 5
+   },
+   "statement": "Free electrons (V = 0): ψ(x) = A·e^(ikx) with k = √(2mE/ħ²), so E = ħ²k²/2m, a parabola in k: a continuum of energies, as in bulk material.",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s06-well",
+   "source": {
+    "topic": "topic8",
+    "slide": 6
+   },
+   "statement": "Infinite square well: V = 0 for 0 < x < L and V = ∞ outside; the particle is free inside and completely excluded outside.",
+   "kind": "definition",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-well"
+   ]
+  },
+  {
+   "id": "t8-s06-general",
+   "source": {
+    "topic": "topic8",
+    "slide": 6
+   },
+   "statement": "Inside the well d²ψ/dx² + (2m/ħ²)Eψ = 0, with general solution ψ = A·e^(ikx) + B·e^(−ikx), or equivalently A·sin kx + B·cos kx, k = √(2mE/ħ²).",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s07-bc",
+   "source": {
+    "topic": "topic8",
+    "slide": 7
+   },
+   "statement": "The boundary conditions ψ(0) = ψ(L) = 0 give B = 0 and A·sin kL = 0, so k = nπ/L with n = 1, 2, 3… (n = 0 would mean no particle).",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-well"
+   ],
+   "corrects": "The slide writes k = ±nπ/L and calls these \"bonding conditions\". They are boundary conditions, and −n gives the same state as n, so n = 1, 2, 3…"
+  },
+  {
+   "id": "t8-s07-levels",
+   "source": {
+    "topic": "topic8",
+    "slide": 7
+   },
+   "statement": "ψₙ(x) = Aₙ sin(nπx/L) and Eₙ = n²π²ħ²/(2mL²): only discrete energies, the energy levels.",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s07-norm",
+   "source": {
+    "topic": "topic8",
+    "slide": 7
+   },
+   "statement": "Normalising, ∫₀ᴸ Aₙ² sin²(nπx/L) dx = Aₙ²·L/2 = 1, so Aₙ = √(2/L).",
+   "kind": "rule",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s08-plot",
+   "source": {
+    "topic": "topic8",
+    "slide": 8
+   },
+   "statement": "For a 10 nm infinite well with the free-electron mass the levels are about 3.8, 15, 34, 60 and 94 meV for n = 1–5; ψₙ has n − 1 nodes inside the well and |ψₙ|² has n peaks.",
+   "kind": "number",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s09-qw",
+   "source": {
+    "topic": "topic8",
+    "slide": 9
+   },
+   "statement": "A quantum well confines particles that were free to move in three dimensions to two dimensions, a planar region.",
+   "kind": "definition",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "hs-well"
+   ]
+  },
+  {
+   "id": "t8-s09-dbw",
+   "source": {
+    "topic": "topic8",
+    "slide": 9
+   },
+   "statement": "Quantum confinement appears when the well thickness becomes comparable to the de Broglie wavelength of the carriers (electrons and holes), giving discrete energy levels called energy subbands.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "hs-well"
+   ]
+  },
+  {
+   "id": "t8-s09-figure",
+   "source": {
+    "topic": "topic8",
+    "slide": 9
+   },
+   "statement": "Bulk A, B and A each have their own band edges; grown as epitaxial layers A (50 nm) / B (5 nm) / A (50 nm), the narrow-gap B forms a quantum well with discrete levels in both the conduction and valence bands.",
+   "kind": "diagram",
+   "area": "quantum",
+   "key": false,
+   "objects": [
+    "hs-well"
+   ]
+  },
+  {
+   "id": "t8-s10-zero",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "Infinite well: energy is quantised, and even the lowest level has a positive energy.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s10-only",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "Infinite well: the particle can only be found with the energy of one of the levels, never in between.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s10-classical",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "Infinite well: when L is very large, Eₙ and Eₙ₊₁ become close and the system becomes classical, with continuous energy.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s10-leak",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "Finite well (barrier height U₀): the wavefunction is not zero at the walls but decays into the barriers.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s10-lower",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "Finite-well energy levels lie below the infinite-well levels of the same width.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s10-deeper",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "The deeper the finite well, the better the infinite well approximates its low-lying levels.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-level"
+   ]
+  },
+  {
+   "id": "t8-s10-tunnel",
+   "source": {
+    "topic": "topic8",
+    "slide": 10
+   },
+   "statement": "In a finite well quantum-mechanical tunnelling is possible: the particle has a non-zero probability of being in (and through) the barrier.",
+   "kind": "cause-effect",
+   "area": "quantum",
+   "key": true,
+   "objects": [
+    "qv-psi"
+   ]
+  },
+  {
+   "id": "t8-s11-type1",
+   "source": {
+    "topic": "topic8",
+    "slide": 11
+   },
+   "statement": "Type-I heterostructure: the band gap of one material lies entirely within the wider gap of the other, so electrons and holes fall into wells in the same layer, which makes recombination efficient.",
+   "kind": "definition",
+   "area": "hetero",
+   "key": true,
+   "objects": [
+    "hs-well"
+   ]
+  },
+  {
+   "id": "t8-s11-type2",
+   "source": {
+    "topic": "topic8",
+    "slide": 11
+   },
+   "statement": "Type-II heterostructure: the gaps are staggered so the conduction-band minimum and valence-band maximum are in different materials; electrons and holes are confined in different layers and their recombination times are long.",
+   "kind": "definition",
+   "area": "hetero",
+   "key": true,
+   "objects": [
+    "hs-barrier"
+   ]
+  },
+  {
+   "id": "t8-s11-figure",
+   "source": {
+    "topic": "topic8",
+    "slide": 11
+   },
+   "statement": "The sketches: B/A/B is type I (e⁻ and hole both in A); C/A/C is type II with the electron in A and the hole in C; D/A/D is type II with the electron in D and the hole in A.",
+   "kind": "diagram",
+   "area": "hetero",
+   "key": false,
+   "objects": [
+    "qb-electron"
+   ]
+  },
+  {
+   "id": "t8-s12-wire",
+   "source": {
+    "topic": "topic8",
+    "slide": 12
+   },
+   "statement": "A quantum wire is confined in only two dimensions: it has length, along which electrons propagate particle-like.",
+   "kind": "definition",
+   "area": "confinement",
+   "key": true,
+   "objects": [
+    "qv-box"
+   ]
+  },
+  {
+   "id": "t8-s12-psi",
+   "source": {
+    "topic": "topic8",
+    "slide": 12
+   },
+   "statement": "Quantum wire (cross-section a × b, infinite walls): ψ(x,y,z) = e^(ik_x x)·√(2/a) sin(nπy/a)·√(2/b) sin(lπz/b).",
+   "kind": "rule",
+   "area": "confinement",
+   "key": true,
+   "objects": [
+    "qv-box"
+   ],
+   "corrects": "The slide uses n in both sine factors; the z factor carries its own quantum number l, matching the energy formula."
+  },
+  {
+   "id": "t8-s12-e",
+   "source": {
+    "topic": "topic8",
+    "slide": 12
+   },
+   "statement": "Wire energies: E = ħ²k_x²/2m + ħ²n²π²/(2ma²) + ħ²l²π²/(2mb²), with n, l = 1, 2, 3…",
+   "kind": "rule",
+   "area": "confinement",
+   "key": true,
+   "objects": [
+    "qv-box"
+   ],
+   "corrects": "The slide lists the quantum numbers as ±1, ±2, ±3…; a standing wave sin(−nπx/a) = −sin(nπx/a) is the same state, so each number runs over 1, 2, 3… only."
+  },
+  {
+   "id": "t8-s13-dot",
+   "source": {
+    "topic": "topic8",
+    "slide": 13
+   },
+   "statement": "Quantum dots (\"quantum boxes\", \"artificial atoms\") are confined in all three dimensions and have discrete energy levels; the focus is on their optical properties, though their electronic transport is interesting too.",
+   "kind": "definition",
+   "area": "confinement",
+   "key": true,
+   "objects": [
+    "qv-box"
+   ]
+  },
+  {
+   "id": "t8-s13-psi",
+   "source": {
+    "topic": "topic8",
+    "slide": 13
+   },
+   "statement": "Quantum dot (a × b × c, infinite walls): ψ = √(2/a) sin(nπx/a)·√(2/b) sin(lπy/b)·√(2/c) sin(jπz/c).",
+   "kind": "rule",
+   "area": "confinement",
+   "key": true,
+   "objects": [
+    "qv-box"
+   ],
+   "corrects": "The slide uses n in all three sine factors; each direction has its own quantum number (n, l, j), as in the energy formula."
+  },
+  {
+   "id": "t8-s13-e",
+   "source": {
+    "topic": "topic8",
+    "slide": 13
+   },
+   "statement": "Dot energies: E = (ħ²π²/2m)(n²/a² + l²/b² + j²/c²), with n, l, j = 1, 2, 3…",
+   "kind": "rule",
+   "area": "confinement",
+   "key": true,
+   "objects": [
+    "qv-box"
+   ],
+   "corrects": "The slide lists the quantum numbers as ±1, ±2, ±3…; a standing wave sin(−nπx/a) = −sin(nπx/a) is the same state, so each number runs over 1, 2, 3… only."
+  },
+  {
+   "id": "t8-s14-tem",
+   "source": {
+    "topic": "topic8",
+    "slide": 14
+   },
+   "statement": "Quantum wells are made by epitaxy: TEM cross-sections of InGaAs/GaAs and InGaAs/InAlAs quantum wells show the thin well layers as sharp stripes (50 nm scale bar).",
+   "kind": "diagram",
+   "area": "nanofab",
+   "key": false,
+   "objects": [
+    "hs-well"
+   ]
+  },
+  {
+   "id": "t8-s15-wire",
+   "source": {
+    "topic": "topic8",
+    "slide": 15
+   },
+   "statement": "The two simplest ways to confine electrons in two dimensions: (a) etching an A/B/A quantum-well layer into a narrow ridge; (b) split gates on top, which deplete the well everywhere except under the gap between them.",
+   "kind": "process-step",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-mesa"
+   ]
+  },
+  {
+   "id": "t8-s16-vls",
+   "source": {
+    "topic": "topic8",
+    "slide": 16
+   },
+   "statement": "Vapour–liquid–solid (VLS) growth (Wagner and Ellis, 1964): a catalyst droplet (Au) is deposited, forms a liquid Au–Ga eutectic, Ga and As supersaturate it and GaAs nucleates beneath it, and the nanowire grows up under the droplet; growth on the side walls tapers it.",
+   "kind": "process-step",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-droplet"
+   ]
+  },
+  {
+   "id": "t8-s16-seeds",
+   "source": {
+    "topic": "topic8",
+    "slide": 16
+   },
+   "statement": "VLS nanowires are grown bottom-up by direct epitaxy with metal (Au) seeds or self-catalysed (Ga) seeds.",
+   "kind": "definition",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-droplet"
+   ]
+  },
+  {
+   "id": "t8-s17-goal",
+   "source": {
+    "topic": "topic8",
+    "slide": 17
+   },
+   "statement": "Quantum-dot fabrication engineers potential-energy barriers that confine electrons in three dimensions, by three primary methods: lithography, colloidal chemistry and epitaxy.",
+   "kind": "definition",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-pillar"
+   ]
+  },
+  {
+   "id": "t8-s18-pillars",
+   "source": {
+    "topic": "topic8",
+    "slide": 18
+   },
+   "statement": "Lithographic dots: pillars are etched (after electron-beam lithography) in a quantum-well heterostructure; the well’s band-gap mismatch gives confinement in one dimension and the pillar walls the other two.",
+   "kind": "process-step",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-pillar"
+   ]
+  },
+  {
+   "id": "t8-s18-disadv",
+   "source": {
+    "topic": "topic8",
+    "slide": 18
+   },
+   "statement": "Lithographic dots’ disadvantages: slow, contamination, low density and defect formation (etch-induced surface damage on the pillar walls).",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-pillar"
+   ]
+  },
+  {
+   "id": "t8-s18-stack",
+   "source": {
+    "topic": "topic8",
+    "slide": 18
+   },
+   "statement": "The pillar: GaAs / AlGaAs / InGaAs / AlGaAs / GaAs on a GaAs substrate, with InGaAs the well.",
+   "kind": "diagram",
+   "area": "nanofab",
+   "key": false,
+   "objects": [
+    "nf-pillar"
+   ]
+  },
+  {
+   "id": "t8-s19-colloid",
+   "source": {
+    "topic": "topic8",
+    "slide": 19
+   },
+   "statement": "Colloidal dots: reactions are engineered to precipitate quantum dots from solution or a host (e.g. a polymer); the surface sometimes needs \"capping\" with bonded molecules to stay chemically stable; core–shell structures are possible; materials are typically II–VI (CdS, CdSe).",
+   "kind": "definition",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-colloid"
+   ]
+  },
+  {
+   "id": "t8-s19-dispersion",
+   "source": {
+    "topic": "topic8",
+    "slide": 19
+   },
+   "statement": "Colloidal dots vary in size (\"size dispersion\").",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-colloid"
+   ]
+  },
+  {
+   "id": "t8-s19-colour",
+   "source": {
+    "topic": "topic8",
+    "slide": 19
+   },
+   "statement": "CdSe-core / ZnS-shell dots glow red when bigger and blue when smaller: stronger confinement raises the transition energy.",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-colloid"
+   ]
+  },
+  {
+   "id": "t8-s20-patterned",
+   "source": {
+    "topic": "topic8",
+    "slide": 20
+   },
+   "statement": "Patterned growth: QDs are grown in pyramid-shaped recesses formed by selective ion etching (Fukui et al.: GaAs tetrahedral dots in AlGaAs by selective-area MOCVD on (111)B GaAs through an SiO₂ mask).",
+   "kind": "process-step",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-pyramid"
+   ]
+  },
+  {
+   "id": "t8-s20-disadv",
+   "source": {
+    "topic": "topic8",
+    "slide": 20
+   },
+   "statement": "Patterned growth’s disadvantage: the density of QDs is limited by the mask pattern.",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-pyramid"
+   ]
+  },
+  {
+   "id": "t8-s21-sk",
+   "source": {
+    "topic": "topic8",
+    "slide": 21
+   },
+   "statement": "Self-organised dots form through epitaxial strain in the Stranski–Krastanov mode (by MBE or MOCVD): islands, tens of nm in size, form on a wetting layer because of the lattice mismatch.",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-island"
+   ]
+  },
+  {
+   "id": "t8-s21-disadv",
+   "source": {
+    "topic": "topic8",
+    "slide": 21
+   },
+   "statement": "Self-organised dots’ disadvantages: size and shape fluctuations, and their ordering.",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-island"
+   ]
+  },
+  {
+   "id": "t8-s21-control",
+   "source": {
+    "topic": "topic8",
+    "slide": 21
+   },
+   "statement": "Island initiation can be controlled by inducing local strain, growing on dislocations, varying growth conditions, or combining with patterning.",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": false,
+   "objects": [
+    "nf-island"
+   ]
+  },
+  {
+   "id": "t8-s21-afm",
+   "source": {
+    "topic": "topic8",
+    "slide": 21
+   },
+   "statement": "AFM images of islands on GaAs: (a) InAs islands nucleated at random; (b) a random distribution of ring-shaped InGaAs islands; (c) a 2D lattice of InAs islands.",
+   "kind": "diagram",
+   "area": "nanofab",
+   "key": false,
+   "objects": [
+    "nf-island"
+   ]
+  },
+  {
+   "id": "t8-s22-mbe",
+   "source": {
+    "topic": "topic8",
+    "slide": 22
+   },
+   "statement": "Higher-quality quantum dots are made by MBE, thanks to its precise control of deposited thickness and its low growth rate compared with MOCVD and CVD.",
+   "kind": "cause-effect",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-wetting"
+   ]
+  },
+  {
+   "id": "t8-s22-size",
+   "source": {
+    "topic": "topic8",
+    "slide": 22
+   },
+   "statement": "In InAs/GaAs the initial 2D layer transforms into 3D islands typically 2–10 nm high and 20–40 nm wide.",
+   "kind": "number",
+   "area": "nanofab",
+   "key": true,
+   "objects": [
+    "nf-island"
+   ]
+  },
+  {
+   "id": "t8-s22-images",
+   "source": {
+    "topic": "topic8",
+    "slide": 22
+   },
+   "statement": "InAs/GaAs dots are imaged in cross-section by STM and TEM (stacked dot layers, 50 nm bar) and in plan view by AFM (200 nm bar).",
+   "kind": "diagram",
+   "area": "nanofab",
+   "key": false,
+   "objects": [
+    "nf-island"
+   ]
+  },
+  {
+   "id": "t8-s23-def",
+   "source": {
+    "topic": "topic8",
+    "slide": 23
+   },
+   "statement": "The density of states is the number of electron states per unit volume per unit energy: ρ(E) = (1/V)·dN/dE.",
+   "kind": "definition",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s23-dims",
+   "source": {
+    "topic": "topic8",
+    "slide": 23
+   },
+   "statement": "With 3, 2, 1 and 0 degrees of freedom the density of states goes as E^(1/2), E⁰ (constant), E^(−1/2) and δ(E).",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s24-cell",
+   "source": {
+    "topic": "topic8",
+    "slide": 24
+   },
+   "statement": "In 3D each allowed state takes a k-space volume (π/a)(π/b)(π/c) = π³/V, and the states with energy below E fill a sphere of volume 4πk³/3, with k = √(2mE/ħ²).",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s25-count",
+   "source": {
+    "topic": "topic8",
+    "slide": 25
+   },
+   "statement": "3D count: N = (4πk³/3)/(π³/V) × 2 (two spins) × ⅛ (only positive k_x, k_y, k_z: ± give the same standing wave) = k³V/(3π²).",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s25-dos",
+   "source": {
+    "topic": "topic8",
+    "slide": 25
+   },
+   "statement": "3D: ρ(E) = (1/2π²)(2m/ħ²)^(3/2) E^(1/2) ∝ E^(1/2).",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s26-2d",
+   "source": {
+    "topic": "topic8",
+    "slide": 26
+   },
+   "statement": "2D (quantum well): each state takes π²/A of k-space and the states fill a circle πk², so N = (πk²)/(π²/A) × 2 × ¼ = k²A/(2π).",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s27-2d",
+   "source": {
+    "topic": "topic8",
+    "slide": 27
+   },
+   "statement": "2D: N = mAE/(πħ²), so ρ(E) = m/(πħ²), independent of energy; right at the band edge a large number of states is available.",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s28-1d",
+   "source": {
+    "topic": "topic8",
+    "slide": 28
+   },
+   "statement": "1D (quantum wire): each state takes π/L and the states fill a line of length k, so N = (k/(π/L)) × 2 × ½ = kL/π.",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s29-1d",
+   "source": {
+    "topic": "topic8",
+    "slide": 29
+   },
+   "statement": "1D: N = (L/π)√(2m/ħ²)·√E, so ρ(E) = (1/2π)√(2m/ħ²)·E^(−1/2).",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s30-0d",
+   "source": {
+    "topic": "topic8",
+    "slide": 30
+   },
+   "statement": "0D (quantum dot): no free motion, so there is no k-space to fill and states exist only at discrete energies: ρ(E) = 2δ(E − E_c) for each level, the 2 counting spin.",
+   "kind": "rule",
+   "area": "dos",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ],
+   "corrects": "The slide writes ρ(E) = 2σ(E − E_c). The function is the Dirac delta, δ, as the slide’s own text says."
+  },
+  {
+   "id": "t8-s31-plot",
+   "source": {
+    "topic": "topic8",
+    "slide": 31
+   },
+   "statement": "On one energy axis (0–120 meV) the bulk DoS is a √E curve, the well a staircase stepping up at each subband, the wire a spike falling as 1/√E at each subband, and the dot isolated delta lines.",
+   "kind": "diagram",
+   "area": "dos",
+   "key": false,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s32-narrow",
+   "source": {
+    "topic": "topic8",
+    "slide": 32
+   },
+   "statement": "Quantum dots give narrow emission spectra because of their δ-function density of states.",
+   "kind": "cause-effect",
+   "area": "qdots",
+   "key": true,
+   "objects": [
+    "qv-kspace"
+   ]
+  },
+  {
+   "id": "t8-s32-separation",
+   "source": {
+    "topic": "topic8",
+    "slide": 32
+   },
+   "statement": "The large energy separation between the ground and excited states makes it hard to excite carriers thermally out of the ground state, which promises temperature-independent lasing.",
+   "kind": "cause-effect",
+   "area": "qdots",
+   "key": true,
+   "objects": [
+    "nf-laser"
+   ]
+  },
+  {
+   "id": "t8-s32-volume",
+   "source": {
+    "topic": "topic8",
+    "slide": 32
+   },
+   "statement": "The active volume of quantum dots is very small, so a very low threshold current is expected for QD lasers.",
+   "kind": "cause-effect",
+   "area": "qdots",
+   "key": true,
+   "objects": [
+    "nf-laser"
+   ]
+  },
+  {
+   "id": "t8-s32-uses",
+   "source": {
+    "topic": "topic8",
+    "slide": 32
+   },
+   "statement": "Single-photon devices, quantum-dot infrared photodetectors (QDIPs) and solar cells are also being investigated with quantum dots.",
+   "kind": "definition",
+   "area": "qdots",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t8-s33-laser",
+   "source": {
+    "topic": "topic8",
+    "slide": 33
+   },
+   "statement": "Advantages of the QD laser: a low threshold current density and stable operation.",
+   "kind": "cause-effect",
+   "area": "qdots",
+   "key": true,
+   "objects": [
+    "nf-laser"
+   ]
+  },
+  {
+   "id": "t8-s33-structure",
+   "source": {
+    "topic": "topic8",
+    "slide": 33
+   },
+   "statement": "The QD laser: an n⁺ GaAs substrate and buffer, Al₀.₃Ga₀.₇As cladding, GaAs, dots in In₀.₄Ga₀.₆As, GaAs and Al₀.₃Ga₀.₇As cladding, shaped as a ridge about 1 mm long.",
+   "kind": "diagram",
+   "area": "qdots",
+   "key": false,
+   "objects": [
+    "nf-laser"
+   ]
+  },
+  {
+   "id": "t8-s33-curves",
+   "source": {
+    "topic": "topic8",
+    "slide": 33
+   },
+   "statement": "In power–current curves the QD Fabry–Pérot laser keeps an almost constant threshold current and slope efficiency from −40 °C to +100 °C, while conventional quantum-well lasers’ thresholds rise and slopes fall as they heat up.",
+   "kind": "cause-effect",
+   "area": "qdots",
+   "key": true,
+   "objects": [
+    "nf-laser"
+   ]
+  }
+ ]
+}

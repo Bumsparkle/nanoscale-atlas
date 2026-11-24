@@ -4,6 +4,8 @@ import t3 from '../../content/topic3/facts.json'
 import t4 from '../../content/topic4/facts.json'
 import t5 from '../../content/topic5/facts.json'
 import t6 from '../../content/topic6/facts.json'
+import t7 from '../../content/topic7/facts.json'
+import t8 from '../../content/topic8/facts.json'
 import { FactFileSchema } from './schema'
 import { TOPIC_SLIDES, type TopicId } from '../sources'
 
@@ -16,13 +18,13 @@ const T2 = FactFileSchema.parse(t2)
 const EARLIER: Record<string, Set<string>> = {}
 {
   const acc = new Set(T2.facts.map((f) => f.id))
-  for (const [t, raw] of [['topic3', t3], ['topic4', t4], ['topic5', t5], ['topic6', t6]] as [string, unknown][]) {
+  for (const [t, raw] of [['topic3', t3], ['topic4', t4], ['topic5', t5], ['topic6', t6], ['topic7', t7], ['topic8', t8]] as [string, unknown][]) {
     EARLIER[t] = new Set(acc)
     FactFileSchema.parse(raw).facts.forEach((f) => acc.add(f.id))
   }
 }
 
-for (const [topic, raw] of [['topic3', t3], ['topic4', t4], ['topic5', t5], ['topic6', t6]] as [TopicId, unknown][]) {
+for (const [topic, raw] of [['topic3', t3], ['topic4', t4], ['topic5', t5], ['topic6', t6], ['topic7', t7], ['topic8', t8]] as [TopicId, unknown][]) {
   describe(`${topic} fact inventory`, () => {
     const file = FactFileSchema.parse(raw)
     const n = TOPIC_SLIDES[topic]
@@ -95,4 +97,49 @@ describe('Topic 5 and 6 slide errors are corrected', () => {
     expect(F5.find((f) => f.id === 't5-s25-nitrides')!.statement).toMatch(/6HCl \+ 6H₂/)
   })
   it('SIMOX is separation by implantation of oxygen', () => expect(F6.find((f) => f.id === 't6-s28-makers')!.statement).toMatch(/separation by implantation of oxygen/))
+})
+
+describe('Topic 7 and 8 slide errors are corrected', () => {
+  const F7 = FactFileSchema.parse(t7).facts
+  const F8 = FactFileSchema.parse(t8).facts
+  const by = (id: string) => [...F7, ...F8].find((f) => f.id === id)!
+  const all = [...F7, ...F8].map((f) => f.statement).join('\n')
+  it('the 157 nm source is the F₂ laser, not "FF"', () => {
+    expect(all).not.toMatch(/\bFF\b/)
+    expect(by('t7-s04-lasers').statement).toMatch(/F₂, λ = 157 nm/)
+  })
+  it('the DOF formula is ±k₂λ/NA², consistent with the worked example', () => {
+    expect(by('t7-s09-dof').statement).toMatch(/±k₂·λ\/NA²/)
+    const R = (0.75 * 248) / 0.6 / 1000
+    const DOF = (0.5 * 248) / 0.36 / 1000
+    expect(R).toBeCloseTo(0.31, 2)
+    expect(DOF).toBeCloseTo(0.344, 3)
+    expect(by('t7-s09-example').statement).toMatch(/±0\.34 µm/)
+  })
+  it('particle wavelengths are de Broglie wavelengths, not hc/E', () => {
+    const h = 6.62607015e-34, me = 9.1093837e-31, mp = 1.67262192e-27, q = 1.602176634e-19, c = 2.99792458e8
+    const E = 20e3 * q
+    const lamE = h / Math.sqrt(2 * me * E * (1 + E / (2 * me * c * c)))
+    const lamP = h / Math.sqrt(2 * mp * 100e3 * q)
+    expect(lamE * 1e10).toBeCloseTo(0.086, 3)
+    expect(lamP * 1e10).toBeCloseTo(9e-4, 4)
+    expect(by('t7-s18-particles').statement).toMatch(/0\.086 Å/)
+    expect(by('t7-s18-particles').statement).not.toMatch(/0\.62 Å/)
+  })
+  it('quantum numbers are positive, boundary (not bonding) conditions, a delta (not σ) for 0D', () => {
+    expect(all).not.toMatch(/±1, ±2/)
+    expect(all).not.toMatch(/bonding conditions/)
+    expect(by('t8-s30-0d').statement).toMatch(/2δ\(E − E_c\)/)
+    expect(all).not.toMatch(/σ\(E/)
+  })
+  it('the 1D and 2D DoS prefactors re-derive', () => {
+    // 2D: N = k²A/(2π), k² = 2mE/ħ² → ρ = (1/A)dN/dE = m/(πħ²); 1D: N = kL/π → ρ = (1/2π)√(2m/ħ²)E^(−1/2)
+    const m = 1, hbar = 1, E = 0.37, A = 1, L = 1, d = 1e-6
+    const N2 = (e: number) => ((2 * m * e) / hbar ** 2) * A / (2 * Math.PI)
+    const N1 = (e: number) => (Math.sqrt((2 * m * e) / hbar ** 2) * L) / Math.PI
+    expect((N2(E + d) - N2(E - d)) / (2 * d) / A).toBeCloseTo(m / (Math.PI * hbar ** 2), 6)
+    expect((N1(E + d) - N1(E - d)) / (2 * d) / L).toBeCloseTo((1 / (2 * Math.PI)) * Math.sqrt((2 * m) / hbar ** 2) / Math.sqrt(E), 6)
+    expect(by('t8-s27-2d').statement).toMatch(/m\/\(πħ²\)/)
+    expect(by('t8-s29-1d').statement).toMatch(/\(1\/2π\)√\(2m\/ħ²\)·E\^\(−1\/2\)/)
+  })
 })

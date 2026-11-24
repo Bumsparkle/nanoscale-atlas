@@ -13,6 +13,8 @@ const AREA_TITLE: Record<string, string> = {
   cleanroom: 'The clean factory', cleaning: 'Wafer cleaning', gettering: 'Gettering', yield: 'Yield',
   deposition: 'Film deposition', cvd: 'Chemical vapour deposition', safety: 'Gas safety', plasma: 'Plasma processes', pvd: 'Evaporation and sputtering',
   epitaxy: 'Epitaxial growth', heteroepitaxy: 'Strain and lattice matching', siepi: 'Silicon epitaxy', mbe: 'Molecular beam epitaxy', soi: 'Silicon on insulator',
+  roadmap: 'The lithography roadmap', lightsource: 'Light sources', exposure: 'Exposure systems', optics: 'Optics of printing', resist: 'Photoresists', ngl: 'Next-generation lithography', ebeam: 'Electron-beam lithography',
+  nano: 'The nanoscale', quantum: 'Quantum wells', hetero: 'Heterostructures', confinement: 'Wires and dots', nanofab: 'Making nanostructures', dos: 'Density of states', qdots: 'Quantum-dot lasers',
 }
 
 /**

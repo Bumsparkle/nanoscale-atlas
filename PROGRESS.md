@@ -639,3 +639,8 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
 - Screenshots of every new tab were reviewed (`scripts/chaptershots.mjs c4|c5`). Fixes found that way: the smart-cut stack was upside down (refs not re-rendering), the MBE cut-away faced away from the camera, the surface cameras were too close, islands were indistinguishable from the wetting layer, the trench film matched the substrate, a CVD label hid under the panel, and LPCVD used the APCVD silane fraction.
 - **Slides:** all five decks render; the 137-slide archive is local and gitignored. It is not uploaded yet.
 - **Slides (2026-11-24):** the five-deck archive (137 slides) replaced `slides-all.tar.gz` in the private release, as asset 786486636. To show Topics 3–6 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786486636` and redeploy.
+
+### Topics 7 and 8 · Chapters 6 and 7 — in progress (2026-11-24)
+
+- **Step 1, inventories:** `content/topic7/facts.json` (92 facts, 76 key) and `content/topic8/facts.json` (72 facts, 61 key). Every slide was read, including the images: roadmap table, optics diagrams, MTF plots, resist flow, TEM/AFM/STM images, DoS plots and equations. Nine slide errors are corrected (DECISIONS.md), and `facts.test.ts` re-derives the DOF example, the de Broglie wavelengths and the 1D/2D DoS prefactors.
+

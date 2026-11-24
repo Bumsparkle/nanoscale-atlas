@@ -1,0 +1,1427 @@
+{
+ "source": "ELEC0031 Topic 7, Lithography and Patterning (22 slides). Facts are paraphrased from the slides; slide = PDF page. Where a slide is wrong the fact teaches the correct statement and records the slide wording in \"corrects\".",
+ "topic": "topic7",
+ "slides": [
+  {
+   "slide": 1,
+   "title": "Title",
+   "area": "intro"
+  },
+  {
+   "slide": 2,
+   "title": "Lithography roadmap",
+   "area": "roadmap"
+  },
+  {
+   "slide": 3,
+   "title": "Historical development and basic concepts",
+   "area": "exposure"
+  },
+  {
+   "slide": 4,
+   "title": "Light sources",
+   "area": "lightsource"
+  },
+  {
+   "slide": 5,
+   "title": "Wafer exposure systems",
+   "area": "exposure"
+  },
+  {
+   "slide": 6,
+   "title": "Optics: basics and diffraction",
+   "area": "optics"
+  },
+  {
+   "slide": 7,
+   "title": "Point image and the Airy disk",
+   "area": "optics"
+  },
+  {
+   "slide": 8,
+   "title": "Projection systems (Fraunhofer)",
+   "area": "optics"
+  },
+  {
+   "slide": 9,
+   "title": "Resolution, NA and depth of focus",
+   "area": "optics"
+  },
+  {
+   "slide": 10,
+   "title": "Modulation transfer function",
+   "area": "optics"
+  },
+  {
+   "slide": 11,
+   "title": "Spatial coherence",
+   "area": "optics"
+  },
+  {
+   "slide": 12,
+   "title": "MTF curves",
+   "area": "optics"
+  },
+  {
+   "slide": 13,
+   "title": "Contact and proximity (Fresnel)",
+   "area": "optics"
+  },
+  {
+   "slide": 14,
+   "title": "Contact and proximity: Wmin",
+   "area": "optics"
+  },
+  {
+   "slide": 15,
+   "title": "Photoresists",
+   "area": "resist"
+  },
+  {
+   "slide": 16,
+   "title": "Typical resist process",
+   "area": "resist"
+  },
+  {
+   "slide": 17,
+   "title": "Future trends",
+   "area": "ngl"
+  },
+  {
+   "slide": 18,
+   "title": "Next generation lithography",
+   "area": "ngl"
+  },
+  {
+   "slide": 19,
+   "title": "E-beam lithography",
+   "area": "ebeam"
+  },
+  {
+   "slide": 20,
+   "title": "EBL lift-off",
+   "area": "ebeam"
+  },
+  {
+   "slide": 21,
+   "title": "EBL proximity effect",
+   "area": "ebeam"
+  },
+  {
+   "slide": 22,
+   "title": "EBL advantages and disadvantages",
+   "area": "ebeam"
+  }
+ ],
+ "unreadable": [
+  {
+   "slide": 2,
+   "what": "Table cells are read directly; the 2018 data volume (12 490 GB) and the \"157nm??\" note sit in narrow cells but are legible."
+  },
+  {
+   "slide": 5,
+   "what": "The \"5–25 µm\" label sits beside the projection printer’s wafer; it is read as the proximity gap, the only gap on the slide."
+  },
+  {
+   "slide": 17,
+   "what": "Resolution values are read off the Socha chart to about ±1 nm; they agree with R = k₁λ/(n sin θ)."
+  },
+  {
+   "slide": 20,
+   "what": "\"Cheaper, but also slower\" is not attached to anything; it is read with the SEM-style schematic beside it."
+  },
+  {
+   "slide": 21,
+   "what": "Trajectory extents are read off the Monte Carlo plots (10 kV and 20 kV) to about ±0.5 µm."
+  }
+ ],
+ "links": [
+  {
+   "slide": 3,
+   "facts": [
+    "s27-masks",
+    "s46-mindim"
+   ],
+   "note": "Topic 2 introduced masks and why their minimum dimensions matter."
+  },
+  {
+   "slide": 15,
+   "facts": [
+    "s31-resist",
+    "t3-s28-negative",
+    "t3-s28-positive",
+    "t3-s28-diagram"
+   ],
+   "note": "Resist polarity and the coat–expose–develop–etch–strip sequence are in Topics 2 and 3."
+  },
+  {
+   "slide": 20,
+   "facts": [
+    "t5-s39-table"
+   ],
+   "note": "Topic 5: e-beam and filament evaporation are good for lift-off."
+  }
+ ],
+ "noFacts": [],
+ "facts": [
+  {
+   "id": "t7-s01-topic",
+   "source": {
+    "topic": "topic7",
+    "slide": 1
+   },
+   "statement": "ELEC0031 Topic 7 is \"Lithography and Patterning\".",
+   "kind": "definition",
+   "area": "intro",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-most",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Lithography is arguably the single most important technology in IC manufacturing.",
+   "kind": "definition",
+   "area": "roadmap",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-cost",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Lithography accounts for about 35 % of wafer manufacturing costs.",
+   "kind": "number",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-shrink",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "The roadmap shrinks the minimum feature by 0.7× in linear dimension every 3 years.",
+   "kind": "rule",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-cd",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Critical-dimension (CD) control must be about 10 % of the smallest size, and placement (overlay) accuracy about 1/3 of the feature size.",
+   "kind": "rule",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-nodes",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Technology node (half pitch): 250 nm in 1998, 180 nm in 2000, 130 nm in 2002, 90 nm in 2004, 65 nm in 2007, 45 nm in 2010, 32 nm in 2013, 22 nm in 2016 and 18 nm in 2018.",
+   "kind": "number",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-gate",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "MPU printed gate length: 100 nm in 2000, 70 nm in 2002, 53 nm in 2004, 35 nm in 2007, 25 nm in 2010, 18 nm in 2013, 13 nm in 2016 and 10 nm in 2018.",
+   "kind": "number",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-tech",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Exposure technology: 248 nm from 1998 (with resolution enhancement, RET, by 2002), 193 nm + RET from 2004, 193 nm + RET with water immersion in 2010–2013 (157 nm questioned), and \"???\" for 2016–2018, where X-ray, e-beam, extreme UV and ion beam are candidates.",
+   "kind": "number",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-control",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Gate CD control (3σ) tightens from 3.3 nm (2004) to 0.6 nm (2018) and overlay from 32 nm to 7.2 nm, while the field size stays 22 × 32 mm.",
+   "kind": "number",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-scale",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "Chips grow: DRAM from 256 Mbit (1998) to 128 Gbit (2016–2018), MPU transistors from 550 million (2004) to 14 000 million (2018), and mask data from 216 GB to 12 490 GB per level.",
+   "kind": "number",
+   "area": "roadmap",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s02-unknown",
+   "source": {
+    "topic": "topic7",
+    "slide": 2
+   },
+   "statement": "The \"???\" in the exposure row marks the single biggest uncertainty of the roadmap: which exposure technology comes after 193 nm.",
+   "kind": "cause-effect",
+   "area": "roadmap",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t7-s03-patterning",
+   "source": {
+    "topic": "topic7",
+    "slide": 3
+   },
+   "statement": "Patterning consists of mask design (a CAD system for layout, simulation and design-rule checking), mask fabrication (an electron beam written onto the mask) and wafer printing (light source, condenser lens, mask, reduction lens, wafer).",
+   "kind": "process-step",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-mask"
+   ]
+  },
+  {
+   "id": "t7-s03-parts",
+   "source": {
+    "topic": "topic7",
+    "slide": 3
+   },
+   "statement": "Wafer printing divides into three parts: A, the light source; B, the wafer exposure system; C, the resist.",
+   "kind": "definition",
+   "area": "exposure",
+   "key": false,
+   "objects": [
+    "litho-source"
+   ]
+  },
+  {
+   "id": "t7-s04-shorter",
+   "source": {
+    "topic": "topic7",
+    "slide": 4
+   },
+   "statement": "Smaller features need shorter-wavelength light sources.",
+   "kind": "cause-effect",
+   "area": "lightsource",
+   "key": true,
+   "objects": [
+    "litho-source"
+   ]
+  },
+  {
+   "id": "t7-s04-hg",
+   "source": {
+    "topic": "topic7",
+    "slide": 4
+   },
+   "statement": "Mercury vapour lamps produce many spectral lines from a high-intensity plasma in a glass lamp: electrons excited by collisions in the plasma emit photons as they fall back.",
+   "kind": "definition",
+   "area": "lightsource",
+   "key": false,
+   "objects": [
+    "litho-source"
+   ]
+  },
+  {
+   "id": "t7-s04-lines",
+   "source": {
+    "topic": "topic7",
+    "slide": 4
+   },
+   "statement": "Hg lamp lines: g-line, λ = 436 nm, and i-line, λ = 365 nm (used for 0.5 µm and 0.35 µm).",
+   "kind": "number",
+   "area": "lightsource",
+   "key": true,
+   "objects": [
+    "litho-source"
+   ]
+  },
+  {
+   "id": "t7-s04-excimer",
+   "source": {
+    "topic": "topic7",
+    "slide": 4
+   },
+   "statement": "The brightest deep-UV sources are excimer lasers: energy drives Kr + NF₃ to excited KrF, which emits a photon.",
+   "kind": "definition",
+   "area": "lightsource",
+   "key": false,
+   "objects": [
+    "litho-source"
+   ]
+  },
+  {
+   "id": "t7-s04-lasers",
+   "source": {
+    "topic": "topic7",
+    "slide": 4
+   },
+   "statement": "Excimer lasers: KrF, λ = 248 nm (used for 0.25, 0.18 and 0.13 µm); ArF, λ = 193 nm (130 and 90 nm); F₂, λ = 157 nm (sub-90 nm).",
+   "kind": "number",
+   "area": "lightsource",
+   "key": true,
+   "objects": [
+    "litho-source"
+   ],
+   "corrects": "The slide labels the 157 nm source \"FF\". It is the F₂ (molecular fluorine) excimer laser."
+  },
+  {
+   "id": "t7-s04-issues",
+   "source": {
+    "topic": "topic7",
+    "slide": 4
+   },
+   "statement": "At deep-UV wavelengths the problems are finding suitable resists and transparent optical components.",
+   "kind": "cause-effect",
+   "area": "lightsource",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s05-three",
+   "source": {
+    "topic": "topic7",
+    "slide": 5
+   },
+   "statement": "Three types of exposure system have been used: contact printing (mask on the resist), proximity printing (a small gap) and projection printing (a lens between mask and wafer).",
+   "kind": "definition",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-mask"
+   ]
+  },
+  {
+   "id": "t7-s05-ratio",
+   "source": {
+    "topic": "topic7",
+    "slide": 5
+   },
+   "statement": "Contact and proximity printing are 1:1; projection printing is usually a 4× or 5× reduction.",
+   "kind": "number",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s05-gap",
+   "source": {
+    "topic": "topic7",
+    "slide": 5
+   },
+   "statement": "In proximity printing the mask is held about 5–25 µm above the resist.",
+   "kind": "number",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-mask"
+   ]
+  },
+  {
+   "id": "t7-s05-contact",
+   "source": {
+    "topic": "topic7",
+    "slide": 5
+   },
+   "statement": "Contact printing can give high resolution, but its defect densities are unacceptable.",
+   "kind": "cause-effect",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-mask"
+   ]
+  },
+  {
+   "id": "t7-s05-proximity",
+   "source": {
+    "topic": "topic7",
+    "slide": 5
+   },
+   "statement": "Proximity printing cannot easily print features below a few µm (except for X-ray systems).",
+   "kind": "cause-effect",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-mask"
+   ]
+  },
+  {
+   "id": "t7-s05-projection",
+   "source": {
+    "topic": "topic7",
+    "slide": 5
+   },
+   "statement": "Projection printing gives high resolution and low defect densities, and dominates today.",
+   "kind": "cause-effect",
+   "area": "exposure",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s06-rays",
+   "source": {
+    "topic": "topic7",
+    "slide": 6
+   },
+   "statement": "Ray tracing (light travelling in straight lines) works while dimensions are large compared with λ; at smaller dimensions diffraction dominates.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "airy-image"
+   ]
+  },
+  {
+   "id": "t7-s06-huygens",
+   "source": {
+    "topic": "topic7",
+    "slide": 6
+   },
+   "statement": "Huygens–Fresnel principle: every point of a wavefront is a source of spherical secondary wavelets of the same λ. In free space they superpose into the continuing plane wave; a small aperture lets through fewer wavelets, so the light leaving it is more spherical.",
+   "kind": "definition",
+   "area": "optics",
+   "key": false,
+   "objects": [
+    "airy-image"
+   ]
+  },
+  {
+   "id": "t7-s06-spread",
+   "source": {
+    "topic": "topic7",
+    "slide": 6
+   },
+   "statement": "If the aperture is of the order of λ the light spreads out after it, and the smaller the aperture, the more it spreads.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "airy-image"
+   ]
+  },
+  {
+   "id": "t7-s07-lens",
+   "source": {
+    "topic": "topic7",
+    "slide": 7
+   },
+   "statement": "To image an aperture onto the resist a lens collects the diffracted light and focuses it; its finite diameter loses some of that light, so a point source does not give a point image.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s07-airy",
+   "source": {
+    "topic": "topic7",
+    "slide": 7
+   },
+   "statement": "A small circular aperture images to an Airy disk. The radius from the centre to the first dark ring is Φ = 1.22λf/d (λ wavelength, f focal length, d lens diameter), so the bright central disk is 2.44λf/d across.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "airy-image"
+   ],
+   "corrects": "The slide draws Φ = 1.22λf/d across the whole central disk. Its own intensity profile puts 1.22λf/d from the centre to the first minimum: Φ is the radius, not the diameter."
+  },
+  {
+   "id": "t7-s07-point",
+   "source": {
+    "topic": "topic7",
+    "slide": 7
+   },
+   "statement": "A point image forms only if λ → 0, f → 0 or d → ∞.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "airy-image"
+   ]
+  },
+  {
+   "id": "t7-s07-regimes",
+   "source": {
+    "topic": "topic7",
+    "slide": 7
+   },
+   "statement": "Diffraction has two limiting cases: Fresnel diffraction (near field) and Fraunhofer diffraction (far field).",
+   "kind": "definition",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "airy-image"
+   ]
+  },
+  {
+   "id": "t7-s08-metrics",
+   "source": {
+    "topic": "topic7",
+    "slide": 8
+   },
+   "statement": "Projection systems (Fraunhofer diffraction) are described by resolution, depth of focus, field of view, modulation transfer function, alignment accuracy and throughput.",
+   "kind": "definition",
+   "area": "optics",
+   "key": false,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s08-rayleigh",
+   "source": {
+    "topic": "topic7",
+    "slide": 8
+   },
+   "statement": "Rayleigh criterion: two point sources are just resolved when the central maximum of one Airy pattern lies on the first minimum of the other.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "airy-image"
+   ]
+  },
+  {
+   "id": "t7-s08-r",
+   "source": {
+    "topic": "topic7",
+    "slide": 8
+   },
+   "statement": "Resolution R = 1.22λf/d = 1.22λf/(n·2f sin α) = 0.61λ/(n sin α), where n is the refractive index between lens and image and α the half-angle of the cone the lens accepts.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s08-na",
+   "source": {
+    "topic": "topic7",
+    "slide": 8
+   },
+   "statement": "Numerical aperture NA = n sin α: the ability of the lens to collect diffracted light.",
+   "kind": "definition",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s08-k1",
+   "source": {
+    "topic": "topic7",
+    "slide": 8
+   },
+   "statement": "R = 0.61λ/NA = k₁·λ/NA.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s09-k1",
+   "source": {
+    "topic": "topic7",
+    "slide": 9
+   },
+   "statement": "k₁ is an experimental parameter that depends on the lithography system and the resist, about 0.4–0.8.",
+   "kind": "number",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s09-improve",
+   "source": {
+    "topic": "topic7",
+    "slide": 9
+   },
+   "statement": "Resolution improves (R falls) by decreasing k₁, decreasing λ or increasing NA (bigger lenses).",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s09-dof",
+   "source": {
+    "topic": "topic7",
+    "slide": 9
+   },
+   "statement": "Depth of focus DOF = ±λ/(2NA²) = ±k₂·λ/NA², where k₂ is determined experimentally (λ/(2NA²) is the k₂ = 0.5 case).",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-wafer"
+   ],
+   "corrects": "The slide also writes DOF = δ = ±λ/2(NA)² = ±k₂/2(NA)², which drops λ from the k₂ form and halves it again. Only ±k₂λ/NA² reproduces the slide’s own example (KrF, NA 0.6, k₂ 0.5 → ±0.34 µm)."
+  },
+  {
+   "id": "t7-s09-tradeoff",
+   "source": {
+    "topic": "topic7",
+    "slide": 9
+   },
+   "statement": "A higher NA improves resolution but shrinks the depth of focus (as 1/NA²), so high-NA lithography needs a flat wafer topology.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-wafer"
+   ]
+  },
+  {
+   "id": "t7-s09-example",
+   "source": {
+    "topic": "topic7",
+    "slide": 9
+   },
+   "statement": "Example: KrF, 248 nm, NA = 0.6, k₁ = 0.75, k₂ = 0.5 gives R = 0.31 µm and DOF = ±0.34 µm (the slide rounds to ≈ 0.3 µm and ≈ ±0.35 µm).",
+   "kind": "number",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s10-mtf",
+   "source": {
+    "topic": "topic7",
+    "slide": 10
+   },
+   "statement": "Modulation transfer function MTF = (I_max − I_min)/(I_max + I_min): the contrast of the aerial image that the resist must recognise.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s10-threshold",
+   "source": {
+    "topic": "topic7",
+    "slide": 10
+   },
+   "statement": "A photoresist needs an MTF above about 0.5 to recognise a feature.",
+   "kind": "number",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s10-depends",
+   "source": {
+    "topic": "topic7",
+    "slide": 10
+   },
+   "statement": "MTF depends on the feature size and on the spatial coherence of the light source.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s10-aerial",
+   "source": {
+    "topic": "topic7",
+    "slide": 10
+   },
+   "statement": "At the mask the intensity is an ideal square wave (MTF = 1, structures 4–5× larger on a 4–5× reduction mask). On the wafer the Airy discs of neighbouring openings overlap: I_min rises, I_max falls and the contrast drops, and the resist responds to this light intensity.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s10-optics",
+   "source": {
+    "topic": "topic7",
+    "slide": 10
+   },
+   "statement": "A projection stepper: light source → condenser lens → mask → aperture → objective (projection) lens → photoresist on the wafer.",
+   "kind": "diagram",
+   "area": "optics",
+   "key": false,
+   "objects": [
+    "litho-condenser"
+   ]
+  },
+  {
+   "id": "t7-s10-coherent",
+   "source": {
+    "topic": "topic7",
+    "slide": 10
+   },
+   "statement": "The MTF as defined applies to coherent light; steppers use partly coherent illumination.",
+   "kind": "definition",
+   "area": "optics",
+   "key": false,
+   "objects": [
+    "litho-source"
+   ]
+  },
+  {
+   "id": "t7-s11-coherence",
+   "source": {
+    "topic": "topic7",
+    "slide": 11
+   },
+   "statement": "An ideal point source is spatially coherent: the condenser turns it into plane waves that reach the mask at the same angle. Practical sources are not points, so light arrives at the mask at various angles.",
+   "kind": "definition",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-condenser"
+   ]
+  },
+  {
+   "id": "t7-s11-s",
+   "source": {
+    "topic": "topic7",
+    "slide": 11
+   },
+   "statement": "Spatial coherence S = light-source diameter / condenser-lens diameter = s/d, or often S = NA_condenser / NA_projection optics.",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-condenser"
+   ]
+  },
+  {
+   "id": "t7-s11-typical",
+   "source": {
+    "topic": "topic7",
+    "slide": 11
+   },
+   "statement": "S ≈ 0.5–0.7 in modern systems.",
+   "kind": "number",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-condenser"
+   ]
+  },
+  {
+   "id": "t7-s12-curve",
+   "source": {
+    "topic": "topic7",
+    "slide": 12
+   },
+   "statement": "MTF against feature size: near 1 for large features, falling towards 0 for small ones, because diffraction lowers the contrast of the aerial image.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s12-s",
+   "source": {
+    "topic": "topic7",
+    "slide": 12
+   },
+   "statement": "As S increases (less coherent light) the MTF degrades for larger features but improves for very small ones; S ≈ 0.5–0.7 is the compromise, because as S → 0 the optical intensity falls.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "litho-condenser"
+   ]
+  },
+  {
+   "id": "t7-s13-near",
+   "source": {
+    "topic": "topic7",
+    "slide": 13
+   },
+   "statement": "Contact and proximity printing operate in the near-field (Fresnel) regime, and there is always some gap g between mask and resist.",
+   "kind": "definition",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s13-ringing",
+   "source": {
+    "topic": "topic7",
+    "slide": 13
+   },
+   "statement": "The aerial image under a mask opening of width W can be built from point sources in the aperture radiating spherical waves; their interference gives \"ringing\" and spreading outside the aperture, so some resist outside is exposed. Incoherent light reduces the ringing.",
+   "kind": "cause-effect",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s14-range",
+   "source": {
+    "topic": "topic7",
+    "slide": 14
+   },
+   "statement": "Fresnel diffraction applies when λ < g < W²/λ (W feature size, g gap).",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s14-wmin",
+   "source": {
+    "topic": "topic7",
+    "slide": 14
+   },
+   "statement": "In that range the minimum resolvable feature is W_min ≈ √(λg).",
+   "kind": "rule",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s14-example",
+   "source": {
+    "topic": "topic7",
+    "slide": 14
+   },
+   "statement": "With g = 10 µm and an i-line (365 nm) source, W_min ≈ 2 µm.",
+   "kind": "number",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s14-contact",
+   "source": {
+    "topic": "topic7",
+    "slide": 14
+   },
+   "statement": "Contact printing could reach about 0.1 µm, but it is not used.",
+   "kind": "number",
+   "area": "optics",
+   "key": true,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s14-summary",
+   "source": {
+    "topic": "topic7",
+    "slide": 14
+   },
+   "statement": "At the resist surface the contact image is a near-perfect copy of the opening, the proximity image spreads with ringing, and the projection image is a smooth, rounded peak.",
+   "kind": "diagram",
+   "area": "optics",
+   "key": false,
+   "objects": [
+    "fresnel-gap"
+   ]
+  },
+  {
+   "id": "t7-s15-resist",
+   "source": {
+    "topic": "topic7",
+    "slide": 15
+   },
+   "statement": "Photoresists are hydrocarbon-based organic polymers whose chemistry changes under illumination; they are spun on and prebaked to a film about 0.6–1 µm thick.",
+   "kind": "number",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s15-older",
+   "source": {
+    "topic": "topic7",
+    "slide": 15
+   },
+   "statement": "Negative resists, more soluble where not exposed, are the older type; positive resists are more soluble where exposed.",
+   "kind": "definition",
+   "area": "resist",
+   "key": false,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s15-sensitivity",
+   "source": {
+    "topic": "topic7",
+    "slide": 15
+   },
+   "statement": "Sensitivity is the dose needed for the change, in mJ cm⁻²: about 100 mJ cm⁻² for g- and i-line resists, newer resists down to 20 mJ cm⁻².",
+   "kind": "number",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s15-resolution",
+   "source": {
+    "topic": "topic7",
+    "slide": 15
+   },
+   "statement": "The exposure system, rather than the resist, limits the resolution.",
+   "kind": "cause-effect",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s15-etch",
+   "source": {
+    "topic": "topic7",
+    "slide": 15
+   },
+   "statement": "The third important resist parameter is robustness to etching.",
+   "kind": "definition",
+   "area": "resist",
+   "key": false,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s16-clean",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 1: surface cleaning and/or dehydration baking prepares the surface for resist.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-wafer"
+   ]
+  },
+  {
+   "id": "t7-s16-hmds",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 2: HMDS adhesion promoter, typically spun on the wafer.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-wafer"
+   ]
+  },
+  {
+   "id": "t7-s16-spin",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 3: resist is spun on at typically 3000–6000 rpm, forming a ≈ 0.5 µm layer.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s16-prebake",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 4: pre-bake, typically 10–30 min at 90–100 °C.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s16-expose",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 5: align the wafer at each exposure site and expose, typically at 150 mJ cm⁻².",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s16-peb",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 6: a post-exposure bake, sometimes used to minimise standing waves in the resist, typically 10 min at 100 °C.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s16-develop",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 7: develop, typically 30–60 s at room temperature, by spray or immersion.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s16-postbake",
+   "source": {
+    "topic": "topic7",
+    "slide": 16
+   },
+   "statement": "Resist process 8: post-bake, typically 10–30 min at 100–140 °C.",
+   "kind": "process-step",
+   "area": "resist",
+   "key": true,
+   "objects": [
+    "litho-resist"
+   ]
+  },
+  {
+   "id": "t7-s17-7nm",
+   "source": {
+    "topic": "topic7",
+    "slide": 17
+   },
+   "statement": "Optical lithography is still in use for 7 nm CMOS technology.",
+   "kind": "number",
+   "area": "ngl",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s17-future",
+   "source": {
+    "topic": "topic7",
+    "slide": 17
+   },
+   "statement": "There is no general agreement on the future approach; e-beam, X-ray and EUV are possible, and new resists will likely be needed for them.",
+   "kind": "cause-effect",
+   "area": "ngl",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t7-s17-immersion",
+   "source": {
+    "topic": "topic7",
+    "slide": 17
+   },
+   "statement": "Socha (ASML, 2004), k₁ = 0.3 and sin θ = 0.93: dry 193 nm resolves ≈ 62 nm and dry 157 nm ≈ 51 nm; water immersion (n ≈ 1.44) takes 193 nm to ≈ 44 nm, PFPE takes 157 nm to ≈ 37 nm, and n ≈ 1.6 fluids reach ≈ 39 nm and ≈ 32 nm, because NA = n sin θ grows with the fluid’s index.",
+   "kind": "number",
+   "area": "ngl",
+   "key": true,
+   "objects": [
+    "litho-lens"
+   ]
+  },
+  {
+   "id": "t7-s18-verdicts",
+   "source": {
+    "topic": "topic7",
+    "slide": 18
+   },
+   "statement": "Next-generation lithography verdicts: extreme UV has problems with source and mask; e-beam and ion projection are too slow but great for research; X-ray is no longer on the roadmap.",
+   "kind": "cause-effect",
+   "area": "ngl",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s18-figure",
+   "source": {
+    "topic": "topic7",
+    "slide": 18
+   },
+   "statement": "In resist, photons spread over about ½ µm, electrons scatter sideways and back, X-rays through a mask print straight down, and ions travel nearly straight.",
+   "kind": "diagram",
+   "area": "ngl",
+   "key": false,
+   "objects": []
+  },
+  {
+   "id": "t7-s18-table",
+   "source": {
+    "topic": "topic7",
+    "slide": 18
+   },
+   "statement": "Photon wavelengths and energies: UV 400 nm, 3.1 eV; deep UV 250 nm, 4.96 eV; X-ray 0.5 nm, 2480 eV (λ = hc/E, hc = 1240 eV·nm).",
+   "kind": "number",
+   "area": "ngl",
+   "key": true,
+   "objects": []
+  },
+  {
+   "id": "t7-s18-particles",
+   "source": {
+    "topic": "topic7",
+    "slide": 18
+   },
+   "statement": "Particle beams: electrons at 20 keV and ions at 100 keV. Their wavelength is the de Broglie λ = h/p: about 0.086 Å for 20 keV electrons and about 9 × 10⁻⁴ Å for 100 keV protons (heavier ions even less), far below any feature size.",
+   "kind": "number",
+   "area": "ngl",
+   "key": true,
+   "objects": [],
+   "corrects": "The slide lists 0.62 Å for 20 keV electrons and 0.12 Å for 100 keV ions. Those are hc/E, the photon relation, which does not apply to particles with mass; the de Broglie wavelengths are 0.086 Å (relativistic) and ≈ 9 × 10⁻⁴ Å for protons."
+  },
+  {
+   "id": "t7-s19-direct",
+   "source": {
+    "topic": "topic7",
+    "slide": 19
+   },
+   "statement": "In e-beam lithography the pattern is written directly into the resist by a scanning electron beam; the machine is like an SEM with on–off capability (beam blanking) and accurate positioning.",
+   "kind": "definition",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-column"
+   ]
+  },
+  {
+   "id": "t7-s19-throughput",
+   "source": {
+    "topic": "topic7",
+    "slide": 19
+   },
+   "statement": "The beam can be focused to about 1 nm, but for more than 10 wafers per hour the beam current would have to be tens of mA.",
+   "kind": "number",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-column"
+   ],
+   "corrects": "The slide gives \"resolution < 1 nm\"; slide 22 gives a 1 nm beam and scattering-limited resolution of typically 10 nm. The < 1 nm figure is the beam, not the printed resolution."
+  },
+  {
+   "id": "t7-s19-column",
+   "source": {
+    "topic": "topic7",
+    "slide": 19
+   },
+   "statement": "An electron-beam machine: electron gun, alignment coil, first condenser lens, blanking plates, second condenser lens, limiting aperture, final lens and deflection coils, then the electron resist on the substrate on a mechanical stage; a pattern generator and computer control drive the blanking, deflection and stage.",
+   "kind": "diagram",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-blanker"
+   ]
+  },
+  {
+   "id": "t7-s20-liftoff",
+   "source": {
+    "topic": "topic7",
+    "slide": 20
+   },
+   "statement": "E-beam lift-off: 1 clean the wafer (Si with 58 nm SiO₂); 2 deposit PMMA; 3 e-beam exposure; 4 develop; 5 metallise (Ti 3 nm, then Au 17 nm); 6 lift off: dissolving the PMMA removes the metal on it, leaving metal only where the resist was opened.",
+   "kind": "process-step",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-resist"
+   ]
+  },
+  {
+   "id": "t7-s20-sem",
+   "source": {
+    "topic": "topic7",
+    "slide": 20
+   },
+   "statement": "The schematic beside the lift-off steps is an SEM column (condenser lens, scan coils, objective lens, secondary-electron detector, scan generator); the slide notes this route is cheaper, but also slower.",
+   "kind": "cause-effect",
+   "area": "ebeam",
+   "key": false,
+   "objects": [
+    "sem-link"
+   ]
+  },
+  {
+   "id": "t7-s21-scatter",
+   "source": {
+    "topic": "topic7",
+    "slide": 21
+   },
+   "statement": "Electrons entering the resist undergo small-angle forward scattering, and many undergo large-angle scattering that leads to backscattering; this adds exposure around the beam: the electron-beam proximity effect.",
+   "kind": "cause-effect",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-trajectories"
+   ]
+  },
+  {
+   "id": "t7-s21-secondary",
+   "source": {
+    "topic": "topic7",
+    "slide": 21
+   },
+   "statement": "As primary electrons slow down they lose most energy to secondary electrons of 2–50 eV, which do the bulk of the resist exposure; their range in resist is only a few nm, so they contribute little to the proximity effect.",
+   "kind": "number",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-trajectories"
+   ]
+  },
+  {
+   "id": "t7-s21-fast",
+   "source": {
+    "topic": "topic7",
+    "slide": 21
+   },
+   "statement": "A small fraction of secondaries have about 1 keV; these fast electrons spread the proximity effect over a few tenths of a micron.",
+   "kind": "number",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-trajectories"
+   ]
+  },
+  {
+   "id": "t7-s21-energy",
+   "source": {
+    "topic": "topic7",
+    "slide": 21
+   },
+   "statement": "Higher-energy electrons have a larger backscattering range: in the Monte Carlo plots of PMMA on Si, trajectories at 10 kV stay within about 1 µm while at 20 kV they spread about 2 µm sideways and 3 µm deep.",
+   "kind": "cause-effect",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-trajectories"
+   ]
+  },
+  {
+   "id": "t7-s22-adv",
+   "source": {
+    "topic": "topic7",
+    "slide": 22
+   },
+   "statement": "E-beam advantages: a small electron wavelength (better resolution), a beam size of 1 nm, resolution set by scattering (typically 10 nm), flexibility, and every pattern under computer control.",
+   "kind": "cause-effect",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-column"
+   ]
+  },
+  {
+   "id": "t7-s22-disadv",
+   "source": {
+    "topic": "topic7",
+    "slide": 22
+   },
+   "statement": "E-beam disadvantages: high cost, a high vacuum, precision electron-focusing magnets, only one pixel exposed at a time, and not commercially viable except for a few applications.",
+   "kind": "cause-effect",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-column"
+   ]
+  },
+  {
+   "id": "t7-s22-lcn",
+   "source": {
+    "topic": "topic7",
+    "slide": 22
+   },
+   "statement": "The LCN’s Raith 150-TWO e-beam system: 20 nm resolution, 495 and 950 PMMA resist processes, samples from 10 × 10 mm up to 150 mm diameter.",
+   "kind": "number",
+   "area": "ebeam",
+   "key": true,
+   "objects": [
+    "eb-column"
+   ]
+  }
+ ]
+}

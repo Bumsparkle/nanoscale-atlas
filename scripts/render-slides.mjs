@@ -14,6 +14,8 @@ const DECKS = {
   topic4: 'docs/topic4-cleaning-cleanrooms.pdf',
   topic5: 'docs/topic5-thin-films.pdf',
   topic6: 'docs/topic6-epitaxy.pdf',
+  topic7: 'docs/topic7-lithography.pdf',
+  topic8: 'docs/topic8-iii-v-nanostructures.pdf',
 }
 const jobs = process.argv[2] ? [[process.argv[3] ?? 'topic2', process.argv[2]]] : Object.entries(DECKS).filter(([, pdf]) => existsSync(pdf))
 if (!jobs.length || jobs.some(([, pdf]) => !existsSync(pdf))) {
