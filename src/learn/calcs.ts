@@ -1,6 +1,7 @@
 import type { Question } from './schema'
 import { cI, cV, csOverC0, diffusivity, kT, millerFromIntercepts, SI_CONSUMED } from '../chapters/growth/physics'
 import { nbYield, poissonYield } from '../chapters/clean/physics'
+import { HB } from '../chapters/nano/quantum'
 
 /**
  * Parameterised calculation questions. A calc question with `answer.gen`
@@ -128,6 +129,150 @@ export const GENS: Record<string, Gen> = {
     unit: '%', rel: 0.02,
     value: ({ af, as }) => (100 * (af - as)) / as,
     solution: ({ af, as }, a) => `f = (a_film − a_sub)/a_sub = (${af} − ${as})/${as} = ${g3(a / 100)}, i.e. ${g3(a)} %. ${a > 0 ? 'Positive: the film is compressed in the plane to fit.' : 'Negative: the film is stretched in the plane to fit.'}`,
+  },
+  /* ── Topic 7: lithography ─────────────────────────────────────────── */
+  /** slide 8: R = k₁λ/NA */
+  'litho-r': {
+    unit: 'nm', rel: 0.02,
+    value: ({ lam, NA, k1 }) => (k1 * lam) / NA,
+    solution: ({ lam, NA, k1 }, a) => `R = k₁λ/NA = ${k1} × ${lam} nm / ${NA} = ${g3(a)} nm. Smaller k₁, shorter λ or larger NA all shrink R.`,
+  },
+  /** slide 9: DOF = ±k₂λ/NA² */
+  'litho-dof': {
+    unit: 'nm', rel: 0.02,
+    value: ({ lam, NA, k2 }) => (k2 * lam) / (NA * NA),
+    solution: ({ lam, NA, k2 }, a) => `DOF = ±k₂λ/NA² = ${k2} × ${lam} nm / ${NA}² = ${k2} × ${lam} / ${g3(NA * NA)} = ±${g3(a)} nm. It falls as 1/NA², so a high-NA lens needs a flat wafer.`,
+  },
+  /** slide 8: the NA a target resolution needs */
+  'litho-na': {
+    unit: '', rel: 0.02,
+    value: ({ lam, R, k1 }) => (k1 * lam) / R,
+    solution: ({ lam, R, k1 }, a) => `NA = k₁λ/R = ${k1} × ${lam} nm / ${R} nm = ${g3(a)}.${a > 1 ? ' Above 1: only possible with an immersion fluid (NA = n sin α, n > 1).' : ''}`,
+  },
+  /** slides 8 and 17: NA = n sin α */
+  'na-n': {
+    unit: '', rel: 0.02,
+    value: ({ n, s }) => n * s,
+    solution: ({ n, s }, a) => `NA = n sin α = ${n} × ${s} = ${g3(a)}.${n > 1 ? ' The fluid’s index lifts NA above the dry limit of 1.' : ' In air (n = 1) NA can never exceed 1.'}`,
+  },
+  /** slide 7: Φ = 1.22λf/d (λ in nm, f and d in mm) → µm */
+  airy: {
+    unit: 'µm', rel: 0.02,
+    value: ({ lam, f, d }) => (1.22 * lam * 1e-3 * f) / d,
+    solution: ({ lam, f, d }, a) => `Φ = 1.22λf/d = 1.22 × ${lam} nm × ${f} mm / ${d} mm = 1.22 × ${lam / 1000} µm × ${g3(f / d)} = ${g3(a)} µm, the radius of the first dark ring.`,
+  },
+  /** slide 10: MTF */
+  mtf: {
+    unit: '', rel: 0.02,
+    value: ({ imax, imin }) => (imax - imin) / (imax + imin),
+    solution: ({ imax, imin }, a) => `MTF = (I_max − I_min)/(I_max + I_min) = (${imax} − ${imin})/(${imax} + ${imin}) = ${g3(imax - imin)}/${g3(imax + imin)} = ${g3(a)}. ${a >= 0.5 ? 'Above ≈ 0.5: the resist can recognise the feature.' : 'Below ≈ 0.5: the resist cannot recognise it.'}`,
+  },
+  /** slide 11: S = s/d or NA_c/NA_p */
+  coherence: {
+    unit: '', rel: 0.02,
+    value: ({ nac, nap }) => nac / nap,
+    solution: ({ nac, nap }, a) => `S = NA_condenser / NA_projection = ${nac} / ${nap} = ${g3(a)}. ${a < 0.5 ? 'More coherent than the usual 0.5–0.7.' : a > 0.7 ? 'Less coherent than the usual 0.5–0.7.' : 'Inside the usual 0.5–0.7.'}`,
+  },
+  /** slide 14: W_min ≈ √(λg) (λ nm, g µm) → µm */
+  wmin: {
+    unit: 'µm', rel: 0.02,
+    value: ({ lam, g }) => Math.sqrt((lam / 1000) * g),
+    solution: ({ lam, g }, a) => `W_min ≈ √(λg) = √(${lam / 1000} µm × ${g} µm) = √${g3((lam / 1000) * g)} µm² = ${g3(a)} µm.`,
+  },
+  /** slide 14: the Fresnel range ends at g = W²/λ (W µm, λ nm) → µm */
+  'fresnel-gmax': {
+    unit: 'µm', rel: 0.02,
+    value: ({ W, lam }) => (W * W) / (lam / 1000),
+    solution: ({ W, lam }, a) => `Fresnel diffraction applies for λ < g < W²/λ. W²/λ = ${W}² µm² / ${lam / 1000} µm = ${g3(a)} µm.`,
+  },
+  /** slide 2: 0.7× in linear dimension every 3 years */
+  roadmap: {
+    unit: 'nm', rel: 0.03,
+    value: ({ start, years }) => start * Math.pow(0.7, years / 3),
+    solution: ({ start, years }, a) => `${years} years is ${g3(years / 3)} three-year steps: ${start} nm × 0.7^${g3(years / 3)} = ${start} × ${g3(Math.pow(0.7, years / 3))} = ${g3(a)} nm.`,
+  },
+  /** slide 18: photon energy E = hc/λ, hc = 1240 eV·nm */
+  'photon-e': {
+    unit: 'eV', rel: 0.02,
+    value: ({ lam }) => 1239.84 / lam,
+    solution: ({ lam }, a) => `E = hc/λ = 1240 eV·nm / ${lam} nm = ${g3(a)} eV.`,
+  },
+  /** slide 18 (corrected): electron de Broglie wavelength, λ = h/√(2meE) = 1.226/√E nm (E in eV, non-relativistic) → Å */
+  'debroglie-e': {
+    unit: 'Å', rel: 0.03,
+    value: ({ keV }) => (12.264 / Math.sqrt(keV * 1000)),
+    solution: ({ keV }, a) => `λ = h/p = h/√(2m_eE) = 12.26 Å/√(E in eV) = 12.26/√${keV * 1000} = ${g3(a)} Å (relativity shortens it by ~${g3((keV / 1022) * 100)} %). Not hc/E = ${g3(12398 / (keV * 1000))} Å, the photon relation.`,
+  },
+  /* ── Topic 8: quantum structures ──────────────────────────────────── */
+  /** slide 5: E = ħ²k²/2m (k nm⁻¹, m in m₀) → meV */
+  'free-e': {
+    unit: 'meV', rel: 0.02,
+    value: ({ k, m }) => (1000 * HB * k * k) / m,
+    solution: ({ k, m }, a) => `E = ħ²k²/2m = (ħ²/2m₀)·k²/(m*/m₀) = 38.1 meV·nm² × ${k}² nm⁻² / ${m} = ${g3(a)} meV.`,
+  },
+  /** slides 7–8: Eₙ = n²π²ħ²/(2mL²) → meV */
+  'well-e': {
+    unit: 'meV', rel: 0.02,
+    value: ({ n, L, m }) => (1000 * n * n * Math.PI * Math.PI * HB) / (m * L * L),
+    solution: ({ n, L, m }, a) => `Eₙ = n²π²ħ²/(2m*L²) = n² × π² × (ħ²/2m₀) / ((m*/m₀)·L²) = ${n}² × 9.87 × 38.1 meV·nm² / (${m} × ${L}² nm²) = ${n * n} × ${g3((1000 * Math.PI * Math.PI * HB) / (m * L * L))} meV = ${g3(a)} meV.`,
+  },
+  /** slide 8: the spacing between two levels → meV */
+  'well-de': {
+    unit: 'meV', rel: 0.02,
+    value: ({ n1, n2, L, m }) => (1000 * (n2 * n2 - n1 * n1) * Math.PI * Math.PI * HB) / (m * L * L),
+    solution: ({ n1, n2, L, m }, a) => `E₁ = π²ħ²/(2m*L²) = ${g3((1000 * Math.PI * Math.PI * HB) / (m * L * L))} meV for L = ${L} nm, m* = ${m}m₀. E${n2} − E${n1} = (${n2}² − ${n1}²)E₁ = ${n2 * n2 - n1 * n1} × E₁ = ${g3(a)} meV.`,
+  },
+  /** slides 9, 11: the e1 → hh1 transition of a well → eV */
+  'well-photon': {
+    unit: 'eV', rel: 0.01,
+    value: ({ Eg, L, me, mh }) => Eg + (Math.PI * Math.PI * HB) / (L * L) * (1 / me + 1 / mh),
+    solution: ({ Eg, L, me, mh }, a) => {
+      const e = (Math.PI * Math.PI * HB) / (me * L * L)
+      const h = (Math.PI * Math.PI * HB) / (mh * L * L)
+      return `Treat both bands as infinite wells. e1 = π²ħ²/(2m_eL²) = 0.376 eV·nm² / (${me} × ${L}²) = ${g3(e * 1000)} meV; hh1 = 0.376 / (${mh} × ${L}²) = ${g3(h * 1000)} meV. Photon = Eg + e1 + hh1 = ${Eg} + ${g3(e)} + ${g3(h)} = ${g3(a)} eV (${g3(1239.84 / a)} nm). Confinement blue-shifts it above the band gap.`
+    },
+  },
+  /** slide 7: the normalisation constant A = √(2/L) → nm^(−1/2) */
+  norm: {
+    unit: 'nm^-½', rel: 0.02,
+    value: ({ L }) => Math.sqrt(2 / L),
+    solution: ({ L }, a) => `Require ∫₀ᴸ |ψ|² dx = 1 with ψ = A sin(nπx/L). sin² = ½(1 − cos(2nπx/L)); the cosine integrates to zero over whole periods, so ∫₀ᴸ sin² dx = L/2. Then A²·L/2 = 1, A = √(2/L) = √(2/${L} nm) = ${g3(a)} nm^-½.`,
+  },
+  /** slide 12: wire levels → meV */
+  'wire-e': {
+    unit: 'meV', rel: 0.02,
+    value: ({ a, b, n, l, m }) => (1000 * HB * Math.PI * Math.PI * ((n * n) / (a * a) + (l * l) / (b * b))) / m,
+    solution: ({ a, b, n, l, m }, v) => `At k_x = 0: E = (ħ²π²/2m*)(n²/a² + l²/b²) = (0.376 eV·nm² / ${m}) × (${n}²/${a}² + ${l}²/${b}²) = ${g3(0.376 / m)} eV·nm² × ${g3((n * n) / (a * a) + (l * l) / (b * b))} nm⁻² = ${g3(v)} meV.`,
+  },
+  /** slide 13: dot levels → meV */
+  'dot-e': {
+    unit: 'meV', rel: 0.02,
+    value: ({ a, n, l, j, m }) => (1000 * HB * Math.PI * Math.PI * (n * n + l * l + j * j)) / (m * a * a),
+    solution: ({ a, n, l, j, m }, v) => `A cube of side a: E = (ħ²π²/2m*a²)(n² + l² + j²) = (0.376 eV·nm² / (${m} × ${a}²)) × (${n * n} + ${l * l} + ${j * j}) = ${g3((376 / (m * a * a)))} meV × ${n * n + l * l + j * j} = ${g3(v)} meV.`,
+  },
+  /** slide 25: 3D DoS → eV⁻¹ cm⁻³ */
+  dos3: {
+    unit: 'eV⁻¹ cm⁻³', rel: 0.03,
+    value: ({ m, E }) => (1 / (2 * Math.PI * Math.PI)) * Math.pow(m / HB, 1.5) * Math.sqrt(E / 1000) * 1e21,
+    solution: ({ m, E }, a) => `ρ = (1/2π²)(2m/ħ²)^(3/2) √E. 2m/ħ² = m*/(ħ²/2m₀) = ${m}/0.0381 = ${g3(m / HB)} eV⁻¹nm⁻²; to the 3/2: ${g3(Math.pow(m / HB, 1.5))}; ÷ 2π² (19.74) × √(${E / 1000} eV) = ${g3(a / 1e21)} eV⁻¹ nm⁻³ = ${sci(a)} eV⁻¹ cm⁻³.`,
+  },
+  /** slide 27: 2D DoS m/(πħ²) → eV⁻¹ cm⁻² */
+  dos2: {
+    unit: 'eV⁻¹ cm⁻²', rel: 0.03,
+    value: ({ m }) => ((m / HB) / (2 * Math.PI)) * 1e14,
+    solution: ({ m }, a) => `ρ = m*/(πħ²) = (1/2π)(2m*/ħ²) = (${m}/0.0381 eV⁻¹nm⁻²)/(2π) = ${g3(a / 1e14)} eV⁻¹ nm⁻² = ${sci(a)} eV⁻¹ cm⁻², the same at every energy above the subband edge.`,
+  },
+  /** slide 29 (corrected): 1D DoS (1/π)√(2m/ħ²)E^(−1/2) → eV⁻¹ cm⁻¹ */
+  dos1: {
+    unit: 'eV⁻¹ cm⁻¹', rel: 0.03,
+    value: ({ m, E }) => (1 / Math.PI) * Math.sqrt(m / HB) / Math.sqrt(E / 1000) * 1e7,
+    solution: ({ m, E }, a) => `ρ = (1/π)√(2m*/ħ²)·E^(−½) = (1/π) × √(${g3(m / HB)} eV⁻¹nm⁻²) / √(${E / 1000} eV) = ${g3(a / 1e7)} eV⁻¹ nm⁻¹ = ${sci(a)} eV⁻¹ cm⁻¹. (The slide’s 1/2π gives half this; counting −k to +k gives N = 2kL/π.)`,
+  },
+  /** slide 25: N = k³V/3π² states below k → count */
+  nstates3: {
+    unit: 'states', rel: 0.02,
+    value: ({ k, L }) => (k ** 3 * L ** 3) / (3 * Math.PI * Math.PI),
+    solution: ({ k, L }, a) => `N = (4πk³/3)/(π³/L³) × 2 × ⅛ = k³L³/(3π²) = (${k} nm⁻¹ × ${L} nm)³ / 29.6 = ${g3((k * L) ** 3)} / 29.6 = ${g3(a)} states.`,
   },
   /** Topic 3 slide 6: the answer is the three indices written as one number, e.g. 632 for (632) */
   miller: {

@@ -3,11 +3,13 @@ import t3 from '../../content/topic3/facts.json'
 import t4 from '../../content/topic4/facts.json'
 import t5 from '../../content/topic5/facts.json'
 import t6 from '../../content/topic6/facts.json'
+import t7 from '../../content/topic7/facts.json'
+import t8 from '../../content/topic8/facts.json'
 import { FactFileSchema, QuestionSchema, type Fact, type Question } from './schema'
 import type { TopicId } from '../sources'
 
 /** The fact inventories of every topic and the question bank, validated at load. */
-export const FACT_FILES = { topic2: FactFileSchema.parse(t2), topic3: FactFileSchema.parse(t3), topic4: FactFileSchema.parse(t4), topic5: FactFileSchema.parse(t5), topic6: FactFileSchema.parse(t6) } as Record<TopicId, ReturnType<typeof FactFileSchema.parse>>
+export const FACT_FILES = { topic2: FactFileSchema.parse(t2), topic3: FactFileSchema.parse(t3), topic4: FactFileSchema.parse(t4), topic5: FactFileSchema.parse(t5), topic6: FactFileSchema.parse(t6), topic7: FactFileSchema.parse(t7), topic8: FactFileSchema.parse(t8) } as Record<TopicId, ReturnType<typeof FactFileSchema.parse>>
 /** Topic 2's file (Chapter 1), as before */
 export const FACT_FILE = FACT_FILES.topic2
 export const FACTS: Fact[] = Object.values(FACT_FILES).flatMap((f) => f.facts)

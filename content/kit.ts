@@ -4,6 +4,8 @@ import t3 from './topic3/facts.json'
 import t4 from './topic4/facts.json'
 import t5 from './topic5/facts.json'
 import t6 from './topic6/facts.json'
+import t7 from './topic7/facts.json'
+import t8 from './topic8/facts.json'
 import { GENS } from '../src/learn/calcs'
 
 /**
@@ -16,9 +18,9 @@ type Hint = { text: string; highlight?: string }
 export const H = (text: string, highlight?: string): Hint => ({ text, highlight })
 type Opts = { obj?: string | null; d?: 1 | 2 | 3; scene?: Scene; sol?: string; also?: string[] }
 
-const STATEMENT: Record<string, string> = Object.fromEntries([...t3.facts, ...t4.facts, ...t5.facts, ...t6.facts].map((f) => [f.id, f.statement]))
+const STATEMENT: Record<string, string> = Object.fromEntries([...t3.facts, ...t4.facts, ...t5.facts, ...t6.facts, ...t7.facts, ...t8.facts].map((f) => [f.id, f.statement]))
 
-export function kit(prefix: 't3' | 't4' | 't5' | 't6', T: (n: number) => SourceRef) {
+export function kit(prefix: 't3' | 't4' | 't5' | 't6' | 't7' | 't8', T: (n: number) => SourceRef) {
   const fid = (n: string) => `${prefix}-${n}`
   const slideOf = (n: string) => Number(n.slice(1, 3))
   const base = (id: string, facts: string[], prompt: string, hints: Hint[], o: Opts = {}) => {
