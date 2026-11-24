@@ -421,3 +421,6 @@ Every one is checked from first principles; `facts.test.ts` re-derives the numbe
 ## Motion is always full (2026-11-24)
 At the user's request the top bar's "motion full / motion reduced" button is gone, and motion is always full: the store's `reducedMotion` starts false and nothing sets it, and the `prefers-reduced-motion` CSS blocks are removed. This overrides the brief's "`prefers-reduced-motion` respected" line. The `reducedMotion` checks in the scenes stay in place (always false), so restoring the option later is a one-line change in `store.ts` plus the button.
 
+## Drill: a missed card comes back later (2026-11-24)
+A miss sends a card to Leitner box 1, due at once, and the drill puts missed cards first, so the same card used to reappear immediately. Now the drill remembers the cards shown this session. A card seen within the last three (`DRILL_GAP` in `progress.ts`, chosen by `pickNext`) waits while other due cards go first, and if fewer cards are due, cards not yet due fill the gap. It repeats sooner only when nothing else exists in the selection. A skipped card waits the same way. Tested in `progress.test.ts` and checked in the browser.
+

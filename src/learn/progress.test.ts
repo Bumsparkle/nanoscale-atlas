@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { boxCounts, stepForObject, examPaper, MAKE_TOPICS, processingPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
+import { boxCounts, stepForObject, examPaper, MAKE_TOPICS, pickNext, processingPaper, factMastered, objectMastery, progress, queue, slideCoverage } from './progress'
 import { QUESTIONS, QUESTIONS_FOR_FACT } from './bank'
 import { POSITIONS } from './lesson'
 
@@ -88,5 +88,21 @@ describe('the all-processing paper', () => {
     for (const t of MAKE_TOPICS) expect(p.filter((q) => q.source.topic === t).length, t).toBe(4)
     expect(p.filter((q) => q.type === 'calc').length).toBeGreaterThanOrEqual(10)
     expect(processingPaper(7).map((q) => q.id)).toEqual(p.map((q) => q.id))
+  })
+})
+
+describe('the drill does not repeat a missed card straight away', () => {
+  const qs = QUESTIONS.slice(0, 6)
+  it('a card shown in the last three waits; the next card in the queue comes first', () => {
+    // the missed card is first in the queue (box 1, due now), but was just shown
+    expect(pickNext(qs, [qs[0].id])!.id).toBe(qs[1].id)
+    expect(pickNext(qs, [qs[0].id, qs[1].id, qs[2].id])!.id).toBe(qs[3].id)
+  })
+  it('it comes back once three other cards have been shown', () => {
+    expect(pickNext(qs, [qs[0].id, qs[1].id, qs[2].id, qs[3].id])!.id).toBe(qs[0].id)
+  })
+  it('with nothing else to show it repeats, rather than showing nothing', () => {
+    expect(pickNext([qs[0]], [qs[0].id])!.id).toBe(qs[0].id)
+    expect(pickNext([], [])).toBeNull()
   })
 })

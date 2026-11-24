@@ -241,3 +241,18 @@ export function processingPaper(seed: number, perTopic = 4): Question[] {
   return out.sort((a, b) => a.source.topic.localeCompare(b.source.topic) || a.source.slide - b.source.slide)
 }
 export const paperTitle = (f: Filter) => (f.topic ? `${TOPIC_NAME[f.topic]} · timed paper` : 'All topics · timed paper')
+
+/** cards that must come between two showings of the same card in a drill */
+export const DRILL_GAP = 3
+
+/**
+ * The next card of a drill. `recent` lists the ids shown so far this
+ * session, latest last. A card shown within the last DRILL_GAP cards waits
+ * (a missed card is due again at once, but comes back after a few others);
+ * it is only repeated sooner when nothing else is left in the queue.
+ */
+export function pickNext(list: Question[], recent: string[], gap = DRILL_GAP): Question | null {
+  if (!list.length) return null
+  const held = new Set(recent.slice(-gap))
+  return list.find((q) => !held.has(q.id)) ?? list.find((q) => q.id !== recent[recent.length - 1]) ?? list[0]
+}

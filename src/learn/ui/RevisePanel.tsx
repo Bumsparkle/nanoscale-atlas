@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAtlas } from '../../state/store'
 import { FACTS, QUESTIONS, SLIDES_OF } from '../bank'
 import { TOPIC_IDS, TOPIC_SLIDES, type TopicId } from '../../sources'
-import { boxCounts, factMastered, progress, queue, type Filter } from '../progress'
+import { boxCounts, DRILL_GAP, factMastered, pickNext, progress, queue, type Filter } from '../progress'
 import { QuestionCard } from './QuestionCard'
 import { CollapseToggle, useCollapsed } from './Collapse'
 import { CoverageSheet } from './CoverageSheet'
@@ -38,6 +38,8 @@ export function RevisePanel() {
   const [current, setCurrent] = useState<string | null>(null)
   const [answered, setAnswered] = useState(false)
   const [round, setRound] = useState(0)
+  /** cards shown this session, latest last: a missed or skipped card comes back after a few others */
+  const [recent, setRecent] = useState<string[]>([])
   const [collapsed, setCollapsed] = useCollapsed()
 
   const due = useMemo(() => queue(filter, Date.now(), false), [fkey, pv, round]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -50,7 +52,12 @@ export function RevisePanel() {
   // pick the next card whenever the filter changes or a card is finished
   useEffect(() => {
     setAnswered(false)
-    setCurrent(list[0]?.id ?? null)
+    // if every due card was just shown (a short queue), fill the gap with cards that are not yet due
+    const held = new Set(recent.slice(-DRILL_GAP))
+    const fresh = list.find((x) => !held.has(x.id))
+    const next = fresh ?? (list.length ? pickNext([...list.filter((x) => !held.has(x.id)), ...queue(filter, Date.now(), true).filter((x) => !held.has(x.id)), ...list], recent) : null)
+    setCurrent(next?.id ?? null)
+    if (next) setRecent((r) => [...r.slice(-20), next.id])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fkey, round, ahead])
 
