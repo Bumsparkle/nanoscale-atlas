@@ -7,7 +7,7 @@ import { label, publish, useDive, useTabHome, useUnits } from './shared'
 import { useAtlas } from '../../state/store'
 import { airy, depthOfFocus, fresnelRegime, fresnelSlit, gratingImage, resolution, ROADMAP, roadmapLambda, SOURCE_BY_ID, wMin } from '../../chapters/litho/optics'
 import { simulate } from '../../chapters/litho/ebeam'
-import { HeightField, LIGHT_COLOUR, Line, Seg } from './nanoShared'
+import { HeightField, lightColour, Line, Seg } from './nanoShared'
 import { clearedFraction, RESIST_STEPS, resistThickness } from '../../chapters/litho/resist'
 import { P } from '../../theme/scene'
 
@@ -29,7 +29,7 @@ function Tool() {
   const size = useThree((s) => s.size)
   const L = useAtlas((s) => s.litho)
   const src = SOURCE_BY_ID[L.source]
-  const col = LIGHT_COLOUR[L.source]
+  const col = lightColour(L.source)
   const proj = L.system === 'projection'
   const maskY = proj ? 38 : L.system === 'proximity' ? -24 : -27.4
   const alpha = Math.asin(Math.min(0.95, L.NA))
@@ -37,7 +37,7 @@ function Tool() {
   const lensY = 6
   const coneH = lensY - waferY
   const coneR = Math.tan(alpha) * coneH * 0.8
-  const light = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: col, transparent: true, opacity: 0.16, depthWrite: false, side: THREE.DoubleSide }), [col])
+  const light = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: col, transparent: true, opacity: 0.16 * P.k.sheet, depthWrite: false, side: THREE.DoubleSide }), [col])
   const R = resolution(L.k1, src.nm, L.NA)
   const dof = depthOfFocus(L.k2, src.nm, L.NA)
   useFrame(() => {
@@ -108,7 +108,7 @@ function Tool() {
           {/* the depth of focus, exaggerated */}
           <mesh position={[0, waferY + 1.2, 0]} raycast={() => null}>
             <cylinderGeometry args={[3, 3, Math.max(0.3, dof / 120), 24]} />
-            <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.35} depthWrite={false} />
+            <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.35 * P.k.sheet} depthWrite={false} />
           </mesh>
         </>
       )}
@@ -213,7 +213,7 @@ function Mtf() {
       <Inspectable node="litho-resist" fit={2}>
         <mesh position={[0, 11, 0]}>
           <boxGeometry args={[86, 0.15, 42]} />
-          <meshBasicNodeMaterial color={prints ? P.signal.amber : P.signal.bad} transparent opacity={0.28} depthWrite={false} />
+          <meshBasicNodeMaterial color={prints ? P.signal.amber : P.signal.bad} transparent opacity={0.28 * P.k.sheet} depthWrite={false} />
         </mesh>
         <mesh position={[0, -2, 0]}>
           <boxGeometry args={[86, 3, 42]} />
@@ -344,7 +344,7 @@ function Resist() {
           {exposedXs.map((x) => (
             <mesh key={x} position={[x, t / 2 + 6.5, 0]} raycast={() => null}>
               <boxGeometry args={[openW, 11, 28]} />
-              <meshBasicNodeMaterial color={P.signal.uv} transparent opacity={0.22} depthWrite={false} />
+              <meshBasicNodeMaterial color={P.signal.uv} transparent opacity={0.22 * P.k.sheet} depthWrite={false} />
             </mesh>
           ))}
         </Inspectable>
@@ -416,7 +416,7 @@ function Ngl() {
         {/* photons: a diffraction-spread cone */}
         <mesh position={[xs[0], 5, 0]} raycast={() => null}>
           <cylinderGeometry args={[1, 5, 10, 24, 1, true]} />
-          <meshBasicNodeMaterial color={P.signal.uv} transparent opacity={0.35} side={THREE.DoubleSide} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.signal.uv} transparent opacity={0.35 * P.k.sheet} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
         <Seg a={[xs[0], 10, 0]} b={[xs[0], 22, 0]} r={1} color={P.signal.uv} opacity={0.6} />
         {/* electrons: Monte Carlo paths in 400 nm of resist on Si */}

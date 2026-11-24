@@ -36,8 +36,13 @@ const DARK = {
     hoverEdge: 0.9,
     focusEdge: 2.2,
     hiddenEdge: 0.3,
+    /** outline widths, px */
+    hoverWidth: 1.0,
+    focusWidth: 2.4,
     /** logic and mastery glows */
     glow: 1,
+    /** opacity multiplier for translucent signal sheets (beams, planes, exposure light) */
+    sheet: 1,
   },
   stage: {
     bayFloor: '#2b2a24',
@@ -451,10 +456,13 @@ const LIGHT: Overrides<ScenePalette> = {
     rim: 0.45,
     capShade: 0.56,
     capLift: 0.12,
-    hoverEdge: 0.55,
-    focusEdge: 0.85,
-    hiddenEdge: 0.25,
+    hoverEdge: 5,
+    focusEdge: 9,
+    hiddenEdge: 1.2,
+    hoverWidth: 1.6,
+    focusWidth: 3.4,
     glow: 0.7,
+    sheet: 1.8,
   },
   stage: {
     bg: '#e4e8ea',
@@ -482,7 +490,7 @@ const LIGHT: Overrides<ScenePalette> = {
   },
   signal: {
     amber: '#e09a12',
-    outline: '#7a4e00',
+    outline: '#9a5f00',
     on: '#2e8f44',
     bad: '#c8281e',
     warn: '#c0451f',
@@ -503,7 +511,7 @@ const LIGHT: Overrides<ScenePalette> = {
     axisCool: '#5a656d',
     ghost: '#87929a',
     level: '#5a656d',
-    off: '#a3acb2',
+    off: '#cdd2d6',
     carrierN: '#1f74bd',
     carrierP: '#cc6a14',
     channel: '#2f78b8',
@@ -525,6 +533,19 @@ const LIGHT: Overrides<ScenePalette> = {
   },
   films: {
     gas: '#3f93c2',
+  },
+  litho: {
+    // exposure light: pale violets vanish on a pale page; the same violets, deeper
+    gLine: '#4660d8',
+    iLine: '#6446d8',
+    krf: '#7a4fd6',
+    arf: '#8656cf',
+    f2: '#9563c9',
+    xray: '#b39a3e',
+  },
+  heat: {
+    // the epi reactor's lamp rods: cream glow vanishes on a pale page; a deeper warm amber reads as hot
+    lamp: '#f0a640',
   },
 }
 

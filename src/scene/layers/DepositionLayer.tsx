@@ -116,7 +116,7 @@ function Plasma() {
   const size = useThree((s) => s.size)
   const mode = useAtlas((s) => s.films.plasma)
   const sputter = mode !== 'pecvd'
-  const glowMat = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.plasma, transparent: true, opacity: 0.45, depthWrite: false }), [])
+  const glowMat = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.plasma, transparent: true, opacity: 0.45 * P.k.sheet, depthWrite: false }), [])
   const ions = useMemo(() => tracers(160, 7), [])
   const o = useMemo(() => new THREE.Object3D(), [])
   const t = useRef(0)

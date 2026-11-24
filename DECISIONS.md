@@ -460,3 +460,14 @@ At the user's request a light "cleanroom" theme now ships alongside the dark one
 
 The text System / Light / Dark switch and the three mode buttons are gone. On phones both icons sit on the brand row.
 
+**Screenshot review fixes** (same day). Every layer and tab was reviewed in both themes at 1440 and 375 (`scripts/themeshots.mjs`, paired with `scripts/montage.mjs`, which now packs several pairs per row). What failed on light, and the fix:
+- **Focus/hover outline invisible.** TSL `mix()` over the outline masks drew nothing; it is now written out as `rgb + (ink − rgb)·a`. The light outline is thicker (`k.hoverWidth`, `k.focusWidth`) and stronger, in a mid-dark amber ink (`#9a5f00`) that reads on both the dark model and the pale page.
+- **Captions over the model.** The scale's scene-coloured halo became a pale smear, and the scene-tools hint (dark text on a dark model) was unreadable. On light both sit on glass: a panel behind the scale, a chip behind the hint. Dark is unchanged.
+- **Translucent signal sheets** (Miller plane, exposure cones, beams, the DoS sphere, subband plates) faded on a pale page. On light their opacity is ×1.8 (`k.sheet`), and the quantum-well slab gets the same boost.
+- **Light colours that sink into pale:** the exposure light (g-line to F₂), the X-ray beam and the epi reactor's lamp rods take deeper shades of the same hue on light. `LIGHT_COLOUR` became `lightColour()`, so it reads the palette when called.
+- **Other fixes:**
+  - the gettering bulk region is more opaque on light;
+  - the DoS "outside" states are paler, so the counted states and the sphere lead;
+  - the colloid dots' ZnS shell is lighter and their glow softer, so the emission colour isn't bleached.
+- **Left as is:** the TEM micrograph frame and the colloid emission colour are physical greys and colours, and both still read. The wet bench and the SOI wafer are pale but keep their edges.
+

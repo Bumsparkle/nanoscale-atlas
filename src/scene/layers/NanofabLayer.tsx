@@ -154,11 +154,12 @@ function Colloid() {
         <group key={i} position={o.p} scale={o.s * d * 0.6}>
           <mesh>
             <sphereGeometry args={[1, 16, 12]} />
-            <meshStandardNodeMaterial color={col} emissive={col} emissiveIntensity={0.9} />
+            <meshStandardNodeMaterial color={col} emissive={col} emissiveIntensity={0.9 * P.k.glow} />
           </mesh>
           <mesh>
             <sphereGeometry args={[1.35, 16, 12]} />
-            <meshStandardNodeMaterial color={P.obj.frost} transparent opacity={0.25} depthWrite={false} />
+            {/* the ZnS shell: a lighter frost on the light theme, or it bleaches the emission colour */}
+            <meshStandardNodeMaterial color={P.obj.frost} transparent opacity={P.k.light ? 0.1 : 0.25} depthWrite={false} />
           </mesh>
         </group>
       ))}
@@ -265,7 +266,7 @@ function Laser() {
       {/* light out of the facet */}
       <mesh position={[58, 13, 0]} rotation-z={Math.PI / 2} raycast={() => null}>
         <coneGeometry args={[3, 16, 20, 1, true]} />
-        <meshBasicNodeMaterial color={P.signal.bad} transparent opacity={0.4} side={THREE.DoubleSide} depthWrite={false} />
+        <meshBasicNodeMaterial color={P.signal.bad} transparent opacity={0.4 * P.k.sheet} side={THREE.DoubleSide} depthWrite={false} />
       </mesh>
     </Inspectable>
   )

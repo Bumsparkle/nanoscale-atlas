@@ -127,7 +127,7 @@ export function Gettering() {
       <Inspectable node="ig-region" fit={1.1}>
         <mesh position={[0, (TOP - DZ - (-TOP + 8)) / 2 + (-TOP + 8), 0]}>
           <boxGeometry args={[WIDTH, THICK - DZ - 8, DEPTH]} />
-          <meshStandardNodeMaterial color={P.gettering.denuded} roughness={0.6} transparent opacity={0.55} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.gettering.denuded} roughness={0.6} transparent opacity={P.k.light ? 0.82 : 0.55} depthWrite={false} />
         </mesh>
       </Inspectable>
       <Inspectable node="backside-region" fit={2}>

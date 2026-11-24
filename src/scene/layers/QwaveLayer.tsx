@@ -150,11 +150,11 @@ function Confine() {
       <Inspectable node="qv-box" fit={1.5}>
         <mesh>
           <boxGeometry args={[sx, sy, sz]} />
-          <meshStandardNodeMaterial color={P.obj.well} transparent opacity={0.35} roughness={0.3} depthWrite={false} />
+          <meshStandardNodeMaterial color={P.obj.well} transparent opacity={0.35 * P.k.sheet} roughness={0.3} depthWrite={false} />
         </mesh>
         <mesh ref={glow} scale={[dims >= 3 ? sx * 0.3 : sx * 0.48, sy * 0.3, dims >= 2 ? sz * 0.3 : sz * 0.48]}>
           <sphereGeometry args={[1, 24, 16]} />
-          <meshBasicNodeMaterial color={P.signal.beam} transparent opacity={0.45} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.signal.beam} transparent opacity={0.45 * P.k.sheet} depthWrite={false} />
         </mesh>
       </Inspectable>
       <Inspectable node="qv-level" fit={2}>
@@ -164,7 +164,7 @@ function Confine() {
             {dims < 3 && (
               <mesh position={[Math.max(sx, 40) / 2 + 20, l.E * EY - 40 + 4, -0.5]} raycast={() => null}>
                 <planeGeometry args={[16, 8]} />
-                <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.12} />
+                <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.12 * P.k.sheet} />
               </mesh>
             )}
           </group>
@@ -227,13 +227,13 @@ function Dos() {
         {dims === 3 && (
           <mesh raycast={() => null}>
             <sphereGeometry args={[Math.max(0.1, R), 40, 24, Math.PI / 2, Math.PI / 2, 0, Math.PI / 2]} />
-            <meshStandardNodeMaterial color={P.signal.beam} transparent opacity={0.22} side={THREE.DoubleSide} depthWrite={false} />
+            <meshStandardNodeMaterial color={P.signal.beam} transparent opacity={0.22 * P.k.sheet} side={THREE.DoubleSide} depthWrite={false} />
           </mesh>
         )}
         {dims === 2 && (
           <mesh rotation-x={Math.PI / 2} raycast={() => null}>
             <circleGeometry args={[Math.max(0.1, R), 48, 0, Math.PI / 2]} />
-            <meshBasicNodeMaterial color={P.signal.beam} transparent opacity={0.25} side={THREE.DoubleSide} depthWrite={false} />
+            <meshBasicNodeMaterial color={P.signal.beam} transparent opacity={0.25 * P.k.sheet} side={THREE.DoubleSide} depthWrite={false} />
           </mesh>
         )}
         {dims === 1 && <Line pts={[[0, 0, 0], [Math.max(0.1, R), 0, 0]]} r={0.6} color={P.signal.beam} segs={4} />}

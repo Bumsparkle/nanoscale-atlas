@@ -141,7 +141,7 @@ export default function TransistorLayer() {
         </mesh>
         <mesh ref={gateRef} position={[cx, 1.55, -1]} raycast={() => null} renderOrder={7}>
           <boxGeometry args={[2.02, 0.04, 2.02]} />
-          <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.2} depthWrite={false} />
+          <meshBasicNodeMaterial color={P.signal.amber} transparent opacity={0.2 * P.k.sheet} depthWrite={false} />
         </mesh>
         <instancedMesh ref={carriers} args={[new THREE.SphereGeometry(0.09, 8, 6), undefined, N]} frustumCulled={false} raycast={() => null}>
           <meshBasicNodeMaterial color={P.signal[d.carrier]} />

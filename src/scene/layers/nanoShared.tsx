@@ -92,4 +92,6 @@ export function Seg({ a, b, r = 0.2, color = P.signal.axis, opacity = 1 }: { a: 
 }
 
 /** colour of a light source, drawn visible even in the UV */
-export const LIGHT_COLOUR: Record<string, string> = { g: P.litho.gLine, i: P.litho.iLine, krf: P.litho.krf, arf: P.litho.arf, f2: P.litho.f2 }
+/** exposure light per source, read at build time (the light theme deepens it) */
+export const lightColour = (source: string): string =>
+  ({ g: P.litho.gLine, i: P.litho.iLine, krf: P.litho.krf, arf: P.litho.arf, f2: P.litho.f2 })[source] ?? P.litho.iLine

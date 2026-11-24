@@ -230,3 +230,16 @@
   color: var(--on-amber);
   opacity: 0.7;
 }
+
+/* light theme: dark text with a pale glow is unreadable over a dark model; give the hint a glass chip */
+:root[data-theme='light'] .scenetools-hint {
+  justify-self: center;
+  align-self: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 2px var(--s-2);
+  background: var(--glass);
+  border-radius: var(--radius);
+  text-shadow: none;
+}

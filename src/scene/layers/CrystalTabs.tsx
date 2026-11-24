@@ -170,7 +170,7 @@ function Miller() {
       <primitive object={dim} />
       <Inspectable node="miller-plane" fit={1.6}>
         <mesh geometry={planeGeo}>
-          <meshStandardNodeMaterial color={P.signal.amber} transparent opacity={0.32} side={THREE.DoubleSide} depthWrite={false} roughness={0.6} />
+          <meshStandardNodeMaterial color={P.signal.amber} transparent opacity={0.32 * P.k.sheet} side={THREE.DoubleSide} depthWrite={false} roughness={0.6} />
         </mesh>
         <primitive object={lit} />
       </Inspectable>

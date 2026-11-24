@@ -1,6 +1,6 @@
 import * as THREE from 'three/webgpu'
 import { IS_APP } from '../platform'
-import { pass, uniform, color, mix, vec4, float, min } from 'three/tsl'
+import { pass, uniform, color, mix, vec4, float, min, clamp } from 'three/tsl'
 import { outline } from 'three/addons/tsl/display/OutlineNode.js'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo } from 'react'
@@ -38,17 +38,21 @@ export function Pipeline() {
   const pipeline = useMemo(() => {
     const p = new THREE.RenderPipeline(gl)
     const scenePass = pass(scene, camera)
-    const hover = outline(scene, camera, { selectedObjects: selection.hover, edgeThickness: float(1.0), downSampleRatio: 1 })
-    const focus = outline(scene, camera, { selectedObjects: selection.focus, edgeThickness: float(2.4), downSampleRatio: 1 })
+    const hover = outline(scene, camera, { selectedObjects: selection.hover, edgeThickness: float(P.k.hoverWidth), downSampleRatio: 1 })
+    const focus = outline(scene, camera, { selectedObjects: selection.focus, edgeThickness: float(P.k.focusWidth), downSampleRatio: 1 })
     const k = P.k
     let rgb
     if (k.light) {
       // light theme: an additive glow vanishes on pale faces, so the edge is
       // painted over the image in a dark amber (an ink outline, not a glow)
       const ink = color(P.signal.outline)
-      const hoverA = min(float(1), hover.visibleEdge.r.mul(k.hoverEdge).add(hover.hiddenEdge.r.mul(k.hiddenEdge)))
-      const focusA = min(float(1), focus.visibleEdge.r.mul(k.focusEdge).add(focus.hiddenEdge.r.mul(k.hiddenEdge * 1.6)))
-      rgb = mix(mix(scenePass.rgb, ink, hoverA), ink, focusA)
+      const hoverA = clamp(hover.visibleEdge.mul(k.hoverEdge).add(hover.hiddenEdge.mul(k.hiddenEdge)), 0, 1)
+      const focusA = clamp(focus.visibleEdge.mul(k.focusEdge).add(focus.hiddenEdge.mul(k.hiddenEdge * 1.6)), 0, 1)
+      // rgb + (ink − rgb)·a, written out: TSL's mix() with these edge masks drew nothing
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const base: any = scenePass.rgb
+      const withHover = base.add(ink.sub(base).mul(hoverA))
+      rgb = withHover.add(ink.sub(withHover).mul(focusA))
     } else {
       const amber = color(P.signal.amber)
       const hoverCol = hover.visibleEdge.mul(amber).mul(k.hoverEdge).add(hover.hiddenEdge.mul(amber).mul(k.hiddenEdge))
@@ -62,7 +66,7 @@ export function Pipeline() {
     rgb = k.light ? mix(rgb, color(P.stage.bg), post.veil) : rgb.mul(float(1).sub(post.veil))
     // desktop app: keep the scene's alpha so empty space shows the window glass;
     // outlines stay visible where they fall outside an object
-    const a = IS_APP ? min(float(1), scenePass.a.add(hover.visibleEdge.r).add(focus.visibleEdge.r).add(post.veil)) : float(1)
+    const a = IS_APP ? min(float(1), scenePass.a.add(hover.visibleEdge).add(focus.visibleEdge).add(post.veil)) : float(1)
     p.outputNode = vec4(rgb, a)
     return p
   }, [gl, scene, camera, theme])

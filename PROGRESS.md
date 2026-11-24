@@ -684,7 +684,13 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
   - the mode cycle;
   - phone layout at 375 px.
 - **Screenshots:** `scripts/themeshots.mjs` now shoots every layer and every tab (70 screens: 3D scenes, plots, band diagrams, lesson, Revise, the skill map, slides, home) in both themes at 1440 and 375, and pairs them with `scripts/montage.mjs`. A first five-screen dark/light review (cell, section, cleanroom, band diagram, skill map) looked right.
-- **Open:**
-  - The full 280-shot pass was still running when this was pushed and hasn't been reviewed. Contrast fixes from it will follow.
-  - The Mac app itself hasn't been run with the new theme.
+- **Review:** the full pass (72 screens × 2 themes × 1440 and 375) was reviewed as dark/light pairs. Fixes (DECISIONS.md, "Screenshot review fixes"):
+  - the light focus/hover outline, which wasn't drawing;
+  - glass behind the scale and the scene-tools hint;
+  - stronger translucent signal sheets;
+  - deeper exposure light, X-ray and lamp colours;
+  - gettering, DoS and colloid tweaks.
+
+  Every fixed screen was re-shot at both sizes and checked. The slide-viewer step in the script was also fixed (it passed the wrong source shape).
+- **Open:** the Mac app itself hasn't been run with the new theme.
 

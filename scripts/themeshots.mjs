@@ -21,7 +21,7 @@ const ROUTES = [
   ['c1-01-wafer', '/cmos/wafer'],
   ['c1-02-die', '/cmos/die'],
   ['c1-03-cell', '/cmos/inverter'],
-  ['c1-04-cell-focus', '/cmos/inverter?focus=nmos-source', 4000],
+  ['c1-04-cell-focus', '/cmos/inverter?focus=nmos-source', 7000],
   ['c1-05-section', '/cmos/inverter?view=section&cut=slide27', 4500],
   ['c1-06-masks', '/cmos/inverter?view=masks'],
   ['c1-07-fab', '/cmos/inverter?view=fab&step=9', 4000],
@@ -94,7 +94,7 @@ const ROUTES = [
   ['l-02-lesson-check', '/cmos/inverter?mode=lesson&at=cross-section-bodies', 6000, async (p) => { await p.locator('[data-testid=start-check]:not([disabled])').click(); await p.waitForTimeout(2000) }],
   ['l-03-revise', '/cmos/inverter?mode=revise', 4000],
   ['l-04-skillmap', '/cmos/inverter?mode=revise&rv=coverage', 3500],
-  ['l-05-slides', '/cmos/inverter', 3500, async (p) => { await p.evaluate(() => window.__atlasSet({ source: { topic: 'topic2', slide: 25 } })); await p.waitForTimeout(2500) }],
+  ['l-05-slides', '/cmos/inverter', 3500, async (p) => { await p.evaluate(() => window.__atlasSet({ source: { refs: [{ topic: 'topic2', slide: 25 }], index: 0 } })); await p.waitForTimeout(2500) }],
   ['l-06-home', '/', 2500],
 ]
 

@@ -29,7 +29,7 @@ export default function MbeLayer() {
   useDive('cleanroom', 'surface', { home: [0, 8, 0] })
   const sub = useRef<THREE.Group>(null)
   const streaks = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.rheed, transparent: true, opacity: 0.8 }), [])
-  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.18, depthWrite: false }), [])
+  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.18 * P.k.sheet, depthWrite: false }), [])
 
   useFrame((_, dt) => {
     const st = useAtlas.getState()

@@ -113,3 +113,12 @@ html[data-view='fab'] .scalebar {
     display: none;
   }
 }
+
+/* light theme: a pale radial halo smears over dark models, so the scale sits on a glass panel */
+:root[data-theme='light'] .scalebar::before {
+  inset: -10px -14px;
+  background: var(--glass);
+  border: var(--hair);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}

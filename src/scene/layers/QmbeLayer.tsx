@@ -38,7 +38,7 @@ export default function QmbeLayer() {
   const growing = grown > 0 ? h.layers[Math.min(grown, h.layers.length) - 1] : null
   const open = new Set(growing ? ELEMENTS[growing.mat] ?? [] : [])
   const sub = useRef<THREE.Group>(null)
-  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.16, depthWrite: false }), [])
+  const beams = useMemo(() => new THREE.MeshBasicNodeMaterial({ color: P.signal.amber, transparent: true, opacity: 0.16 * P.k.sheet, depthWrite: false }), [])
   const sp = spans(h)
   const total = sp.length ? sp[sp.length - 1].z1 : 1
   const scale = 22 / total
