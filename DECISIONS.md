@@ -352,4 +352,4 @@ Pinned exactly: `three@0.187.0`, `@react-three/fiber@9.8.2` (v9 stable; v10 is s
 - Revise filters T5 and T6; the skill map has the new areas.
 
 ### Slides
-`npm run slides` renders all five decks (137 slides with Topic 2) into `private/slides/` and packs `private/slides-all.tar.gz` (28.7 MB). Both stay gitignored. To show Topics 5 and 6 on the deployed site, that archive replaces asset 778978728 in the private release, then Vercel's `SLIDES_ARCHIVE_URL` points at the new asset.
+`npm run slides` renders all five decks (137 slides with Topic 2) into `private/slides/` and packs `private/slides-all.tar.gz` (28.7 MB). Both stay gitignored. The archive replaced `slides-all.tar.gz` in the private release on 2026-11-24 (clobbered, so asset 778978728 no longer exists). Its API URL is `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786486636`. To show Topics 3–6 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it and redeploy. The Topic 2 asset (776184764) is untouched.
