@@ -1,4 +1,4 @@
-import { account, defaultDeps } from '../server/handlers'
+import { account, defaultDeps } from '../server/handlers.js'
 
 // Vercel function: see server/handlers.ts
 const handle = (req: Request) => account(req, defaultDeps())

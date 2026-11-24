@@ -1,4 +1,4 @@
-import { access, defaultDeps } from '../server/handlers'
+import { access, defaultDeps } from '../server/handlers.js'
 
 // Vercel function: see server/handlers.ts
 const handle = (req: Request) => access(req, defaultDeps())

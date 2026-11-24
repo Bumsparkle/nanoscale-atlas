@@ -1,4 +1,4 @@
-import { b64url, equalBytes, fromB64url, hex, hmac, sha256 } from './crypto'
+import { b64url, equalBytes, fromB64url, hex, hmac, sha256 } from './crypto.js'
 
 /**
  * The site access code: the first of the two gates (the second is a signed-in

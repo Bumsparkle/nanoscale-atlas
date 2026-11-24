@@ -1,7 +1,7 @@
 import { next } from '@vercel/functions'
-import { accessConfig, readAccess, verifyAccessToken } from './server/access'
-import { cors, preflight } from './server/http'
-import { readSessionToken, supabaseUrl, verifySession } from './server/session'
+import { accessConfig, readAccess, verifyAccessToken } from './server/access.js'
+import { cors, preflight } from './server/http.js'
+import { readSessionToken, supabaseUrl, verifySession } from './server/session.js'
 
 /**
  * Vercel Routing Middleware: the two gates in front of the whole site.

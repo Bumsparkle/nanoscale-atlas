@@ -1,6 +1,6 @@
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from 'jose'
-import { cookies } from './access'
-import { fromB64url } from './crypto'
+import { cookies } from './access.js'
+import { fromB64url } from './crypto.js'
 
 /**
  * The second gate: a Supabase Auth session for a verified @ucl.ac.uk address.

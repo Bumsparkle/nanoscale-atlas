@@ -1,8 +1,8 @@
-import { accessConfig, accessCookie, codeMatches, makeAccessToken, readAccess, verifyAccessToken, type AccessConfig } from './access'
-import { hex, hmac } from './crypto'
-import { admin, clientIp, json, preflight, smallJson } from './http'
-import { supabaseRateStore, type RateStore } from './ratelimit'
-import { readSessionToken, verifySession, type SessionUser } from './session'
+import { accessConfig, accessCookie, codeMatches, makeAccessToken, readAccess, verifyAccessToken, type AccessConfig } from './access.js'
+import { hex, hmac } from './crypto.js'
+import { admin, clientIp, json, preflight, smallJson } from './http.js'
+import { supabaseRateStore, type RateStore } from './ratelimit.js'
+import { readSessionToken, verifySession, type SessionUser } from './session.js'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 /**

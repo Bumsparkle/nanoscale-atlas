@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { supabaseUrl } from './session'
+import { supabaseUrl } from './session.js'
 
 /**
  * The Mac app's webview runs on tauri:// (or http://tauri.localhost), so its

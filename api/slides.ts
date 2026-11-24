@@ -1,4 +1,4 @@
-import { slides, defaultDeps } from '../server/handlers'
+import { slides, defaultDeps } from '../server/handlers.js'
 
 // Vercel function: see server/handlers.ts
 const handle = (req: Request) => slides(req, defaultDeps())
