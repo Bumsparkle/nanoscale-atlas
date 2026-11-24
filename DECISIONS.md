@@ -416,4 +416,4 @@ Every one is checked from first principles; `facts.test.ts` re-derives the numbe
 
 
 ### Slides
-`npm run slides` renders all seven decks (242 slides) into `private/slides/` and packs `private/slides-all.tar.gz` (36.7 MB). Both stay gitignored. The archive is built locally but not yet uploaded: to show Topics 7 and 8 on the deployed site, it must replace `slides-all.tar.gz` (asset 786486636) in the private release, and `SLIDES_ARCHIVE_URL` must then point at the new asset id.
+`npm run slides` renders all seven decks (242 slides) into `private/slides/` and packs `private/slides-all.tar.gz` (36.7 MB). Both stay gitignored. On 2026-11-24 it replaced `slides-all.tar.gz` in the private release (clobbered, so asset 786486636 no longer exists). The new asset is 786861401, API URL `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786861401`. To show Topics 3–8 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to it and redeploy. The Topic 2 asset (776184764) is untouched.

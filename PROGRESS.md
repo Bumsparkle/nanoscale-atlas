@@ -668,5 +668,5 @@ The in-app update offer can only be seen once a v0.2.1 or later exists.
     - overlapping InAs islands;
     - labels under the panel or the top bar;
     - the 3D cell not picking up the print settings outside the Layout view.
-- **Slides:** the archive now holds all seven decks (see DECISIONS).
+- **Slides:** the seven-deck archive (242 slides) is uploaded to the private release as asset 786861401. To show Topics 3–8 on the deployed site, set Vercel's `SLIDES_ARCHIVE_URL` to `https://api.github.com/repos/Bumsparkle/nanoscale-atlas-slides/releases/assets/786861401` and redeploy.
 
